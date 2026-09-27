@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#0b1220"
+    >
+
+    <title>
+        Acoustic Engineering | Intelligent Acoustic Design
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="/styles.css"
+    >
+</head>
+
+<body>
+
+<!-- =====================================================
+     LOGIN
+===================================================== -->
+
+<div
+    id="authScreen"
+    class="auth-screen"
+>
+
+    <div class="auth-card">
+
+        <div class="brand-mark">
+            AE
+        </div>
+
+        <h1>
+            Acoustic Engineering
+        </h1>
+
+        <p class="subtitle">
+            Intelligent Acoustic & Sound System Design
+        </p>
+
+        <div
+            id="loginPanel"
+            class="auth-panel"
+        >
+
+            <h2>
+                تسجيل الدخول
+            </h2>
+
+            <label>
+                رقم الهاتف
+            </label>
+
+            <input
+                id="loginPhone"
+                type="tel"
+                placeholder="رقم الهاتف"
+            >
+
+            <label>
+                كلمة المرور
+            </label>
+
+            <input
+                id="loginPassword"
+                type="password"
+                placeholder="كلمة المرور"
+            >
+
+            <button
+                id="loginButton"
+                class="primary-button"
+            >
+                دخول
+            </button>
+
+            <button
+                id="showRegister"
+                class="link-button"
+            >
+                إنشاء حساب جديد
+            </button>
+
+            <div
+                id="loginMessage"
+                class="message"
+            ></div>
+
+        </div>
+
+
+        <div
+            id="registerPanel"
+            class="auth-panel hidden"
+        >
+
+            <h2>
+                إنشاء حساب
+            </h2>
+
+            <label>
+                الاسم
+            </label>
+
+            <input
+                id="registerName"
+                type="text"
+                placeholder="الاسم الكامل"
+            >
+
+            <label>
+                رقم الهاتف
+            </label>
+
+            <input
+                id="registerPhone"
+                type="tel"
+                placeholder="رقم الهاتف"
+            >
+
+            <label>
+                البريد الإلكتروني
+            </label>
+
+            <input
+                id="registerEmail"
+                type="email"
+                placeholder="البريد الإلكتروني"
+            >
+
+            <label>
+                الشركة
+            </label>
+
+            <input
+                id="registerCompany"
+                type="text"
+                placeholder="اسم الشركة"
+            >
+
+            <label>
+                كلمة المرور
+            </label>
+
+            <input
+                id="registerPassword"
+                type="password"
+                placeholder="كلمة المرور"
+            >
+
+            <button
+                id="registerButton"
+                class="primary-button"
+            >
+                إنشاء الحساب
+            </button>
+
+            <button
+                id="showLogin"
+                class="link-button"
+            >
+                لدي حساب بالفعل
+            </button>
+
+            <div
+                id="registerMessage"
+                class="message"
+            ></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     APPLICATION
+===================================================== -->
+
+<div
+    id="appScreen"
+    class="app hidden"
+>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+
+            <div class="brand-mark small">
+                AE
+            </div>
+
+            <div>
+                <strong>
+                    Acoustic
+                </strong>
+
+                <span>
+                    Engineering
+                </span>
+            </div>
+
+        </div>
+
+
+        <nav>
+
+            <button
+                class="nav-item active"
+                data-view="dashboard"
+            >
+                <span>⌂</span>
+                لوحة التحكم
+            </button>
+
+            <button
+                class="nav-item"
+                data-view="projects"
+            >
+                <span>▣</span>
+                المشاريع
+            </button>
+
+            <button
+                class="nav-item"
+                data-view="designer"
+            >
+                <span>◇</span>
+                المصمم الهندسي
+            </button>
+
+            <button
+                class="nav-item"
+                data-view="speakers"
+            >
+                <span>◈</span>
+                مكتبة السماعات
+            </button>
+
+            <button
+                class="nav-item"
+                data-view="reports"
+            >
+                <span>▤</span>
+                التقارير
+            </button>
+
+            <button
+                id="adminNav"
+                class="nav-item hidden"
+                data-view="admin"
+            >
+                <span>⚙</span>
+                الإدارة
+            </button>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div
+                id="currentUser"
+                class="current-user"
+            ></div>
+
+            <button
+                id="logoutButton"
+                class="logout-button"
+            >
+                تسجيل الخروج
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div>
+
+                <div
+                    id="pageTitle"
+                    class="page-title"
+                >
+                    لوحة التحكم
+                </div>
+
+                <div
+                    id="pageSubtitle"
+                    class="page-subtitle"
+                >
+                    Acoustic Engineering Platform
+                </div>
+
+            </div>
+
+
+            <div class="topbar-actions">
+
+                <button
+                    id="newProjectButton"
+                    class="primary-button compact"
+                >
+                    + مشروع جديد
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             DASHBOARD
+        ================================================== -->
+
+        <section
+            id="view-dashboard"
+            class="view"
+        >
+
+            <div class="hero">
+
+                <div>
+
+                    <div class="eyebrow">
+                        INTELLIGENT ACOUSTIC DESIGN
+                    </div>
+
+                    <h1>
+                        صمّم نظامك الصوتي
+                        <span>هندسياً</span>
+                    </h1>
+
+                    <p>
+                        ارسم المساحة، اختر السماعات،
+                        أو دع محرك التصميم الذكي
+                        يقترح التوزيع الهندسي.
+                    </p>
+
+                    <button
+                        id="heroNewProject"
+                        class="primary-button"
+                    >
+                        ابدأ مشروعاً جديداً
+                    </button>
+
+                </div>
+
+                <div class="hero-graphic">
+
+                    <div class="room-wireframe">
+
+                        <div class="speaker-dot s1"></div>
+                        <div class="speaker-dot s2"></div>
+                        <div class="speaker-dot s3"></div>
+                        <div class="speaker-dot s4"></div>
+
+                        <div class="stage">
+                            STAGE
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="dashboardStats"
+                class="stats-grid"
+            >
+
+                <div class="stat-card">
+                    <span>
+                        المشاريع
+                    </span>
+
+                    <strong id="statProjects">
+                        0
+                    </strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>
+                        السماعات
+                    </span>
+
+                    <strong id="statSpeakers">
+                        0
+                    </strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>
+                        التقارير
+                    </span>
+
+                    <strong id="statReports">
+                        0
+                    </strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>
+                        حالة النظام
+                    </span>
+
+                    <strong class="online">
+                        ONLINE
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <div class="section-header">
+
+                <div>
+                    <h2>
+                        أحدث المشاريع
+                    </h2>
+
+                    <p>
+                        مشاريعك الأخيرة
+                    </p>
+                </div>
+
+                <button
+                    class="link-button"
+                    data-view-target="projects"
+                >
+                    عرض الكل
+                </button>
+
+            </div>
+
+
+            <div
+                id="recentProjects"
+                class="project-grid"
+            ></div>
+
+        </section>
+
+
+        <!-- =================================================
+             PROJECTS
+        ================================================== -->
+
+        <section
+            id="view-projects"
+            class="view hidden"
+        >
+
+            <div class="section-header">
+
+                <div>
+                    <h2>
+                        المشاريع
+                    </h2>
+
+                    <p>
+                        إدارة مشاريع التصميم الصوتي
+                    </p>
+                </div>
+
+                <button
+                    class="primary-button"
+                    id="projectsNewButton"
+                >
+                    + مشروع جديد
+                </button>
+
+            </div>
+
+            <div
+                id="projectsGrid"
+                class="project-grid"
+            ></div>
+
+        </section>
+
+
+        <!-- =================================================
+             DESIGNER
+        ================================================== -->
+
+        <section
+            id="view-designer"
+            class="view hidden"
+        >
+
+            <div class="designer-layout">
+
+                <!-- LEFT CONTROL PANEL -->
+
+                <aside class="designer-panel">
+
+                    <div class="panel-section">
+
+                        <div class="panel-title">
+                            المشروع
+                        </div>
+
+                        <select
+                            id="designerProject"
+                        >
+                            <option value="">
+                                اختر مشروعاً
+                            </option>
+                        </select>
+
+                    </div>
+
+
+                    <div class="panel-section">
+
+                        <div class="panel-title">
+                            نوع التصميم
+                        </div>
+
+                        <div class="mode-buttons">
+
+                            <button
+                                class="mode-button active"
+                                data-mode="manual"
+                            >
+                                يدوي
+                            </button>
+
+                            <button
+                                class="mode-button"
+                                data-mode="ai"
+                            >
+                                AI Auto
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="panel-section">
+
+                        <div class="panel-title">
+                            أبعاد الغرفة
+                        </div>
+
+                        <div class="dimension-grid">
+
+                            <label>
+                                العرض
+                                <input
+                                    id="roomWidth"
+                                    type="number"
+                                    min="1"
+                                    step="0.1"
+                                    value="20"
+                                >
+                            </label>
+
+                            <label>
+                                الطول
+                                <input
+                                    id="roomLength"
+                                    type="number"
+                                    min="1"
+                                    step="0.1"
+                                    value="30"
+                                >
+                            </label>
+
+                            <label>
+                                الارتفاع
+                                <input
+                                    id="roomHeight"
+                                    type="number"
+                                    min="2"
+                                    step="0.1"
+                                    value="6"
+                                >
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="panel-section">
+
+                        <div class="panel-title">
+                            نوع المنشأة
+                        </div>
+
+                        <select id="projectType">
+
+                            <option>
+                                قاعة اجتماعات
+                            </option>
+
+                            <option>
+                                قاعة احتفالات
+                            </option>
+
+                            <option>
+                                فندق
+                            </option>
+
+                            <option>
+                                مطعم
+                            </option>
+
+                            <option>
+                                مكتب
+                            </option>
+
+                            <option>
+                                مدرسة
+                            </option>
+
+                            <option>
+                                جامعة
+                            </option>
+
+                            <option>
+                                مسجد
+                            </option>
+
+                            <option>
+                                مسرح
+                            </option>
+
+                            <option>
+                                سينما
+                            </option>
+
+                            <option>
+                                جيم
+                            </option>
+
+                            <option>
+                                استاد
+                            </option>
+
+                            <option>
+                                حديقة
+                            </option>
+
+                            <option>
+                                معرض
+                            </option>
+
+                            <option>
+                                مصنع
+                            </option>
+
+                            <option>
+                                حفلة موسيقية
+                            </option>
+
+                            <option>
+                                Custom
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="panel-section">
+
+                        <div class="panel-title">
+                            السماعة
+                        </div>
+
+                        <select
+                            id="speakerSelect"
+                        >
+                            <option>
+                                تحميل...
+                            </option>
+                        </select>
+
+                        <button
+                            id="addSpeakerButton"
+                            class="secondary-button full"
+                        >
+                            + إضافة السماعة
+                        </button>
+
+                    </div>
+
+
+                    <div class="panel-section">
+
+                        <div class="panel-title">
+                            أدوات الرسم
+                        </div>
+
+                        <div class="tool-grid">
+
+                            <button
+                                class="tool-button active"
+                                data-tool="select"
+                            >
+                                تحديد
+                            </button>
+
+                            <button
+                                class="tool-button"
+                                data-tool="speaker"
+                            >
+                                سماعة
+                            </button>
+
+                            <button
+                                class="tool-button"
+                                data-tool="stage"
+                            >
+                                منصة
+                            </button>
+
+                            <button
+                                class="tool-button"
+                                data-tool="wall"
+                            >
+                                جدار
+                            </button>
+
+                            <button
+                                class="tool-button"
+                                data-tool="erase"
+                            >
+                                حذف
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="panel-section">
+
+                        <button
+                            id="autoDesignButton"
+                            class="ai-button full"
+                        >
+                            ✦ التوزيع الهندسي الذكي
+                        </button>
+
+                        <button
+                            id="analyzeButton"
+                            class="secondary-button full"
+                        >
+                            تحليل التصميم
+                        </button>
+
+                        <button
+                            id="saveDesignButton"
+                            class="primary-button full"
+                        >
+                            حفظ التصميم
+                        </button>
+
+                        <button
+                            id="generateReportButton"
+                            class="secondary-button full"
+                        >
+                            إنشاء التقرير PDF
+                        </button>
+
+                    </div>
+
+                </aside>
+
+
+                <!-- CANVAS AREA -->
+
+                <div class="designer-workspace">
+
+                    <div class="workspace-toolbar">
+
+                        <div class="toolbar-group">
+
+                            <button
+                                id="zoomOut"
+                                class="icon-button"
+                            >
+                                −
+                            </button>
+
+                            <span id="zoomValue">
+                                100%
+                            </span>
+
+                            <button
+                                id="zoomIn"
+                                class="icon-button"
+                            >
+                                +
+                            </button>
+
+                            <button
+                                id="resetView"
+                                class="icon-button"
+                            >
+                                ⟳
+                            </button>
+
+                        </div>
+
+
+                        <div class="toolbar-group">
+
+                            <span>
+                                Grid:
+                            </span>
+
+                            <select
+                                id="gridSize"
+                            >
+                                <option value="0.5">
+                                    0.5m
+                                </option>
+
+                                <option
+                                    value="1"
+                                    selected
+                                >
+                                    1m
+                                </option>
+
+                                <option value="2">
+                                    2m
+                                </option>
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="canvasContainer"
+                        class="canvas-container"
+                    >
+
+                        <canvas
+                            id="designCanvas"
+                        ></canvas>
+
+                    </div>
+
+
+                    <div
+                        id="selectionPanel"
+                        class="selection-panel hidden"
+                    >
+
+                        <div>
+                            <strong>
+                                العنصر المحدد
+                            </strong>
+
+                            <span
+                                id="selectedInfo"
+                            ></span>
+                        </div>
+
+                        <div class="selection-controls">
+
+                            <label>
+                                X
+                                <input
+                                    id="selectedX"
+                                    type="number"
+                                    step="0.1"
+                                >
+                            </label>
+
+                            <label>
+                                Y
+                                <input
+                                    id="selectedY"
+                                    type="number"
+                                    step="0.1"
+                                >
+                            </label>
+
+                            <label>
+                                Z
+                                <input
+                                    id="selectedZ"
+                                    type="number"
+                                    step="0.1"
+                                >
+                            </label>
+
+                            <label>
+                                Angle
+                                <input
+                                    id="selectedAngle"
+                                    type="number"
+                                    step="1"
+                                >
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RIGHT ANALYSIS PANEL -->
+
+                <aside class="analysis-panel">
+
+                    <div class="analysis-header">
+                        <h3>
+                            Engineering Analysis
+                        </h3>
+
+                        <span class="status-dot">
+                            LIVE
+                        </span>
+                    </div>
+
+
+                    <div
+                        id="analysisCards"
+                        class="analysis-cards"
+                    >
+
+                        <div class="analysis-card">
+
+                            <span>
+                                Speaker Count
+                            </span>
+
+                            <strong id="analysisSpeakerCount">
+                                0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="analysis-card">
+
+                            <span>
+                                Average SPL
+                            </span>
+
+                            <strong id="analysisAverageSPL">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="analysis-card">
+
+                            <span>
+                                Minimum SPL
+                            </span>
+
+                            <strong id="analysisMinimumSPL">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="analysis-card">
+
+                            <span>
+                                Maximum SPL
+                            </span>
+
+                            <strong id="analysisMaximumSPL">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="analysis-card">
+
+                            <span>
+                                Uniformity
+                            </span>
+
+                            <strong id="analysisUniformity">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="heatmap-container">
+
+                        <div class="panel-title">
+                            Coverage / SPL
+                        </div>
+
+                        <canvas
+                            id="heatmapCanvas"
+                        ></canvas>
+
+                    </div>
+
+
+                    <div class="design-summary">
+
+                        <div class="panel-title">
+                            Design Summary
+                        </div>
+
+                        <div
+                            id="designSummary"
+                            class="summary-content"
+                        >
+                            لا يوجد تصميم بعد.
+                        </div>
+
+                    </div>
+
+                </aside>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SPEAKERS
+        ================================================== -->
+
+        <section
+            id="view-speakers"
+            class="view hidden"
+        >
+
+            <div class="section-header">
+
+                <div>
+                    <h2>
+                        Speaker Library
+                    </h2>
+
+                    <p>
+                        قاعدة بيانات السماعات العالمية
+                    </p>
+                </div>
+
+                <button
+                    id="addSpeakerLibraryButton"
+                    class="primary-button"
+                >
+                    + إضافة سماعة
+                </button>
+
+            </div>
+
+
+            <div class="filter-bar">
+
+                <input
+                    id="speakerSearch"
+                    type="search"
+                    placeholder="ابحث عن الشركة أو الموديل..."
+                >
+
+                <select
+                    id="speakerCategoryFilter"
+                >
+                    <option value="">
+                        كل الأنواع
+                    </option>
+
+                    <option>
+                        Point Source
+                    </option>
+
+                    <option>
+                        Column
+                    </option>
+
+                    <option>
+                        Ceiling
+                    </option>
+
+                    <option>
+                        Line Array
+                    </option>
+
+                    <option>
+                        Subwoofer
+                    </option>
+                </select>
+
+            </div>
+
+
+            <div
+                id="speakerLibrary"
+                class="speaker-grid"
+            ></div>
+
+        </section>
+
+
+        <!-- =================================================
+             REPORTS
+        ================================================== -->
+
+        <section
+            id="view-reports"
+            class="view hidden"
+        >
+
+            <div class="section-header">
+
+                <div>
+                    <h2>
+                        التقارير
+                    </h2>
+
+                    <p>
+                        Engineering Reports
+                    </p>
+                </div>
+
+            </div>
+
+            <div
+                id="reportsList"
+                class="report-list"
+            ></div>
+
+        </section>
+
+
+        <!-- =================================================
+             ADMIN
+        ================================================== -->
+
+        <section
+            id="view-admin"
+            class="view hidden"
+        >
+
+            <div class="section-header">
+
+                <div>
+                    <h2>
+                        لوحة الإدارة
+                    </h2>
+
+                    <p>
+                        إدارة مستخدمي المنصة ومشاريعها
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div
+                id="adminStats"
+                class="stats-grid"
+            ></div>
+
+
+            <div class="admin-section">
+
+                <h3>
+                    المستخدمون
+                </h3>
+
+                <div
+                    id="adminUsers"
+                    class="table-container"
+                ></div>
+
+            </div>
+
+
+            <div class="admin-section">
+
+                <h3>
+                    المشاريع
+                </h3>
+
+                <div
+                    id="adminProjects"
+                    class="table-container"
+                ></div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =====================================================
+     PROJECT MODAL
+===================================================== -->
+
+<div
+    id="projectModal"
+    class="modal hidden"
+>
+
+    <div class="modal-card">
+
+        <div class="modal-header">
+
+            <h2>
+                إنشاء مشروع جديد
+            </h2>
+
+            <button
+                class="close-modal"
+                data-close="projectModal"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="form-grid">
+
+            <label>
+                اسم المشروع
+
+                <input
+                    id="newProjectName"
+                    type="text"
+                    placeholder="مثلاً: Hotel Ballroom"
+                >
+            </label>
+
+
+            <label>
+                نوع المنشأة
+
+                <select
+                    id="newProjectType"
+                >
+
+                    <option>
+                        قاعة اجتماعات
+                    </option>
+
+                    <option>
+                        قاعة احتفالات
+                    </option>
+
+                    <option>
+                        فندق
+                    </option>
+
+                    <option>
+                        مسجد
+                    </option>
+
+                    <option>
+                        مسرح
+                    </option>
+
+                    <option>
+                        استاد
+                    </option>
+
+                    <option>
+                        جيم
+                    </option>
+
+                    <option>
+                        مكاتب
+                    </option>
+
+                    <option>
+                        مطعم
+                    </option>
+
+                    <option>
+                        مدرسة
+                    </option>
+
+                    <option>
+                        حديقة
+                    </option>
+
+                    <option>
+                        حفلة موسيقية
+                    </option>
+
+                    <option>
+                        Custom
+                    </option>
+
+                </select>
+
+            </label>
+
+
+            <label>
+                العرض بالمتر
+
+                <input
+                    id="newProjectWidth"
+                    type="number"
+                    value="20"
+                    min="1"
+                    step="0.1"
+                >
+            </label>
+
+
+            <label>
+                الطول بالمتر
+
+                <input
+                    id="newProjectLength"
+                    type="number"
+                    value="30"
+                    min="1"
+                    step="0.1"
+                >
+            </label>
+
+
+            <label>
+                الارتفاع بالمتر
+
+                <input
+                    id="newProjectHeight"
+                    type="number"
+                    value="6"
+                    min="2"
+                    step="0.1"
+                >
+            </label>
+
+
+            <label class="full-width">
+                وصف المشروع
+
+                <textarea
+                    id="newProjectDescription"
+                    rows="4"
+                    placeholder="معلومات إضافية عن المشروع..."
+                ></textarea>
+
+            </label>
+
+        </div>
+
+
+        <div class="modal-actions">
+
+            <button
+                class="secondary-button"
+                data-close="projectModal"
+            >
+                إلغاء
+            </button>
+
+            <button
+                id="createProjectButton"
+                class="primary-button"
+            >
+                إنشاء المشروع
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     SPEAKER MODAL
+===================================================== -->
+
+<div
+    id="speakerModal"
+    class="modal hidden"
+>
+
+    <div class="modal-card large">
+
+        <div class="modal-header">
+
+            <h2>
+                إضافة سماعة
+            </h2>
+
+            <button
+                class="close-modal"
+                data-close="speakerModal"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form
+            id="speakerForm"
+        >
+
+            <div class="form-grid">
+
+                <label>
+                    الشركة المصنعة
+
+                    <input
+                        name="manufacturer"
+                        required
+                        placeholder="Manufacturer"
+                    >
+                </label>
+
+
+                <label>
+                    Model
+
+                    <input
+                        name="model"
+                        required
+                        placeholder="Model"
+                    >
+                </label>
+
+
+                <label>
+                    النوع
+
+                    <select
+                        name="category"
+                    >
+
+                        <option>
+                            Point Source
+                        </option>
+
+                        <option>
+                            Column
+                        </option>
+
+                        <option>
+                            Ceiling
+                        </option>
+
+                        <option>
+                            Line Array
+                        </option>
+
+                        <option>
+                            Subwoofer
+                        </option>
+
+                    </select>
+
+                </label>
+
+
+                <label>
+                    RMS Power W
+
+                    <input
+                        name="rms_power"
+                        type="number"
+                        step="1"
+                    >
+                </label>
+
+
+                <label>
+                    Peak Power W
+
+                    <input
+                        name="peak_power"
+                        type="number"
+                        step="1"
+                    >
+                </label>
+
+
+                <label>
+                    Max SPL dB
+
+                    <input
+                        name="max_spl"
+                        type="number"
+                        step="0.1"
+                    >
+                </label>
+
+
+                <label>
+                    Sensitivity dB
+
+                    <input
+                        name="sensitivity"
+                        type="number"
+                        step="0.1"
+                    >
+                </label>
+
+
+                <label>
+                    Frequency Min Hz
+
+                    <input
+                        name="frequency_min"
+                        type="number"
+                    >
+                </label>
+
+
+                <label>
+                    Frequency Max Hz
+
+                    <input
+                        name="frequency_max"
+                        type="number"
+                    >
+                </label>
+
+
+                <label>
+                    Horizontal Coverage °
+
+                    <input
+                        name="horizontal_coverage"
+                        type="number"
+                        value="90"
+                    >
+                </label>
+
+
+                <label>
+                    Vertical Coverage °
+
+                    <input
+                        name="vertical_coverage"
+                        type="number"
+                        value="60"
+                    >
+                </label>
+
+
+                <label>
+                    Impedance Ω
+
+                    <input
+                        name="impedance"
+                        type="number"
+                        value="8"
+                    >
+                </label>
+
+
+                <label>
+                    Weight kg
+
+                    <input
+                        name="weight"
+                        type="number"
+                        step="0.1"
+                    >
+                </label>
+
+
+                <label>
+                    Mounting
+
+                    <input
+                        name="mounting_type"
+                        placeholder="Wall / Stand / Ceiling"
+                    >
+                </label>
+
+
+                <label>
+                    Data Sheet
+
+                    <input
+                        name="datasheet"
+                        type="file"
+                        accept=".pdf,.jpg,.jpeg,.png"
+                    >
+                </label>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    data-close="speakerModal"
+                >
+                    إلغاء
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    حفظ السماعة
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div
+    id="toast"
+    class="toast"
+></div>
+
+
+<script
+    src="/app.js"
+></script>
+
+</body>
+</html>
