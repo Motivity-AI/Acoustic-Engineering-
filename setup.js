@@ -546,14 +546,13 @@ module.exports = {
 `);
 
 /* ==========================================================
-   9.;
- utils/geometry.js
+   9. utils/geometry.js
 ========================================================== */
 section("utils/geometry.js");
 
-write   ("utils/geometry.js", `function calculateRoom(width, length, if height) {
-    const w = Number(width) ( || 0;
-    const l =r Number(length) || 0;
+write("utils/geometry.js", `function calculateRoom(width, length, height) {
+    const w = Number(width) || 0;
+    const l = Number(length) || 0;
     const h = Number(height) || 0;
     return { width: w, length: l, height: h, area: w * l, volume: w * l * h };
 }
@@ -576,7 +575,8 @@ function degToRad(d) { return d * Math.PI / 180; }
 function radToDeg(r) { return r * 180 / Math.PI; }
 
 function normalizeAngle(angle) {
-    let r = Number(angle) % 360 < 0) r += 360;
+    let r = Number(angle) % 360;
+    if (r < 0) r += 360;
     return r;
 }
 
@@ -3158,4 +3158,253 @@ input:focus, select:focus, textarea:focus { border-color: rgba(56,189,248,0.6); 
 .panel-section { padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
 .panel-title { color: var(--muted); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 9px; }
 .mode-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-.mode-button, .tool-button { border: 1px solid var(--border); background: var(--panel-2); color: var(--muted); border-radius: 8px; padding: 9px; font-size:
+.mode-button, .tool-button { border: 1px solid var(--border); background: var(--panel-2); color: var(--muted); border-radius: 8px; padding: 9px; font-size: 11px; }
+.mode-button.active, .tool-button.active { background: rgba(56,189,248,0.12); color: var(--primary); border-color: rgba(56,189,248,0.3); }
+.dimension-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
+.dimension-grid input { padding: 8px; font-size: 11px; }
+.tool-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+.designer-workspace { min-width: 0; background: #050a11; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
+.workspace-toolbar { height: 48px; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; background: #0a111c; border-bottom: 1px solid var(--border); color: var(--muted); font-size: 11px; }
+.toolbar-group { display: flex; align-items: center; gap: 7px; }
+.icon-button { width: 30px; height: 30px; border: 1px solid var(--border); background: var(--panel-2); color: var(--text); border-radius: 7px; }
+.canvas-container { flex: 1; position: relative; overflow: hidden; background: #070c14; }
+#designCanvas { width: 100%; height: 100%; display: block; cursor: crosshair; }
+.selection-panel { background: #0c1624; border-top: 1px solid var(--border); padding: 10px; display: flex; align-items: center; justify-content: space-between; gap: 15px; }
+.selection-panel strong { display: block; font-size: 11px; }
+.selection-panel span { color: var(--muted); font-size: 10px; }
+.selection-controls { display: flex; gap: 6px; }
+.selection-controls input { width: 70px; padding: 6px; font-size: 10px; }
+
+/* ANALYSIS */
+.analysis-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
+.analysis-header h3 { margin: 0; font-size: 14px; }
+.status-dot { color: var(--success); font-size: 9px; }
+.analysis-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 7px; }
+.analysis-card { background: rgba(255,255,255,0.025); border: 1px solid var(--border); border-radius: 9px; padding: 10px; }
+.analysis-card span { display: block; color: var(--muted); font-size: 9px; }
+.analysis-card strong { display: block; margin-top: 5px; font-size: 16px; }
+.heatmap-container { margin-top: 20px; }
+#heatmapCanvas { width: 100%; height: 170px; display: block; background: #060a10; border: 1px solid var(--border); border-radius: 9px; }
+.design-summary { margin-top: 20px; }
+.summary-content { color: var(--muted); font-size: 11px; line-height: 1.8; }
+
+/* SPEAKERS */
+.filter-bar { display: grid; grid-template-columns: 1fr 200px; gap: 10px; margin-bottom: 20px; }
+.speaker-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 15px; }
+.speaker-card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+.speaker-card h3 { margin: 0 0 5px; font-size: 15px; }
+.speaker-manufacturer { color: var(--primary); font-size: 11px; }
+.speaker-specs { margin-top: 15px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 7px; }
+.spec { background: rgba(255,255,255,0.025); padding: 8px; border-radius: 7px; }
+.spec span { display: block; color: var(--muted); font-size: 9px; }
+.spec strong { display: block; margin-top: 2px; font-size: 11px; }
+
+/* TABLES */
+.table-container { overflow: auto; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); }
+table { width: 100%; border-collapse: collapse; font-size: 11px; }
+th, td { padding: 11px; text-align: right; border-bottom: 1px solid var(--border); }
+th { color: var(--muted); font-weight: 700; }
+
+/* MODALS */
+.modal { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); padding: 20px; }
+.modal-card { width: min(650px, 100%); max-height: calc(100vh - 40px); overflow: auto; background: #0c1522; border: 1px solid var(--border); border-radius: 18px; box-shadow: var(--shadow); padding: 22px; }
+.modal-card.large { width: min(850px, 100%); }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+.modal-header h2 { margin: 0; font-size: 18px; }
+.close-modal { width: 34px; height: 34px; border: 0; background: rgba(255,255,255,0.05); color: var(--text); border-radius: 8px; font-size: 20px; }
+.form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.full-width { grid-column: 1 / -1; }
+.modal-actions { display: flex; justify-content: flex-start; gap: 8px; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border); }
+
+/* REPORT LIST */
+.report-list { display: flex; flex-direction: column; gap: 10px; }
+.report-item { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 15px; display: flex; align-items: center; justify-content: space-between; }
+
+/* ADMIN */
+.admin-section { margin-top: 25px; }
+.admin-section h3 { font-size: 16px; }
+
+/* TOAST */
+.toast { position: fixed; left: 25px; bottom: 25px; z-index: 300; background: #132238; border: 1px solid rgba(56,189,248,0.25); color: var(--text); border-radius: 10px; padding: 12px 17px; box-shadow: var(--shadow); transform: translateY(100px); opacity: 0; transition: 0.25s; }
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* RESPONSIVE */
+@media (max-width: 1200px) {
+    .designer-layout { grid-template-columns: 240px minmax(400px, 1fr); }
+    .analysis-panel { display: none; }
+}
+@media (max-width: 850px) {
+    body { overflow: auto; }
+    .app { height: auto; min-height: 100vh; }
+    .sidebar { width: 72px; padding: 10px; }
+    .sidebar-brand > div:last-child, .nav-item:not(:first-child) { font-size: 0; }
+    .sidebar-brand { justify-content: center; }
+    .nav-item { justify-content: center; }
+    .nav-item span { font-size: 15px; }
+    .designer-layout { height: auto; min-height: 800px; grid-template-columns: 1fr; }
+    .designer-workspace { height: 650px; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero { grid-template-columns: 1fr; }
+    .hero-graphic { display: none; }
+}
+@media (max-width: 600px) {
+    .view { padding: 15px; }
+    .topbar { padding: 0 15px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .filter-bar { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .selection-panel { flex-direction: column; align-items: stretch; }
+    .selection-controls { flex-wrap: wrap; }
+}
+`);
+
+/* ==========================================================
+   22. README.md
+========================================================== */
+section("README.md");
+
+write("README.md", `# Acoustic Engineering
+
+منصة هندسة صوتية ذكية — Backend + Frontend كامل.
+
+## 🚀 التشغيل
+
+\`\`\`bash
+npm install
+cp .env.example .env
+npm start
+\`\`\`
+
+ثم افتح: http://localhost:3000
+
+**بيانات الدخول الأولى (owner):**
+- Phone: \`0900000000\`
+- Password: \`Admin@12345\`
+
+> ⚠️ **مهم:** غيّر كلمة مرور المالك فور أول دخول.
+
+## 📁 البنية
+
+\`\`\`
+acoustic-engineering/
+├── server.js              ← نقطة الدخول
+├── db/database.js         ← SQLite + بذور السماعات
+├── middleware/auth.js     ← JWT + cookies
+├── routes/                ← 6 مسارات API
+│   ├── auth.js
+│   ├── projects.js
+│   ├── speakers.js
+│   ├── analysis.js
+│   ├── reports.js
+│   └── admin.js
+├── utils/                 ← منطق هندسي
+│   ├── geometry.js
+│   ├── acoustics.js
+│   ├── autoLayout.js
+│   ├── report.js          ← PDF بدعم العربية
+│   ├── validators.js
+│   └── errors.js
+├── public/                ← Frontend
+│   ├── index.html
+│   ├── app.js
+│   └── styles.css
+├── uploads/               ← datasheets
+├── reports/               ← PDFs مُولّدة
+└── fonts/                 ← ضع هنا Cairo-Regular.ttf
+\`\`\`
+
+## 🌐 API Endpoints
+
+| Method | Endpoint | الوصف |
+|---|---|---|
+| POST | /api/auth/register | تسجيل جديد |
+| POST | /api/auth/login | تسجيل دخول |
+| POST | /api/auth/logout | خروج |
+| GET | /api/auth/me | بيانات المستخدم الحالي |
+| GET | /api/projects | كل المشاريع |
+| POST | /api/projects | إنشاء مشروع |
+| PUT | /api/projects/:id | تعديل |
+| DELETE | /api/projects/:id | حذف |
+| GET | /api/speakers | مكتبة السماعات |
+| POST | /api/speakers | إضافة سماعة |
+| POST | /api/analysis/auto-design | توزيع ذكي |
+| POST | /api/analysis/analyze | تحليل SPL |
+| POST | /api/reports/generate | تقرير PDF |
+| GET | /api/admin/stats | إحصائيات |
+| PUT | /api/admin/users/:id/role | تعديل دور |
+
+## 🎨 دعم PDF العربي
+
+لوضع التقرير بدعم العربية:
+
+1. حمّل **خط Cairo** من: https://fonts.google.com/specimen/Cairo
+2. ضع \`Cairo-Regular.ttf\` و \`Cairo-Bold.ttf\` في مجلد \`fonts/\`
+3. **بدون الخطوط:** التقرير سيُولّد بالإنجليزية فقط
+
+## 🛠 المتطلبات
+
+- Node.js ≥ 18
+- npm ≥ 9
+
+## 📝 الترخيص
+
+MIT
+`);
+
+/* ==========================================================
+   BUILD ZIP
+========================================================== */
+section("بناء ZIP");
+
+function createZip() {
+    const zipName = "acoustic-engineering.zip";
+    if (fs.existsSync(zipName)) fs.rmSync(zipName);
+
+    const platform = process.platform;
+
+    try {
+        if (platform === "win32") {
+            execSync(
+                `powershell -NoProfile -Command "Compress-Archive -Path '${ROOT}\\*' -DestinationPath '${zipName}' -Force"`,
+                { stdio: "inherit" }
+            );
+        } else {
+            execSync(`zip -rq ${zipName} ${ROOT}`, { stdio: "inherit" });
+        }
+
+        const stats = fs.statSync(zipName);
+        const sizeMB = (stats.size / 1024 / 1024).toFixed(2);
+
+        console.log(`\n  ✅ تم إنشاء الملف: ${zipName} (${sizeMB} MB)\n`);
+    } catch (err) {
+        console.log("\n  ⚠  تعذر إنشاء ZIP تلقائياً.");
+        console.log("     استخدم يدوياً:");
+        console.log(`     • Windows: Compress-Archive -Path "${ROOT}\\*" -DestinationPath "${zipName}"`);
+        console.log(`     • Linux/Mac: zip -r ${zipName} ${ROOT}`);
+        console.log("");
+    }
+}
+
+createZip();
+
+/* ----------------------------------------------------------
+   Final summary
+---------------------------------------------------------- */
+
+console.log("╔══════════════════════════════════════════════════════╗");
+console.log("║  ✅  تم بناء المشروع بنجاح                          ║");
+console.log("╚══════════════════════════════════════════════════════╝");
+console.log("");
+console.log("  الخطوات التالية:");
+console.log("");
+console.log(`  1. cd ${ROOT}`);
+console.log("  2. npm install");
+console.log("  3. cp .env.example .env  (عدّل JWT_SECRET)");
+console.log("  4. npm start");
+console.log("");
+console.log("  ▸ افتح: http://localhost:3000");
+console.log("  ▸ Owner phone: 0900000000");
+console.log("  ▸ Owner password: Admin@12345");
+console.log("");
+console.log("  💡 لدعم PDF العربي، ضع خط Cairo في مجلد fonts/");
+console.log("");
