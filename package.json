@@ -1,25 +1,23 @@
 {
   "name": "acoustic-engineering",
   "version": "1.0.0",
-  "description": "Acoustic Engineering - Intelligent Acoustic & Sound System Design Platform",
-  "main": "server/index.js",
+  "description": "Acoustic Engineering - Unified Platform (Firebase PWA + Express/SQLite)",
+  "main": "server.js",
   "scripts": {
-    "start": "node server/index.js",
-    "dev": "node --watch server/index.js"
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "serve": "node server.js --serve-only",
+    "firebase-only": "npx http-server public -p 3000 -c-1"
   },
   "keywords": [
-    "acoustic",
-    "audio",
-    "sound",
-    "engineering",
-    "speaker",
-    "design",
-    "spline",
-    "spl",
-    "acoustic-engineering"
+    "acoustic", "audio", "sound", "engineering", "speaker",
+    "design", "spl", "pwa", "firebase", "sqlite"
   ],
   "author": "Acoustic Engineering",
   "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "better-sqlite3": "^11.7.0",
