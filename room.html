@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0a0e1a">
+<title>AURALIS · Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="app-body">
+
+<canvas id="c"></canvas>
+
+<header id="hd">
+  <a class="logo home" href="index.html" title="القائمة">←</a>
+  <div class="logo">≈</div>
+  <div class="brandTxt">AURALIS</div>
+  <select class="sel" id="roomSel"></select>
+  <div class="spacer"></div>
+  <button class="btn" id="reportBtn" title="تقرير">📄</button>
+  <button class="btn" id="viewBtn">🎬 3D</button>
+  <button class="btn" id="shotBtn">📸</button>
+  <button class="btn" id="presBtn">🎥</button>
+</header>
+
+<div class="hud" id="hud">
+  <div class="stat">الأجهزة<b id="hudCount">0</b></div>
+  <div class="stat">أقصى SPL<b id="hudSpl">—</b></div>
+  <div class="stat">التغطية<b id="hudCoverage">—</b></div>
+</div>
+
+<div class="tools" id="tools">
+  <button class="tool on" id="heatBtn">🌡️</button>
+  <button class="tool" id="fitBtn">🎯</button>
+  <button class="tool on" id="gridBtn">▦</button>
+  <button class="tool" id="saveBtn">💾</button>
+  <button class="tool" id="loadBtn">📂</button>
+  <button class="tool" id="clearBtn">🧹</button>
+</div>
+
+<input type="file" id="fileInput" style="display:none" accept=".json">
+
+<div class="info" id="info">
+  <h4>📦 <span id="infName">—</span></h4>
+  <div class="tag" id="infBrand">—</div>
+  <div class="row"><span>الفئة</span><span id="infType">—</span></div>
+  <div class="row"><span>القوة</span><span id="infPower">—</span></div>
+  <div class="row"><span>الارتفاع</span><span id="infH">—</span></div>
+  <div class="row"><span>الموقع</span><span id="infPos">—</span></div>
+  <div class="slider" id="powerWrap"><label>القوة</label>
+    <input type="range" id="powerSlider" min="5" max="1500" step="5" value="20">
+    <b id="powerVal">20W</b></div>
+  <div class="slider" id="rotWrap"><label>الاتجاه</label>
+    <input type="range" id="rotSlider" min="-180" max="180" step="5" value="0">
+    <b id="rotVal">0°</b></div>
+  <div class="row" style="margin-top:6px"><span>العرض</span>
+    <input type="number" id="roomWInput" class="numInput" min="4" max="200"></div>
+  <div class="row"><span>الطول</span>
+    <input type="number" id="roomDInput" class="numInput" min="4" max="200"></div>
+  <div class="actions"><button class="del" id="delBtn">🗑️ حذف</button></div>
+</div>
+
+<div class="picker" id="picker">
+  <div class="cats" id="cats"></div>
+  <div class="brands" id="brands"></div>
+  <div class="types" id="types"></div>
+</div>
+
+<div class="modal" id="reportModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>📋 التقرير الهندسي الصوتي</h3>
+      <button class="btn" id="closeModalBtn" style="height:28px;min-width:28px;padding:0 8px">✕</button>
+    </div>
+    <div class="modal-body" id="reportModalBody"></div>
+    <div class="modal-footer">
+      <button class="btn on" id="printReportBtn">🖨️ طباعة</button>
+      <button class="btn" id="closeModalBtn2">إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<button class="presBtn" id="presToggle">🎥 بدء العرض</button>
+<button class="exitP" id="exitPres">✕</button>
+<div class="toast" id="toast"></div>
+
+<script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
+<script src="assets/data.js"></script>
+<script src="assets/core.js"></script>
+</body>
+</html>
