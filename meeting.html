@@ -24,8 +24,10 @@ body{position:fixed;inset:0;overflow:hidden;background:var(--bg);color:var(--txt
 #c{position:fixed;inset:0;width:100%;height:100%;touch-action:none;display:block;cursor:crosshair}
 #loader{position:fixed;inset:0;z-index:9999;background:
   radial-gradient(circle at 50% 40%,rgba(59,130,246,.22),transparent 60%),#0a0f1a;
-  display:grid;place-items:center;transition:opacity .6s,visibility .6s}
+  display:grid;place-items:center;transition:opacity .6s,visibility .6s;
+  animation:loaderSafetyNet 0s 5s forwards}
 #loader.off{opacity:0;visibility:hidden}
+@keyframes loaderSafetyNet{to{opacity:0;visibility:hidden;pointer-events:none}}
 #loader .box{text-align:center}
 #loader .sym{font-size:70px;filter:drop-shadow(0 0 40px rgba(59,130,246,.85));
   animation:pulse 1.6s ease-in-out infinite}
@@ -576,77 +578,51 @@ const ROOM = {
     { type:'wall', x:10, z:0, w:0.2, h:3.6, d:14 },
     { type:'wall', x:-10, z:0, w:0.2, h:3.6, d:14 },
     { type:'wall', x:0, z:6.9, w:20, h:3.6, d:0.2 },
-    /* Table */
     { type:'table', x:0, z:0, w:8, d:2.4, H:0.75 },
-    /* Displays on front wall */
     { type:'display', x:-3, z:-6.75, w:2.8, h:1.6 },
     { type:'display', x:0, z:-6.75, w:3.2, h:1.8, main:true },
     { type:'display', x:3, z:-6.75, w:2.8, h:1.6 },
-    /* Doors */
     { type:'door', x:6, z:6.85, w:1.2, h:2.4 },
     { type:'door', x:-8, z:6.85, w:1.2, h:2.4 }
   ],
   devices:[
-    /* === TABLE MICROPHONES (gooseneck along table) === */
     ['shure','tableMic','gooseneck',-3,-0.9,Math.PI],
     ['shure','tableMic','gooseneck',-1.5,0.9,0],
     ['shure','tableMic','gooseneck',0,-0.9,Math.PI],
     ['shure','tableMic','gooseneck',1.5,0.9,0],
     ['shure','tableMic','gooseneck',3,-0.9,Math.PI],
-    /* Chairman at head of table */
     ['shure','tableMic','chairman',-4,0,Math.PI/2],
     ['shure','tableMic','chairman',4,0,-Math.PI/2],
-    /* Wireless delegate */
     ['sennheiser','tableMic','wireless_delegate',-2.4,0.9,0],
     ['sennheiser','tableMic','wireless_delegate',0.9,-0.9,Math.PI],
-    /* Boundary mics */
     ['shure','tableMic','boundary',-3,0.5,0],
     ['shure','tableMic','boundary',3,-0.5,Math.PI],
-
-    /* === CEILING MICROPHONES === */
     ['shure','ceilingMic','ceiling_array',-2,0,0],
     ['shure','ceilingMic','ceiling_array',2,0,0],
     ['shure','ceilingMic','beamforming',0,0,0],
     ['sennheiser','ceilingMic','ceiling_triple',-4,0,0],
     ['sennheiser','ceilingMic','ceiling_triple',4,0,0],
-
-    /* === PTZ CAMERAS === */
-    /* 4K PTZ at front wall (looking at the table) */
     ['ptzoptics','ptzCamera','ptz_4k',0,-6.4,0],
-    /* Auto PTZ on side walls */
     ['avg','ptzCamera','ptz_auto',-9.6,0,Math.PI/2],
     ['avg','ptzCamera','ptz_auto',9.6,0,-Math.PI/2],
-    /* Speaker tracking PTZ */
     ['logitech','ptzCamera','ptz_speaker',0,-6.2,0],
-    /* Ceiling PTZ */
     ['yealink','ptzCamera','ptz_ceiling',-3,-4,0],
     ['yealink','ptzCamera','ptz_ceiling',3,-4,0],
-
-    /* === AUTO TRACKING SYSTEM === */
     ['logitech','autoTracking','tracking_proc',9.5,-6.5,-Math.PI/4],
     ['logitech','autoTracking','tracking_sensor',0,-6.5,0],
     ['avg','autoTracking','tracking_ai',9.3,-6.3,-Math.PI/4],
-
-    /* === VIDEO CODECS === */
     ['poly','videoCodec','codec_main',9.5,-6,0],
     ['poly','videoCodec','codec_cloud',9.5,-5.6,0],
     ['yealink','videoCodec','codec_usb',9.5,-5.2,0],
-
-    /* === BOARDROOM SPEAKERS === */
-    /* Soundbars under displays */
     ['bose','boardroomSpk','soundbar',-3,-6.5,0],
     ['bose','boardroomSpk','soundbar_lg',0,-6.5,0],
     ['bose','boardroomSpk','soundbar',3,-6.5,0],
-    /* Wall speakers on side walls */
     ['yamaha','boardroomSpk','speaker_wall',-9.7,-3,Math.PI/2],
     ['yamaha','boardroomSpk','speaker_wall',-9.7,3,Math.PI/2],
     ['yamaha','boardroomSpk','speaker_wall',9.7,-3,-Math.PI/2],
     ['yamaha','boardroomSpk','speaker_wall',9.7,3,-Math.PI/2],
-    /* LCR */
     ['qsc','boardroomSpk','speaker_lcr',-1.5,-6.5,0],
     ['qsc','boardroomSpk','speaker_lcr',1.5,-6.5,0],
-
-    /* === CEILING SPEAKERS === */
     ['bose','ceilingSpk','ceiling_2way',-5,-3,0],
     ['bose','ceilingSpk','ceiling_2way',5,-3,0],
     ['bose','ceilingSpk','ceiling_2way',-5,3,0],
@@ -655,24 +631,16 @@ const ROOM = {
     ['bose','ceilingSpk','ceiling_network',0,3,0],
     ['bose','ceilingSpk','ceiling_pendant',-7,0,0],
     ['bose','ceilingSpk','ceiling_pendant',7,0,0],
-
-    /* === DSP === */
     ['biamp','dsp','dsp_aec',8.5,-6.5,0],
     ['biamp','dsp','dsp_matrix',8.5,-6,0],
     ['qsc','dsp','dsp_network',8.5,-5.5,0],
-
-    /* === CONTROL === */
     ['crestron','control','touch',9.5,5.5,-Math.PI/2],
     ['crestron','control','scheduler',9.3,6,-Math.PI/2],
     ['crestron','control','button_panel',9.5,6.5,-Math.PI/2],
-
-    /* === PAGING === */
     ['bose','paging','paging_ceiling',-6,-5,0],
     ['bose','paging','paging_ceiling',6,-5,0],
     ['toa','paging','paging_horn',-9.5,6.5,3*Math.PI/4],
     ['toa','paging','paging_horn',9.5,6.5,-3*Math.PI/4],
-
-    /* === EMERGENCY === */
     ['toa','emergency','emg_horn',-9.5,-6.5,Math.PI/4],
     ['toa','emergency','emg_horn',9.5,-6.5,-Math.PI/4],
     ['toa','emergency','emg_strobe',-5,6.7,Math.PI],
@@ -782,16 +750,12 @@ function makeMesh(cat, typeId, brandColor) {
 
   switch (S) {
     case 'gooseneck': {
-      /* Base on table */
       const base = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.07,0.02,14), M.dark());
       g.add(base);
-      /* Flexible gooseneck */
       const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.35,8), M.metal);
       neck.position.y = 0.175; g.add(neck);
-      /* Mic head */
-      const head = new THREE.Mesh(new THREE.CapsuleGeometry ? new THREE.CapsuleGeometry(0.015,0.06,6,10) : new THREE.SphereGeometry(0.02,10,8), M.dark());
+      const head = new THREE.Mesh(THREE.CapsuleGeometry ? new THREE.CapsuleGeometry(0.015,0.06,6,10) : new THREE.SphereGeometry(0.02,10,8), M.dark());
       head.position.y = 0.38; g.add(head);
-      /* LED ring */
       const led = new THREE.Mesh(new THREE.TorusGeometry(0.05,0.006,6,16), M.ledGreen);
       led.rotation.x = Math.PI/2; led.position.y = 0.015; g.add(led);
       break;
@@ -819,29 +783,23 @@ function makeMesh(cat, typeId, brandColor) {
     case 'chairman': {
       const base = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.09,0.02,16), M.dark());
       g.add(base);
-      /* Double gooseneck (longer + indicator) */
       const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.45,8), M.metal);
       neck.position.y = 0.225; g.add(neck);
-      const head = new THREE.Mesh(new THREE.CapsuleGeometry ? new THREE.CapsuleGeometry(0.016,0.07,6,10) : new THREE.SphereGeometry(0.022,10,8), M.dark());
+      const head = new THREE.Mesh(THREE.CapsuleGeometry ? new THREE.CapsuleGeometry(0.016,0.07,6,10) : new THREE.SphereGeometry(0.022,10,8), M.dark());
       head.position.y = 0.48; g.add(head);
-      /* Red chairman ring */
       const led = new THREE.Mesh(new THREE.TorusGeometry(0.05,0.007,6,16), M.ledRed);
       led.rotation.x = Math.PI/2; led.position.y = 0.016; g.add(led);
-      /* Priority button */
       const btn = new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.012,12), M.ledAmber);
       btn.position.set(0.06, 0.012, 0); g.add(btn);
       break;
     }
     case 'ceilingArray': {
-      /* Round ceiling array with LED ring */
       const body = new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.32,0.06,32), M.body);
       g.add(body);
       const grille = new THREE.Mesh(new THREE.CircleGeometry(0.26,32), M.steel);
       grille.rotation.x = -Math.PI/2; grille.position.y = -0.031; g.add(grille);
-      /* LED ring (beam indicator) */
       const ring = new THREE.Mesh(new THREE.TorusGeometry(0.28,0.008,6,32), M.ledGreen);
       ring.rotation.x = Math.PI/2; ring.position.y = -0.032; g.add(ring);
-      /* Center LED */
       const center = new THREE.Mesh(new THREE.CircleGeometry(0.05,16), M.ledGreen);
       center.rotation.x = -Math.PI/2; center.position.y = -0.033; g.add(center);
       break;
@@ -851,7 +809,6 @@ function makeMesh(cat, typeId, brandColor) {
       g.add(body);
       const grille = new THREE.Mesh(new THREE.CircleGeometry(0.19,24), M.steel);
       grille.rotation.x = -Math.PI/2; grille.position.y = -0.026; g.add(grille);
-      /* Multiple beam indicators */
       for (let i=0;i<6;i++) {
         const a = (i/6)*Math.PI*2;
         const led = new THREE.Mesh(new THREE.CircleGeometry(0.02,10), M.ledAmber);
@@ -861,7 +818,6 @@ function makeMesh(cat, typeId, brandColor) {
       break;
     }
     case 'ceilingTriple': {
-      /* Triple mic array (3 mics) */
       for (let i=0;i<3;i++) {
         const a = (i/3)*Math.PI*2;
         const mic = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,0.05,16), M.body);
@@ -871,35 +827,27 @@ function makeMesh(cat, typeId, brandColor) {
         const led = new THREE.Mesh(new THREE.CircleGeometry(0.012,10), M.ledGreen);
         led.rotation.x = -Math.PI/2; led.position.set(Math.cos(a)*0.14, -0.028, Math.sin(a)*0.14); g.add(led);
       }
-      /* Center mount */
       const center = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.07,0.06,12), M.gray);
       g.add(center);
       break;
     }
     case 'ptz4k': {
-      /* PTZ camera: dome + lens + tilt */
       const base = new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.11,0.04,16), M.dark());
       g.add(base);
-      /* Pan base */
       const panBase = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.09,0.06,16), M.body);
       panBase.position.y = 0.05; g.add(panBase);
-      /* Tilt head */
       const tilt = new THREE.Mesh(new THREE.SphereGeometry(0.075,16,12), M.body);
       tilt.position.y = 0.14; g.add(tilt);
-      /* Lens */
       const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.04,0.05,0.08,16), M.dark());
       lens.rotation.x = Math.PI/2;
       lens.position.set(0, 0.14, 0.08); g.add(lens);
-      /* Lens glass (LED) */
       const glass = new THREE.Mesh(new THREE.CircleGeometry(0.035,16), M.ledBlue);
       glass.position.set(0, 0.14, 0.12); g.add(glass);
-      /* Tally LED */
       const tally = new THREE.Mesh(new THREE.SphereGeometry(0.015,8,6), M.ledRed);
       tally.position.set(0.06, 0.16, 0.06); g.add(tally);
       break;
     }
     case 'ptzAuto': {
-      /* Similar to PTZ but with tracking LED */
       const base = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.12,0.04,16), M.dark());
       g.add(base);
       const panBase = new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.1,0.06,16), M.body);
@@ -910,7 +858,6 @@ function makeMesh(cat, typeId, brandColor) {
       lens.rotation.x = Math.PI/2; lens.position.set(0, 0.15, 0.09); g.add(lens);
       const glass = new THREE.Mesh(new THREE.CircleGeometry(0.04,16), M.ledCyan);
       glass.position.set(0, 0.15, 0.14); g.add(glass);
-      /* IR ring for tracking */
       const irRing = new THREE.Mesh(new THREE.TorusGeometry(0.05,0.008,6,20), M.ledAmber);
       irRing.position.set(0, 0.15, 0.135); g.add(irRing);
       break;
@@ -926,13 +873,11 @@ function makeMesh(cat, typeId, brandColor) {
       lens.rotation.x = Math.PI/2; lens.position.set(0, 0.17, 0.1); g.add(lens);
       const glass = new THREE.Mesh(new THREE.CircleGeometry(0.045,16), M.ledViolet);
       glass.position.set(0, 0.17, 0.155); g.add(glass);
-      /* Speaker tracking ring */
       const trackRing = new THREE.Mesh(new THREE.TorusGeometry(0.06,0.008,6,20), M.ledViolet);
       trackRing.position.set(0, 0.17, 0.15); g.add(trackRing);
       break;
     }
     case 'ptzCeiling': {
-      /* Ceiling-mounted PTZ — inverted */
       const base = new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.15,0.05,16), M.dark());
       g.add(base);
       const dome = new THREE.Mesh(new THREE.SphereGeometry(0.13,20,12,0,Math.PI*2,Math.PI/2,Math.PI/2), M.body);
@@ -959,7 +904,6 @@ function makeMesh(cat, typeId, brandColor) {
       g.add(base);
       const dome = new THREE.Mesh(new THREE.SphereGeometry(0.05,16,10,0,Math.PI*2,0,Math.PI/2), M.glass());
       dome.position.y = 0.015; g.add(dome);
-      /* Sensor LED */
       const led = new THREE.Mesh(new THREE.SphereGeometry(0.015,8,6), M.ledRed);
       led.position.set(0, 0.04, 0.04); g.add(led);
       break;
@@ -967,10 +911,8 @@ function makeMesh(cat, typeId, brandColor) {
     case 'trackingAI': {
       const b = new THREE.Mesh(new THREE.BoxGeometry(0.35,0.3,0.28), M.body);
       g.add(b);
-      /* AI chip icon */
       const chip = new THREE.Mesh(new THREE.BoxGeometry(0.12,0.12,0.02), M.ledViolet);
       chip.position.set(0, 0, 0.15); g.add(chip);
-      /* Pins */
       for (let i=0;i<4;i++) {
         const pin = new THREE.Mesh(new THREE.BoxGeometry(0.015,0.03,0.01), M.metal);
         pin.position.set(-0.06 + i*0.04, -0.08, 0.15); g.add(pin);
@@ -1000,22 +942,17 @@ function makeMesh(cat, typeId, brandColor) {
     case 'codecUsb': {
       const b = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.1,0.3), M.body);
       g.add(b);
-      /* USB symbol */
       const usb = new THREE.Mesh(new THREE.BoxGeometry(0.06,0.02,0.02), M.ledViolet);
       usb.position.set(-0.1, 0.02, 0.16); g.add(usb);
-      /* USB port */
       const port = new THREE.Mesh(new THREE.BoxGeometry(0.05,0.03,0.02), M.dark());
       port.position.set(0.12, 0.02, 0.16); g.add(port);
       break;
     }
     case 'soundbar': {
-      /* Rectangular soundbar under display */
       const bar = new THREE.Mesh(new THREE.BoxGeometry(1.0,0.14,0.15), M.body);
       bar.castShadow = true; g.add(bar);
-      /* Grille */
       const grille = new THREE.Mesh(new THREE.BoxGeometry(0.95,0.1,0.01), M.steel);
       grille.position.set(0, 0, 0.08); g.add(grille);
-      /* LED strip */
       const led = new THREE.Mesh(new THREE.BoxGeometry(0.9,0.015,0.005), M.ledBlue);
       led.position.set(0, 0.06, 0.08); g.add(led);
       break;
@@ -1063,13 +1000,11 @@ function makeMesh(cat, typeId, brandColor) {
       grille.rotation.x = -Math.PI/2; grille.position.y = -0.024; g.add(grille);
       const r = new THREE.Mesh(new THREE.TorusGeometry(0.13,0.005,6,24), M.ledGreen);
       r.rotation.x = Math.PI/2; r.position.y = -0.025; g.add(r);
-      /* Network icon */
       const net = new THREE.Mesh(new THREE.CircleGeometry(0.03,10), M.ledGreen);
       net.rotation.x = -Math.PI/2; net.position.y = -0.026; g.add(net);
       break;
     }
     case 'ceilingPendant': {
-      /* Pendant with cable */
       const cable = new THREE.Mesh(new THREE.CylinderGeometry(0.006,0.006,1.2,6), M.dark());
       cable.position.y = 0.6; g.add(cable);
       const body = new THREE.Mesh(new THREE.SphereGeometry(0.16,20,14), M.body);
@@ -1083,10 +1018,8 @@ function makeMesh(cat, typeId, brandColor) {
     case 'dspAec': {
       const b = new THREE.Mesh(new THREE.BoxGeometry(0.55,0.44,0.42), M.body);
       g.add(b);
-      /* AEC label */
       const label = new THREE.Mesh(new THREE.PlaneGeometry(0.15,0.06), M.ledGreen);
       label.position.set(-0.15, 0.15, 0.215); g.add(label);
-      /* LEDs */
       for (let i=0;i<4;i++) {
         const led = new THREE.Mesh(new THREE.SphereGeometry(0.012,6,6), M.ledGreen);
         led.position.set(-0.05 + i*0.05, 0.15, 0.215); g.add(led);
@@ -1098,7 +1031,6 @@ function makeMesh(cat, typeId, brandColor) {
     case 'dspMatrix': {
       const b = new THREE.Mesh(new THREE.BoxGeometry(0.55,0.44,0.42), M.body);
       g.add(b);
-      /* Matrix grid */
       for (let i=0;i<4;i++) {
         for (let j=0;j<4;j++) {
           const cell = new THREE.Mesh(new THREE.BoxGeometry(0.04,0.04,0.005), M.ledAmber);
@@ -1110,7 +1042,6 @@ function makeMesh(cat, typeId, brandColor) {
     case 'dspNetwork': {
       const b = new THREE.Mesh(new THREE.BoxGeometry(0.55,0.44,0.42), M.body);
       g.add(b);
-      /* Network ports */
       for (let i=0;i<6;i++) {
         const port = new THREE.Mesh(new THREE.BoxGeometry(0.04,0.04,0.01), M.ledGreen);
         port.position.set(-0.2 + i*0.08, -0.15, 0.215); g.add(port);
@@ -1125,7 +1056,6 @@ function makeMesh(cat, typeId, brandColor) {
       const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.17,0.11),
         new THREE.MeshBasicMaterial({color:0x0a3a5a,transparent:true,opacity:0.9}));
       screen.position.set(0, 0, 0.011); g.add(screen);
-      /* Icons */
       const icon1 = new THREE.Mesh(new THREE.CircleGeometry(0.012,8), M.ledBlue);
       icon1.position.set(-0.05, 0, 0.012); g.add(icon1);
       const icon2 = new THREE.Mesh(new THREE.CircleGeometry(0.012,8), M.ledGreen);
@@ -1239,7 +1169,6 @@ function buildRoom() {
     if (f.type === 'floor') {
       const fl = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.05, f.d), M.floor());
       fl.position.set(f.x, 0.025, f.z); fl.receiveShadow = true; roomGrp.add(fl);
-      /* Carpet tiles */
       for (let i=0;i<20;i++) {
         for (let j=0;j<14;j++) {
           const tile = new THREE.Mesh(new THREE.BoxGeometry(0.95,0.005,0.95), M.carpet());
@@ -1252,7 +1181,6 @@ function buildRoom() {
     if (f.type === 'ceiling') {
       const ceil = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.1, f.d), M.ceiling());
       ceil.position.set(f.x, f.h, f.z); roomGrp.add(ceil);
-      /* Ceiling panels (light emitting) */
       for (let i=0;i<10;i++) {
         for (let j=0;j<7;j++) {
           const panel = new THREE.Mesh(new THREE.BoxGeometry(1.4,0.05,1.4), M.ceilingPanel());
@@ -1260,7 +1188,6 @@ function buildRoom() {
           roomGrp.add(panel);
         }
       }
-      /* Ceiling lights */
       for (let i=0;i<4;i++) {
         const light = new THREE.PointLight(0xf0f4ff, 0.5, 12, 2);
         light.position.set(-6 + i*4, f.h - 0.3, 0); roomGrp.add(light);
@@ -1270,7 +1197,6 @@ function buildRoom() {
     if (f.type === 'wall') {
       const wall = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.h, f.d), M.wall());
       wall.position.set(f.x, f.h/2, f.z); wall.receiveShadow = true; roomGrp.add(wall);
-      /* Wall panel lines */
       const isSide = f.w < f.d;
       const length = isSide ? f.d : f.w;
       for (let i=0;i<Math.floor(length/2);i++) {
@@ -1284,19 +1210,15 @@ function buildRoom() {
     }
 
     if (f.type === 'table') {
-      /* Main table top */
       const top = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.08, f.d), M.tableTop());
       top.position.set(f.x, f.H, f.z); top.castShadow = true; top.receiveShadow = true;
       roomGrp.add(top);
-      /* Table edge ring */
       const edge = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.1, 0.04, f.d + 0.1), M.tableEdge());
       edge.position.set(f.x, f.H - 0.04, f.z); roomGrp.add(edge);
-      /* Table legs (2 pedestal bases) */
       for (const lx of [-f.w/3, f.w/3]) {
         const leg = new THREE.Mesh(new THREE.BoxGeometry(0.6, f.H - 0.08, f.d - 0.4), M.gray);
         leg.position.set(f.x + lx, (f.H - 0.08)/2, f.z); roomGrp.add(leg);
       }
-      /* Cable grommets on top */
       for (let i=0;i<4;i++) {
         const grommet = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,0.02,12), M.dark());
         grommet.position.set(-3 + i*2, f.H + 0.05, 0); roomGrp.add(grommet);
@@ -1309,40 +1231,32 @@ function buildRoom() {
       const screen = new THREE.Mesh(new THREE.PlaneGeometry(f.w - 0.15, f.h - 0.15),
         f.main ? M.displayScreen() : M.display());
       screen.position.set(f.x, 2.1, f.z + 0.035); roomGrp.add(screen);
-      /* Screen glow */
       if (f.main) {
         const light = new THREE.PointLight(0x4a80e0, 0.6, 8, 2);
         light.position.set(f.x, 2.1, f.z + 1); roomGrp.add(light);
       }
-      /* Power LED */
       const led = new THREE.Mesh(new THREE.SphereGeometry(0.02,8,6), M.ledGreen);
       led.position.set(f.x + f.w/2 - 0.15, 1.4, f.z + 0.035); roomGrp.add(led);
     }
 
     if (f.type === 'door') {
-      /* Door frame */
       const frame = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.15, f.h + 0.1, 0.1), M.doorFrame());
       frame.position.set(f.x, f.h/2 + 0.05, f.z); roomGrp.add(frame);
-      /* Door */
       const door = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.h, 0.06), M.door());
       door.position.set(f.x, f.h/2, f.z + 0.06); roomGrp.add(door);
-      /* Handle */
       const handle = new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.2,10), M.metal);
       handle.rotation.z = Math.PI/2;
       handle.position.set(f.x + f.w/2 - 0.15, f.h/2, f.z + 0.11); roomGrp.add(handle);
     }
   }
 
-  /* Add chairs around the table (12 chairs) */
   const chairPositions = [
-    /* North side (facing south) */
     [-3.5, -2, Math.PI],
     [-2, -2, Math.PI],
     [-0.5, -2, Math.PI],
     [1, -2, Math.PI],
     [2.5, -2, Math.PI],
     [4, -2, Math.PI],
-    /* South side (facing north) */
     [-3.5, 2, 0],
     [-2, 2, 0],
     [-0.5, 2, 0],
@@ -1353,19 +1267,14 @@ function buildRoom() {
 
   chairPositions.forEach(([cx, cz, ry]) => {
     const chair = new THREE.Group();
-    /* Seat */
     const seat = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.08, 0.55), M.chair());
     seat.position.y = 0.45; chair.add(seat);
-    /* Back */
     const back = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.6, 0.08), M.chairBack());
     back.position.set(0, 0.75, 0.28); chair.add(back);
-    /* Post */
     const post = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.06,0.35,10), M.gray);
     post.position.y = 0.22; chair.add(post);
-    /* Base */
     const base = new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.3,0.05,16), M.gray);
     base.position.y = 0.03; chair.add(base);
-    /* Wheels */
     for (let i=0;i<5;i++) {
       const a = (i/5)*Math.PI*2;
       const wheel = new THREE.Mesh(new THREE.SphereGeometry(0.04,8,6), M.dark());
@@ -2052,14 +1961,22 @@ function animate() {
 }
 
 function init() {
-  applyLang();
-  buildCats(); buildBrands(); buildTypes();
-  loadInitialDevices();
-  onResize();
-  animate();
-  setTimeout(() => document.getElementById('loader').classList.add('off'), 600);
-  console.log('%c✅ AURALIS · Meeting Room ready · Conference Mic & Camera Tracking',
-    'color:#3b82f6;font-weight:bold;font-size:14px');
+  try {
+    applyLang();
+    buildCats(); buildBrands(); buildTypes();
+    loadInitialDevices();
+    onResize();
+    animate();
+    console.log('%c✅ AURALIS · Meeting Room ready · Conference Mic & Camera Tracking',
+      'color:#3b82f6;font-weight:bold;font-size:14px');
+  } catch(err) {
+    console.error('❌ Init error:', err);
+  } finally {
+    setTimeout(() => {
+      const l = document.getElementById('loader');
+      if (l) l.classList.add('off');
+    }, 600);
+  }
 }
 
 init();
