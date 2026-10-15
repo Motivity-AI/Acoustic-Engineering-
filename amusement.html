@@ -555,41 +555,26 @@ const ROOM = {
   walls:[[-60,-50,60,-50],[60,-50,60,50],[60,50,-60,50],[-60,50,-60,-50]],
   features:[
     { type:'ground',     x:0, z:0, w:119.6, d:99.6 },
-    /* Entrance (south) */
     { type:'entranceArch', x:0, z:45, w:20, h:10 },
-    /* Main midway */
     { type:'midway',     x:0, z:0, w:8, d:90 },
-    /* Castle (center) */
     { type:'castle',     x:0, z:0, w:20, d:20, H:18 },
-    /* Ferris Wheel (west) */
     { type:'ferris',     x:-35, z:-20, r:15 },
-    /* Coaster (north east) */
     { type:'coaster',    x:25, z:-30 },
-    /* Carousel (east) */
     { type:'carousel',   x:35, z:5, r:8 },
-    /* Drop Tower (north) */
     { type:'dropTower',  x:0, z:-35, H:35 },
-    /* Show Theater (west) */
     { type:'theater',    x:-40, z:20, w:20, d:16, H:10 },
-    /* Parade route */
     { type:'paradeRoute', x:0, z:0, w:16, d:80 },
-    /* Food court (southwest) */
     { type:'foodCourt',  x:-30, z:35, w:24, d:14 },
-    /* Kiosks */
     { type:'kiosk',      x:-8, z:20 },
     { type:'kiosk',      x:8, z:20 },
     { type:'kiosk',      x:-8, z:-20 },
     { type:'kiosk',      x:8, z:-20 },
-    /* Balloon stands */
     { type:'balloon',    x:-12, z:35 },
     { type:'balloon',    x:12, z:35 },
-    /* Trees */
     { type:'treeRow',    x:-55, z:0, count:6, dir:'vertical' },
     { type:'treeRow',    x:55, z:0, count:6, dir:'vertical' },
-    /* Lamps along midway */
     { type:'lampRow',    x:-5, z:0, count:12, dir:'vertical' },
     { type:'lampRow',    x:5, z:0, count:12, dir:'vertical' },
-    /* Restrooms */
     { type:'restroom',   x:-15, z:-35, w:8, d:6 },
     { type:'restroom',   x:15, z:-35, w:8, d:6 }
   ],
@@ -611,17 +596,14 @@ const ROOM = {
     ['motivity','midway','midway',5,-25,0],
     ['motivity','midway','midway',-5,-35,0],
     ['motivity','midway','midway',5,-35,0],
-    /* Themed midway speakers */
     ['audiocenter','midway','theme',-10,10,0],
     ['audiocenter','midway','theme',10,10,0],
     ['audiocenter','midway','theme',-10,-10,0],
     ['audiocenter','midway','theme',10,-10,0],
-    /* Pole speakers along midway */
     ['audiocenter','midway','pole',-12,30,0],
     ['audiocenter','midway','pole',12,30,0],
     ['audiocenter','midway','pole',-12,-30,0],
     ['audiocenter','midway','pole',12,-30,0],
-    /* Balloon speakers */
     ['motivity','midway','balloon',-12,35,0],
     ['motivity','midway','balloon',12,35,0],
     /* === FERRIS WHEEL === */
@@ -668,7 +650,6 @@ const ROOM = {
     ['audiocenter','parade','parade',5,0,0],
     ['audiocenter','parade','parade',-5,-20,0],
     ['audiocenter','parade','parade',5,-20,0],
-    /* Float speakers */
     ['audiocenter','parade','float',0,30,0],
     ['audiocenter','parade','float',0,10,0],
     ['audiocenter','parade','float',0,-10,0],
@@ -680,12 +661,10 @@ const ROOM = {
     ['bose','food','food',-38,38,0],
     ['bose','food','food',-30,38,0],
     ['bose','food','food',-22,38,0],
-    /* Kiosks */
     ['bose','food','kiosk',-8,20,0],
     ['bose','food','kiosk',8,20,0],
     ['bose','food','kiosk',-8,-20,0],
     ['bose','food','kiosk',8,-20,0],
-    /* Ice cream + candy */
     ['bose','food','icecream',-15,20,0],
     ['bose','food','icecream',15,20,0],
     ['bose','food','candy',-15,-20,0],
@@ -797,6 +776,7 @@ const M = {
   steel:()=>new THREE.MeshStandardMaterial({color:0x8090a0,roughness:0.5,metalness:0.6,side:THREE.DoubleSide}),
   ground:()=>new THREE.MeshStandardMaterial({color:0x3a5a3a,roughness:0.95,metalness:0.02}),
   pavement:()=>new THREE.MeshStandardMaterial({color:0xd8a8c0,roughness:0.7,metalness:0.1}),
+  concrete:()=>new THREE.MeshStandardMaterial({color:0x9a8a9a,roughness:0.9,metalness:0.05}),
   pathway:()=>new THREE.MeshStandardMaterial({color:0xf8e0b8,roughness:0.8,metalness:0.05}),
   wood:()=>new THREE.MeshStandardMaterial({color:0xa8825a,roughness:0.75,metalness:0.08}),
   woodDark:()=>new THREE.MeshStandardMaterial({color:0x6a4a2a,roughness:0.8,metalness:0.08}),
@@ -866,25 +846,22 @@ function makeMesh(cat, typeId, brandColor) {
       break;
     }
     case 'rideTheme': {
-      /* Themed speaker with decorative top */
       const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.7,0.4), M.body);
       b.castShadow = true; g.add(b);
       const w = new THREE.Mesh(new THREE.CylinderGeometry(0.16,0.16,0.014,22), M.dark);
       w.rotation.x = Math.PI/2; w.position.set(0,-0.1,0.206); g.add(w);
       const wr = new THREE.Mesh(new THREE.RingGeometry(0.16,0.2,22), M.ledCyan);
       wr.position.set(0,-0.1,0.212); g.add(wr);
-      /* Decorative top - cone with lights */
       const top = new THREE.Mesh(new THREE.ConeGeometry(0.35,0.5,6), M.candy1());
       top.position.y = 0.6; g.add(top);
       for (let i=0;i<3;i++) {
-        const led = new THREE.Mesh(new THREE.SphereGeometry(0.025,8,8), 
+        const led = new THREE.Mesh(new THREE.SphereGeometry(0.025,8,8),
           [M.ledAmber, M.ledCyan, M.ledPink][i]);
         led.position.set(-0.15 + i*0.15, 0.65, 0); g.add(led);
       }
       break;
     }
     case 'coasterSpk': {
-      /* Speaker mounted on coaster supports */
       const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.6,0.4), M.body);
       b.castShadow = true; g.add(b);
       const gr = new THREE.Mesh(new THREE.CircleGeometry(0.15,20), M.dark);
@@ -900,13 +877,11 @@ function makeMesh(cat, typeId, brandColor) {
       w.rotation.x = Math.PI/2; w.position.set(0,-0.1,0.206); g.add(w);
       const wr = new THREE.Mesh(new THREE.RingGeometry(0.15,0.19,22), M.ledAmber);
       wr.position.set(0,-0.1,0.212); g.add(wr);
-      /* Top decorative ball */
       const ball = new THREE.Mesh(new THREE.SphereGeometry(0.1,14,10), M.ledAmber);
       ball.position.y = 0.4; g.add(ball);
       break;
     }
     case 'ferrisSpk': {
-      /* Speakers on ferris wheel frame */
       const b = new THREE.Mesh(new THREE.BoxGeometry(0.6,0.75,0.5), M.body);
       b.castShadow = true; g.add(b);
       const gr = new THREE.Mesh(new THREE.CircleGeometry(0.18,22), M.dark);
@@ -918,7 +893,6 @@ function makeMesh(cat, typeId, brandColor) {
       break;
     }
     case 'dropSpk': {
-      /* Large tower speaker */
       const b = new THREE.Mesh(new THREE.BoxGeometry(0.7,1.0,0.55), M.body);
       b.castShadow = true; g.add(b);
       const w = new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.2,0.018,24), M.dark);
@@ -945,7 +919,6 @@ function makeMesh(cat, typeId, brandColor) {
       gr.position.set(0, 0, 0.206); g.add(gr);
       const ring = new THREE.Mesh(new THREE.RingGeometry(0.15,0.19,20), M.ledCyan);
       ring.position.set(0, 0, 0.208); g.add(ring);
-      /* Stars decoration */
       for (let i=0;i<3;i++) {
         const star = new THREE.Mesh(new THREE.SphereGeometry(0.03,6,6), M.ledAmber);
         star.position.set(-0.1 + i*0.1, 0.35, 0.21); g.add(star);
@@ -966,12 +939,10 @@ function makeMesh(cat, typeId, brandColor) {
       break;
     }
     case 'balloonSpk': {
-      /* Balloon shaped speaker */
       const balloon = new THREE.Mesh(new THREE.SphereGeometry(0.35,20,16), M.balloon());
       balloon.scale.y = 1.2; balloon.castShadow = true; g.add(balloon);
       const knot = new THREE.Mesh(new THREE.ConeGeometry(0.08, 0.15, 6), M.balloon());
       knot.rotation.z = Math.PI; knot.position.y = -0.42; g.add(knot);
-      /* Small speaker at bottom */
       const spk = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.1,0.06,16), M.body);
       spk.position.y = -0.55; g.add(spk);
       const gr = new THREE.Mesh(new THREE.CircleGeometry(0.08,16), M.dark);
@@ -1012,7 +983,6 @@ function makeMesh(cat, typeId, brandColor) {
       break;
     }
     case 'floatSpk': {
-      /* Speaker on a parade float with decorative balloon */
       const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.15,3,10), M.metal);
       pole.position.y = 1.5; g.add(pole);
       const head = new THREE.Mesh(new THREE.BoxGeometry(0.6,0.7,0.5), M.candy2());
@@ -1021,7 +991,6 @@ function makeMesh(cat, typeId, brandColor) {
       gr.position.set(0, 3.2, 0.256); g.add(gr);
       const ring = new THREE.Mesh(new THREE.RingGeometry(0.18,0.22,20), M.ledPink);
       ring.position.set(0, 3.2, 0.258); g.add(ring);
-      /* Top balloon */
       const balloon = new THREE.Mesh(new THREE.SphereGeometry(0.3,16,12), M.ledPink);
       balloon.position.y = 4.0; g.add(balloon);
       break;
@@ -1217,14 +1186,12 @@ function makeMesh(cat, typeId, brandColor) {
       break;
     }
     case 'hostMic': {
-      /* Host mic with stand and top hat decoration */
       const base = new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.17,0.06,16), M.gray);
       base.position.y = 0.03; g.add(base);
       const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.55,8), M.metal);
       pole.position.y = 0.31; g.add(pole);
       const mic = new THREE.Mesh(new THREE.SphereGeometry(0.07,14,12), M.ledPink);
       mic.position.y = 0.65; g.add(mic);
-      /* Top hat */
       const hatBase = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.12,0.02,16), M.dark);
       hatBase.position.y = 0.72; g.add(hatBase);
       const hatTop = new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.09,0.15,16), M.dark);
@@ -1232,7 +1199,6 @@ function makeMesh(cat, typeId, brandColor) {
       break;
     }
     case 'crowdMic': {
-      /* Suspended crowd mic */
       const b = new THREE.Mesh(new THREE.SphereGeometry(0.15,20,16), M.body);
       b.castShadow = true; g.add(b);
       const wind = new THREE.Mesh(new THREE.SphereGeometry(0.2,20,16,0,Math.PI*2,0,Math.PI),
@@ -1348,17 +1314,14 @@ function buildRoom() {
   clearGroup(roomGrp);
 
   for (const f of ROOM.features) {
-    /* === GROUND === */
     if (f.type === 'ground') {
       const g = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.05, f.d), M.ground());
       g.position.set(f.x, 0.025, f.z); g.receiveShadow = true; roomGrp.add(g);
     }
 
-    /* === MIDWAY === */
     if (f.type === 'midway') {
       const m = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.08, f.d), M.pathway());
       m.position.set(f.x, 0.06, f.z); m.receiveShadow = true; roomGrp.add(m);
-      /* Colored stripes */
       for (let i=0;i<18;i++) {
         const stripe = new THREE.Mesh(new THREE.BoxGeometry(f.w - 0.5, 0.01, 1.5),
           i % 2 === 0 ? M.candy1() : M.candy2());
@@ -1367,70 +1330,53 @@ function buildRoom() {
       }
     }
 
-    /* === PARADE ROUTE === */
     if (f.type === 'paradeRoute') {
-      /* Wide parade path */
-      const p = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.06, f.d), 
+      const p = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.06, f.d),
         new THREE.MeshStandardMaterial({color:0xffc0d0,roughness:0.85,metalness:0.05}));
       p.position.set(f.x, 0.055, f.z); p.receiveShadow = true; roomGrp.add(p);
     }
 
-    /* === ENTRANCE ARCH === */
     if (f.type === 'entranceArch') {
-      /* Two towers */
       for (const side of [-1, 1]) {
         const tower = new THREE.Mesh(new THREE.CylinderGeometry(2, 2.3, f.h, 12), M.castle());
         tower.position.set(side * f.w/2, f.h/2, f.z); tower.castShadow = true; roomGrp.add(tower);
-        /* Cone roof */
         const roof = new THREE.Mesh(new THREE.ConeGeometry(2.5, 2.5, 12), M.castleRoof());
         roof.position.set(side * f.w/2, f.h + 1.25, f.z); roomGrp.add(roof);
-        /* Flag */
         const flag = new THREE.Mesh(new THREE.PlaneGeometry(1.5, 1), M.candy1());
         flag.position.set(side * f.w/2 + side*0.5, f.h + 2.8, f.z);
         flag.rotation.y = side * Math.PI/6;
         roomGrp.add(flag);
       }
-      /* Arch */
       const arch = new THREE.Mesh(new THREE.BoxGeometry(f.w - 4, 1.5, 2), M.castle());
       arch.position.set(0, f.h - 1, f.z); arch.castShadow = true; roomGrp.add(arch);
-      /* Arch roof */
       const archRoof = new THREE.Mesh(new THREE.BoxGeometry(f.w - 3, 0.4, 3), M.castleRoof());
       archRoof.position.set(0, f.h - 0.2, f.z); roomGrp.add(archRoof);
-      /* Welcome sign */
-      const sign = new THREE.Mesh(new THREE.BoxGeometry(12, 2, 0.3), 
+      const sign = new THREE.Mesh(new THREE.BoxGeometry(12, 2, 0.3),
         new THREE.MeshStandardMaterial({color:0xfbbf24,emissive:0xfbbf24,emissiveIntensity:0.8,roughness:0.4,metalness:0.5}));
       sign.position.set(0, f.h + 0.5, f.z); roomGrp.add(sign);
     }
 
-    /* === CASTLE === */
     if (f.type === 'castle') {
-      /* Main building */
       const bld = new THREE.Mesh(new THREE.BoxGeometry(f.w - 4, f.H - 4, f.d - 4), M.castle());
       bld.position.set(f.x, (f.H - 4)/2, f.z); bld.castShadow = true; bld.receiveShadow = true; roomGrp.add(bld);
-      /* 4 corner towers */
       for (const [tx, tz] of [[-f.w/2, -f.d/2], [f.w/2, -f.d/2], [-f.w/2, f.d/2], [f.w/2, f.d/2]]) {
         const tower = new THREE.Mesh(new THREE.CylinderGeometry(2, 2.2, f.H, 12), M.castle());
         tower.position.set(f.x + tx, f.H/2, f.z + tz); tower.castShadow = true; roomGrp.add(tower);
-        /* Cone roof */
         const roof = new THREE.Mesh(new THREE.ConeGeometry(2.5, 3, 12), M.castleRoof());
         roof.position.set(f.x + tx, f.H + 1.5, f.z + tz); roomGrp.add(roof);
-        /* Flag */
         const flag = new THREE.Mesh(new THREE.PlaneGeometry(1.2, 0.8), M.candy1());
         flag.position.set(f.x + tx + 0.6, f.H + 3.5, f.z + tz);
         roomGrp.add(flag);
       }
-      /* Central tall tower */
       const centralTower = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 1.8, f.H + 4, 12), M.castle());
       centralTower.position.set(f.x, (f.H + 4)/2, f.z); centralTower.castShadow = true; roomGrp.add(centralTower);
       const centralRoof = new THREE.Mesh(new THREE.ConeGeometry(2, 4, 12), M.castleGold());
       centralRoof.position.set(f.x, f.H + 6, f.z); roomGrp.add(centralRoof);
-      /* Gold spire */
       const spire = new THREE.Mesh(new THREE.ConeGeometry(0.3, 2, 8), M.castleGold());
       spire.position.set(f.x, f.H + 9, f.z); roomGrp.add(spire);
-      /* Windows */
       for (let i=0;i<4;i++) {
         for (const [tx, tz] of [[-f.w/2, -f.d/2], [f.w/2, -f.d/2], [-f.w/2, f.d/2], [f.w/2, f.d/2]]) {
-          const win = new THREE.Mesh(new THREE.PlaneGeometry(0.8, 1.2), 
+          const win = new THREE.Mesh(new THREE.PlaneGeometry(0.8, 1.2),
             new THREE.MeshBasicMaterial({color:0xfbbf24,transparent:true,opacity:0.85}));
           const angle = Math.atan2(tx, tz);
           win.position.set(f.x + tx + Math.sin(angle)*0.1, 3 + i*3, f.z + tz + Math.cos(angle)*0.1);
@@ -1438,30 +1384,24 @@ function buildRoom() {
           roomGrp.add(win);
         }
       }
-      /* Entrance door */
       const door = new THREE.Mesh(new THREE.BoxGeometry(3, 4, 0.3), M.woodDark);
       door.position.set(f.x, 2, f.z + f.d/2 - 1.9); roomGrp.add(door);
     }
 
-    /* === FERRIS WHEEL === */
     if (f.type === 'ferris') {
-      /* Central hub */
       const hub = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 1, 12), M.ferrisFrame());
       hub.rotation.z = Math.PI/2; hub.position.set(f.x, f.r + 2, f.z); hub.castShadow = true; roomGrp.add(hub);
-      /* Spokes (2 circles for inner and outer) */
       for (let ring=0;ring<2;ring++) {
         const rr = ring === 0 ? f.r : f.r * 0.7;
         const torus = new THREE.Mesh(new THREE.TorusGeometry(rr, 0.15, 8, 24), M.ferrisFrame());
         torus.rotation.y = Math.PI/2; torus.position.set(f.x, f.r + 2, f.z); roomGrp.add(torus);
       }
-      /* Spokes */
       for (let i=0;i<12;i++) {
         const a = (i/12)*Math.PI*2;
         const spoke = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, f.r*2, 6), M.ferrisFrame());
         spoke.rotation.z = Math.PI/2;
         spoke.rotation.y = a;
         spoke.position.set(f.x, f.r + 2, f.z); roomGrp.add(spoke);
-        /* Cabin at end of spoke */
         const cx = f.x + Math.cos(a) * f.r;
         const cy = f.r + 2 + Math.sin(a) * f.r;
         const cab = new THREE.Mesh(new THREE.BoxGeometry(1.5, 1.2, 1.5),
@@ -1471,7 +1411,6 @@ function buildRoom() {
         cab.castShadow = true;
         roomGrp.add(cab);
       }
-      /* Support legs */
       for (const side of [-1, 1]) {
         const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.5, f.r + 4, 10), M.ferrisFrame());
         leg.position.set(f.x + side * 3, (f.r + 4)/2, f.z);
@@ -1479,14 +1418,11 @@ function buildRoom() {
         leg.castShadow = true;
         roomGrp.add(leg);
       }
-      /* Platform */
-      const plat = new THREE.Mesh(new THREE.BoxGeometry(8, 0.3, 6), M.concrete);
+      const plat = new THREE.Mesh(new THREE.BoxGeometry(8, 0.3, 6), M.concrete());
       plat.position.set(f.x, 0.15, f.z + 2); roomGrp.add(plat);
     }
 
-    /* === COASTER === */
     if (f.type === 'coaster') {
-      /* Coaster track — made of segments */
       const waypoints = [
         {x: f.x - 20, z: f.z + 5, y: 3},
         {x: f.x - 15, z: f.z - 5, y: 8},
@@ -1503,12 +1439,10 @@ function buildRoom() {
         const a = waypoints[i], b = waypoints[i+1];
         const dx = b.x - a.x, dy = b.y - a.y, dz = b.z - a.z;
         const len = Math.sqrt(dx*dx + dy*dy + dz*dz);
-        /* Track */
         const track = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, len, 8), M.coasterTrack());
         track.position.set((a.x+b.x)/2, (a.y+b.y)/2, (a.z+b.z)/2);
         track.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), new THREE.Vector3(dx,dy,dz).normalize());
         roomGrp.add(track);
-        /* Support pole */
         if (i % 2 === 0) {
           const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.25, a.y, 8), M.coasterSupport());
           pole.position.set(a.x, a.y/2, a.z); roomGrp.add(pole);
@@ -1516,40 +1450,29 @@ function buildRoom() {
       }
     }
 
-    /* === CAROUSEL === */
     if (f.type === 'carousel') {
-      /* Base platform */
       const base = new THREE.Mesh(new THREE.CylinderGeometry(f.r, f.r, 0.4, 24), M.carouselBody());
       base.position.set(f.x, 0.2, f.z); base.castShadow = true; roomGrp.add(base);
-      /* Deck */
       const deck = new THREE.Mesh(new THREE.CylinderGeometry(f.r - 0.3, f.r - 0.3, 0.1, 24), M.candy2());
       deck.position.set(f.x, 0.45, f.z); roomGrp.add(deck);
-      /* Central pole */
       const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 7, 16), M.castleGold());
       pole.position.set(f.x, 3.5, f.z); roomGrp.add(pole);
-      /* Roof (canopy) */
       const roof = new THREE.Mesh(new THREE.ConeGeometry(f.r + 0.5, 3, 24), M.carouselRoof());
       roof.position.set(f.x, 7, f.z); roomGrp.add(roof);
-      /* Decorative top */
       const topBall = new THREE.Mesh(new THREE.SphereGeometry(0.4, 12, 10), M.ledAmber);
       topBall.position.set(f.x, 9, f.z); roomGrp.add(topBall);
-      /* 8 horses */
       for (let i=0;i<8;i++) {
         const a = (i/8) * Math.PI * 2;
         const hx = f.x + Math.cos(a) * (f.r - 1.5);
         const hz = f.z + Math.sin(a) * (f.r - 1.5);
-        /* Horse body */
-        const body = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.8, 0.6), 
+        const body = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.8, 0.6),
           [M.candy1(), M.candy2(), M.candy3(), M.candy4()][i%4]);
         body.position.set(hx, 1.5, hz); body.rotation.y = -a; roomGrp.add(body);
-        /* Head */
         const head = new THREE.Mesh(new THREE.SphereGeometry(0.35, 12, 10), M.candy5());
         head.position.set(hx + Math.cos(a)*0.9, 2.0, hz + Math.sin(a)*0.9); roomGrp.add(head);
-        /* Support pole */
         const supportPole = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 3, 6), M.castleGold());
         supportPole.position.set(hx, 3, hz); roomGrp.add(supportPole);
       }
-      /* Decorative stripes on base */
       for (let i=0;i<12;i++) {
         const a = (i/12) * Math.PI * 2;
         const stripe = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.5, 0.5), M.candy1());
@@ -1558,105 +1481,79 @@ function buildRoom() {
       }
     }
 
-    /* === DROP TOWER === */
     if (f.type === 'dropTower') {
-      /* Tower */
       const tower = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 2, f.H, 12), M.candy1());
       tower.position.set(f.x, f.H/2, f.z); tower.castShadow = true; roomGrp.add(tower);
-      /* Stripes */
       for (let i=0;i<8;i++) {
         const stripe = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 1.6, 1, 12), M.candy2());
         stripe.position.set(f.x, 2 + i*4, f.z); roomGrp.add(stripe);
       }
-      /* Top hat */
       const cap = new THREE.Mesh(new THREE.CylinderGeometry(3, 3, 1, 16), M.candy3());
       cap.position.set(f.x, f.H + 0.5, f.z); roomGrp.add(cap);
-      /* Beacon */
       const beacon = new THREE.Mesh(new THREE.SphereGeometry(0.6, 12, 10), M.ledRed);
       beacon.position.set(f.x, f.H + 1.5, f.z); roomGrp.add(beacon);
-      /* Gondola (falling car) */
       const gondola = new THREE.Mesh(new THREE.CylinderGeometry(3.5, 3.5, 1.5, 12, 1, false), M.body);
       gondola.position.set(f.x, 6, f.z); gondola.castShadow = true; roomGrp.add(gondola);
-      /* Riders (dots) */
       for (let i=0;i<8;i++) {
         const a = (i/8) * Math.PI * 2;
         const rider = new THREE.Mesh(new THREE.SphereGeometry(0.3, 8, 6), M.candy5());
         rider.position.set(f.x + Math.cos(a)*2.5, 6.8, f.z + Math.sin(a)*2.5);
         roomGrp.add(rider);
       }
-      /* Base platform */
-      const base = new THREE.Mesh(new THREE.CylinderGeometry(5, 5, 0.3, 16), M.concrete);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(5, 5, 0.3, 16), M.concrete());
       base.position.set(f.x, 0.15, f.z); roomGrp.add(base);
     }
 
-    /* === THEATER === */
     if (f.type === 'theater') {
-      /* Main building */
       const bld = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.H, f.d), M.theaterWall());
       bld.position.set(f.x, f.H/2, f.z); bld.castShadow = true; bld.receiveShadow = true; roomGrp.add(bld);
-      /* Roof */
       const roof = new THREE.Mesh(new THREE.BoxGeometry(f.w + 1, 0.5, f.d + 1), M.theaterRoof());
       roof.position.set(f.x, f.H + 0.25, f.z); roomGrp.add(roof);
-      /* Marquee sign */
-      const marquee = new THREE.Mesh(new THREE.BoxGeometry(f.w - 2, 2, 0.4), 
+      const marquee = new THREE.Mesh(new THREE.BoxGeometry(f.w - 2, 2, 0.4),
         new THREE.MeshStandardMaterial({color:0xfbbf24,emissive:0xfbbf24,emissiveIntensity:0.9,roughness:0.4,metalness:0.5}));
       marquee.position.set(f.x, f.H + 1.5, f.z - f.d/2 - 0.2); roomGrp.add(marquee);
-      /* Bulbs around marquee */
       for (let i=0;i<10;i++) {
         const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.15, 8, 6), M.ledAmber);
         bulb.position.set(f.x - f.w/2 + 1.5 + i*(f.w - 3)/9, f.H + 2.8, f.z - f.d/2 - 0.3);
         roomGrp.add(bulb);
       }
-      /* Entrance doors */
       const door = new THREE.Mesh(new THREE.BoxGeometry(4, 3, 0.3), M.woodDark);
       door.position.set(f.x, 1.5, f.z - f.d/2 - 0.15); roomGrp.add(door);
     }
 
-    /* === FOOD COURT === */
     if (f.type === 'foodCourt') {
       const fl = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.08, f.d), M.pavement());
       fl.position.set(f.x, 0.06, f.z); fl.receiveShadow = true; roomGrp.add(fl);
-      /* 4 food stands */
       for (let i=0;i<4;i++) {
         const sx = f.x - f.w/2 + (i + 0.5) * (f.w / 4);
         const stand = new THREE.Mesh(new THREE.BoxGeometry(4, 3, 3), M.foodWall());
         stand.position.set(sx, 1.5, f.z); stand.castShadow = true; roomGrp.add(stand);
-        /* Striped awning */
         const awning = new THREE.Mesh(new THREE.BoxGeometry(4.5, 0.15, 3.5), M.foodRoof());
         awning.position.set(sx, 3.2, f.z + 0.5); awning.rotation.x = 0.15; roomGrp.add(awning);
-        /* Sign */
-        const sign = new THREE.Mesh(new THREE.BoxGeometry(3.5, 0.6, 0.1), 
+        const sign = new THREE.Mesh(new THREE.BoxGeometry(3.5, 0.6, 0.1),
           [M.candy1(), M.candy2(), M.candy3(), M.candy4()][i]);
         sign.position.set(sx, 3.8, f.z - 1.55); roomGrp.add(sign);
       }
     }
 
-    /* === KIOSKS === */
     if (f.type === 'kiosk') {
-      /* Body */
       const body = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 1.7, 2.5, 8), M.kioskBody());
       body.position.set(f.x, 1.25, f.z); body.castShadow = true; roomGrp.add(body);
-      /* Roof */
       const roof = new THREE.Mesh(new THREE.ConeGeometry(2, 1.2, 8), M.kioskRoof());
       roof.position.set(f.x, 3, f.z); roomGrp.add(roof);
-      /* Sign */
-      const sign = new THREE.Mesh(new THREE.PlaneGeometry(2, 0.6), 
+      const sign = new THREE.Mesh(new THREE.PlaneGeometry(2, 0.6),
         new THREE.MeshBasicMaterial({color:0xfbbf24,transparent:true,opacity:0.9}));
       sign.position.set(f.x, 2, f.z + 1.71); roomGrp.add(sign);
     }
 
-    /* === BALLOON STANDS === */
     if (f.type === 'balloon') {
-      /* Cart */
       const cart = new THREE.Mesh(new THREE.BoxGeometry(1.5, 1.2, 0.8), M.candy2());
       cart.position.set(f.x, 0.6, f.z); cart.castShadow = true; roomGrp.add(cart);
-      /* Wheels */
       for (const wx of [-0.6, 0.6]) {
         const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.2, 12), M.dark());
         wheel.rotation.z = Math.PI/2;
         wheel.position.set(f.x + wx, 0.4, f.z + 0.5); roomGrp.add(wheel);
       }
-      /* Balloons floating above */
       const balloonColors = [M.balloon(), M.balloon2(), M.balloon3(), M.candy1(), M.candy4()];
       for (let i=0;i<8;i++) {
         const a = (i/8) * Math.PI * 2;
@@ -1664,14 +1561,12 @@ function buildRoom() {
         balloon.scale.y = 1.3;
         balloon.position.set(f.x + Math.cos(a)*0.8, 2.5 + Math.sin(a)*0.4, f.z + Math.sin(a)*0.5);
         roomGrp.add(balloon);
-        /* String */
         const str = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.01, 1.2, 4), M.dark());
         str.position.set(f.x + Math.cos(a)*0.6, 1.6, f.z + Math.sin(a)*0.3);
         roomGrp.add(str);
       }
     }
 
-    /* === TREE ROW === */
     if (f.type === 'treeRow') {
       for (let i=0;i<f.count;i++) {
         const tx = f.dir === 'vertical' ? f.x : f.x - (f.count-1)*4 + i*8;
@@ -1686,7 +1581,6 @@ function buildRoom() {
       }
     }
 
-    /* === LAMP ROW === */
     if (f.type === 'lampRow') {
       for (let i=0;i<f.count;i++) {
         const lx = f.dir === 'vertical' ? f.x : f.x - (f.count-1)*2 + i*4;
@@ -1700,29 +1594,22 @@ function buildRoom() {
       }
     }
 
-    /* === RESTROOMS === */
     if (f.type === 'restroom') {
       const bld = new THREE.Mesh(new THREE.BoxGeometry(f.w, 3, f.d), M.candy3());
       bld.position.set(f.x, 1.5, f.z); bld.castShadow = true; roomGrp.add(bld);
-      /* Roof */
       const roof = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.5, 0.3, f.d + 0.5), M.dark());
       roof.position.set(f.x, 3.15, f.z); roomGrp.add(roof);
-      /* Sign */
-      const sign = new THREE.Mesh(new THREE.BoxGeometry(f.w - 1, 1, 0.1), 
+      const sign = new THREE.Mesh(new THREE.BoxGeometry(f.w - 1, 1, 0.1),
         new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.9}));
       sign.position.set(f.x, 2, f.z + f.d/2 + 0.06); roomGrp.add(sign);
     }
   }
 
-  /* Scatter decorative elements */
-  /* Small benches */
   for (let i=0;i<12;i++) {
     const bx = (Math.random() - 0.5) * 100;
     const bz = (Math.random() - 0.5) * 80;
-    /* Skip if near court/midway */
     if (Math.abs(bx) < 15 && Math.abs(bz) < 40) continue;
     if (Math.abs(bx) < 10) continue;
-    /* Bench */
     const bench = new THREE.Mesh(new THREE.BoxGeometry(2, 0.15, 0.6), M.candy2());
     bench.position.set(bx, 0.55, bz); roomGrp.add(bench);
     const legL = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.5, 0.5), M.metal());
@@ -1857,9 +1744,9 @@ function updateHeatColors() {
   document.getElementById('hudCoverage').textContent = covPct + '%';
   const statSpl = document.getElementById('statSpl');
   const statCov = document.getElementById('statCov');
-  statSpl.classList.remove('good d','warn');
-  statCov.classList.remove =('good','warn');
-  if (mx >=  drag75 && mx <= 95) statSpl.classList.add('good');
+  statSpl.classList.remove('good','warn');
+  statCov.classList.remove('good','warn');
+  if (mx >= 75 && mx <= 95) statSpl.classList.add('good');
   else if (mx > 0) statSpl.classList.add('warn');
   if (covPct >= 75) statCov.classList.add('good');
   else if (covPct >= 50) statCov.classList.add('warn');
@@ -1996,7 +1883,7 @@ canvas.addEventListener('pointermove', e => {
   if (dragDev && moved) {
     const fp = floorPoint(e.clientX, e.clientY);
     if (fp) {
-      constDev.userData.dev;
+      const d = dragDev.userData.dev;
       d.x = Math.round((fp.x + dragOff.x)*10)/10;
       d.z = Math.round((fp.z + dragOff.z)*10)/10;
       dragDev.position.set(d.x, dragDev.userData.spec.h, d.z);
@@ -2192,7 +2079,6 @@ function generateReport() {
   const splVal = document.getElementById('hudSpl').textContent;
   const covVal = document.getElementById('hudCoverage').textContent;
 
-  /* Outdoor - theme park */
   const rt60Display = 'N/A (Outdoor)';
   const reverbQuality = '🎢 ' + (LANG==='ar'?'حقل مفتوح (لا صدى)':'Open air (no reverb)');
 
