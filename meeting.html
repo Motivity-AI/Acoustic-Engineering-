@@ -1,0 +1,2068 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0a0f1a">
+<title>🎤 AURALIS · Meeting Room</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0a0f1a;--panel:rgba(20,28,44,.94);--card:rgba(40,54,80,.7);
+  --line:rgba(59,130,246,.14);--line2:rgba(59,130,246,.5);
+  --txt:#eef2ff;--txt2:#a8b4cc;--txt3:#5a6a86;
+  --blue:#3b82f6;--blue2:#60a5fa;--cyan:#06b6d4;--violet:#8b5cf6;
+  --mint:#4fe4b8;--amber:#fbbf24;--rose:#fb7185;
+  --sh:0 8px 32px rgba(0,0,0,.7);--font:'Cairo','Inter',sans-serif;
+}
+html[lang="en"]{--font:'Inter','Cairo',sans-serif}
+html[lang="en"] body{font-family:var(--font)}
+html{height:100%;overflow:hidden;-webkit-text-size-adjust:100%}
+body{position:fixed;inset:0;overflow:hidden;background:var(--bg);color:var(--txt);
+  font-family:var(--font);font-size:14px;user-select:none;-webkit-user-select:none}
+#c{position:fixed;inset:0;width:100%;height:100%;touch-action:none;display:block;cursor:crosshair}
+#loader{position:fixed;inset:0;z-index:9999;background:
+  radial-gradient(circle at 50% 40%,rgba(59,130,246,.22),transparent 60%),#0a0f1a;
+  display:grid;place-items:center;transition:opacity .6s,visibility .6s}
+#loader.off{opacity:0;visibility:hidden}
+#loader .box{text-align:center}
+#loader .sym{font-size:70px;filter:drop-shadow(0 0 40px rgba(59,130,246,.85));
+  animation:pulse 1.6s ease-in-out infinite}
+#loader .txt{margin-top:14px;color:var(--txt2);letter-spacing:3.5px;font-size:12px;font-weight:700}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.1);opacity:.7}}
+header{position:fixed;top:0;left:0;right:0;min-height:56px;z-index:100;padding:8px 14px;
+  padding-top:calc(8px + env(safe-area-inset-top,0));background:var(--panel);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--line);display:flex;align-items:center;gap:9px;
+  transition:transform .4s cubic-bezier(.4,0,.2,1)}
+header.hide{transform:translateY(-110%)}
+.logo{width:38px;height:38px;border-radius:11px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));display:grid;place-items:center;
+  font-size:20px;color:#0a0f1a;box-shadow:0 4px 16px rgba(59,130,246,.55);
+  border:1px solid rgba(59,130,246,.3)}
+.title{display:flex;flex-direction:column;gap:1px;min-width:0}
+.title .t1{font-size:14px;font-weight:900;letter-spacing:2px;
+  background:linear-gradient(135deg,#fff,var(--blue));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  white-space:nowrap}
+.title .t2{font-size:9.5px;color:var(--txt3);letter-spacing:1.2px;
+  font-family:'JetBrains Mono',monospace;white-space:nowrap}
+.spacer{flex:1}
+.langBtn{height:38px;min-width:50px;padding:0 12px;border-radius:11px;
+  background:var(--card);border:1px solid var(--line);color:var(--txt);
+  font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  transition:all .2s;flex-shrink:0}
+.langBtn:hover{border-color:var(--blue);color:var(--blue)}
+.langBtn:active{transform:scale(.95)}
+.btn{height:38px;min-width:38px;padding:0 12px;border-radius:11px;background:var(--card);
+  border:1px solid var(--line);color:var(--txt);font-family:inherit;font-size:13px;
+  font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  gap:6px;transition:transform .15s;flex-shrink:0}
+.btn:hover{border-color:var(--line2)}
+.btn:active{transform:scale(.94)}
+.btn.on{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#0a0f1a;border-color:transparent}
+.hud{position:fixed;top:76px;inset-inline-end:12px;z-index:50;
+  display:flex;flex-direction:column;gap:7px;pointer-events:none;transition:opacity .3s}
+.hud .stat{background:var(--panel);backdrop-filter:blur(20px);border:1px solid var(--line);
+  padding:7px 13px;border-radius:11px;font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--txt2);text-align:center;min-width:82px;transition:border-color .3s}
+.hud .stat b{color:var(--cyan);font-weight:700;font-size:13px;display:block;margin-top:2px}
+.hud .stat.good b{color:var(--mint)}
+.hud .stat.warn b{color:var(--amber)}
+.tools{position:fixed;inset-inline-end:12px;bottom:185px;z-index:60;
+  display:flex;flex-direction:column;gap:8px;transition:transform .4s,opacity .3s}
+.tools.hide{transform:translateX(-160%);opacity:0}
+.tool{width:48px;height:48px;border-radius:14px;border:1px solid var(--line);
+  background:var(--panel);backdrop-filter:blur(20px);color:var(--txt);
+  font-size:20px;cursor:pointer;display:grid;place-items:center;
+  box-shadow:var(--sh);transition:all .2s cubic-bezier(.34,1.56,.64,1)}
+.tool:hover{border-color:var(--line2);transform:translateY(-2px)}
+.tool:active{transform:scale(.92)}
+.tool.on{background:linear-gradient(135deg,var(--blue),var(--cyan));
+  border-color:transparent;color:#0a0f1a;box-shadow:0 8px 24px rgba(59,130,246,.55)}
+.info{position:fixed;top:76px;inset-inline-start:12px;z-index:70;width:250px;
+  padding:15px;border-radius:16px;background:var(--panel);
+  backdrop-filter:blur(24px);border:1px solid var(--line2);box-shadow:var(--sh);
+  transform:translateX(calc(-100% - 30px));opacity:0;
+  transition:all .35s cubic-bezier(.34,1.56,.64,1);
+  pointer-events:none;max-height:calc(100vh - 210px);overflow-y:auto}
+.info.on{transform:translateX(0);opacity:1;pointer-events:auto}
+.info h4{font-size:13px;font-weight:800;margin-bottom:3px;color:var(--blue);
+  display:flex;align-items:center;gap:7px}
+.info .tag{font-size:9.5px;color:var(--txt3);margin-bottom:11px;
+  font-family:'JetBrains Mono',monospace;letter-spacing:.6px;text-transform:uppercase}
+.info .row{display:flex;justify-content:space-between;align-items:center;
+  padding:5px 0;font-size:11px;border-bottom:1px dashed var(--line)}
+.info .row:last-of-type{border:none}
+.info .row span:first-child{color:var(--txt3)}
+.info .row span:last-child{color:var(--txt);font-weight:700;font-family:'JetBrains Mono',monospace}
+.info .slider{margin-top:8px;display:flex;align-items:center;gap:7px}
+.info .slider label{font-size:10px;color:var(--txt3);min-width:48px}
+.info .slider input{flex:1;-webkit-appearance:none;appearance:none;height:3px;
+  border-radius:2px;background:rgba(255,255,255,.12);outline:none}
+.info .slider input::-webkit-slider-thumb{-webkit-appearance:none;
+  width:14px;height:14px;border-radius:50%;background:var(--blue);
+  box-shadow:0 0 8px rgba(59,130,246,.7);cursor:pointer}
+.info .slider b{font-size:10px;color:var(--blue);
+  font-family:'JetBrains Mono',monospace;min-width:42px;text-align:end}
+.info .numInput{width:64px;background:var(--card);border:1px solid var(--line);
+  color:var(--txt);border-radius:6px;padding:3px 6px;font-family:inherit;font-size:11px}
+.info .actions{display:flex;gap:6px;margin-top:12px}
+.info .actions button{flex:1;padding:9px;border-radius:10px;font-family:inherit;
+  font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--line);
+  background:var(--card);color:var(--txt);transition:all .2s}
+.info .actions button:hover{background:rgba(255,255,255,.05)}
+.info .actions button.del{background:rgba(255,122,156,.15);color:#ff7a9c;
+  border-color:rgba(255,122,156,.4)}
+.picker{position:fixed;bottom:0;left:0;right:0;z-index:80;padding:10px 12px;
+  padding-bottom:calc(10px + env(safe-area-inset-bottom,0));
+  background:var(--panel);backdrop-filter:blur(24px);
+  border-top:1px solid var(--line);
+  transition:transform .4s cubic-bezier(.4,0,.2,1)}
+.picker.hide{transform:translateY(110%)}
+.cats,.brands{display:flex;gap:6px;margin-bottom:7px;overflow-x:auto;
+  scrollbar-width:none;padding-bottom:1px}
+.cats::-webkit-scrollbar,.brands::-webkit-scrollbar{display:none}
+.cat{padding:7px 14px;border-radius:10px;flex-shrink:0;background:var(--card);
+  border:1.5px solid transparent;color:var(--txt2);font-family:inherit;
+  font-size:11.5px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}
+.cat.on{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#0a0f1a;
+  box-shadow:0 4px 12px rgba(59,130,246,.5)}
+.brand{padding:6px 12px;border-radius:9px;flex-shrink:0;background:var(--card);
+  border:1px solid transparent;color:var(--txt2);font-family:inherit;font-size:11px;
+  font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}
+.brand.on{border-color:var(--mint);color:var(--mint);background:rgba(79,228,184,.12)}
+.types{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:6px;
+  max-height:120px;overflow-y:auto;scrollbar-width:thin;padding:1px}
+.types::-webkit-scrollbar{width:4px}
+.types::-webkit-scrollbar-thumb{background:var(--line2);border-radius:2px}
+.type{padding:8px 4px;border-radius:10px;background:var(--card);
+  border:1.5px solid transparent;color:var(--txt2);font-family:inherit;
+  font-size:9.5px;font-weight:700;cursor:pointer;transition:all .2s;
+  display:flex;flex-direction:column;align-items:center;gap:3px;min-height:58px}
+.type:hover{border-color:var(--line2)}
+.type:active{transform:scale(.94)}
+.type.on{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#0a0f1a;
+  box-shadow:0 5px 16px rgba(59,130,246,.5)}
+.type .em{font-size:20px;line-height:1}
+.type .nm{font-size:9px;line-height:1.2;text-align:center}
+.toast{position:fixed;bottom:195px;left:50%;transform:translateX(-50%) translateY(20px);
+  padding:11px 22px;border-radius:14px;background:var(--panel);
+  backdrop-filter:blur(20px);border:1px solid var(--line2);
+  font-size:13px;font-weight:700;color:var(--txt);opacity:0;pointer-events:none;
+  transition:all .3s;z-index:200;white-space:nowrap;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.presBtn{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
+  z-index:90;padding:13px 26px;border-radius:30px;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  color:#0a0f1a;font-family:inherit;font-size:13px;font-weight:800;
+  border:0;cursor:pointer;display:none;box-shadow:0 12px 40px rgba(59,130,246,.55)}
+.presBtn.on{display:block;animation:showB .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes showB{from{transform:translateX(-50%) scale(.5);opacity:0}}
+.exitP{position:fixed;top:calc(22px + env(safe-area-inset-top,0));
+  inset-inline-end:22px;z-index:100;width:46px;height:46px;border-radius:50%;
+  background:rgba(20,28,44,.85);backdrop-filter:blur(20px);
+  border:1px solid var(--line);color:var(--txt);font-size:20px;cursor:pointer;
+  display:none;place-items:center;transition:all .2s}
+.exitP.on{display:grid}
+.exitP:active{transform:scale(.9)}
+.modal{position:fixed;inset:0;background:rgba(10,15,26,.92);backdrop-filter:blur(10px);
+  z-index:1000;display:none;align-items:center;justify-content:center;padding:18px}
+.modal.on{display:flex;animation:fadeIn .25s}
+@keyframes fadeIn{from{opacity:0}}
+.modal-content{background:#121a2c;border:1px solid var(--line2);border-radius:20px;
+  width:100%;max-width:760px;max-height:88vh;display:flex;flex-direction:column;
+  box-shadow:0 24px 80px rgba(0,0,0,.85);overflow:hidden;
+  animation:slideUp .35s cubic-bezier(.34,1.56,.64,1)}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0}}
+.modal-header{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;
+  align-items:center;justify-content:space-between;gap:12px;background:rgba(20,28,44,.8)}
+.modal-header h3{color:var(--blue);font-size:15px;font-weight:800;display:flex;align-items:center;gap:9px}
+.modal-body{padding:22px;overflow-y:auto;font-size:13px;line-height:1.65}
+.report-section{margin-bottom:20px}
+.report-section:last-child{margin-bottom:0}
+.report-section h4{color:var(--cyan);font-size:14px;margin-bottom:10px;
+  border-bottom:1px solid var(--line);padding-bottom:6px;display:flex;align-items:center;gap:8px}
+.modal-body .row{display:flex;justify-content:space-between;gap:12px;
+  padding:7px 0;font-size:12.5px;border-bottom:1px dashed var(--line)}
+.modal-body .row:last-child{border:none}
+.modal-body .row span:first-child{color:var(--txt3)}
+.modal-body .row span:last-child{font-weight:700;font-family:'JetBrains Mono',monospace}
+.report-table{width:100%;border-collapse:collapse;margin-top:10px;
+  border-radius:10px;overflow:hidden}
+.report-table th,.report-table td{border:1px solid var(--line);
+  padding:10px 12px;text-align:start;font-size:12px}
+.report-table th{background:rgba(59,130,246,.22);color:#bfdbfe;font-weight:800}
+.report-table tr:nth-child(even) td{background:rgba(59,130,246,.03)}
+.modal-footer{padding:16px 20px;border-top:1px solid var(--line);
+  display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+@media (max-width:600px){
+  .title .t2{display:none}
+  .langBtn .label{display:none}
+  .langBtn{min-width:42px;padding:0 10px}
+  .btn{padding:0 9px;font-size:12px}
+  .info{width:220px}
+  .tool{width:44px;height:44px;font-size:18px}
+  .types{grid-template-columns:repeat(auto-fill,minmax(66px,1fr))}
+}
+@media print{
+  body{background:#fff;color:#000;position:static}
+  header,.tools,.hud,.picker,.presBtn,.exitP,.info,#c,.toast,#loader{display:none!important}
+  .modal{position:absolute;inset:0;background:#fff;padding:0;display:block!important}
+  .modal-content{border:none;box-shadow:none;max-height:none;width:100%;color:#000;background:#fff;animation:none}
+  .modal-header{background:none;border-bottom:2px solid #000}
+  .modal-header h3{color:#000}
+  .modal-footer{display:none}
+  .modal-body .row span:first-child{color:#555}
+  .report-section h4{color:#000}
+  .report-table th{background:#eee;color:#000}
+  .report-table th,.report-table td{border:1px solid #999}
+}
+</style>
+</head>
+<body>
+
+<div id="loader"><div class="box">
+  <div class="sym">🎤</div>
+  <div class="txt" id="loaderTxt">LOADING ROOM…</div>
+</div></div>
+
+<canvas id="c"></canvas>
+
+<header id="hd">
+  <div class="logo">🎤</div>
+  <div class="title">
+    <div class="t1">AURALIS</div>
+    <div class="t2" id="roomLabel">MEETING ROOM · CONFERENCE MIC & CAMERA TRACKING</div>
+  </div>
+  <div class="spacer"></div>
+  <button class="langBtn" id="langBtn" title="Language">
+    <span class="flag">🌐</span>
+    <span class="label" id="langLabel">EN</span>
+  </button>
+  <button class="btn" id="reportBtn" data-i18n-title="report_tip">📄</button>
+  <button class="btn" id="viewBtn">🎬 3D</button>
+  <button class="btn" id="shotBtn" data-i18n-title="shot_tip">📸</button>
+  <button class="btn" id="presBtn" data-i18n-title="pres_tip">🎥</button>
+</header>
+
+<div class="hud" id="hud">
+  <div class="stat" id="statDev"><span data-i18n="hud_devices">Devices</span><b id="hudCount">0</b></div>
+  <div class="stat" id="statSpl"><span data-i18n="hud_spl">Max SPL</span><b id="hudSpl">—</b></div>
+  <div class="stat" id="statCov"><span data-i18n="hud_coverage">Coverage</span><b id="hudCoverage">—</b></div>
+</div>
+
+<div class="tools" id="tools">
+  <button class="tool on" id="heatBtn" data-i18n-title="heat_tip">🌡️</button>
+  <button class="tool" id="fitBtn" data-i18n-title="fit_tip">🎯</button>
+  <button class="tool on" id="gridBtn" data-i18n-title="grid_tip">▦</button>
+  <button class="tool" id="saveBtn" data-i18n-title="save_tip">💾</button>
+  <button class="tool" id="loadBtn" data-i18n-title="load_tip">📂</button>
+  <button class="tool" id="clearBtn" data-i18n-title="clear_tip">🧹</button>
+</div>
+
+<input type="file" id="fileInput" style="display:none" accept=".json">
+
+<div class="info" id="info">
+  <h4>📦 <span id="infName">—</span></h4>
+  <div class="tag" id="infBrand">—</div>
+  <div class="row"><span data-i18n="inf_category">Category</span><span id="infType">—</span></div>
+  <div class="row"><span data-i18n="inf_power">Power</span><span id="infPower">—</span></div>
+  <div class="row"><span data-i18n="inf_height">Height</span><span id="infH">—</span></div>
+  <div class="row"><span data-i18n="inf_position">Position</span><span id="infPos">—</span></div>
+  <div class="slider" id="powerWrap">
+    <label data-i18n="sl_power">Power</label>
+    <input type="range" id="powerSlider" min="5" max="500" step="5" value="20">
+    <b id="powerVal">20W</b>
+  </div>
+  <div class="slider" id="rotWrap">
+    <label data-i18n="sl_rotation">Rotation</label>
+    <input type="range" id="rotSlider" min="-180" max="180" step="5" value="0">
+    <b id="rotVal">0°</b>
+  </div>
+  <div class="row" style="margin-top:8px">
+    <span data-i18n="inf_room_w">Width</span>
+    <input type="number" id="roomWInput" class="numInput" min="6" max="60">
+  </div>
+  <div class="row">
+    <span data-i18n="inf_room_d">Depth</span>
+    <input type="number" id="roomDInput" class="numInput" min="6" max="60">
+  </div>
+  <div class="actions">
+    <button class="del" id="delBtn" data-i18n="act_delete">🗑️ Delete</button>
+  </div>
+</div>
+
+<div class="picker" id="picker">
+  <div class="cats" id="cats"></div>
+  <div class="brands" id="brands"></div>
+  <div class="types" id="types"></div>
+</div>
+
+<div class="modal" id="reportModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>📋 <span data-i18n="rep_title">Acoustic Design Report</span></h3>
+      <button class="btn" id="closeModalBtn" style="height:32px;min-width:32px;padding:0 8px">✕</button>
+    </div>
+    <div class="modal-body" id="reportModalBody"></div>
+    <div class="modal-footer">
+      <button class="btn on" id="printReportBtn" data-i18n="rep_print">🖨️ Print / Save PDF</button>
+      <button class="btn" id="closeModalBtn2" data-i18n="rep_close">Close</button>
+    </div>
+  </div>
+</div>
+
+<button class="presBtn" id="presToggle" data-i18n="pres_start">🎥 Start Presentation</button>
+<button class="exitP" id="exitPres">✕</button>
+<div class="toast" id="toast"></div>
+
+<script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
+<script>
+'use strict';
+
+/* ============ I18N ============ */
+const I18N = {
+  ar: {
+    loader:'جارٍ تحميل القاعة…',
+    room_label:'قاعة اجتماعات · مايكات وتتبع كاميرات',
+    hud_devices:'الأجهزة', hud_spl:'أقصى SPL', hud_coverage:'التغطية',
+    report_tip:'تقرير', shot_tip:'لقطة', pres_tip:'عرض',
+    heat_tip:'خريطة حرارية', fit_tip:'ملاءمة', grid_tip:'الشبكة',
+    save_tip:'حفظ', load_tip:'فتح', clear_tip:'حذف الكل',
+    inf_category:'الفئة', inf_power:'القوة', inf_height:'الارتفاع',
+    inf_position:'الموقع', inf_room_w:'العرض', inf_room_d:'الطول',
+    sl_power:'القوة', sl_rotation:'الاتجاه', act_delete:'🗑️ حذف',
+    rep_title:'التقرير الهندسي الصوتي',
+    rep_print:'🖨️ طباعة / حفظ PDF', rep_close:'إغلاق',
+    pres_start:'🎥 بدء العرض',
+    cat_tableMic:'مايكات الطاولة', cat_ceilingMic:'مايكات السقف',
+    cat_ptzCamera:'كاميرات PTZ', cat_autoTracking:'تتبع تلقائي',
+    cat_videoCodec:'أجهزة الفيديو', cat_boardroomSpk:'سماعات القاعة',
+    cat_ceilingSpk:'سماعات السقف', cat_dsp:'معالجة DSP',
+    cat_control:'تحكم', cat_paging:'نداء', cat_emergency:'طوارئ',
+    dev_gooseneck:'مايك عنق الإوزة', dev_boundary:'مايك لوحي',
+    dev_wireless_delegate:'مايك لاسلكي', dev_chairman:'مايك الرئيس',
+    dev_ceiling_array:'مصفوفة سقفية', dev_beamforming:'Beamforming',
+    dev_ceiling_triple:'ثلاثي سقفي',
+    dev_ptz_4k:'PTZ 4K', dev_ptz_auto:'PTZ تلقائي',
+    dev_ptz_speaker:'PTZ متتبع للمتحدث', dev_ptz_ceiling:'PTZ سقفي',
+    dev_tracking_proc:'معالج تتبع', dev_tracking_sensor:'مستشعر حركة',
+    dev_tracking_ai:'تتبع AI',
+    dev_codec_main:'Codec رئيسي', dev_codec_cloud:'Codec سحابي',
+    dev_codec_usb:'USB Bridge',
+    dev_soundbar:'Soundbar', dev_soundbar_lg:'Soundbar كبير',
+    dev_speaker_lcr:'سماعة LCR', dev_speaker_wall:'سماعة جدارية',
+    dev_ceiling_2way:'سقفية ثنائية', dev_ceiling_network:'سقفية شبكية',
+    dev_ceiling_pendant:'معلقة سقفية',
+    dev_dsp_aec:'DSP مع AEC', dev_dsp_matrix:'Matrix DSP',
+    dev_dsp_network:'DSP شبكي',
+    dev_touch:'شاشة لمس', dev_scheduler:'مجدول', dev_button_panel:'لوحة أزرار',
+    dev_paging_ceiling:'نداء سقفي', dev_paging_horn:'بوق نداء',
+    dev_emg_horn:'بوق طوارئ', dev_emg_strobe:'فلاش طوارئ',
+    brand_shure:'Shure', brand_bose:'BOSE', brand_yamaha:'ياماها',
+    brand_sennheiser:'Sennheiser', brand_biamp:'Biamp',
+    brand_qsc:'QSC', brand_crestron:'Crestron', brand_audinate:'Audinate',
+    brand_logitech:'Logitech', brand_poly:'Poly', brand_yealink:'Yealink',
+    brand_avg:'AVer', brand_ptzoptics:'PTZOptics',
+    to_undo:'↩️ تراجع', to_redo:'🔁 تقدم', to_deleted:'🗑️ حُذف',
+    to_saved:'💾 تم الحفظ', to_loaded:'📂 تم التحميل',
+    to_cleared:'🧹 تم التنظيف', to_shot:'📸 تم حفظ الصورة',
+    to_heat_on:'🌡️ التغطية مفعّلة', to_heat_off:'🌡️ التغطية مغلقة',
+    to_pres_on:'🎥 وضع العرض', to_pres_off:'✏️ وضع التحرير',
+    to_invalid:'ملف غير صالح', to_confirm_clear:'حذف كل الأجهزة؟',
+    rep_env_info:'معلومات البيئة', rep_equip:'جدول المعدات',
+    rep_analysis:'التحليل الصوتي',
+    rep_env_type:'نوع البيئة', rep_dim:'الأبعاد', rep_total_dev:'عدد الأجهزة',
+    rep_total_power:'القدرة الإجمالية', rep_date:'التاريخ',
+    rep_max_spl:'أقصى SPL', rep_coverage:'نسبة التغطية',
+    rep_status:'الحالة', rep_status_good:'ممتاز',
+    rep_device:'الجهاز', rep_qty:'العدد', rep_empty:'لا توجد أجهزة',
+    rep_target:'الهدف المعياري', rep_rt:'زمن الرنين RT60',
+    rep_reverb:'الصدى المتوقع', rep_capacity:'سعة الحضور',
+    rep_area:'المساحة', rep_zones:'عدد المناطق',
+    rep_mics:'عدد الميكروفونات', rep_cameras:'عدد الكاميرات',
+    rep_paging:'نظام النداء', rep_emergency:'طوارئ EN 60849',
+    rep_ada:'توافق ADA', rep_av:'توافق AV',
+    rep_sti:'وضوح الكلام STI', rep_nc:'مستوى الضجيج NC',
+    rep_sti_target:'STI > 0.75 (اجتماعات)',
+    rep_rt60_target:'RT60 = 0.4-0.6s (كلام)',
+    rep_nc_target:'NC-30 (قاعة اجتماعات)',
+    rep_iso:'ISO 9921 (وضوح الكلام)',
+    rep_iec:'IEC 60914 (معدات مؤتمرات)',
+    rep_av_std:'معايير AV/IT',
+    rep_tracking:'تتبع الكاميرا تلقائياً'
+  },
+  en: {
+    loader:'LOADING ROOM…',
+    room_label:'MEETING ROOM · CONFERENCE MIC & CAMERA TRACKING',
+    hud_devices:'Devices', hud_spl:'Max SPL', hud_coverage:'Coverage',
+    report_tip:'Report', shot_tip:'Screenshot', pres_tip:'Presentation',
+    heat_tip:'Heatmap', fit_tip:'Fit', grid_tip:'Grid',
+    save_tip:'Save', load_tip:'Load', clear_tip:'Clear',
+    inf_category:'Category', inf_power:'Power', inf_height:'Height',
+    inf_position:'Position', inf_room_w:'Width', inf_room_d:'Depth',
+    sl_power:'Power', sl_rotation:'Rotation', act_delete:'🗑️ Delete',
+    rep_title:'Acoustic Design Report',
+    rep_print:'🖨️ Print / Save PDF', rep_close:'Close',
+    pres_start:'🎥 Start Presentation',
+    cat_tableMic:'Table Microphones', cat_ceilingMic:'Ceiling Microphones',
+    cat_ptzCamera:'PTZ Cameras', cat_autoTracking:'Auto Tracking',
+    cat_videoCodec:'Video Codecs', cat_boardroomSpk:'Boardroom Speakers',
+    cat_ceilingSpk:'Ceiling Speakers', cat_dsp:'DSP Processing',
+    cat_control:'Control', cat_paging:'Paging', cat_emergency:'Emergency',
+    dev_gooseneck:'Gooseneck Mic', dev_boundary:'Boundary Mic',
+    dev_wireless_delegate:'Wireless Delegate', dev_chairman:'Chairman Mic',
+    dev_ceiling_array:'Ceiling Array', dev_beamforming:'Beamforming',
+    dev_ceiling_triple:'Triple Ceiling',
+    dev_ptz_4k:'PTZ 4K', dev_ptz_auto:'Auto PTZ',
+    dev_ptz_speaker:'Speaker-Tracking PTZ', dev_ptz_ceiling:'Ceiling PTZ',
+    dev_tracking_proc:'Tracking Processor', dev_tracking_sensor:'Motion Sensor',
+    dev_tracking_ai:'AI Tracking',
+    dev_codec_main:'Main Codec', dev_codec_cloud:'Cloud Codec',
+    dev_codec_usb:'USB Bridge',
+    dev_soundbar:'Soundbar', dev_soundbar_lg:'Large Soundbar',
+    dev_speaker_lcr:'LCR Speaker', dev_speaker_wall:'Wall Speaker',
+    dev_ceiling_2way:'2-Way Ceiling', dev_ceiling_network:'Networked Ceiling',
+    dev_ceiling_pendant:'Pendant Ceiling',
+    dev_dsp_aec:'DSP with AEC', dev_dsp_matrix:'Matrix DSP',
+    dev_dsp_network:'Networked DSP',
+    dev_touch:'Touch Panel', dev_scheduler:'Scheduler', dev_button_panel:'Button Panel',
+    dev_paging_ceiling:'Ceiling Paging', dev_paging_horn:'Paging Horn',
+    dev_emg_horn:'Emergency Horn', dev_emg_strobe:'Emergency Strobe',
+    brand_shure:'Shure', brand_bose:'BOSE', brand_yamaha:'Yamaha',
+    brand_sennheiser:'Sennheiser', brand_biamp:'Biamp',
+    brand_qsc:'QSC', brand_crestron:'Crestron', brand_audinate:'Audinate',
+    brand_logitech:'Logitech', brand_poly:'Poly', brand_yealink:'Yealink',
+    brand_avg:'AVer', brand_ptzoptics:'PTZOptics',
+    to_undo:'↩️ Undo', to_redo:'🔁 Redo', to_deleted:'🗑️ Deleted',
+    to_saved:'💾 Saved', to_loaded:'📂 Loaded',
+    to_cleared:'🧹 Cleared', to_shot:'📸 Screenshot saved',
+    to_heat_on:'🌡️ Heatmap ON', to_heat_off:'🌡️ Heatmap OFF',
+    to_pres_on:'🎥 Presentation mode', to_pres_off:'✏️ Edit mode',
+    to_invalid:'Invalid file', to_confirm_clear:'Delete all devices?',
+    rep_env_info:'Environment Info', rep_equip:'Equipment List',
+    rep_analysis:'Acoustic Analysis',
+    rep_env_type:'Environment', rep_dim:'Dimensions',
+    rep_total_dev:'Total devices', rep_total_power:'Total power',
+    rep_date:'Date',
+    rep_max_spl:'Max SPL', rep_coverage:'Coverage',
+    rep_status:'Status', rep_status_good:'Excellent',
+    rep_device:'Device', rep_qty:'Qty', rep_empty:'No devices',
+    rep_target:'Target Standard', rep_rt:'RT60 Reverberation',
+    rep_reverb:'Expected Reverb', rep_capacity:'Occupancy',
+    rep_area:'Area', rep_zones:'Zone Count',
+    rep_mics:'Mic Count', rep_cameras:'Camera Count',
+    rep_paging:'Paging System', rep_emergency:'EN 60849 Emergency',
+    rep_ada:'ADA Compliance', rep_av:'AV Compliance',
+    rep_sti:'Speech Intelligibility STI', rep_nc:'Noise Level NC',
+    rep_sti_target:'STI > 0.75 (Meetings)',
+    rep_rt60_target:'RT60 = 0.4-0.6s (Speech)',
+    rep_nc_target:'NC-30 (Boardroom)',
+    rep_iso:'ISO 9921 (Speech Intelligibility)',
+    rep_iec:'IEC 60914 (Conference Equipment)',
+    rep_av_std:'AV/IT Standards',
+    rep_tracking:'Auto Camera Tracking'
+  }
+};
+let LANG = localStorage.getItem('auralis_lang') || 'ar';
+const T = k => I18N[LANG][k] || k;
+
+function applyLang() {
+  document.documentElement.lang = LANG;
+  document.documentElement.dir = LANG === 'ar' ? 'rtl' : 'ltr';
+  document.body.style.fontFamily = LANG === 'ar'
+    ? "'Cairo','Inter',sans-serif" : "'Inter','Cairo',sans-serif";
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.dataset.i18n; if (I18N[LANG][k]) el.textContent = I18N[LANG][k];
+  });
+  document.querySelectorAll('[data-i18n-title]').forEach(el => {
+    const k = el.dataset.i18nTitle; if (I18N[LANG][k]) el.title = I18N[LANG][k];
+  });
+  document.getElementById('langLabel').textContent = LANG === 'ar' ? 'EN' : 'ع';
+  document.getElementById('loaderTxt').textContent = T('loader');
+  document.getElementById('roomLabel').textContent = T('room_label');
+  document.getElementById('presToggle').textContent = T('pres_start');
+  document.title = LANG === 'ar' ? '🎤 AURALIS · قاعة اجتماعات' : '🎤 AURALIS · Meeting Room';
+}
+
+/* ============ DATA ============ */
+const BRANDS = {
+  shure:{color:0x3b82f6,tag:'SHURE'},
+  bose:{color:0x06b6d4,tag:'BOSE PRO'},
+  yamaha:{color:0x8b5cf6,tag:'YAMAHA'},
+  sennheiser:{color:0x60a5fa,tag:'SENNHEISER'},
+  biamp:{color:0x4fe4b8,tag:'BIAMP'},
+  qsc:{color:0xfbbf24,tag:'QSC'},
+  crestron:{color:0xa78bfa,tag:'CRESTRON'},
+  audinate:{color:0xfb7185,tag:'AUDINATE'},
+  logitech:{color:0x38bdf8,tag:'LOGITECH'},
+  poly:{color:0xf472b6,tag:'POLY'},
+  yealink:{color:0x22c55e,tag:'YEALINK'},
+  avg:{color:0xf97316,tag:'AVer'},
+  ptzoptics:{color:0xeab308,tag:'PTZOptics'}
+};
+
+const CATS = {
+  tableMic:{emoji:'🎙️',devices:[
+    ['gooseneck','dev_gooseneck','🎙️',0.9,0,true,'gooseneck'],
+    ['boundary','dev_boundary','🎤',0.9,0,false,'boundary'],
+    ['wireless_delegate','dev_wireless_delegate','📡',0.9,0,true,'wirelessDelegate'],
+    ['chairman','dev_chairman','👔',0.9,0,true,'chairman']
+  ]},
+  ceilingMic:{emoji:'🔊',devices:[
+    ['ceiling_array','dev_ceiling_array','🎙️',3.5,0,false,'ceilingArray'],
+    ['beamforming','dev_beamforming','📡',3.5,0,false,'beamforming'],
+    ['ceiling_triple','dev_ceiling_triple','🎙️',3.5,0,false,'ceilingTriple']
+  ]},
+  ptzCamera:{emoji:'📹',devices:[
+    ['ptz_4k','dev_ptz_4k','📹',2.5,0,true,'ptz4k'],
+    ['ptz_auto','dev_ptz_auto','🎯',2.5,0,true,'ptzAuto'],
+    ['ptz_speaker','dev_ptz_speaker','🎯',2.5,0,true,'ptzSpeaker'],
+    ['ptz_ceiling','dev_ptz_ceiling','📹',3.5,0,true,'ptzCeiling']
+  ]},
+  autoTracking:{emoji:'🎯',devices:[
+    ['tracking_proc','dev_tracking_proc','🧠',0.5,0,false,'trackingProc'],
+    ['tracking_sensor','dev_tracking_sensor','📡',3.5,0,false,'trackingSensor'],
+    ['tracking_ai','dev_tracking_ai','🤖',0.5,0,false,'trackingAI']
+  ]},
+  videoCodec:{emoji:'📺',devices:[
+    ['codec_main','dev_codec_main','📺',0.5,0,false,'codecMain'],
+    ['codec_cloud','dev_codec_cloud','☁️',0.5,0,false,'codecCloud'],
+    ['codec_usb','dev_codec_usb','🔌',0.5,0,false,'codecUsb']
+  ]},
+  boardroomSpk:{emoji:'🔈',devices:[
+    ['soundbar','dev_soundbar','🔈',1.2,60,true,'soundbar'],
+    ['soundbar_lg','dev_soundbar_lg','🔊',1.2,120,true,'soundbarLg'],
+    ['speaker_lcr','dev_speaker_lcr','🎬',2.5,80,true,'speakerLcr'],
+    ['speaker_wall','dev_speaker_wall','🔉',2.5,60,true,'speakerWall']
+  ]},
+  ceilingSpk:{emoji:'🔊',devices:[
+    ['ceiling_2way','dev_ceiling_2way','🔊',3.5,30,false,'ceiling2way'],
+    ['ceiling_network','dev_ceiling_network','🌐',3.5,30,false,'ceilingNetwork'],
+    ['ceiling_pendant','dev_ceiling_pendant','🎈',3.2,40,false,'ceilingPendant']
+  ]},
+  dsp:{emoji:'🧠',devices:[
+    ['dsp_aec','dev_dsp_aec','🧠',0.5,0,false,'dspAec'],
+    ['dsp_matrix','dev_dsp_matrix','🔀',0.5,0,false,'dspMatrix'],
+    ['dsp_network','dev_dsp_network','🌐',0.5,0,false,'dspNetwork']
+  ]},
+  control:{emoji:'🎚️',devices:[
+    ['touch','dev_touch','📱',1.5,0,true,'touchPanel'],
+    ['scheduler','dev_scheduler','📅',1.5,0,false,'scheduler'],
+    ['button_panel','dev_button_panel','🔘',1.5,0,false,'buttonPanel']
+  ]},
+  paging:{emoji:'📢',devices:[
+    ['paging_ceiling','dev_paging_ceiling','📢',3.5,20,false,'pagingCeiling'],
+    ['paging_horn','dev_paging_horn','📯',5.0,60,true,'pagingHorn']
+  ]},
+  emergency:{emoji:'🚨',devices:[
+    ['emg_horn','dev_emg_horn','📯',5.5,80,true,'emgHorn'],
+    ['emg_strobe','dev_emg_strobe','💡',4.5,50,false,'emgStrobe']
+  ]}
+};
+
+/* Meeting Room: 20×14m boardroom */
+const ROOM = {
+  name:{ ar:'قاعة اجتماعات تنفيذية', en:'Executive Boardroom' },
+  size:[20, 14],
+  walls:[[-10,-7,10,-7],[10,-7,10,7],[10,7,-10,7],[-10,7,-10,-7]],
+  features:[
+    { type:'floor',  x:0, z:0, w:19.6, d:13.6 },
+    { type:'ceiling', x:0, z:0, w:19.6, d:13.6, h:3.6 },
+    { type:'wall', x:0, z:-6.9, w:20, h:3.6, d:0.2 },
+    { type:'wall', x:10, z:0, w:0.2, h:3.6, d:14 },
+    { type:'wall', x:-10, z:0, w:0.2, h:3.6, d:14 },
+    { type:'wall', x:0, z:6.9, w:20, h:3.6, d:0.2 },
+    /* Table */
+    { type:'table', x:0, z:0, w:8, d:2.4, H:0.75 },
+    /* Displays on front wall */
+    { type:'display', x:-3, z:-6.75, w:2.8, h:1.6 },
+    { type:'display', x:0, z:-6.75, w:3.2, h:1.8, main:true },
+    { type:'display', x:3, z:-6.75, w:2.8, h:1.6 },
+    /* Doors */
+    { type:'door', x:6, z:6.85, w:1.2, h:2.4 },
+    { type:'door', x:-8, z:6.85, w:1.2, h:2.4 }
+  ],
+  devices:[
+    /* === TABLE MICROPHONES (gooseneck along table) === */
+    ['shure','tableMic','gooseneck',-3,-0.9,Math.PI],
+    ['shure','tableMic','gooseneck',-1.5,0.9,0],
+    ['shure','tableMic','gooseneck',0,-0.9,Math.PI],
+    ['shure','tableMic','gooseneck',1.5,0.9,0],
+    ['shure','tableMic','gooseneck',3,-0.9,Math.PI],
+    /* Chairman at head of table */
+    ['shure','tableMic','chairman',-4,0,Math.PI/2],
+    ['shure','tableMic','chairman',4,0,-Math.PI/2],
+    /* Wireless delegate */
+    ['sennheiser','tableMic','wireless_delegate',-2.4,0.9,0],
+    ['sennheiser','tableMic','wireless_delegate',0.9,-0.9,Math.PI],
+    /* Boundary mics */
+    ['shure','tableMic','boundary',-3,0.5,0],
+    ['shure','tableMic','boundary',3,-0.5,Math.PI],
+
+    /* === CEILING MICROPHONES === */
+    ['shure','ceilingMic','ceiling_array',-2,0,0],
+    ['shure','ceilingMic','ceiling_array',2,0,0],
+    ['shure','ceilingMic','beamforming',0,0,0],
+    ['sennheiser','ceilingMic','ceiling_triple',-4,0,0],
+    ['sennheiser','ceilingMic','ceiling_triple',4,0,0],
+
+    /* === PTZ CAMERAS === */
+    /* 4K PTZ at front wall (looking at the table) */
+    ['ptzoptics','ptzCamera','ptz_4k',0,-6.4,0],
+    /* Auto PTZ on side walls */
+    ['avg','ptzCamera','ptz_auto',-9.6,0,Math.PI/2],
+    ['avg','ptzCamera','ptz_auto',9.6,0,-Math.PI/2],
+    /* Speaker tracking PTZ */
+    ['logitech','ptzCamera','ptz_speaker',0,-6.2,0],
+    /* Ceiling PTZ */
+    ['yealink','ptzCamera','ptz_ceiling',-3,-4,0],
+    ['yealink','ptzCamera','ptz_ceiling',3,-4,0],
+
+    /* === AUTO TRACKING SYSTEM === */
+    ['logitech','autoTracking','tracking_proc',9.5,-6.5,-Math.PI/4],
+    ['logitech','autoTracking','tracking_sensor',0,-6.5,0],
+    ['avg','autoTracking','tracking_ai',9.3,-6.3,-Math.PI/4],
+
+    /* === VIDEO CODECS === */
+    ['poly','videoCodec','codec_main',9.5,-6,0],
+    ['poly','videoCodec','codec_cloud',9.5,-5.6,0],
+    ['yealink','videoCodec','codec_usb',9.5,-5.2,0],
+
+    /* === BOARDROOM SPEAKERS === */
+    /* Soundbars under displays */
+    ['bose','boardroomSpk','soundbar',-3,-6.5,0],
+    ['bose','boardroomSpk','soundbar_lg',0,-6.5,0],
+    ['bose','boardroomSpk','soundbar',3,-6.5,0],
+    /* Wall speakers on side walls */
+    ['yamaha','boardroomSpk','speaker_wall',-9.7,-3,Math.PI/2],
+    ['yamaha','boardroomSpk','speaker_wall',-9.7,3,Math.PI/2],
+    ['yamaha','boardroomSpk','speaker_wall',9.7,-3,-Math.PI/2],
+    ['yamaha','boardroomSpk','speaker_wall',9.7,3,-Math.PI/2],
+    /* LCR */
+    ['qsc','boardroomSpk','speaker_lcr',-1.5,-6.5,0],
+    ['qsc','boardroomSpk','speaker_lcr',1.5,-6.5,0],
+
+    /* === CEILING SPEAKERS === */
+    ['bose','ceilingSpk','ceiling_2way',-5,-3,0],
+    ['bose','ceilingSpk','ceiling_2way',5,-3,0],
+    ['bose','ceilingSpk','ceiling_2way',-5,3,0],
+    ['bose','ceilingSpk','ceiling_2way',5,3,0],
+    ['bose','ceilingSpk','ceiling_network',0,-3,0],
+    ['bose','ceilingSpk','ceiling_network',0,3,0],
+    ['bose','ceilingSpk','ceiling_pendant',-7,0,0],
+    ['bose','ceilingSpk','ceiling_pendant',7,0,0],
+
+    /* === DSP === */
+    ['biamp','dsp','dsp_aec',8.5,-6.5,0],
+    ['biamp','dsp','dsp_matrix',8.5,-6,0],
+    ['qsc','dsp','dsp_network',8.5,-5.5,0],
+
+    /* === CONTROL === */
+    ['crestron','control','touch',9.5,5.5,-Math.PI/2],
+    ['crestron','control','scheduler',9.3,6,-Math.PI/2],
+    ['crestron','control','button_panel',9.5,6.5,-Math.PI/2],
+
+    /* === PAGING === */
+    ['bose','paging','paging_ceiling',-6,-5,0],
+    ['bose','paging','paging_ceiling',6,-5,0],
+    ['toa','paging','paging_horn',-9.5,6.5,3*Math.PI/4],
+    ['toa','paging','paging_horn',9.5,6.5,-3*Math.PI/4],
+
+    /* === EMERGENCY === */
+    ['toa','emergency','emg_horn',-9.5,-6.5,Math.PI/4],
+    ['toa','emergency','emg_horn',9.5,-6.5,-Math.PI/4],
+    ['toa','emergency','emg_strobe',-5,6.7,Math.PI],
+    ['toa','emergency','emg_strobe',5,6.7,Math.PI]
+  ]
+};
+
+/* ============ STATE ============ */
+const state = {
+  devices: [], nextId: 1,
+  curBrand: 'shure', curCat: 'tableMic', curType: 'gooseneck',
+  selected: null, view3D: true, showHeat: true, showGrid: true, presentation: false,
+  cam: { theta:-0.6, phi:0.85, radius:32, target:new THREE.Vector3(0,1.5,0), tween:null },
+  history: [], historyIdx: -1
+};
+
+/* ============ THREE SETUP ============ */
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, preserveDrawingBuffer:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+if (THREE.sRGBEncoding !== undefined) renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
+
+const scene = new THREE.Scene();
+const skyColor = 0x0a0f1a;
+scene.background = new THREE.Color(skyColor);
+scene.fog = new THREE.Fog(skyColor, 40, 120);
+const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 500);
+
+scene.add(new THREE.AmbientLight(0xe0e8ff, 0.55));
+scene.add(new THREE.HemisphereLight(0xc8d8ff, 0x1a1f30, 0.55));
+const sun = new THREE.DirectionalLight(0xfff5e0, 1.1);
+sun.position.set(8, 12, 6);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.camera.left = -14; sun.shadow.camera.right = 14;
+sun.shadow.camera.top = 14; sun.shadow.camera.bottom = -14;
+sun.shadow.camera.near = 1; sun.shadow.camera.far = 40;
+sun.shadow.bias = -0.0005;
+scene.add(sun);
+const fill = new THREE.DirectionalLight(0xa8b0ff, 0.4);
+fill.position.set(-6, 8, -4); scene.add(fill);
+const fill2 = new THREE.DirectionalLight(0x80d0ff, 0.3);
+fill2.position.set(0, 6, -10); scene.add(fill2);
+
+const roomGrp = new THREE.Group(); scene.add(roomGrp);
+const devGrp  = new THREE.Group(); scene.add(devGrp);
+const heatGrp = new THREE.Group(); scene.add(heatGrp);
+
+const grid = new THREE.GridHelper(200, 100, 0x3b82f6, 0x1a1f30);
+grid.material.opacity = 0.12; grid.material.transparent = true;
+grid.position.y = 0.004; scene.add(grid);
+
+/* ============ MATERIALS ============ */
+const M = {
+  body:()=>new THREE.MeshStandardMaterial({color:0x1a2035,roughness:0.5,metalness:0.5}),
+  dark:()=>new THREE.MeshStandardMaterial({color:0x050810,roughness:0.85,metalness:0.25}),
+  gray:()=>new THREE.MeshStandardMaterial({color:0x3a4250,roughness:0.6,metalness:0.4}),
+  metal:()=>new THREE.MeshStandardMaterial({color:0xb0b8c8,roughness:0.3,metalness:0.85}),
+  steel:()=>new THREE.MeshStandardMaterial({color:0x9098a8,roughness:0.5,metalness:0.6,side:THREE.DoubleSide}),
+  wood:()=>new THREE.MeshStandardMaterial({color:0x5a3a20,roughness:0.85,metalness:0.05}),
+  woodLight:()=>new THREE.MeshStandardMaterial({color:0x8a5a30,roughness:0.75,metalness:0.08}),
+  tableTop:()=>new THREE.MeshStandardMaterial({color:0x2a1a10,roughness:0.35,metalness:0.1}),
+  tableEdge:()=>new THREE.MeshStandardMaterial({color:0x8a5a30,roughness:0.65,metalness:0.15}),
+  floor:()=>new THREE.MeshStandardMaterial({color:0x2a2a35,roughness:0.65,metalness:0.15}),
+  carpet:()=>new THREE.MeshStandardMaterial({color:0x1a2030,roughness:0.95,metalness:0.02}),
+  wall:()=>new THREE.MeshStandardMaterial({color:0x3a4255,roughness:0.85,metalness:0.08}),
+  wallDark:()=>new THREE.MeshStandardMaterial({color:0x222838,roughness:0.8,metalness:0.1}),
+  ceiling:()=>new THREE.MeshStandardMaterial({color:0x1a2030,roughness:0.9,metalness:0.05}),
+  ceilingPanel:()=>new THREE.MeshStandardMaterial({color:0xe8ecf5,emissive:0xf0f4ff,emissiveIntensity:0.35,roughness:0.7,metalness:0.1}),
+  display:()=>new THREE.MeshBasicMaterial({color:0x0a1830}),
+  displayScreen:()=>new THREE.MeshBasicMaterial({color:0x1e3a8a}),
+  chair:()=>new THREE.MeshStandardMaterial({color:0x2a2a30,roughness:0.7,metalness:0.15}),
+  chairBack:()=>new THREE.MeshStandardMaterial({color:0x1a1a20,roughness:0.75,metalness:0.1}),
+  glass:()=>new THREE.MeshStandardMaterial({color:0x60a5fa,roughness:0.1,metalness:0.5,transparent:true,opacity:0.3}),
+  door:()=>new THREE.MeshStandardMaterial({color:0x1a1f30,roughness:0.7,metalness:0.2}),
+  doorFrame:()=>new THREE.MeshStandardMaterial({color:0x4a5260,roughness:0.6,metalness:0.4}),
+  screen:()=>new THREE.MeshBasicMaterial({color:0x1a3a5a,transparent:true,opacity:0.9}),
+  ledRed:()=>new THREE.MeshStandardMaterial({color:0xff2222,emissive:0xff2222,emissiveIntensity:2.5}),
+  ledGreen:()=>new THREE.MeshStandardMaterial({color:0x4fe4b8,emissive:0x4fe4b8,emissiveIntensity:2.5}),
+  ledAmber:()=>new THREE.MeshStandardMaterial({color:0xfbbf24,emissive:0xfbbf24,emissiveIntensity:2.5}),
+  ledBlue:()=>new THREE.MeshStandardMaterial({color:0x3b82f6,emissive:0x3b82f6,emissiveIntensity:2.5}),
+  ledCyan:()=>new THREE.MeshStandardMaterial({color:0x06b6d4,emissive:0x06b6d4,emissiveIntensity:2.5}),
+  ledWhite:()=>new THREE.MeshStandardMaterial({color:0xffffff,emissive:0xffffff,emissiveIntensity:2.0}),
+  ledViolet:()=>new THREE.MeshStandardMaterial({color:0x8b5cf6,emissive:0x8b5cf6,emissiveIntensity:2.5})
+};
+function accentMat(c,i){return new THREE.MeshStandardMaterial({color:c,emissive:c,emissiveIntensity:i||0.7,roughness:0.3,metalness:0.5});}
+
+function getSpec(cat, typeId) {
+  const c = CATS[cat]; if (!c) return null;
+  const arr = c.devices.find(d => d[0] === typeId); if (!arr) return null;
+  return {id:arr[0], nameKey:arr[1], emoji:arr[2], h:arr[3], power:arr[4], dir:arr[5], shape:arr[6]};
+}
+function devName(spec){return T(spec.nameKey);}
+function catName(key){return T('cat_' + key);}
+function brandName(key){return BRANDS[key] ? T('brand_' + key) : '—';}
+
+/* ============ MESH FACTORY ============ */
+function makeMesh(cat, typeId, brandColor) {
+  const spec = getSpec(cat, typeId); if (!spec) return null;
+  const color = brandColor || 0x3b82f6;
+  const g = new THREE.Group();
+  const S = spec.shape;
+
+  switch (S) {
+    case 'gooseneck': {
+      /* Base on table */
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.07,0.02,14), M.dark());
+      g.add(base);
+      /* Flexible gooseneck */
+      const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.35,8), M.metal);
+      neck.position.y = 0.175; g.add(neck);
+      /* Mic head */
+      const head = new THREE.Mesh(new THREE.CapsuleGeometry ? new THREE.CapsuleGeometry(0.015,0.06,6,10) : new THREE.SphereGeometry(0.02,10,8), M.dark());
+      head.position.y = 0.38; g.add(head);
+      /* LED ring */
+      const led = new THREE.Mesh(new THREE.TorusGeometry(0.05,0.006,6,16), M.ledGreen);
+      led.rotation.x = Math.PI/2; led.position.y = 0.015; g.add(led);
+      break;
+    }
+    case 'boundary': {
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.09,0.018,16), M.dark());
+      g.add(base);
+      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.06,20), M.steel);
+      grille.rotation.x = -Math.PI/2; grille.position.y = 0.011; g.add(grille);
+      const led = new THREE.Mesh(new THREE.TorusGeometry(0.065,0.005,6,18), M.ledGreen);
+      led.rotation.x = Math.PI/2; led.position.y = 0.012; g.add(led);
+      break;
+    }
+    case 'wirelessDelegate': {
+      const base = new THREE.Mesh(new THREE.BoxGeometry(0.1,0.02,0.07), M.dark());
+      g.add(base);
+      const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.007,0.007,0.3,8), M.metal);
+      neck.position.y = 0.15; g.add(neck);
+      const head = new THREE.Mesh(new THREE.SphereGeometry(0.018,10,8), M.dark());
+      head.position.y = 0.32; g.add(head);
+      const led = new THREE.Mesh(new THREE.TorusGeometry(0.04,0.005,6,14), M.ledAmber);
+      led.rotation.x = Math.PI/2; led.position.y = 0.015; g.add(led);
+      break;
+    }
+    case 'chairman': {
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.09,0.02,16), M.dark());
+      g.add(base);
+      /* Double gooseneck (longer + indicator) */
+      const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.45,8), M.metal);
+      neck.position.y = 0.225; g.add(neck);
+      const head = new THREE.Mesh(new THREE.CapsuleGeometry ? new THREE.CapsuleGeometry(0.016,0.07,6,10) : new THREE.SphereGeometry(0.022,10,8), M.dark());
+      head.position.y = 0.48; g.add(head);
+      /* Red chairman ring */
+      const led = new THREE.Mesh(new THREE.TorusGeometry(0.05,0.007,6,16), M.ledRed);
+      led.rotation.x = Math.PI/2; led.position.y = 0.016; g.add(led);
+      /* Priority button */
+      const btn = new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.012,12), M.ledAmber);
+      btn.position.set(0.06, 0.012, 0); g.add(btn);
+      break;
+    }
+    case 'ceilingArray': {
+      /* Round ceiling array with LED ring */
+      const body = new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.32,0.06,32), M.body);
+      g.add(body);
+      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.26,32), M.steel);
+      grille.rotation.x = -Math.PI/2; grille.position.y = -0.031; g.add(grille);
+      /* LED ring (beam indicator) */
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(0.28,0.008,6,32), M.ledGreen);
+      ring.rotation.x = Math.PI/2; ring.position.y = -0.032; g.add(ring);
+      /* Center LED */
+      const center = new THREE.Mesh(new THREE.CircleGeometry(0.05,16), M.ledGreen);
+      center.rotation.x = -Math.PI/2; center.position.y = -0.033; g.add(center);
+      break;
+    }
+    case 'beamforming': {
+      const body = new THREE.Mesh(new THREE.CylinderGeometry(0.22,0.24,0.05,24), M.body);
+      g.add(body);
+      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.19,24), M.steel);
+      grille.rotation.x = -Math.PI/2; grille.position.y = -0.026; g.add(grille);
+      /* Multiple beam indicators */
+      for (let i=0;i<6;i++) {
+        const a = (i/6)*Math.PI*2;
+        const led = new THREE.Mesh(new THREE.CircleGeometry(0.02,10), M.ledAmber);
+        led.rotation.x = -Math.PI/2;
+        led.position.set(Math.cos(a)*0.15, -0.027, Math.sin(a)*0.15); g.add(led);
+      }
+      break;
+    }
+    case 'ceilingTriple': {
+      /* Triple mic array (3 mics) */
+      for (let i=0;i<3;i++) {
+        const a = (i/3)*Math.PI*2;
+        const mic = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,0.05,16), M.body);
+        mic.position.set(Math.cos(a)*0.14, 0, Math.sin(a)*0.14); g.add(mic);
+        const grille = new THREE.Mesh(new THREE.CircleGeometry(0.045,16), M.steel);
+        grille.rotation.x = -Math.PI/2; grille.position.set(Math.cos(a)*0.14, -0.026, Math.sin(a)*0.14); g.add(grille);
+        const led = new THREE.Mesh(new THREE.CircleGeometry(0.012,10), M.ledGreen);
+        led.rotation.x = -Math.PI/2; led.position.set(Math.cos(a)*0.14, -0.028, Math.sin(a)*0.14); g.add(led);
+      }
+      /* Center mount */
+      const center = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.07,0.06,12), M.gray);
+      g.add(center);
+      break;
+    }
+    case 'ptz4k': {
+      /* PTZ camera: dome + lens + tilt */
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.11,0.04,16), M.dark());
+      g.add(base);
+      /* Pan base */
+      const panBase = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.09,0.06,16), M.body);
+      panBase.position.y = 0.05; g.add(panBase);
+      /* Tilt head */
+      const tilt = new THREE.Mesh(new THREE.SphereGeometry(0.075,16,12), M.body);
+      tilt.position.y = 0.14; g.add(tilt);
+      /* Lens */
+      const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.04,0.05,0.08,16), M.dark());
+      lens.rotation.x = Math.PI/2;
+      lens.position.set(0, 0.14, 0.08); g.add(lens);
+      /* Lens glass (LED) */
+      const glass = new THREE.Mesh(new THREE.CircleGeometry(0.035,16), M.ledBlue);
+      glass.position.set(0, 0.14, 0.12); g.add(glass);
+      /* Tally LED */
+      const tally = new THREE.Mesh(new THREE.SphereGeometry(0.015,8,6), M.ledRed);
+      tally.position.set(0.06, 0.16, 0.06); g.add(tally);
+      break;
+    }
+    case 'ptzAuto': {
+      /* Similar to PTZ but with tracking LED */
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.12,0.04,16), M.dark());
+      g.add(base);
+      const panBase = new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.1,0.06,16), M.body);
+      panBase.position.y = 0.05; g.add(panBase);
+      const tilt = new THREE.Mesh(new THREE.SphereGeometry(0.085,16,12), M.body);
+      tilt.position.y = 0.15; g.add(tilt);
+      const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.045,0.055,0.09,16), M.dark());
+      lens.rotation.x = Math.PI/2; lens.position.set(0, 0.15, 0.09); g.add(lens);
+      const glass = new THREE.Mesh(new THREE.CircleGeometry(0.04,16), M.ledCyan);
+      glass.position.set(0, 0.15, 0.14); g.add(glass);
+      /* IR ring for tracking */
+      const irRing = new THREE.Mesh(new THREE.TorusGeometry(0.05,0.008,6,20), M.ledAmber);
+      irRing.position.set(0, 0.15, 0.135); g.add(irRing);
+      break;
+    }
+    case 'ptzSpeaker': {
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.11,0.13,0.04,16), M.dark());
+      g.add(base);
+      const panBase = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.11,0.07,16), M.body);
+      panBase.position.y = 0.055; g.add(panBase);
+      const tilt = new THREE.Mesh(new THREE.SphereGeometry(0.09,16,12), M.body);
+      tilt.position.y = 0.17; g.add(tilt);
+      const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.06,0.1,16), M.dark());
+      lens.rotation.x = Math.PI/2; lens.position.set(0, 0.17, 0.1); g.add(lens);
+      const glass = new THREE.Mesh(new THREE.CircleGeometry(0.045,16), M.ledViolet);
+      glass.position.set(0, 0.17, 0.155); g.add(glass);
+      /* Speaker tracking ring */
+      const trackRing = new THREE.Mesh(new THREE.TorusGeometry(0.06,0.008,6,20), M.ledViolet);
+      trackRing.position.set(0, 0.17, 0.15); g.add(trackRing);
+      break;
+    }
+    case 'ptzCeiling': {
+      /* Ceiling-mounted PTZ — inverted */
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.15,0.05,16), M.dark());
+      g.add(base);
+      const dome = new THREE.Mesh(new THREE.SphereGeometry(0.13,20,12,0,Math.PI*2,Math.PI/2,Math.PI/2), M.body);
+      dome.position.y = -0.02; g.add(dome);
+      const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.06,0.08,16), M.dark());
+      lens.rotation.x = Math.PI/2; lens.position.set(0, -0.15, 0.06); g.add(lens);
+      const glass = new THREE.Mesh(new THREE.CircleGeometry(0.045,16), M.ledBlue);
+      glass.position.set(0, -0.15, 0.11); g.add(glass);
+      break;
+    }
+    case 'trackingProc': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.35,0.3), M.body);
+      g.add(b);
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.02,8,6), M.ledGreen);
+      led.position.set(-0.15, 0.1, 0.16); g.add(led);
+      const led2 = new THREE.Mesh(new THREE.SphereGeometry(0.02,8,6), M.ledAmber);
+      led2.position.set(-0.08, 0.1, 0.16); g.add(led2);
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.2,0.12), M.screen());
+      screen.position.set(0.05, 0, 0.151); g.add(screen);
+      break;
+    }
+    case 'trackingSensor': {
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.07,0.03,16), M.dark());
+      g.add(base);
+      const dome = new THREE.Mesh(new THREE.SphereGeometry(0.05,16,10,0,Math.PI*2,0,Math.PI/2), M.glass());
+      dome.position.y = 0.015; g.add(dome);
+      /* Sensor LED */
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.015,8,6), M.ledRed);
+      led.position.set(0, 0.04, 0.04); g.add(led);
+      break;
+    }
+    case 'trackingAI': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.35,0.3,0.28), M.body);
+      g.add(b);
+      /* AI chip icon */
+      const chip = new THREE.Mesh(new THREE.BoxGeometry(0.12,0.12,0.02), M.ledViolet);
+      chip.position.set(0, 0, 0.15); g.add(chip);
+      /* Pins */
+      for (let i=0;i<4;i++) {
+        const pin = new THREE.Mesh(new THREE.BoxGeometry(0.015,0.03,0.01), M.metal);
+        pin.position.set(-0.06 + i*0.04, -0.08, 0.15); g.add(pin);
+      }
+      break;
+    }
+    case 'codecMain': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.55,0.15,0.4), M.body);
+      g.add(b);
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.15,0.08), M.screen());
+      screen.position.set(-0.15, 0.02, 0.21); g.add(screen);
+      for (let i=0;i<5;i++) {
+        const led = new THREE.Mesh(new THREE.SphereGeometry(0.012,6,6), [M.ledGreen, M.ledAmber, M.ledBlue][i%3]);
+        led.position.set(-0.02 + i*0.05, 0.02, 0.21); g.add(led);
+      }
+      break;
+    }
+    case 'codecCloud': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.13,0.35), M.body);
+      g.add(b);
+      const cloud = new THREE.Mesh(new THREE.SphereGeometry(0.04,10,8), M.ledCyan);
+      cloud.position.set(-0.15, 0.02, 0.19); g.add(cloud);
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.012,6,6), M.ledGreen);
+      led.position.set(0, 0.02, 0.19); g.add(led);
+      break;
+    }
+    case 'codecUsb': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.1,0.3), M.body);
+      g.add(b);
+      /* USB symbol */
+      const usb = new THREE.Mesh(new THREE.BoxGeometry(0.06,0.02,0.02), M.ledViolet);
+      usb.position.set(-0.1, 0.02, 0.16); g.add(usb);
+      /* USB port */
+      const port = new THREE.Mesh(new THREE.BoxGeometry(0.05,0.03,0.02), M.dark());
+      port.position.set(0.12, 0.02, 0.16); g.add(port);
+      break;
+    }
+    case 'soundbar': {
+      /* Rectangular soundbar under display */
+      const bar = new THREE.Mesh(new THREE.BoxGeometry(1.0,0.14,0.15), M.body);
+      bar.castShadow = true; g.add(bar);
+      /* Grille */
+      const grille = new THREE.Mesh(new THREE.BoxGeometry(0.95,0.1,0.01), M.steel);
+      grille.position.set(0, 0, 0.08); g.add(grille);
+      /* LED strip */
+      const led = new THREE.Mesh(new THREE.BoxGeometry(0.9,0.015,0.005), M.ledBlue);
+      led.position.set(0, 0.06, 0.08); g.add(led);
+      break;
+    }
+    case 'soundbarLg': {
+      const bar = new THREE.Mesh(new THREE.BoxGeometry(1.4,0.18,0.18), M.body);
+      bar.castShadow = true; g.add(bar);
+      const grille = new THREE.Mesh(new THREE.BoxGeometry(1.35,0.14,0.01), M.steel);
+      grille.position.set(0, 0, 0.095); g.add(grille);
+      const led = new THREE.Mesh(new THREE.BoxGeometry(1.3,0.02,0.005), M.ledBlue);
+      led.position.set(0, 0.08, 0.095); g.add(led);
+      break;
+    }
+    case 'speakerLcr': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.6,0.35), M.body);
+      b.castShadow = true; g.add(b);
+      const grille = new THREE.Mesh(new THREE.BoxGeometry(0.35,0.5,0.01), M.steel);
+      grille.position.set(0, 0, 0.18); g.add(grille);
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.015,8,6), M.ledBlue);
+      led.position.set(0, -0.28, 0.18); g.add(led);
+      break;
+    }
+    case 'speakerWall': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.35,0.5,0.25), M.body);
+      b.castShadow = true; g.add(b);
+      const grille = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.4,0.01), M.steel);
+      grille.position.set(0, 0, 0.13); g.add(grille);
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.012,8,6), M.ledBlue);
+      led.position.set(0, -0.22, 0.13); g.add(led);
+      break;
+    }
+    case 'ceiling2way': {
+      const d = new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.14,0.045,24), M.body);
+      g.add(d);
+      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.12,24), M.steel);
+      grille.rotation.x = -Math.PI/2; grille.position.y = -0.024; g.add(grille);
+      const r = new THREE.Mesh(new THREE.TorusGeometry(0.13,0.005,6,24), M.ledBlue);
+      r.rotation.x = Math.PI/2; r.position.y = -0.025; g.add(r);
+      break;
+    }
+    case 'ceilingNetwork': {
+      const d = new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.14,0.045,24), M.body);
+      g.add(d);
+      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.12,24), M.steel);
+      grille.rotation.x = -Math.PI/2; grille.position.y = -0.024; g.add(grille);
+      const r = new THREE.Mesh(new THREE.TorusGeometry(0.13,0.005,6,24), M.ledGreen);
+      r.rotation.x = Math.PI/2; r.position.y = -0.025; g.add(r);
+      /* Network icon */
+      const net = new THREE.Mesh(new THREE.CircleGeometry(0.03,10), M.ledGreen);
+      net.rotation.x = -Math.PI/2; net.position.y = -0.026; g.add(net);
+      break;
+    }
+    case 'ceilingPendant': {
+      /* Pendant with cable */
+      const cable = new THREE.Mesh(new THREE.CylinderGeometry(0.006,0.006,1.2,6), M.dark());
+      cable.position.y = 0.6; g.add(cable);
+      const body = new THREE.Mesh(new THREE.SphereGeometry(0.16,20,14), M.body);
+      g.add(body);
+      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.12,20), M.steel);
+      grille.rotation.x = Math.PI/2; grille.position.y = -0.14; g.add(grille);
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(0.15,0.006,6,20), M.ledBlue);
+      ring.rotation.x = Math.PI/2; ring.position.y = -0.148; g.add(ring);
+      break;
+    }
+    case 'dspAec': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.55,0.44,0.42), M.body);
+      g.add(b);
+      /* AEC label */
+      const label = new THREE.Mesh(new THREE.PlaneGeometry(0.15,0.06), M.ledGreen);
+      label.position.set(-0.15, 0.15, 0.215); g.add(label);
+      /* LEDs */
+      for (let i=0;i<4;i++) {
+        const led = new THREE.Mesh(new THREE.SphereGeometry(0.012,6,6), M.ledGreen);
+        led.position.set(-0.05 + i*0.05, 0.15, 0.215); g.add(led);
+      }
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.2,0.1), M.screen());
+      screen.position.set(0.15, 0, 0.215); g.add(screen);
+      break;
+    }
+    case 'dspMatrix': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.55,0.44,0.42), M.body);
+      g.add(b);
+      /* Matrix grid */
+      for (let i=0;i<4;i++) {
+        for (let j=0;j<4;j++) {
+          const cell = new THREE.Mesh(new THREE.BoxGeometry(0.04,0.04,0.005), M.ledAmber);
+          cell.position.set(-0.15 + i*0.1, -0.1 + j*0.08, 0.215); g.add(cell);
+        }
+      }
+      break;
+    }
+    case 'dspNetwork': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.55,0.44,0.42), M.body);
+      g.add(b);
+      /* Network ports */
+      for (let i=0;i<6;i++) {
+        const port = new THREE.Mesh(new THREE.BoxGeometry(0.04,0.04,0.01), M.ledGreen);
+        port.position.set(-0.2 + i*0.08, -0.15, 0.215); g.add(port);
+      }
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.25,0.12), M.screen());
+      screen.position.set(0, 0.05, 0.215); g.add(screen);
+      break;
+    }
+    case 'touchPanel': {
+      const body = new THREE.Mesh(new THREE.BoxGeometry(0.2,0.14,0.02), M.body);
+      g.add(body);
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.17,0.11),
+        new THREE.MeshBasicMaterial({color:0x0a3a5a,transparent:true,opacity:0.9}));
+      screen.position.set(0, 0, 0.011); g.add(screen);
+      /* Icons */
+      const icon1 = new THREE.Mesh(new THREE.CircleGeometry(0.012,8), M.ledBlue);
+      icon1.position.set(-0.05, 0, 0.012); g.add(icon1);
+      const icon2 = new THREE.Mesh(new THREE.CircleGeometry(0.012,8), M.ledGreen);
+      icon2.position.set(0, 0, 0.012); g.add(icon2);
+      const icon3 = new THREE.Mesh(new THREE.CircleGeometry(0.012,8), M.ledAmber);
+      icon3.position.set(0.05, 0, 0.012); g.add(icon3);
+      break;
+    }
+    case 'scheduler': {
+      const body = new THREE.Mesh(new THREE.BoxGeometry(0.18,0.12,0.02), M.body);
+      g.add(body);
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.15,0.09), M.screen());
+      screen.position.set(0, 0, 0.011); g.add(screen);
+      break;
+    }
+    case 'buttonPanel': {
+      const body = new THREE.Mesh(new THREE.BoxGeometry(0.14,0.1,0.02), M.body);
+      g.add(body);
+      for (let i=0;i<4;i++) {
+        const btn = new THREE.Mesh(new THREE.CylinderGeometry(0.012,0.012,0.005,10), [M.ledBlue, M.ledGreen, M.ledAmber, M.ledRed][i]);
+        btn.rotation.x = Math.PI/2;
+        btn.position.set(-0.04 + i*0.028, 0.015, 0.012); g.add(btn);
+      }
+      const btn2 = new THREE.Mesh(new THREE.CylinderGeometry(0.012,0.012,0.005,10), M.ledBlue);
+      btn2.rotation.x = Math.PI/2;
+      btn2.position.set(0, -0.02, 0.012); g.add(btn2);
+      break;
+    }
+    case 'pagingCeiling': {
+      const d = new THREE.Mesh(new THREE.CylinderGeometry(0.11,0.11,0.035,20), M.body);
+      g.add(d);
+      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.09,20), M.steel);
+      grille.rotation.x = -Math.PI/2; grille.position.y = -0.019; g.add(grille);
+      const r = new THREE.Mesh(new THREE.TorusGeometry(0.1,0.004,6,20), M.ledAmber);
+      r.rotation.x = Math.PI/2; r.position.y = -0.02; g.add(r);
+      break;
+    }
+    case 'pagingHorn': {
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.1,3,10), M.metal);
+      pole.position.y = -1.5; g.add(pole);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.25,0.15,12), M.gray);
+      base.position.y = -2.9; g.add(base);
+      const bk = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.3,0.25), M.body);
+      bk.castShadow = true; g.add(bk);
+      const horn = new THREE.Mesh(new THREE.CylinderGeometry(0.28,0.1,0.45,16,1,true), M.steel);
+      horn.rotation.x = Math.PI/2; horn.position.z = 0.33; g.add(horn);
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.03,8,6), M.ledAmber);
+      led.position.set(0.15, 0.15, -0.15); g.add(led);
+      break;
+    }
+    case 'emgHorn': {
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.1,3,10), M.metal);
+      pole.position.y = -1.5; g.add(pole);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.25,0.15,12), M.gray);
+      base.position.y = -2.9; g.add(base);
+      const bk = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.3,0.25),
+        new THREE.MeshStandardMaterial({color:0xcc0000,roughness:0.5,metalness:0.4}));
+      bk.castShadow = true; g.add(bk);
+      const horn = new THREE.Mesh(new THREE.CylinderGeometry(0.26,0.1,0.42,16,1,true), M.steel);
+      horn.rotation.x = Math.PI/2; horn.position.z = 0.31; g.add(horn);
+      const beacon = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,0.15,12), M.ledRed);
+      beacon.position.y = 0.22; g.add(beacon);
+      break;
+    }
+    case 'emgStrobe': {
+      const d = new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.09,0.02,20), M.body);
+      g.add(d);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.07,20), M.dark());
+      gr.rotation.x = Math.PI/2; gr.position.y = -0.012; g.add(gr);
+      const r = new THREE.Mesh(new THREE.RingGeometry(0.07,0.09,20), M.ledRed);
+      r.rotation.x = -Math.PI/2; r.position.y = -0.013; g.add(r);
+      const strobe = new THREE.Mesh(new THREE.SphereGeometry(0.035,10,8),
+        new THREE.MeshStandardMaterial({color:0xffffff,emissive:0xffffff,emissiveIntensity:2.5}));
+      strobe.position.y = -0.02; g.add(strobe);
+      break;
+    }
+    default: {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.3,0.3), M.body);
+      b.castShadow = true; g.add(b);
+    }
+  }
+
+  const ring = new THREE.Mesh(
+    new THREE.RingGeometry(0.7,0.78,32),
+    new THREE.MeshBasicMaterial({color:0x3b82f6,transparent:true,opacity:0,
+      side:THREE.DoubleSide,depthWrite:false})
+  );
+  ring.rotation.x = -Math.PI/2; ring.position.y = 0.03; ring.name = 'selRing';
+  g.add(ring);
+  return g;
+}
+
+/* ============ BUILD ROOM ============ */
+function clearGroup(g) {
+  while (g.children.length) {
+    const c = g.children[0]; g.remove(c);
+    c.traverse?.(o => {
+      if (o.geometry) o.geometry.dispose();
+      if (o.material) {
+        if (Array.isArray(o.material)) o.material.forEach(m => m.dispose());
+        else o.material.dispose();
+      }
+    });
+  }
+}
+
+function buildRoom() {
+  clearGroup(roomGrp);
+
+  for (const f of ROOM.features) {
+    if (f.type === 'floor') {
+      const fl = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.05, f.d), M.floor());
+      fl.position.set(f.x, 0.025, f.z); fl.receiveShadow = true; roomGrp.add(fl);
+      /* Carpet tiles */
+      for (let i=0;i<20;i++) {
+        for (let j=0;j<14;j++) {
+          const tile = new THREE.Mesh(new THREE.BoxGeometry(0.95,0.005,0.95), M.carpet());
+          tile.position.set(-9.5 + i*1, 0.055, -6.5 + j*1);
+          roomGrp.add(tile);
+        }
+      }
+    }
+
+    if (f.type === 'ceiling') {
+      const ceil = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.1, f.d), M.ceiling());
+      ceil.position.set(f.x, f.h, f.z); roomGrp.add(ceil);
+      /* Ceiling panels (light emitting) */
+      for (let i=0;i<10;i++) {
+        for (let j=0;j<7;j++) {
+          const panel = new THREE.Mesh(new THREE.BoxGeometry(1.4,0.05,1.4), M.ceilingPanel());
+          panel.position.set(-8 + i*1.8, f.h - 0.03, -5.4 + j*1.8);
+          roomGrp.add(panel);
+        }
+      }
+      /* Ceiling lights */
+      for (let i=0;i<4;i++) {
+        const light = new THREE.PointLight(0xf0f4ff, 0.5, 12, 2);
+        light.position.set(-6 + i*4, f.h - 0.3, 0); roomGrp.add(light);
+      }
+    }
+
+    if (f.type === 'wall') {
+      const wall = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.h, f.d), M.wall());
+      wall.position.set(f.x, f.h/2, f.z); wall.receiveShadow = true; roomGrp.add(wall);
+      /* Wall panel lines */
+      const isSide = f.w < f.d;
+      const length = isSide ? f.d : f.w;
+      for (let i=0;i<Math.floor(length/2);i++) {
+        const seam = new THREE.Mesh(new THREE.BoxGeometry(
+          isSide ? 0.02 : 2, f.h - 0.4, isSide ? 2 : 0.02
+        ), M.wallDark());
+        if (isSide) seam.position.set(f.x + (f.x>0?-0.01:0.01), f.h/2, f.z - length/2 + 1 + i*2);
+        else seam.position.set(f.x - length/2 + 1 + i*2, f.h/2, f.z + (f.z>0?-0.01:0.01));
+        roomGrp.add(seam);
+      }
+    }
+
+    if (f.type === 'table') {
+      /* Main table top */
+      const top = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.08, f.d), M.tableTop());
+      top.position.set(f.x, f.H, f.z); top.castShadow = true; top.receiveShadow = true;
+      roomGrp.add(top);
+      /* Table edge ring */
+      const edge = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.1, 0.04, f.d + 0.1), M.tableEdge());
+      edge.position.set(f.x, f.H - 0.04, f.z); roomGrp.add(edge);
+      /* Table legs (2 pedestal bases) */
+      for (const lx of [-f.w/3, f.w/3]) {
+        const leg = new THREE.Mesh(new THREE.BoxGeometry(0.6, f.H - 0.08, f.d - 0.4), M.gray);
+        leg.position.set(f.x + lx, (f.H - 0.08)/2, f.z); roomGrp.add(leg);
+      }
+      /* Cable grommets on top */
+      for (let i=0;i<4;i++) {
+        const grommet = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,0.02,12), M.dark());
+        grommet.position.set(-3 + i*2, f.H + 0.05, 0); roomGrp.add(grommet);
+      }
+    }
+
+    if (f.type === 'display') {
+      const frame = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.h, 0.06), M.dark());
+      frame.position.set(f.x, 2.1, f.z); frame.castShadow = true; roomGrp.add(frame);
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(f.w - 0.15, f.h - 0.15),
+        f.main ? M.displayScreen() : M.display());
+      screen.position.set(f.x, 2.1, f.z + 0.035); roomGrp.add(screen);
+      /* Screen glow */
+      if (f.main) {
+        const light = new THREE.PointLight(0x4a80e0, 0.6, 8, 2);
+        light.position.set(f.x, 2.1, f.z + 1); roomGrp.add(light);
+      }
+      /* Power LED */
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.02,8,6), M.ledGreen);
+      led.position.set(f.x + f.w/2 - 0.15, 1.4, f.z + 0.035); roomGrp.add(led);
+    }
+
+    if (f.type === 'door') {
+      /* Door frame */
+      const frame = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.15, f.h + 0.1, 0.1), M.doorFrame());
+      frame.position.set(f.x, f.h/2 + 0.05, f.z); roomGrp.add(frame);
+      /* Door */
+      const door = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.h, 0.06), M.door());
+      door.position.set(f.x, f.h/2, f.z + 0.06); roomGrp.add(door);
+      /* Handle */
+      const handle = new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.2,10), M.metal);
+      handle.rotation.z = Math.PI/2;
+      handle.position.set(f.x + f.w/2 - 0.15, f.h/2, f.z + 0.11); roomGrp.add(handle);
+    }
+  }
+
+  /* Add chairs around the table (12 chairs) */
+  const chairPositions = [
+    /* North side (facing south) */
+    [-3.5, -2, Math.PI],
+    [-2, -2, Math.PI],
+    [-0.5, -2, Math.PI],
+    [1, -2, Math.PI],
+    [2.5, -2, Math.PI],
+    [4, -2, Math.PI],
+    /* South side (facing north) */
+    [-3.5, 2, 0],
+    [-2, 2, 0],
+    [-0.5, 2, 0],
+    [1, 2, 0],
+    [2.5, 2, 0],
+    [4, 2, 0]
+  ];
+
+  chairPositions.forEach(([cx, cz, ry]) => {
+    const chair = new THREE.Group();
+    /* Seat */
+    const seat = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.08, 0.55), M.chair());
+    seat.position.y = 0.45; chair.add(seat);
+    /* Back */
+    const back = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.6, 0.08), M.chairBack());
+    back.position.set(0, 0.75, 0.28); chair.add(back);
+    /* Post */
+    const post = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.06,0.35,10), M.gray);
+    post.position.y = 0.22; chair.add(post);
+    /* Base */
+    const base = new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.3,0.05,16), M.gray);
+    base.position.y = 0.03; chair.add(base);
+    /* Wheels */
+    for (let i=0;i<5;i++) {
+      const a = (i/5)*Math.PI*2;
+      const wheel = new THREE.Mesh(new THREE.SphereGeometry(0.04,8,6), M.dark());
+      wheel.position.set(Math.cos(a)*0.24, 0.04, Math.sin(a)*0.24);
+      chair.add(wheel);
+    }
+    chair.position.set(cx, 0, cz); chair.rotation.y = ry;
+    roomGrp.add(chair);
+  });
+}
+
+/* ============ DEVICES ============ */
+const meshById = new Map();
+function buildDevices() {
+  clearGroup(devGrp); meshById.clear();
+  for (const d of state.devices) {
+    const spec = getSpec(d.cat, d.typeId); if (!spec) continue;
+    const color = BRANDS[d.brand] ? BRANDS[d.brand].color : 0x3b82f6;
+    const mesh = makeMesh(d.cat, d.typeId, color); if (!mesh) continue;
+    mesh.position.set(d.x, spec.h, d.z);
+    mesh.rotation.y = d.rot || 0;
+    mesh.userData.devId = d.id;
+    mesh.userData.dev = d;
+    mesh.userData.spec = spec;
+    devGrp.add(mesh);
+    meshById.set(d.id, mesh);
+  }
+  updateSelectionVisuals();
+}
+function updateSelectionVisuals() {
+  devGrp.children.forEach(m => {
+    const r = m.getObjectByName('selRing');
+    if (r) r.material.opacity = (state.selected === m.userData.devId) ? 0.9 : 0;
+  });
+}
+
+/* ============ HEATMAP ============ */
+let heatMesh = null;
+function disposeHeat() {
+  if (heatMesh) { heatGrp.remove(heatMesh); heatMesh.geometry.dispose(); heatMesh.material.dispose(); heatMesh = null; }
+}
+function buildHeatmap() {
+  disposeHeat();
+  if (!state.showHeat) return;
+  const speakers = state.devices.filter(d =>
+    ['boardroomSpk','ceilingSpk','dsp','paging','emergency'].includes(d.cat)
+  );
+  if (!speakers.length) {
+    document.getElementById('hudSpl').textContent = '—';
+    document.getElementById('hudCoverage').textContent = '0%';
+    return;
+  }
+  const SIZE = Math.max(ROOM.size[0], ROOM.size[1]) * 1.15;
+  const RES = 60;
+  const geo = new THREE.PlaneGeometry(SIZE, SIZE, RES, RES);
+  geo.rotateX(-Math.PI/2);
+  const colors = new Float32Array(geo.attributes.position.count * 3);
+  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  heatMesh = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({
+    vertexColors: true, transparent: true, opacity: 0.5,
+    depthWrite: false, side: THREE.DoubleSide
+  }));
+  heatMesh.position.y = 0.1;
+  heatMesh.renderOrder = 1;
+  heatGrp.add(heatMesh);
+  updateHeatColors();
+}
+function calcSPL(x, z) {
+  let tot = 0;
+  for (const spk of state.devices) {
+    if (!['boardroomSpk','ceilingSpk','dsp','paging','emergency'].includes(spk.cat)) continue;
+    const spec = getSpec(spk.cat, spk.typeId);
+    if (!spec || !spec.power) continue;
+    const power = spk.power || spec.power;
+    const dx = x - spk.x, dz = z - spk.z;
+    const dy = -spec.h;
+    const d = Math.sqrt(dx*dx + dy*dy + dz*dz);
+    if (d < 0.5) continue;
+    const s1m = 88 + 10 * Math.log10(Math.max(power,1));
+    let dl = 0;
+    if (spec.dir) {
+      const facing = spk.rot || 0;
+      const tl = Math.atan2(dx, dz);
+      let a = Math.abs(facing - tl);
+      if (a > Math.PI) a = 2*Math.PI - a;
+      dl = -11 * (1 - Math.cos(a));
+    }
+    const dL = -20 * Math.log10(d);
+    const v = s1m + dL + dl;
+    if (v < -20) continue;
+    tot += Math.pow(10, v/10);
+  }
+  return tot > 0 ? 10 * Math.log10(tot) : 0;
+}
+const SPL_STOPS = [
+  [40,0.05,0.10,0.45],[50,0.00,0.30,0.80],[58,0.00,0.65,0.95],
+  [65,0.00,0.90,0.90],[72,0.30,0.90,0.45],[80,0.85,0.90,0.25],
+  [88,1.00,0.65,0.15],[95,1.00,0.25,0.10],[105,0.85,0.05,0.15]
+];
+function splRGB(v) {
+  const S = SPL_STOPS, N = S.length;
+  if (v <= S[0][0]) return [S[0][1],S[0][2],S[0][3]];
+  if (v >= S[N-1][0]) return [S[N-1][1],S[N-1][2],S[N-1][3]];
+  for (let i=0;i<N-1;i++) {
+    const a=S[i], b=S[i+1];
+    if (v>=a[0] && v<=b[0]) {
+      const t = (v-a[0])/(b[0]-a[0]);
+      return [a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t,a[3]+(b[3]-a[3])*t];
+    }
+  }
+  return [1,1,1];
+}
+function updateHeatColors() {
+  if (!heatMesh) return;
+  const pos = heatMesh.geometry.attributes.position;
+  const col = heatMesh.geometry.attributes.color;
+  let mx = 0, covered = 0;
+  const total = pos.count;
+  for (let i=0;i<total;i++) {
+    const x = pos.getX(i), z = pos.getZ(i);
+    const v = calcSPL(x, z);
+    if (v > mx) mx = v;
+    if (v >= 65) covered++;
+    const c = splRGB(v);
+    col.setXYZ(i, c[0], c[1], c[2]);
+  }
+  col.needsUpdate = true;
+  document.getElementById('hudSpl').textContent = mx > 0 ? mx.toFixed(0) + ' dB' : '—';
+  const covPct = total > 0 ? Math.round((covered/total)*100) : 0;
+  document.getElementById('hudCoverage').textContent = covPct + '%';
+  const statSpl = document.getElementById('statSpl');
+  const statCov = document.getElementById('statCov');
+  statSpl.classList.remove('good','warn');
+  statCov.classList.remove('good','warn');
+  if (mx >= 65 && mx <= 85) statSpl.classList.add('good');
+  else if (mx > 0) statSpl.classList.add('warn');
+  if (covPct >= 70) statCov.classList.add('good');
+  else if (covPct >= 45) statCov.classList.add('warn');
+}
+
+/* ============ HISTORY ============ */
+function serialize() {
+  return JSON.stringify(state.devices.map(d => ({
+    id:d.id, brand:d.brand, cat:d.cat, typeId:d.typeId,
+    x:d.x, z:d.z, rot:d.rot, power:d.power
+  })));
+}
+function pushHistory() {
+  state.history = state.history.slice(0, state.historyIdx + 1);
+  state.history.push(serialize());
+  state.historyIdx = state.history.length - 1;
+}
+function applyHistory(json) {
+  state.devices = JSON.parse(json);
+  state.nextId = state.devices.length ? Math.max(...state.devices.map(d=>d.id))+1 : 1;
+  buildDevices(); buildHeatmap(); updateHUD(); deselect();
+}
+function undo() {
+  if (state.historyIdx > 0) { state.historyIdx--; applyHistory(state.history[state.historyIdx]); toast(T('to_undo')); }
+}
+function redo() {
+  if (state.historyIdx < state.history.length - 1) { state.historyIdx++; applyHistory(state.history[state.historyIdx]); toast(T('to_redo')); }
+}
+
+/* ============ CAMERA ============ */
+function updateCamera() {
+  const {theta, phi, radius, target} = state.cam;
+  const x = target.x + radius * Math.sin(phi) * Math.sin(theta);
+  const y = target.y + radius * Math.cos(phi);
+  const z = target.z + radius * Math.sin(phi) * Math.cos(theta);
+  camera.position.set(x, Math.max(y, 0.5), z);
+  camera.lookAt(target);
+}
+function tweenCamera(to, dur) {
+  const from = {theta: state.cam.theta, phi: state.cam.phi, radius: state.cam.radius, target: state.cam.target.clone()};
+  state.cam.tween = {from, to, dur, start:performance.now()};
+}
+function updateTween() {
+  const t = state.cam.tween; if (!t) return;
+  const p = Math.min(1, (performance.now() - t.start) / t.dur);
+  const e = p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p+2,3)/2;
+  state.cam.theta = t.from.theta + (t.to.theta - t.from.theta) * e;
+  state.cam.phi = t.from.phi + (t.to.phi - t.from.phi) * e;
+  state.cam.radius = t.from.radius + (t.to.radius - t.from.radius) * e;
+  state.cam.target.lerpVectors(t.from.target, t.to.target, e);
+  updateCamera();
+  if (p >= 1) state.cam.tween = null;
+}
+function setView3D(on) {
+  state.view3D = on;
+  const btn = document.getElementById('viewBtn');
+  btn.textContent = on ? '✏️ 2D' : '🎬 3D';
+  btn.classList.toggle('on', !on);
+  const r = Math.max(ROOM.size[0], ROOM.size[1]) * 1.6;
+  if (on) tweenCamera({theta:-0.6, phi:0.9, radius:r, target:new THREE.Vector3(0,1.2,0)}, 900);
+  else tweenCamera({theta:0, phi:0.02, radius:r, target:new THREE.Vector3(0,0,0)}, 900);
+}
+function fitView() {
+  const r = Math.max(ROOM.size[0], ROOM.size[1]) * 1.6;
+  if (state.view3D) tweenCamera({theta:-0.6, phi:0.9, radius:r, target:new THREE.Vector3(0,1.2,0)}, 700);
+  else tweenCamera({theta:0, phi:0.02, radius:r, target:new THREE.Vector3(0,0,0)}, 700);
+}
+
+/* ============ INTERACTION ============ */
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
+const activePointers = new Map();
+let isDown = false, moved = false, dragDev = null;
+let dragOff = {x:0, z:0};
+let startPt = {x:0, y:0};
+let pinchStart = null;
+
+function canvasPos(cx, cy) {
+  const r = canvas.getBoundingClientRect();
+  pointer.x = ((cx - r.left) / r.width) * 2 - 1;
+  pointer.y = -((cy - r.top) / r.height) * 2 + 1;
+}
+function hitDevice(cx, cy) {
+  canvasPos(cx, cy);
+  raycaster.setFromCamera(pointer, camera);
+  const hits = raycaster.intersectObjects(devGrp.children, true);
+  for (const h of hits) {
+    let o = h.object;
+    while (o && o.userData.devId === undefined) o = o.parent;
+    if (o) return o;
+  }
+  return null;
+}
+const floorPlane = new THREE.Plane(new THREE.Vector3(0,1,0), 0);
+function floorPoint(cx, cy) {
+  canvasPos(cx, cy);
+  raycaster.setFromCamera(pointer, camera);
+  const p = new THREE.Vector3();
+  return raycaster.ray.intersectPlane(floorPlane, p) ? p : null;
+}
+
+canvas.addEventListener('pointerdown', e => {
+  activePointers.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  if (activePointers.size === 1) {
+    startPt = {x:e.clientX, y:e.clientY};
+    isDown = true; moved = false; dragDev = null;
+    const hit = hitDevice(e.clientX, e.clientY);
+    if (hit) {
+      dragDev = hit;
+      const fp = floorPoint(e.clientX, e.clientY);
+      if (fp) { dragOff.x = hit.userData.dev.x - fp.x; dragOff.z = hit.userData.dev.z - fp.z; }
+    }
+  } else if (activePointers.size === 2) {
+    dragDev = null; isDown = false; moved = true;
+    const pts = [...activePointers.values()];
+    pinchStart = {dist: Math.hypot(pts[0].x-pts[1].x, pts[0].y-pts[1].y) || 1, radius: state.cam.radius};
+  }
+}, {passive:true});
+
+canvas.addEventListener('pointermove', e => {
+  if (!activePointers.has(e.pointerId)) return;
+  const prev = activePointers.get(e.pointerId);
+  activePointers.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  if (activePointers.size === 2 && pinchStart) {
+    const pts = [...activePointers.values()];
+    const d = Math.hypot(pts[0].x-pts[1].x, pts[0].y-pts[1].y) || 1;
+    state.cam.radius = Math.max(5, Math.min(120, pinchStart.radius * (pinchStart.dist/d)));
+    state.cam.tween = null; updateCamera(); return;
+  }
+  if (!isDown) return;
+  const dx = e.clientX - prev.x;
+  const dy = e.clientY - prev.y;
+  if (Math.abs(e.clientX-startPt.x) + Math.abs(e.clientY-startPt.y) > 6) moved = true;
+  if (dragDev && moved) {
+    const fp = floorPoint(e.clientX, e.clientY);
+    if (fp) {
+      const d = dragDev.userData.dev;
+      d.x = Math.round((fp.x + dragOff.x)*10)/10;
+      d.z = Math.round((fp.z + dragOff.z)*10)/10;
+      dragDev.position.set(d.x, dragDev.userData.spec.h, d.z);
+      if (state.showHeat) updateHeatColors();
+      updateInfo();
+    }
+  } else if (!dragDev && moved && !state.presentation) {
+    if (state.view3D) {
+      state.cam.tween = null;
+      state.cam.theta -= dx * 0.008;
+      state.cam.phi = Math.max(0.12, Math.min(1.5, state.cam.phi + dy * 0.008));
+      updateCamera();
+    } else {
+      state.cam.tween = null;
+      const ps = state.cam.radius * 0.0018;
+      state.cam.target.x -= (dx*Math.cos(state.cam.theta) - dy*Math.sin(state.cam.theta)) * ps;
+      state.cam.target.z -= (dx*Math.sin(state.cam.theta) + dy*Math.cos(state.cam.theta)) * ps;
+      updateCamera();
+    }
+  }
+}, {passive:true});
+
+function endPointer(e) {
+  activePointers.delete(e.pointerId);
+  if (activePointers.size === 0) {
+    if (isDown && !moved && !state.presentation) {
+      const hit = hitDevice(e.clientX, e.clientY);
+      if (hit) select(hit.userData.devId);
+      else if (state.selected !== null) deselect();
+      else {
+        const fp = floorPoint(e.clientX, e.clientY);
+        if (fp) { placeDevice(fp.x, fp.z); pushHistory(); }
+      }
+    }
+    isDown = false; dragDev = null; moved = false; pinchStart = null;
+  } else {
+    pinchStart = null; isDown = false; dragDev = null; moved = true;
+  }
+}
+canvas.addEventListener('pointerup', endPointer, {passive:true});
+canvas.addEventListener('pointercancel', endPointer, {passive:true});
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  state.cam.tween = null;
+  const factor = e.deltaY > 0 ? 1.1 : 0.9;
+  state.cam.radius = Math.max(5, Math.min(120, state.cam.radius * factor));
+  updateCamera();
+}, {passive:false});
+
+/* ============ ACTIONS ============ */
+function placeDevice(x, z) {
+  const spec = getSpec(state.curCat, state.curType); if (!spec) return;
+  const d = {id: state.nextId++, brand: state.curBrand, cat: state.curCat, typeId: state.curType,
+    x: Math.round(x*10)/10, z: Math.round(z*10)/10, rot: 0, power: spec.power};
+  state.devices.push(d);
+  buildDevices();
+  if (state.showHeat) buildHeatmap();
+  updateHUD();
+  toast(spec.emoji + ' ' + devName(spec));
+}
+function select(id) {
+  state.selected = id;
+  updateSelectionVisuals(); updateInfo();
+  document.getElementById('info').classList.add('on');
+}
+function deselect() {
+  state.selected = null;
+  updateSelectionVisuals();
+  document.getElementById('info').classList.remove('on');
+}
+function deleteSelected() {
+  if (state.selected === null) return;
+  state.devices = state.devices.filter(d => d.id !== state.selected);
+  state.selected = null;
+  document.getElementById('info').classList.remove('on');
+  buildDevices(); buildHeatmap(); updateHUD(); pushHistory();
+  toast(T('to_deleted'));
+}
+function updateInfo() {
+  if (state.selected === null) return;
+  const d = state.devices.find(x => x.id === state.selected); if (!d) return;
+  const spec = getSpec(d.cat, d.typeId); if (!spec) return;
+  document.getElementById('infName').textContent = spec.emoji + ' ' + devName(spec);
+  document.getElementById('infBrand').textContent = brandName(d.brand);
+  document.getElementById('infType').textContent = catName(d.cat);
+  document.getElementById('infPower').textContent = spec.power > 0 ? (d.power||spec.power) + ' W' : '—';
+  document.getElementById('infH').textContent = spec.h.toFixed(1) + (LANG==='ar'?' م':' m');
+  document.getElementById('infPos').textContent = d.x.toFixed(1) + ', ' + d.z.toFixed(1);
+  const pw = document.getElementById('powerSlider');
+  pw.value = d.power || spec.power;
+  document.getElementById('powerVal').textContent = (d.power||spec.power) + 'W';
+  document.getElementById('powerWrap').style.display = spec.power > 0 ? 'flex' : 'none';
+  const rs = document.getElementById('rotSlider');
+  const deg = Math.round((d.rot||0) * 180 / Math.PI);
+  rs.value = deg;
+  document.getElementById('rotVal').textContent = deg + '°';
+  document.getElementById('rotWrap').style.display = spec.dir ? 'flex' : 'none';
+  document.getElementById('roomWInput').value = ROOM.size[0];
+  document.getElementById('roomDInput').value = ROOM.size[1];
+}
+
+/* ============ UI ============ */
+function buildCats() {
+  const el = document.getElementById('cats'); el.innerHTML = '';
+  for (const key in CATS) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'cat' + (key === state.curCat ? ' on' : '');
+    b.dataset.cat = key;
+    b.textContent = CATS[key].emoji + ' ' + catName(key);
+    b.onclick = () => selectCat(key);
+    el.appendChild(b);
+  }
+}
+function buildBrands() {
+  const el = document.getElementById('brands'); el.innerHTML = '';
+  for (const key in BRANDS) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'brand' + (key === state.curBrand ? ' on' : '');
+    b.dataset.brand = key;
+    b.textContent = brandName(key);
+    b.onclick = () => selectBrand(key);
+    el.appendChild(b);
+  }
+}
+function buildTypes() {
+  const el = document.getElementById('types'); el.innerHTML = '';
+  for (const d of CATS[state.curCat].devices) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'type' + (d[0] === state.curType ? ' on' : '');
+    b.dataset.typeId = d[0];
+    b.innerHTML = '<span class="em">' + d[2] + '</span><span class="nm">' + T(d[1]) + '</span>';
+    b.onclick = () => selectType(d[0]);
+    el.appendChild(b);
+  }
+}
+function selectCat(key) {
+  state.curCat = key;
+  state.curType = CATS[key].devices[0][0];
+  document.querySelectorAll('.cat').forEach(b => b.classList.toggle('on', b.dataset.cat === key));
+  buildTypes();
+}
+function selectBrand(key) {
+  state.curBrand = key;
+  document.querySelectorAll('.brand').forEach(b => b.classList.toggle('on', b.dataset.brand === key));
+}
+function selectType(id) {
+  state.curType = id;
+  document.querySelectorAll('.type').forEach(b => b.classList.toggle('on', b.dataset.typeId === id));
+}
+function updateHUD() { document.getElementById('hudCount').textContent = state.devices.length; }
+let toastTO;
+function toast(m) {
+  const el = document.getElementById('toast');
+  el.textContent = m; el.classList.add('on');
+  clearTimeout(toastTO);
+  toastTO = setTimeout(() => el.classList.remove('on'), 1700);
+}
+function loadInitialDevices() {
+  state.devices = []; state.nextId = 1; state.selected = null;
+  for (const item of ROOM.devices) {
+    const [brand, cat, typeId, x, z, rot] = item;
+    const spec = getSpec(cat, typeId); if (!spec) continue;
+    state.devices.push({id: state.nextId++, brand, cat, typeId, x, z, rot: rot || 0, power: spec.power});
+  }
+  buildRoom(); buildDevices(); buildHeatmap(); updateHUD(); deselect();
+  state.history = [serialize()]; state.historyIdx = 0;
+}
+
+/* ============ REPORT ============ */
+function generateReport() {
+  const totalPower = state.devices.reduce((a,d) => {
+    const s = getSpec(d.cat, d.typeId);
+    return a + (s && s.power ? (d.power || s.power) : 0);
+  }, 0);
+  const counts = {};
+  const zoneCounts = {tableMic:0, ceilingMic:0, ptzCamera:0, autoTracking:0, videoCodec:0, boardroomSpk:0, ceilingSpk:0, dsp:0, control:0, paging:0, emergency:0};
+  state.devices.forEach(d => {
+    const spec = getSpec(d.cat, d.typeId); if (!spec) return;
+    const key = brandName(d.brand) + ' · ' + devName(spec);
+    counts[key] = (counts[key] || 0) + 1;
+    if (zoneCounts[d.cat] !== undefined) zoneCounts[d.cat]++;
+  });
+  let rows = '';
+  const entries = Object.entries(counts);
+  if (entries.length) {
+    for (const [name, qty] of entries) rows += `<tr><td>${name}</td><td>${qty}</td></tr>`;
+  } else {
+    rows = `<tr><td colspan="2" style="text-align:center;color:#888">${T('rep_empty')}</td></tr>`;
+  }
+  const splVal = document.getElementById('hudSpl').textContent;
+  const covVal = document.getElementById('hudCoverage').textContent;
+
+  const rt60 = 0.5;
+  const capacity = 20;
+  const micCount = state.devices.filter(d => d.cat === 'tableMic' || d.cat === 'ceilingMic').length;
+  const cameraCount = state.devices.filter(d => d.cat === 'ptzCamera').length;
+  const hasTableMic = state.devices.filter(d => d.cat === 'tableMic').length >= 4;
+  const hasCeilingMic = state.devices.filter(d => d.cat === 'ceilingMic').length >= 2;
+  const hasPTZ = state.devices.filter(d => d.cat === 'ptzCamera').length >= 2;
+  const hasTracking = state.devices.filter(d => d.cat === 'autoTracking').length >= 2;
+  const hasCodec = state.devices.filter(d => d.cat === 'videoCodec').length >= 2;
+  const hasSpeakers = state.devices.filter(d => d.cat === 'boardroomSpk').length >= 3;
+  const hasCeilingSpk = state.devices.filter(d => d.cat === 'ceilingSpk').length >= 3;
+  const hasDSP = state.devices.filter(d => d.cat === 'dsp').length >= 2;
+  const hasControl = state.devices.filter(d => d.cat === 'control').length >= 2;
+  const hasPaging = state.devices.some(d => d.cat === 'paging');
+  const hasEmergency = state.devices.some(d => d.cat === 'emergency');
+
+  document.getElementById('reportModalBody').innerHTML = `
+    <div class="report-section">
+      <h4>📍 ${T('rep_env_info')}</h4>
+      <div class="row"><span>${T('rep_env_type')}</span><span>${ROOM.name[LANG]}</span></div>
+      <div class="row"><span>${T('rep_dim')}</span><span>${ROOM.size[0]}m × ${ROOM.size[1]}m</span></div>
+      <div class="row"><span>${T('rep_area')}</span><span>${(ROOM.size[0]*ROOM.size[1]).toLocaleString()} m²</span></div>
+      <div class="row"><span>${T('rep_capacity')}</span><span>${capacity} ${LANG==='ar'?'شخص':'people'}</span></div>
+      <div class="row"><span>${T('rep_mics')}</span><span>${micCount}</span></div>
+      <div class="row"><span>${T('rep_cameras')}</span><span>${cameraCount}</span></div>
+      <div class="row"><span>${T('rep_total_dev')}</span><span>${state.devices.length}</span></div>
+      <div class="row"><span>${T('rep_total_power')}</span><span>${(totalPower/1000).toFixed(2)} kW</span></div>
+      <div class="row"><span>${T('rep_date')}</span><span>${new Date().toLocaleString(LANG==='ar'?'ar-EG':'en-US')}</span></div>
+    </div>
+    <div class="report-section">
+      <h4>🔊 ${T('rep_equip')}</h4>
+      <table class="report-table">
+        <thead><tr><th>${T('rep_device')}</th><th style="width:80px;text-align:center">${T('rep_qty')}</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <div class="report-section">
+      <h4>📊 ${T('rep_analysis')}</h4>
+      <div class="row"><span>${T('rep_max_spl')}</span><span>${splVal}</span></div>
+      <div class="row"><span>${T('rep_coverage')}</span><span>${covVal}</span></div>
+      <div class="row"><span>${T('rep_sti')}</span><span>${T('rep_sti_target')}</span></div>
+      <div class="row"><span>${T('rep_rt')}</span><span>${rt60.toFixed(2)}s</span></div>
+      <div class="row"><span>${T('rep_nc')}</span><span>${T('rep_nc_target')}</span></div>
+      <div class="row"><span>🎙️ ${T('cat_tableMic')}</span><span style="color:${hasTableMic?'#3b82f6':'#fbbf24'}">${hasTableMic ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>🔊 ${T('cat_ceilingMic')}</span><span style="color:${hasCeilingMic?'#3b82f6':'#fbbf24'}">${hasCeilingMic ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>📹 ${T('cat_ptzCamera')}</span><span style="color:${hasPTZ?'#3b82f6':'#fbbf24'}">${hasPTZ ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>🎯 ${T('cat_autoTracking')}</span><span style="color:${hasTracking?'#3b82f6':'#fbbf24'}">${hasTracking ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>📺 ${T('cat_videoCodec')}</span><span style="color:${hasCodec?'#3b82f6':'#fbbf24'}">${hasCodec ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>🔈 ${T('cat_boardroomSpk')}</span><span style="color:${hasSpeakers?'#3b82f6':'#fbbf24'}">${hasSpeakers ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>🔊 ${T('cat_ceilingSpk')}</span><span style="color:${hasCeilingSpk?'#3b82f6':'#fbbf24'}">${hasCeilingSpk ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>🧠 ${T('cat_dsp')}</span><span style="color:${hasDSP?'#3b82f6':'#fbbf24'}">${hasDSP ? (LANG==='ar'?'نشط (AEC)':'Active (AEC)') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>🎚️ ${T('cat_control')}</span><span style="color:${hasControl?'#3b82f6':'#fbbf24'}">${hasControl ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>${T('rep_paging')}</span><span style="color:${hasPaging?'#3b82f6':'#fbbf24'}">${hasPaging ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>${T('rep_emergency')}</span><span style="color:${hasEmergency?'#3b82f6':'#fbbf24'}">${hasEmergency ? (LANG==='ar'?'مطابق (نشط)':'Compliant (Active)') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>${T('rep_tracking')}</span><span style="color:#3b82f6">${LANG==='ar'?'مطابق':'Compliant'}</span></div>
+      <div class="row"><span>${T('rep_iec')}</span><span style="color:#3b82f6">${LANG==='ar'?'مطابق':'Compliant'}</span></div>
+      <div class="row"><span>${T('rep_iso')}</span><span style="color:#3b82f6">${LANG==='ar'?'مطابق':'Compliant'}</span></div>
+      <div class="row"><span>${T('rep_ada')}</span><span style="color:#3b82f6">${LANG==='ar'?'مطابق':'Compliant'}</span></div>
+      <div class="row"><span>${T('rep_status')}</span><span style="color:#3b82f6">${T('rep_status_good')}</span></div>
+    </div>
+  `;
+  document.getElementById('reportModal').classList.add('on');
+}
+
+/* ============ EVENTS ============ */
+document.getElementById('langBtn').onclick = () => {
+  LANG = LANG === 'ar' ? 'en' : 'ar';
+  localStorage.setItem('auralis_lang', LANG);
+  applyLang();
+  buildCats(); buildBrands(); buildTypes();
+  if (state.selected !== null) updateInfo();
+  toast(LANG === 'ar' ? '🌐 العربية' : '🌐 English');
+};
+document.getElementById('reportBtn').onclick = generateReport;
+document.getElementById('closeModalBtn').onclick = () => document.getElementById('reportModal').classList.remove('on');
+document.getElementById('closeModalBtn2').onclick = () => document.getElementById('reportModal').classList.remove('on');
+document.getElementById('printReportBtn').onclick = () => window.print();
+
+document.getElementById('saveBtn').onclick = () => {
+  const data = JSON.stringify({app:'AURALIS', version:1, room:'meeting',
+    devices: state.devices.map(d => ({id:d.id, brand:d.brand, cat:d.cat, typeId:d.typeId, x:d.x, z:d.z, rot:d.rot, power:d.power}))
+  }, null, 2);
+  const blob = new Blob([data], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'auralis-meeting-' + Date.now() + '.json';
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  toast(T('to_saved'));
+};
+document.getElementById('loadBtn').onclick = () => document.getElementById('fileInput').click();
+document.getElementById('fileInput').onchange = e => {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      state.devices = (data.devices||[]).map(d => ({
+        id: d.id,
+        brand: BRANDS[d.brand] ? d.brand : 'shure',
+        cat: CATS[d.cat] ? d.cat : 'tableMic',
+        typeId: d.typeId,
+        x:+d.x||0, z:+d.z||0, rot:+d.rot||0, power:+d.power||0
+      })).filter(d => getSpec(d.cat, d.typeId));
+      state.nextId = state.devices.length ? Math.max(...state.devices.map(d=>d.id))+1 : 1;
+      buildDevices(); buildHeatmap(); updateHUD(); fitView();
+      state.history = [serialize()]; state.historyIdx = 0;
+      toast(T('to_loaded'));
+    } catch(err) { alert(T('to_invalid')); }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+};
+
+document.getElementById('viewBtn').onclick = () => setView3D(!state.view3D);
+document.getElementById('shotBtn').onclick = () => {
+  renderer.render(scene, camera);
+  const a = document.createElement('a');
+  a.href = canvas.toDataURL('image/png');
+  a.download = 'auralis-meeting-' + Date.now() + '.png';
+  document.body.appendChild(a); a.click(); a.remove();
+  toast(T('to_shot'));
+};
+document.getElementById('presBtn').onclick = togglePres;
+document.getElementById('presToggle').onclick = togglePres;
+document.getElementById('exitPres').onclick = togglePres;
+function togglePres() {
+  state.presentation = !state.presentation;
+  document.getElementById('hd').classList.toggle('hide', state.presentation);
+  document.getElementById('tools').classList.toggle('hide', state.presentation);
+  document.getElementById('picker').classList.toggle('hide', state.presentation);
+  document.getElementById('hud').style.opacity = state.presentation ? '0' : '1';
+  document.getElementById('info').classList.remove('on');
+  document.getElementById('exitPres').classList.toggle('on', state.presentation);
+  toast(state.presentation ? T('to_pres_on') : T('to_pres_off'));
+}
+document.getElementById('heatBtn').onclick = function() {
+  state.showHeat = !state.showHeat;
+  this.classList.toggle('on', state.showHeat);
+  buildHeatmap();
+  toast(state.showHeat ? T('to_heat_on') : T('to_heat_off'));
+};
+document.getElementById('fitBtn').onclick = fitView;
+document.getElementById('gridBtn').onclick = function() {
+  state.showGrid = !state.showGrid;
+  this.classList.toggle('on', state.showGrid);
+  grid.visible = state.showGrid;
+};
+document.getElementById('clearBtn').onclick = () => {
+  if (!confirm(T('to_confirm_clear'))) return;
+  state.devices = []; state.selected = null;
+  document.getElementById('info').classList.remove('on');
+  buildDevices(); buildHeatmap(); updateHUD(); pushHistory();
+  toast(T('to_cleared'));
+};
+document.getElementById('delBtn').onclick = deleteSelected;
+document.getElementById('powerSlider').oninput = e => {
+  if (state.selected === null) return;
+  const d = state.devices.find(x => x.id === state.selected); if (!d) return;
+  d.power = parseInt(e.target.value,10) || 0;
+  document.getElementById('powerVal').textContent = d.power + 'W';
+  document.getElementById('infPower').textContent = d.power + ' W';
+  if (state.showHeat) updateHeatColors();
+};
+document.getElementById('powerSlider').onchange = () => pushHistory();
+document.getElementById('rotSlider').oninput = e => {
+  if (state.selected === null) return;
+  const d = state.devices.find(x => x.id === state.selected); if (!d) return;
+  d.rot = parseInt(e.target.value,10) * Math.PI / 180;
+  const m = meshById.get(d.id);
+  if (m) m.rotation.y = d.rot;
+  document.getElementById('rotVal').textContent = e.target.value + '°';
+  if (state.showHeat) updateHeatColors();
+};
+document.getElementById('rotSlider').onchange = () => pushHistory();
+document.getElementById('roomWInput').onchange = e => {
+  const v = Math.max(6, Math.min(60, parseFloat(e.target.value) || 20));
+  ROOM.size[0] = v; e.target.value = v;
+  buildRoom(); buildHeatmap();
+};
+document.getElementById('roomDInput').onchange = e => {
+  const v = Math.max(6, Math.min(60, parseFloat(e.target.value) || 14));
+  ROOM.size[1] = v; e.target.value = v;
+  buildRoom(); buildHeatmap();
+};
+document.addEventListener('keydown', e => {
+  const tag = (e.target.tagName || '').toUpperCase();
+  if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+  if ((e.ctrlKey||e.metaKey) && e.key.toLowerCase() === 'z') { e.preventDefault(); undo(); }
+  else if ((e.ctrlKey||e.metaKey) && e.key.toLowerCase() === 'y') { e.preventDefault(); redo(); }
+  else if (e.key === 'Delete' || e.key === 'Backspace') { e.preventDefault(); deleteSelected(); }
+  else if (e.key === 'Escape') { deselect(); document.getElementById('reportModal').classList.remove('on'); }
+  else if (e.key === 'Tab') { e.preventDefault(); setView3D(!state.view3D); }
+});
+
+/* ============ RESIZE ============ */
+function onResize() {
+  const w = window.innerWidth, h = window.innerHeight;
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(w, h, false);
+}
+window.addEventListener('resize', onResize);
+window.addEventListener('orientationchange', () => setTimeout(onResize, 250));
+
+/* ============ LOOP & INIT ============ */
+function animate() {
+  requestAnimationFrame(animate);
+  updateTween();
+  const t = performance.now() * 0.003;
+  devGrp.children.forEach(m => {
+    const r = m.getObjectByName('selRing');
+    if (r && r.material.opacity > 0) r.scale.setScalar(1 + Math.sin(t) * 0.08);
+  });
+  renderer.render(scene, camera);
+}
+
+function init() {
+  applyLang();
+  buildCats(); buildBrands(); buildTypes();
+  loadInitialDevices();
+  onResize();
+  animate();
+  setTimeout(() => document.getElementById('loader').classList.add('off'), 600);
+  console.log('%c✅ AURALIS · Meeting Room ready · Conference Mic & Camera Tracking',
+    'color:#3b82f6;font-weight:bold;font-size:14px');
+}
+
+init();
+</script>
+</body>
+</html>
