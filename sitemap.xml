@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- ============ HOME ============ -->
+  <url>
+    <loc>https://motivity-ai.github.io/auralis/index.html</loc>
+    <lastmod>2026-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- ============ RELIGIOUS ============ -->
+  <url>
+    <loc>https://motivity-ai.github.io/auralis/mosque-indoor.html</loc>
+    <lastmod>2026-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://motivity-ai.github.io/auralis/mosque-outdoor.html</loc>
+    <lastmod>2026-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://motivity-ai.github.io/auralis/church.html</loc>
+    <lastmod>2026-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ============ INDOOR VENUES ============ -->
+  <url><loc>https://motivity-ai.github.io/auralis/theater.html</loc><priority>0.8</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/cinema.html</loc><priority>0.8</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/conference.html</loc><priority>0.9</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/meeting.html</loc><priority>0.9</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/lecture-hall.html</loc><priority>0.9</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/webinar.html</loc><priority>0.9</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/call-center.html</loc><priority>0.9</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/wedding.html</loc><priority>0.8</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/restaurant.html</loc><priority>0.8</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/classroom.html</loc><priority>0.8</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/office.html</loc><priority>0.8</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/shop.html</loc><priority>0.7</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/studio.html</loc><priority>0.8</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/room.html</loc><priority>0.7</priority></url>
+
+  <!-- ============ SPORTS ============ -->
+  <url><loc>https://motivity-ai.github.io/auralis/stadium.html</loc><priority>0.9</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/stadium-filled.html</loc><priority>0.9</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/arena.html</loc><priority>0.8</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/tennis.html</loc><priority>0.7</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/race.html</loc><priority>0.8</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/golf.html</loc><priority>0.8</priority></url>
+
+  <!-- ============ TRANSPORT ============ -->
+  <url><loc>https://motivity-ai.github.io/auralis/airport.html</loc><priority>0.8</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/train.html</loc><priority>0.7</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/bus.html</loc><priority>0.7</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/parking.html</loc><priority>0.7</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/marina.html</loc><priority>0.7</priority></url>
+
+  <!-- ============ PUBLIC SPACES ============ -->
+  <url><loc>https://motivity-ai.github.io/auralis/plaza.html</loc><priority>0.8</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/street.html</loc><priority>0.8</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/park.html</loc><priority>0.8</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/beach.html</loc><priority>0.8</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/waterpark.html</loc><priority>0.8</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/zoo.html</loc><priority>0.8</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/festival.html</loc><priority>0.8</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/amusement.html</loc><priority>0.9</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/resort.html</loc><priority>0.8</priority></url>
+  <url><loc>https://motivity-ai.github.io/auralis/school-yard.html</loc><priority>0.7</priority></url>
+
+  <!-- ============ SPECIAL ============ -->
+  <url>
+    <loc>https://motivity-ai.github.io/auralis/empty.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+</urlset>
