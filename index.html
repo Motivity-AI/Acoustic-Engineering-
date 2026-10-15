@@ -3,171 +3,427 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a0e1a">
 <title>AURALIS · اختر البيئة</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0a0e1a;--panel:rgba(16,22,38,.94);--card:rgba(30,40,66,.6);
-  --line:rgba(255,255,255,.08);--txt:#eef2ff;--txt2:#a8b0cc;--txt3:#6b7396;
-  --vio:#9b7bff;--cyn:#4de5ff;--mint:#4fe4b8}
-body{min-height:100vh;background:
-  radial-gradient(1200px 600px at 50% -10%,rgba(155,123,255,.15),transparent 60%),
-  radial-gradient(900px 500px at 10% 110%,rgba(77,229,255,.08),transparent 60%),
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--bg:#0a0e1a;--panel:rgba(16,22,38,.94);--card:rgba(30,40,66,.55);
+  --line:rgba(255,255,255,.08);--line2:rgba(155,123,255,.35);
+  --txt:#eef2ff;--txt2:#a8b0cc;--txt3:#6b7396;
+  --vio:#9b7bff;--cyn:#4de5ff;--mint:#4fe4b8;--amb:#ffc94d;--gold:#d4af37;
+  --font:'Cairo','Inter',sans-serif}
+html[lang="en"]{--font:'Inter','Cairo',sans-serif}
+html,body{min-height:100%}
+body{background:
+  radial-gradient(1200px 700px at 50% -10%,rgba(155,123,255,.18),transparent 65%),
+  radial-gradient(900px 600px at 5% 110%,rgba(77,229,255,.09),transparent 60%),
+  radial-gradient(700px 500px at 95% 90%,rgba(212,175,55,.07),transparent 60%),
   var(--bg);
-  color:var(--txt);font-family:'Cairo',sans-serif;padding:32px 18px 60px;
-  -webkit-font-smoothing:antialiased}
-.wrap{max-width:1240px;margin:0 auto}
-header{display:flex;align-items:center;gap:14px;margin-bottom:8px}
-.logo{width:52px;height:52px;border-radius:14px;
+  color:var(--txt);font-family:var(--font);padding:26px 16px 70px;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+.wrap{max-width:1280px;margin:0 auto}
+
+/* Header */
+header{display:flex;align-items:center;gap:14px;margin-bottom:8px;flex-wrap:wrap}
+.logo{width:56px;height:56px;border-radius:16px;flex-shrink:0;
   background:linear-gradient(135deg,var(--vio),var(--cyn));
-  display:grid;place-items:center;font-size:26px;font-weight:900;color:#fff;
-  box-shadow:0 12px 40px rgba(155,123,255,.5)}
-h1{font-size:28px;font-weight:900;letter-spacing:2px;
-  background:linear-gradient(135deg,#fff,#9b7bff 60%,#4de5ff);
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.sub{color:var(--txt2);font-size:13.5px;margin-top:4px}
-.stats{display:flex;gap:10px;margin:22px 0 30px;flex-wrap:wrap}
-.pill{background:var(--panel);border:1px solid var(--line);padding:8px 16px;
-  border-radius:12px;font-size:12px;color:var(--txt2);
-  display:flex;align-items:center;gap:8px}
-.pill b{color:var(--cyn);font-size:15px;font-weight:800}
+  display:grid;place-items:center;font-size:28px;font-weight:900;color:#fff;
+  box-shadow:0 12px 40px rgba(155,123,255,.5);
+  background-image:linear-gradient(135deg,#9b7bff,#4de5ff);position:relative}
+.logo::after{content:'';position:absolute;inset:0;border-radius:16px;
+  background:linear-gradient(135deg,rgba(255,255,255,.25),transparent 60%)}
+.titles{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0}
+h1{font-size:30px;font-weight:900;letter-spacing:3px;line-height:1;
+  background:linear-gradient(135deg,#fff,#9b7bff 55%,#4de5ff);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sub{color:var(--txt2);font-size:13.5px;font-weight:600;line-height:1.4}
+.langBtn{height:42px;padding:0 14px;border-radius:12px;
+  background:var(--card);border:1px solid var(--line);color:var(--txt);
+  font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;
+  display:flex;align-items:center;gap:7px;flex-shrink:0;
+  transition:all .2s;backdrop-filter:blur(14px)}
+.langBtn:hover{border-color:var(--vio);color:var(--vio)}
+.langBtn:active{transform:scale(.94)}
+.langBtn .flag{font-size:16px}
 
-section{margin-bottom:36px}
-.sec-title{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:800;
-  margin-bottom:14px;color:var(--txt);padding-inline-start:6px}
+/* Stats */
+.stats{display:flex;gap:10px;margin:24px 0 26px;flex-wrap:wrap}
+.pill{background:var(--panel);border:1px solid var(--line);
+  padding:10px 18px;border-radius:14px;font-size:12.5px;color:var(--txt2);
+  display:flex;align-items:center;gap:9px;backdrop-filter:blur(14px);
+  font-weight:600}
+.pill b{color:var(--cyn);font-size:17px;font-weight:900;
+  font-family:'Cairo','Inter',sans-serif}
+
+/* Search */
+.searchWrap{position:relative;margin-bottom:24px}
+.searchInput{width:100%;height:50px;padding:0 46px 0 18px;border-radius:14px;
+  background:var(--panel);border:1px solid var(--line);color:var(--txt);
+  font-family:inherit;font-size:14px;font-weight:600;
+  backdrop-filter:blur(14px);transition:border-color .2s;
+  -webkit-appearance:none;appearance:none}
+.searchInput:focus{outline:none;border-color:var(--vio);
+  box-shadow:0 0 0 4px rgba(155,123,255,.12)}
+.searchInput::placeholder{color:var(--txt3)}
+.searchIcon{position:absolute;top:50%;transform:translateY(-50%);
+  inset-inline-start:16px;font-size:18px;color:var(--txt3);pointer-events:none}
+
+/* Sections */
+section{margin-bottom:38px;animation:fadeUp .5s ease-out backwards}
+section:nth-child(2){animation-delay:.05s}
+section:nth-child(3){animation-delay:.1s}
+section:nth-child(4){animation-delay:.15s}
+section:nth-child(5){animation-delay:.2s}
+section:nth-child(6){animation-delay:.25s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}}
+.sec-title{display:flex;align-items:center;gap:11px;font-size:16px;
+  font-weight:800;margin-bottom:14px;padding-inline-start:4px}
 .sec-title .badge{background:rgba(155,123,255,.15);color:var(--vio);
-  padding:2px 10px;border-radius:8px;font-size:11px;font-weight:700}
+  padding:3px 11px;border-radius:9px;font-size:11.5px;font-weight:800;
+  border:1px solid rgba(155,123,255,.25)}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+
+/* Card */
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;
   padding:18px 16px;text-decoration:none;color:var(--txt);
-  transition:all .3s cubic-bezier(.34,1.56,.64,1);cursor:pointer;
-  display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden}
-.card::before{content:'';position:absolute;inset:0;border-radius:16px;
-  background:linear-gradient(135deg,rgba(155,123,255,.14),rgba(77,229,255,.06));
-  opacity:0;transition:opacity .3s}
-.card:hover{transform:translateY(-4px);border-color:rgba(155,123,255,.5);
-  box-shadow:0 18px 50px rgba(0,0,0,.5),0 0 0 1px rgba(155,123,255,.2)}
+  transition:all .32s cubic-bezier(.34,1.4,.64,1);cursor:pointer;
+  display:flex;flex-direction:column;gap:9px;position:relative;
+  overflow:hidden;backdrop-filter:blur(14px)}
+.card::before{content:'';position:absolute;inset:0;border-radius:18px;
+  background:linear-gradient(135deg,rgba(155,123,255,.16),rgba(77,229,255,.05));
+  opacity:0;transition:opacity .3s;pointer-events:none}
+.card:hover{transform:translateY(-5px);border-color:rgba(155,123,255,.5);
+  box-shadow:0 20px 55px rgba(0,0,0,.55),0 0 0 1px rgba(155,123,255,.18)}
 .card:hover::before{opacity:1}
 .card>*{position:relative;z-index:1}
-.card .em{font-size:34px;line-height:1}
-.card .nm{font-size:14px;font-weight:800}
-.card .meta{font-size:11px;color:var(--txt3);font-family:monospace;
-  display:flex;gap:10px;flex-wrap:wrap}
-.card .meta span{display:flex;align-items:center;gap:3px}
-.card .arrow{position:absolute;top:14px;inset-inline-end:14px;
-  color:var(--txt3);font-size:16px;transition:all .3s}
-.card:hover .arrow{color:var(--cyn);transform:translateX(-4px)}
-.empty{color:var(--txt3);font-size:12.5px;padding:20px;text-align:center;
-  border:1px dashed var(--line);border-radius:12px}
-footer{text-align:center;color:var(--txt3);font-size:11.5px;margin-top:40px;
-  font-family:monospace;letter-spacing:.5px}
+.card .em{font-size:38px;line-height:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,.35))}
+.card .nm{font-size:14.5px;font-weight:800;line-height:1.25}
+.card .meta{font-size:11.5px;color:var(--txt3);
+  font-family:'JetBrains Mono','Courier New',monospace;
+  display:flex;gap:12px;flex-wrap:wrap;margin-top:2px}
+.card .meta span{display:flex;align-items:center;gap:4px}
+.card .arrow{position:absolute;top:16px;inset-inline-end:16px;
+  color:var(--txt3);font-size:17px;font-weight:700;
+  transition:all .3s;opacity:.6}
+.card:hover .arrow{color:var(--cyn);transform:translateX(-4px);opacity:1}
+html[lang="en"] .card:hover .arrow{transform:translateX(4px)}
+
+.card.soon{opacity:.55;cursor:not-allowed}
+.card.soon::after{content:attr(data-soon);position:absolute;
+  top:12px;inset-inline-end:12px;background:rgba(255,201,77,.18);
+  color:var(--amb);border:1px solid rgba(255,201,77,.35);
+  padding:3px 9px;border-radius:8px;font-size:9.5px;font-weight:800;
+  font-family:'Cairo','Inter',sans-serif}
+.card.soon .arrow{display:none}
+.card.soon:hover{transform:none;border-color:var(--line);
+  box-shadow:none}
+.card.soon:hover::before{opacity:0}
+
+.noResults{grid-column:1/-1;text-align:center;color:var(--txt3);
+  padding:40px 20px;font-size:14px;
+  border:1px dashed var(--line);border-radius:14px}
+
+footer{text-align:center;color:var(--txt3);font-size:11.5px;
+  margin-top:50px;font-family:'JetBrains Mono',monospace;
+  letter-spacing:.6px;line-height:1.8}
+footer .brand{color:var(--vio);font-weight:700}
+
+/* Toast */
+.toast{position:fixed;bottom:30px;left:50%;
+  transform:translateX(-50%) translateY(20px);
+  padding:12px 24px;border-radius:14px;
+  background:var(--panel);backdrop-filter:blur(20px);
+  border:1px solid var(--line2);font-size:13.5px;font-weight:700;
+  color:var(--txt);opacity:0;pointer-events:none;transition:all .3s;
+  z-index:200;white-space:nowrap;box-shadow:0 14px 45px rgba(0,0,0,.6);
+  max-width:90vw;overflow:hidden;text-overflow:ellipsis}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media (max-width:600px){
+  body{padding:18px 12px 60px}
+  h1{font-size:24px;letter-spacing:2px}
+  .logo{width:48px;height:48px;font-size:24px}
+  .sub{font-size:12px}
+  .langBtn{height:38px;padding:0 11px;font-size:12px}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+  .card{padding:14px 12px;border-radius:14px;gap:7px}
+  .card .em{font-size:30px}
+  .card .nm{font-size:13px}
+  .card .meta{font-size:10.5px;gap:8px}
+  .pill{padding:8px 14px;font-size:11.5px}
+  .pill b{font-size:15px}
+  .searchInput{height:46px;font-size:13px}
+  .sec-title{font-size:14.5px}
+}
 </style>
 </head>
 <body>
+
 <div class="wrap">
   <header>
     <div class="logo">≈</div>
-    <div>
+    <div class="titles">
       <h1>AURALIS</h1>
-      <div class="sub">مجموعة التصميم الصوتي الاحترافية · اختر بيئة للبدء</div>
+      <div class="sub" id="subtitle">مجموعة التصميم الصوتي الاحترافية</div>
     </div>
+    <button class="langBtn" id="langBtn">
+      <span class="flag">🌐</span>
+      <span id="langLabel">EN</span>
+    </button>
   </header>
 
   <div class="stats" id="stats"></div>
 
+  <div class="searchWrap">
+    <span class="searchIcon">🔍</span>
+    <input type="search" class="searchInput" id="searchInput"
+      placeholder="ابحث عن بيئة..." autocomplete="off">
+  </div>
+
   <div id="sections"></div>
 
-  <footer>AURALIS © 2026 · Modular Acoustic Suite</footer>
+  <footer>
+    <div><span class="brand">AURALIS</span> © 2026 · Modular Acoustic Suite</div>
+    <div id="footNote" style="margin-top:6px;opacity:.7">34 بيئة · 7 علامات تجارية · 60+ جهاز</div>
+  </footer>
 </div>
 
-<script src="assets/data.js"></script>
+<div class="toast" id="toast"></div>
+
 <script>
-(function(){
-  // تصنيف البيئات تلقائيًا
-  const groups = {
-    religious: { title:'🕌 دور العبادة', ids:['mosque_indoor','mosque_outdoor','church'] },
-    indoor:    { title:'🏛️ قاعات وأنشطة داخلية', ids:['conference','cinema','theater','wedding','restaurant','classroom','office','shop','studio'] },
-    sport:     { title:'🏟️ ملاعب ومنشآت رياضية', ids:['stadium','stadium_field','arena','tennis','race','golf'] },
-    transport: { title:'🚉 نقل ومطارات', ids:['airport','train','bus','parking','marina'] },
-    public:    { title:'🏙️ فضاءات عامة', ids:['plaza','street','park','beach','waterpark','zoo','festival','amusement','resort','school_yard'] },
-    special:   { title:'🎯 خاصة', ids:['empty'] }
-  };
+'use strict';
 
-  const used = new Set();
-  const sectionsEl = document.getElementById('sections');
-  const stats = document.getElementById('stats');
+/* ==================================================================
+   I18N
+   ================================================================== */
+const I18N = {
+  ar: {
+    subtitle: 'مجموعة التصميم الصوتي الاحترافية',
+    search: 'ابحث عن بيئة...',
+    footNote: '34 بيئة · 7 علامات تجارية · 60+ جهاز',
+    soon: 'قريبًا',
+    noResults: 'لا توجد نتائج مطابقة',
+    comingSoon: 'هذه البيئة قيد الإنشاء — قريبًا',
+    groups: {
+      religious: '🕌 دور العبادة',
+      indoor:    '🏛️ قاعات داخلية',
+      sport:     '🏟️ ملاعب ومنشآت رياضية',
+      transport: '🚉 نقل ومطارات',
+      public:    '🏙️ فضاءات عامة',
+      special:   '🎯 خاصة'
+    }
+  },
+  en: {
+    subtitle: 'Professional Acoustic Design Suite',
+    search: 'Search environments...',
+    footNote: '34 environments · 7 brands · 60+ devices',
+    soon: 'Soon',
+    noResults: 'No matching results',
+    comingSoon: 'This environment is under construction — coming soon',
+    groups: {
+      religious: '🕌 Religious',
+      indoor:    '🏛️ Indoor Venues',
+      sport:     '🏟️ Sports & Stadiums',
+      transport: '🚉 Transport',
+      public:    '🏙️ Public Spaces',
+      special:   '🎯 Special'
+    }
+  }
+};
 
-  // احسب الإحصائيات
-  stats.innerHTML = `
-    <div class="pill">🏗️ <b>${Object.keys(ROOMS).length}</b> بيئة جاهزة</div>
-    <div class="pill">🎛️ <b>${Object.values(CATS).reduce((a,c)=>a+c.devices.length,0)}</b> جهاز</div>
-    <div class="pill">🏷️ <b>${Object.keys(BRANDS).length}</b> علامة تجارية</div>
-  `;
+let LANG = localStorage.getItem('auralis_lang') || 'ar';
+const T = k => I18N[LANG][k] || k;
 
-  // اعرض كل قسم
-  for (const key in groups) {
-    const g = groups[key];
-    const validIds = g.ids.filter(id => ROOMS[id] && !used.has(id));
-    validIds.forEach(id => used.add(id));
-    if (!validIds.length) continue;
+/* ==================================================================
+   ROOM CATALOG (metadata only — the actual room lives in its own file)
+   ================================================================== */
+const CATALOG = [
+  /* RELIGIOUS */
+  { id:'mosque_indoor',  emoji:'🕌', ar:'مسجد داخلي',           en:'Mosque Indoor',        size:[20,16], cat:'religious', ready:true,  file:'mosque-indoor.html' },
+  { id:'mosque_outdoor', emoji:'🕌', ar:'مسجد بأربع مآذن',       en:'Mosque with Minarets', size:[40,40], cat:'religious', ready:false },
+  { id:'church',         emoji:'⛪', ar:'كنيسة',                 en:'Church',               size:[16,20], cat:'religious', ready:false },
+
+  /* INDOOR VENUES */
+  { id:'conference', emoji:'🎭', ar:'قاعة مؤتمرات', en:'Conference Hall', size:[18,12], cat:'indoor', ready:false },
+  { id:'cinema',     emoji:'🎬', ar:'سينما',         en:'Cinema',          size:[14,16], cat:'indoor', ready:false },
+  { id:'theater',    emoji:'🎭', ar:'مسرح',          en:'Theater',         size:[16,18], cat:'indoor', ready:false },
+  { id:'wedding',    emoji:'💍', ar:'قاعة أفراح',   en:'Wedding Hall',    size:[26,18], cat:'indoor', ready:false },
+  { id:'restaurant', emoji:'🍽️', ar:'مطعم',         en:'Restaurant',      size:[16,12], cat:'indoor', ready:false },
+  { id:'classroom',  emoji:'🏫', ar:'فصل دراسي',    en:'Classroom',       size:[10,8],  cat:'indoor', ready:false },
+  { id:'office',     emoji:'🏢', ar:'مكتب',          en:'Office',          size:[16,10], cat:'indoor', ready:false },
+  { id:'shop',       emoji:'🛍️', ar:'متجر',          en:'Shop',            size:[12,8],  cat:'indoor', ready:false },
+  { id:'studio',     emoji:'🎙️', ar:'استوديو',       en:'Studio',          size:[14,10], cat:'indoor', ready:false },
+
+  /* SPORTS */
+  { id:'stadium',       emoji:'🏟️', ar:'ملعب',          en:'Stadium',         size:[60,40], cat:'sport', ready:false },
+  { id:'stadium_field', emoji:'🏟️', ar:'ملعب رياضي',    en:'Sports Field',    size:[70,50], cat:'sport', ready:false },
+  { id:'arena',         emoji:'🏟️', ar:'حلبة',          en:'Arena',           size:[50,50], cat:'sport', ready:false },
+  { id:'tennis',        emoji:'🎾', ar:'ملعب تنس',      en:'Tennis Court',    size:[24,12], cat:'sport', ready:false },
+  { id:'race',          emoji:'🏁', ar:'حلبة سباق',     en:'Racetrack',       size:[100,60],cat:'sport', ready:false },
+  { id:'golf',          emoji:'⛳', ar:'ملعب غولف',      en:'Golf Course',     size:[100,60],cat:'sport', ready:false },
+
+  /* TRANSPORT */
+  { id:'airport', emoji:'✈️', ar:'مطار',            en:'Airport',        size:[80,50], cat:'transport', ready:false },
+  { id:'train',   emoji:'🚆', ar:'محطة قطار',       en:'Train Station',  size:[70,30], cat:'transport', ready:false },
+  { id:'bus',     emoji:'🚌', ar:'محطة حافلات',     en:'Bus Station',    size:[40,30], cat:'transport', ready:false },
+  { id:'parking', emoji:'🅿️', ar:'موقف سيارات',     en:'Parking',        size:[50,30], cat:'transport', ready:false },
+  { id:'marina',  emoji:'⛵', ar:'مارينا',            en:'Marina',         size:[60,40], cat:'transport', ready:false },
+
+  /* PUBLIC SPACES */
+  { id:'plaza',       emoji:'🏙️', ar:'ساحة عامة',       en:'Public Plaza',    size:[40,32], cat:'public', ready:false },
+  { id:'street',      emoji:'🛣️', ar:'شارع',             en:'Street',          size:[60,14], cat:'public', ready:false },
+  { id:'park',        emoji:'⛲', ar:'حديقة عامة',       en:'Park',            size:[36,28], cat:'public', ready:false },
+  { id:'beach',       emoji:'🏖️', ar:'شاطئ',             en:'Beach',           size:[60,40], cat:'public', ready:false },
+  { id:'waterpark',   emoji:'💦', ar:'مدينة مائية',     en:'Waterpark',       size:[50,40], cat:'public', ready:false },
+  { id:'zoo',         emoji:'🦁', ar:'حديقة حيوانات',   en:'Zoo',             size:[60,50], cat:'public', ready:false },
+  { id:'festival',    emoji:'🎪', ar:'مهرجان',           en:'Festival',        size:[80,60], cat:'public', ready:false },
+  { id:'amusement',   emoji:'🎢', ar:'مدينة ألعاب',     en:'Amusement Park',  size:[70,60], cat:'public', ready:false },
+  { id:'resort',      emoji:'🏖️', ar:'منتجع',            en:'Resort',          size:[50,40], cat:'public', ready:false },
+  { id:'school_yard', emoji:'🏫', ar:'ساحة مدرسة',      en:'School Yard',     size:[40,30], cat:'public', ready:false },
+
+  /* SPECIAL */
+  { id:'empty', emoji:'⬜', ar:'بيئة فارغة', en:'Empty Canvas', size:[20,16], cat:'special', ready:false }
+];
+
+/* ==================================================================
+   BUILD UI
+   ================================================================== */
+const $ = s => document.querySelector(s);
+let toastTO;
+
+function toast(msg) {
+  const el = $('#toast');
+  el.textContent = msg;
+  el.classList.add('on');
+  clearTimeout(toastTO);
+  toastTO = setTimeout(() => el.classList.remove('on'), 2200);
+}
+
+function applyLang() {
+  document.documentElement.lang = LANG;
+  document.documentElement.dir = LANG === 'ar' ? 'rtl' : 'ltr';
+  document.body.style.fontFamily = LANG === 'ar'
+    ? "'Cairo','Inter',sans-serif"
+    : "'Inter','Cairo',sans-serif";
+  $('#subtitle').textContent = T('subtitle');
+  $('#langLabel').textContent = LANG === 'ar' ? 'EN' : 'ع';
+  $('#searchInput').placeholder = T('search');
+  $('#footNote').textContent = T('footNote');
+  document.title = LANG === 'ar' ? 'AURALIS · اختر البيئة' : 'AURALIS · Choose Environment';
+}
+
+function render() {
+  const query = ($('#searchInput').value || '').trim().toLowerCase();
+  const sectionsEl = $('#sections');
+  sectionsEl.innerHTML = '';
+
+  const grouped = {};
+  CATALOG.forEach(r => {
+    if (!grouped[r.cat]) grouped[r.cat] = [];
+    grouped[r.cat].push(r);
+  });
+
+  let totalShown = 0;
+
+  ['religious','indoor','sport','transport','public','special'].forEach(cat => {
+    const rooms = (grouped[cat] || []).filter(r => {
+      if (!query) return true;
+      return r.ar.toLowerCase().includes(query)
+          || r.en.toLowerCase().includes(query)
+          || r.id.toLowerCase().includes(query);
+    });
+    if (!rooms.length) return;
+
+    totalShown += rooms.length;
 
     const sec = document.createElement('section');
-    sec.innerHTML = `<div class="sec-title">
-      ${g.title}
-      <span class="badge">${validIds.length}</span>
-    </div>`;
+    const title = document.createElement('div');
+    title.className = 'sec-title';
+    title.innerHTML = `${T('groups.' + cat)} <span class="badge">${rooms.length}</span>`;
+    sec.appendChild(title);
 
     const grid = document.createElement('div');
     grid.className = 'grid';
 
-    for (const id of validIds) {
-      const r = ROOMS[id];
-      const devCount = r.devices ? r.devices.length : 0;
+    rooms.forEach(r => {
+      const name = LANG === 'ar' ? r.ar : r.en;
       const card = document.createElement('a');
-      card.className = 'card';
-      card.href = `room.html?id=${id}`;
+      card.className = 'card' + (r.ready ? '' : ' soon');
+      card.setAttribute('data-soon', T('soon'));
+
+      if (r.ready && r.file) {
+        card.href = r.file;
+      } else {
+        card.href = 'javascript:void(0)';
+        card.onclick = e => { e.preventDefault(); toast(T('comingSoon')); };
+      }
+
+      const arrowDir = LANG === 'ar' ? '←' : '→';
       card.innerHTML = `
-        <span class="arrow">←</span>
-        <div class="em">${r.name.split(' ')[0]}</div>
-        <div class="nm">${r.name.substring(r.name.indexOf(' ')+1)}</div>
+        <span class="arrow">${arrowDir}</span>
+        <div class="em">${r.emoji}</div>
+        <div class="nm">${name}</div>
         <div class="meta">
-          <span>📐 ${r.size[0]}×${r.size[1]}م</span>
-          <span>🔊 ${devCount}</span>
+          <span>📐 ${r.size[0]}×${r.size[1]}</span>
         </div>
       `;
       grid.appendChild(card);
-    }
-    sec.appendChild(grid);
-    sectionsEl.appendChild(sec);
-  }
-
-  // أي بيئة لم تُذكر في المجموعات تُضاف لقسم "أخرى"
-  const leftovers = Object.keys(ROOMS).filter(id => !used.has(id));
-  if (leftovers.length) {
-    const sec = document.createElement('section');
-    sec.innerHTML = `<div class="sec-title">📦 أخرى <span class="badge">${leftovers.length}</span></div>`;
-    const grid = document.createElement('div');
-    grid.className = 'grid';
-    leftovers.forEach(id => {
-      const r = ROOMS[id];
-      const card = document.createElement('a');
-      card.className = 'card';
-      card.href = `room.html?id=${id}`;
-      card.innerHTML = `
-        <span class="arrow">←</span>
-        <div class="em">${r.name.split(' ')[0]}</div>
-        <div class="nm">${r.name.substring(r.name.indexOf(' ')+1)}</div>
-        <div class="meta">
-          <span>📐 ${r.size[0]}×${r.size[1]}م</span>
-          <span>🔊 ${r.devices?r.devices.length:0}</span>
-        </div>`;
-      grid.appendChild(card);
     });
+
     sec.appendChild(grid);
     sectionsEl.appendChild(sec);
+  });
+
+  if (totalShown === 0) {
+    sectionsEl.innerHTML = `<div class="noResults">${T('noResults')}</div>`;
   }
-})();
+}
+
+function updateStats() {
+  const totalRooms = CATALOG.length;
+  const ready = CATALOG.filter(r => r.ready).length;
+  $('#stats').innerHTML = `
+    <div class="pill">🏗️ <b>${totalRooms}</b> ${LANG==='ar'?'بيئة':'environments'}</div>
+    <div class="pill">✅ <b>${ready}</b> ${LANG==='ar'?'جاهزة الآن':'ready'}</div>
+    <div class="pill">🎛️ <b>60+</b> ${LANG==='ar'?'جهاز':'devices'}</div>
+  `;
+}
+
+/* ==================================================================
+   EVENTS
+   ================================================================== */
+$('#langBtn').onclick = () => {
+  LANG = LANG === 'ar' ? 'en' : 'ar';
+  localStorage.setItem('auralis_lang', LANG);
+  applyLang();
+  render();
+  updateStats();
+  toast(LANG === 'ar' ? '🌐 العربية' : '🌐 English');
+};
+
+let searchTO;
+$('#searchInput').oninput = () => {
+  clearTimeout(searchTO);
+  searchTO = setTimeout(render, 120);
+};
+
+/* ==================================================================
+   INIT
+   ================================================================== */
+applyLang();
+updateStats();
+render();
+
+console.log('%c✅ AURALIS Index ready',
+  'color:#4de5ff;font-weight:bold;font-size:13px');
+console.log('%c📦 Rooms in catalog: ' + CATALOG.length,
+  'color:#9b7bff');
+console.log('%c🟢 Ready: ' + CATALOG.filter(r=>r.ready).length,
+  'color:#4fe4b8');
 </script>
 </body>
 </html>
