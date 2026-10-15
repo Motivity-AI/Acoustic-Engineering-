@@ -1,0 +1,44 @@
+{
+  "name": "AURALIS · Modular Acoustic Suite",
+  "short_name": "AURALIS",
+  "description": "Professional acoustic design suite · 39 interactive 3D environments with SPL simulation, heatmaps, device library, and engineering reports.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0a0e1a",
+  "theme_color": "#9b7bff",
+  "categories": ["productivity", "utilities", "education"],
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "المسجد الداخلي",
+      "short_name": "مسجد",
+      "url": "./mosque-indoor.html",
+      "icons": [{ "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "قاعة اجتماعات",
+      "short_name": "اجتماعات",
+      "url": "./meeting.html",
+      "icons": [{ "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "البيئة الفارغة",
+      "short_name": "فارغة",
+      "url": "./empty.html",
+      "icons": [{ "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    }
+  ],
+  "screenshots": [],
+  "prefer_related_applications": false
+}
