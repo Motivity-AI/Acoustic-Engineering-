@@ -238,13 +238,15 @@ function T(k) {
 }
 
 /* ==================================================================
-   ROOM CATALOG — 4 بيئات جاهزة الآن
+   ROOM CATALOG — 5 بيئات جاهزة الآن
+   ✅ ready:true   → قابل للنقر
+   ⚠️ ready:false  → يظهر "قريبًا"
    ================================================================== */
 const CATALOG = [
   /* RELIGIOUS */
-  { id:'mosque_indoor',  emoji:'🕌', ar:'مسجد داخلي',           en:'Mosque Indoor',        size:[20,16], cat:'religious', ready:true,  file:'mosque-indoor.html' },
-  { id:'mosque_outdoor', emoji:'🕌', ar:'مسجد بأربع مآذن',       en:'Mosque with Minarets', size:[40,40], cat:'religious', ready:false },
-  { id:'church',         emoji:'⛪', ar:'كنيسة',                 en:'Church',               size:[16,24], cat:'religious', ready:true,  file:'church.html' },
+  { id:'mosque_indoor',  emoji:'🕌', ar:'مسجد داخلي',           en:'Mosque Indoor',        size:[20,16],  cat:'religious', ready:true,  file:'mosque-indoor.html' },
+  { id:'mosque_outdoor', emoji:'🕌', ar:'مسجد بأربع مآذن',       en:'Mosque with Minarets', size:[40,40],  cat:'religious', ready:false },
+  { id:'church',         emoji:'⛪', ar:'كنيسة',                 en:'Church',               size:[16,24],  cat:'religious', ready:true,  file:'church.html' },
 
   /* INDOOR VENUES */
   { id:'theater',    emoji:'🎭', ar:'مسرح',          en:'Theater',         size:[20,26], cat:'indoor', ready:true,  file:'theater.html' },
@@ -258,7 +260,7 @@ const CATALOG = [
   { id:'studio',     emoji:'🎙️', ar:'استوديو',       en:'Studio',          size:[14,10], cat:'indoor', ready:false },
 
   /* SPORTS */
-  { id:'stadium',       emoji:'🏟️', ar:'ملعب',          en:'Stadium',         size:[60,40], cat:'sport', ready:false },
+  { id:'stadium',       emoji:'🏟️', ar:'ملعب',          en:'Stadium',         size:[100,70],cat:'sport', ready:true,  file:'stadium.html' },
   { id:'stadium_field', emoji:'🏟️', ar:'ملعب رياضي',    en:'Sports Field',    size:[70,50], cat:'sport', ready:false },
   { id:'arena',         emoji:'🏟️', ar:'حلبة',          en:'Arena',           size:[50,50], cat:'sport', ready:false },
   { id:'tennis',        emoji:'🎾', ar:'ملعب تنس',      en:'Tennis Court',    size:[24,12], cat:'sport', ready:false },
@@ -419,6 +421,7 @@ render();
 
 console.log('%c✅ AURALIS Index ready','color:#4de5ff;font-weight:bold;font-size:13px');
 console.log('%c📦 Rooms: ' + CATALOG.length + ' total · ' + CATALOG.filter(r=>r.ready).length + ' ready','color:#9b7bff');
+console.log('%c🟢 Ready: Mosque Indoor · Church · Theater · Cinema · Stadium','color:#4fe4b8');
 </script>
 </body>
 </html>
