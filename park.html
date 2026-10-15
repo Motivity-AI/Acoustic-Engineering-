@@ -1,0 +1,2582 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0a1a14">
+<title>⛲ AURALIS · Public Park</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0a1a14;--panel:rgba(18,36,28,.94);--card:rgba(38,64,50,.7);
+  --line:rgba(110,231,183,.12);--line2:rgba(110,231,183,.45);
+  --txt:#e8f5ec;--txt2:#a8c8b8;--txt3:#5a7a68;
+  --green:#10b981;--green2:#34d399;--sky:#38bdf8;--sun:#fde047;
+  --grass:#22c55e;--water:#0ea5e9;--wood:#a16207;--stone:#94a3b8;
+  --sh:0 8px 32px rgba(0,0,0,.7);--font:'Cairo','Inter',sans-serif;
+}
+html[lang="en"]{--font:'Inter','Cairo',sans-serif}
+html[lang="en"] body{font-family:var(--font)}
+html{height:100%;overflow:hidden;-webkit-text-size-adjust:100%}
+body{position:fixed;inset:0;overflow:hidden;background:var(--bg);color:var(--txt);
+  font-family:var(--font);font-size:14px;user-select:none;-webkit-user-select:none}
+#c{position:fixed;inset:0;width:100%;height:100%;touch-action:none;display:block;cursor:crosshair}
+#loader{position:fixed;inset:0;z-index:9999;background:
+  radial-gradient(circle at 50% 40%,rgba(16,185,129,.2),transparent 60%),#0a1a14;
+  display:grid;place-items:center;transition:opacity .6s,visibility .6s}
+#loader.off{opacity:0;visibility:hidden}
+#loader .box{text-align:center}
+#loader .sym{font-size:70px;filter:drop-shadow(0 0 40px rgba(16,185,129,.85));
+  animation:pulse 1.6s ease-in-out infinite}
+#loader .txt{margin-top:14px;color:var(--txt2);letter-spacing:3.5px;font-size:12px;font-weight:700}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.1);opacity:.7}}
+header{position:fixed;top:0;left:0;right:0;min-height:56px;z-index:100;padding:8px 14px;
+  padding-top:calc(8px + env(safe-area-inset-top,0));background:var(--panel);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--line);display:flex;align-items:center;gap:9px;
+  transition:transform .4s cubic-bezier(.4,0,.2,1)}
+header.hide{transform:translateY(-110%)}
+.logo{width:38px;height:38px;border-radius:11px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--green),var(--sun));display:grid;place-items:center;
+  font-size:20px;color:#0a1a14;box-shadow:0 4px 16px rgba(16,185,129,.55);
+  border:1px solid rgba(110,231,183,.3)}
+.title{display:flex;flex-direction:column;gap:1px;min-width:0}
+.title .t1{font-size:14px;font-weight:900;letter-spacing:2px;
+  background:linear-gradient(135deg,#fff,var(--green));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  white-space:nowrap}
+.title .t2{font-size:9.5px;color:var(--txt3);letter-spacing:1.2px;
+  font-family:'JetBrains Mono',monospace;white-space:nowrap}
+.spacer{flex:1}
+.langBtn{height:38px;min-width:50px;padding:0 12px;border-radius:11px;
+  background:var(--card);border:1px solid var(--line);color:var(--txt);
+  font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  transition:all .2s;flex-shrink:0}
+.langBtn:hover{border-color:var(--green);color:var(--green)}
+.langBtn:active{transform:scale(.95)}
+.btn{height:38px;min-width:38px;padding:0 12px;border-radius:11px;background:var(--card);
+  border:1px solid var(--line);color:var(--txt);font-family:inherit;font-size:13px;
+  font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  gap:6px;transition:transform .15s;flex-shrink:0}
+.btn:hover{border-color:var(--line2)}
+.btn:active{transform:scale(.94)}
+.btn.on{background:linear-gradient(135deg,var(--green),var(--sun));color:#0a1a14;border-color:transparent}
+.hud{position:fixed;top:76px;inset-inline-end:12px;z-index:50;
+  display:flex;flex-direction:column;gap:7px;pointer-events:none;transition:opacity .3s}
+.hud .stat{background:var(--panel);backdrop-filter:blur(20px);border:1px solid var(--line);
+  padding:7px 13px;border-radius:11px;font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--txt2);text-align:center;min-width:82px;transition:border-color .3s}
+.hud .stat b{color:var(--sky);font-weight:700;font-size:13px;display:block;margin-top:2px}
+.hud .stat.good b{color:var(--green2)}
+.hud .stat.warn b{color:var(--sun)}
+.tools{position:fixed;inset-inline-end:12px;bottom:185px;z-index:60;
+  display:flex;flex-direction:column;gap:8px;transition:transform .4s,opacity .3s}
+.tools.hide{transform:translateX(-160%);opacity:0}
+.tool{width:48px;height:48px;border-radius:14px;border:1px solid var(--line);
+  background:var(--panel);backdrop-filter:blur(20px);color:var(--txt);
+  font-size:20px;cursor:pointer;display:grid;place-items:center;
+  box-shadow:var(--sh);transition:all .2s cubic-bezier(.34,1.56,.64,1)}
+.tool:hover{border-color:var(--line2);transform:translateY(-2px)}
+.tool:active{transform:scale(.92)}
+.tool.on{background:linear-gradient(135deg,var(--green),var(--sun));
+  border-color:transparent;color:#0a1a14;box-shadow:0 8px 24px rgba(16,185,129,.55)}
+.info{position:fixed;top:76px;inset-inline-start:12px;z-index:70;width:250px;
+  padding:15px;border-radius:16px;background:var(--panel);
+  backdrop-filter:blur(24px);border:1px solid var(--line2);box-shadow:var(--sh);
+  transform:translateX(calc(-100% - 30px));opacity:0;
+  transition:all .35s cubic-bezier(.34,1.56,.64,1);
+  pointer-events:none;max-height:calc(100vh - 210px);overflow-y:auto}
+.info.on{transform:translateX(0);opacity:1;pointer-events:auto}
+.info h4{font-size:13px;font-weight:800;margin-bottom:3px;color:var(--green);
+  display:flex;align-items:center;gap:7px}
+.info .tag{font-size:9.5px;color:var(--txt3);margin-bottom:11px;
+  font-family:'JetBrains Mono',monospace;letter-spacing:.6px;text-transform:uppercase}
+.info .row{display:flex;justify-content:space-between;align-items:center;
+  padding:5px 0;font-size:11px;border-bottom:1px dashed var(--line)}
+.info .row:last-of-type{border:none}
+.info .row span:first-child{color:var(--txt3)}
+.info .row span:last-child{color:var(--txt);font-weight:700;font-family:'JetBrains Mono',monospace}
+.info .slider{margin-top:8px;display:flex;align-items:center;gap:7px}
+.info .slider label{font-size:10px;color:var(--txt3);min-width:48px}
+.info .slider input{flex:1;-webkit-appearance:none;appearance:none;height:3px;
+  border-radius:2px;background:rgba(255,255,255,.12);outline:none}
+.info .slider input::-webkit-slider-thumb{-webkit-appearance:none;
+  width:14px;height:14px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 8px rgba(16,185,129,.7);cursor:pointer}
+.info .slider b{font-size:10px;color:var(--green);
+  font-family:'JetBrains Mono',monospace;min-width:42px;text-align:end}
+.info .numInput{width:64px;background:var(--card);border:1px solid var(--line);
+  color:var(--txt);border-radius:6px;padding:3px 6px;font-family:inherit;font-size:11px}
+.info .actions{display:flex;gap:6px;margin-top:12px}
+.info .actions button{flex:1;padding:9px;border-radius:10px;font-family:inherit;
+  font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--line);
+  background:var(--card);color:var(--txt);transition:all .2s}
+.info .actions button:hover{background:rgba(255,255,255,.05)}
+.info .actions button.del{background:rgba(255,122,156,.15);color:#ff7a9c;
+  border-color:rgba(255,122,156,.4)}
+.picker{position:fixed;bottom:0;left:0;right:0;z-index:80;padding:10px 12px;
+  padding-bottom:calc(10px + env(safe-area-inset-bottom,0));
+  background:var(--panel);backdrop-filter:blur(24px);
+  border-top:1px solid var(--line);
+  transition:transform .4s cubic-bezier(.4,0,.2,1)}
+.picker.hide{transform:translateY(110%)}
+.cats,.brands{display:flex;gap:6px;margin-bottom:7px;overflow-x:auto;
+  scrollbar-width:none;padding-bottom:1px}
+.cats::-webkit-scrollbar,.brands::-webkit-scrollbar{display:none}
+.cat{padding:7px 14px;border-radius:10px;flex-shrink:0;background:var(--card);
+  border:1.5px solid transparent;color:var(--txt2);font-family:inherit;
+  font-size:11.5px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}
+.cat.on{background:linear-gradient(135deg,var(--green),var(--sun));color:#0a1a14;
+  box-shadow:0 4px 12px rgba(16,185,129,.5)}
+.brand{padding:6px 12px;border-radius:9px;flex-shrink:0;background:var(--card);
+  border:1px solid transparent;color:var(--txt2);font-family:inherit;font-size:11px;
+  font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}
+.brand.on{border-color:var(--sky);color:var(--sky);background:rgba(56,189,248,.12)}
+.types{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:6px;
+  max-height:120px;overflow-y:auto;scrollbar-width:thin;padding:1px}
+.types::-webkit-scrollbar{width:4px}
+.types::-webkit-scrollbar-thumb{background:var(--line2);border-radius:2px}
+.type{padding:8px 4px;border-radius:10px;background:var(--card);
+  border:1.5px solid transparent;color:var(--txt2);font-family:inherit;
+  font-size:9.5px;font-weight:700;cursor:pointer;transition:all .2s;
+  display:flex;flex-direction:column;align-items:center;gap:3px;min-height:58px}
+.type:hover{border-color:var(--line2)}
+.type:active{transform:scale(.94)}
+.type.on{background:linear-gradient(135deg,var(--green),var(--sun));color:#0a1a14;
+  box-shadow:0 5px 16px rgba(16,185,129,.5)}
+.type .em{font-size:20px;line-height:1}
+.type .nm{font-size:9px;line-height:1.2;text-align:center}
+.toast{position:fixed;bottom:195px;left:50%;transform:translateX(-50%) translateY(20px);
+  padding:11px 22px;border-radius:14px;background:var(--panel);
+  backdrop-filter:blur(20px);border:1px solid var(--line2);
+  font-size:13px;font-weight:700;color:var(--txt);opacity:0;pointer-events:none;
+  transition:all .3s;z-index:200;white-space:nowrap;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.presBtn{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
+  z-index:90;padding:13px 26px;border-radius:30px;
+  background:linear-gradient(135deg,var(--green),var(--sun));
+  color:#0a1a14;font-family:inherit;font-size:13px;font-weight:800;
+  border:0;cursor:pointer;display:none;box-shadow:0 12px 40px rgba(16,185,129,.55)}
+.presBtn.on{display:block;animation:showB .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes showB{from{transform:translateX(-50%) scale(.5);opacity:0}}
+.exitP{position:fixed;top:calc(22px + env(safe-area-inset-top,0));
+  inset-inline-end:22px;z-index:100;width:46px;height:46px;border-radius:50%;
+  background:rgba(18,36,28,.85);backdrop-filter:blur(20px);
+  border:1px solid var(--line);color:var(--txt);font-size:20px;cursor:pointer;
+  display:none;place-items:center;transition:all .2s}
+.exitP.on{display:grid}
+.exitP:active{transform:scale(.9)}
+.modal{position:fixed;inset:0;background:rgba(10,26,20,.92);backdrop-filter:blur(10px);
+  z-index:1000;display:none;align-items:center;justify-content:center;padding:18px}
+.modal.on{display:flex;animation:fadeIn .25s}
+@keyframes fadeIn{from{opacity:0}}
+.modal-content{background:#0f2418;border:1px solid var(--line2);border-radius:20px;
+  width:100%;max-width:760px;max-height:88vh;display:flex;flex-direction:column;
+  box-shadow:0 24px 80px rgba(0,0,0,.85);overflow:hidden;
+  animation:slideUp .35s cubic-bezier(.34,1.56,.64,1)}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0}}
+.modal-header{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;
+  align-items:center;justify-content:space-between;gap:12px;background:rgba(18,36,28,.8)}
+.modal-header h3{color:var(--green);font-size:15px;font-weight:800;display:flex;align-items:center;gap:9px}
+.modal-body{padding:22px;overflow-y:auto;font-size:13px;line-height:1.65}
+.report-section{margin-bottom:20px}
+.report-section:last-child{margin-bottom:0}
+.report-section h4{color:var(--sun);font-size:14px;margin-bottom:10px;
+  border-bottom:1px solid var(--line);padding-bottom:6px;display:flex;align-items:center;gap:8px}
+.modal-body .row{display:flex;justify-content:space-between;gap:12px;
+  padding:7px 0;font-size:12.5px;border-bottom:1px dashed var(--line)}
+.modal-body .row:last-child{border:none}
+.modal-body .row span:first-child{color:var(--txt3)}
+.modal-body .row span:last-child{font-weight:700;font-family:'JetBrains Mono',monospace}
+.report-table{width:100%;border-collapse:collapse;margin-top:10px;
+  border-radius:10px;overflow:hidden}
+.report-table th,.report-table td{border:1px solid var(--line);
+  padding:10px 12px;text-align:start;font-size:12px}
+.report-table th{background:rgba(16,185,129,.22);color:#a7f3d0;font-weight:800}
+.report-table tr:nth-child(even) td{background:rgba(16,185,129,.03)}
+.modal-footer{padding:16px 20px;border-top:1px solid var(--line);
+  display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+@media (max-width:600px){
+  .title .t2{display:none}
+  .langBtn .label{display:none}
+  .langBtn{min-width:42px;padding:0 10px}
+  .btn{padding:0 9px;font-size:12px}
+  .info{width:220px}
+  .tool{width:44px;height:44px;font-size:18px}
+  .types{grid-template-columns:repeat(auto-fill,minmax(66px,1fr))}
+}
+@media print{
+  body{background:#fff;color:#000;position:static}
+  header,.tools,.hud,.picker,.presBtn,.exitP,.info,#c,.toast,#loader{display:none!important}
+  .modal{position:absolute;inset:0;background:#fff;padding:0;display:block!important}
+  .modal-content{border:none;box-shadow:none;max-height:none;width:100%;color:#000;background:#fff;animation:none}
+  .modal-header{background:none;border-bottom:2px solid #000}
+  .modal-header h3{color:#000}
+  .modal-footer{display:none}
+  .modal-body .row span:first-child{color:#555}
+  .report-section h4{color:#000}
+  .report-table th{background:#eee;color:#000}
+  .report-table th,.report-table td{border:1px solid #999}
+}
+</style>
+</head>
+<body>
+
+<div id="loader"><div class="box">
+  <div class="sym">⛲</div>
+  <div class="txt" id="loaderTxt">LOADING PARK…</div>
+</div></div>
+
+<canvas id="c"></canvas>
+
+<header id="hd">
+  <div class="logo">⛲</div>
+  <div class="title">
+    <div class="t1">AURALIS</div>
+    <div class="t2" id="roomLabel">PUBLIC PARK · BACKGROUND & PAGING</div>
+  </div>
+  <div class="spacer"></div>
+  <button class="langBtn" id="langBtn" title="Language">
+    <span class="flag">🌐</span>
+    <span class="label" id="langLabel">EN</span>
+  </button>
+  <button class="btn" id="reportBtn" data-i18n-title="report_tip">📄</button>
+  <button class="btn" id="viewBtn">🎬 3D</button>
+  <button class="btn" id="shotBtn" data-i18n-title="shot_tip">📸</button>
+  <button class="btn" id="presBtn" data-i18n-title="pres_tip">🎥</button>
+</header>
+
+<div class="hud" id="hud">
+  <div class="stat" id="statDev"><span data-i18n="hud_devices">Devices</span><b id="hudCount">0</b></div>
+  <div class="stat" id="statSpl"><span data-i18n="hud_spl">Max SPL</span><b id="hudSpl">—</b></div>
+  <div class="stat" id="statCov"><span data-i18n="hud_coverage">Coverage</span><b id="hudCoverage">—</b></div>
+</div>
+
+<div class="tools" id="tools">
+  <button class="tool on" id="heatBtn" data-i18n-title="heat_tip">🌡️</button>
+  <button class="tool" id="fitBtn" data-i18n-title="fit_tip">🎯</button>
+  <button class="tool on" id="gridBtn" data-i18n-title="grid_tip">▦</button>
+  <button class="tool" id="saveBtn" data-i18n-title="save_tip">💾</button>
+  <button class="tool" id="loadBtn" data-i18n-title="load_tip">📂</button>
+  <button class="tool" id="clearBtn" data-i18n-title="clear_tip">🧹</button>
+</div>
+
+<input type="file" id="fileInput" style="display:none" accept=".json">
+
+<div class="info" id="info">
+  <h4>📦 <span id="infName">—</span></h4>
+  <div class="tag" id="infBrand">—</div>
+  <div class="row"><span data-i18n="inf_category">Category</span><span id="infType">—</span></div>
+  <div class="row"><span data-i18n="inf_power">Power</span><span id="infPower">—</span></div>
+  <div class="row"><span data-i18n="inf_height">Height</span><span id="infH">—</span></div>
+  <div class="row"><span data-i18n="inf_position">Position</span><span id="infPos">—</span></div>
+  <div class="slider" id="powerWrap">
+    <label data-i18n="sl_power">Power</label>
+    <input type="range" id="powerSlider" min="5" max="600" step="5" value="20">
+    <b id="powerVal">20W</b>
+  </div>
+  <div class="slider" id="rotWrap">
+    <label data-i18n="sl_rotation">Rotation</label>
+    <input type="range" id="rotSlider" min="-180" max="180" step="5" value="0">
+    <b id="rotVal">0°</b>
+  </div>
+  <div class="row" style="margin-top:8px">
+    <span data-i18n="inf_room_w">Width</span>
+    <input type="number" id="roomWInput" class="numInput" min="40" max="300">
+  </div>
+  <div class="row">
+    <span data-i18n="inf_room_d">Depth</span>
+    <input type="number" id="roomDInput" class="numInput" min="40" max="300">
+  </div>
+  <div class="actions">
+    <button class="del" id="delBtn" data-i18n="act_delete">🗑️ Delete</button>
+  </div>
+</div>
+
+<div class="picker" id="picker">
+  <div class="cats" id="cats"></div>
+  <div class="brands" id="brands"></div>
+  <div class="types" id="types"></div>
+</div>
+
+<div class="modal" id="reportModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>📋 <span data-i18n="rep_title">Acoustic Design Report</span></h3>
+      <button class="btn" id="closeModalBtn" style="height:32px;min-width:32px;padding:0 8px">✕</button>
+    </div>
+    <div class="modal-body" id="reportModalBody"></div>
+    <div class="modal-footer">
+      <button class="btn on" id="printReportBtn" data-i18n="rep_print">🖨️ Print / Save PDF</button>
+      <button class="btn" id="closeModalBtn2" data-i18n="rep_close">Close</button>
+    </div>
+  </div>
+</div>
+
+<button class="presBtn" id="presToggle" data-i18n="pres_start">🎥 Start Presentation</button>
+<button class="exitP" id="exitPres">✕</button>
+<div class="toast" id="toast"></div>
+
+<script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
+<script>
+'use strict';
+
+/* ============ I18N ============ */
+const I18N = {
+  ar: {
+    loader:'جارٍ تحميل الحديقة…',
+    room_label:'حديقة عامة · موسيقى خلفية ونداء',
+    hud_devices:'الأجهزة', hud_spl:'أقصى SPL', hud_coverage:'التغطية',
+    report_tip:'تقرير', shot_tip:'لقطة', pres_tip:'عرض',
+    heat_tip:'خريطة حرارية', fit_tip:'ملاءمة', grid_tip:'الشبكة',
+    save_tip:'حفظ', load_tip:'فتح', clear_tip:'حذف الكل',
+    inf_category:'الفئة', inf_power:'القوة', inf_height:'الارتفاع',
+    inf_position:'الموقع', inf_room_w:'العرض', inf_room_d:'الطول',
+    sl_power:'القوة', sl_rotation:'الاتجاه', act_delete:'🗑️ حذف',
+    rep_title:'التقرير الهندسي الصوتي',
+    rep_print:'🖨️ طباعة / حفظ PDF', rep_close:'إغلاق',
+    pres_start:'🎥 بدء العرض',
+    cat_paths:'الممرات', cat_garden:'الحدائق والأشجار',
+    cat_fountain:'النافورة والبحيرة', cat_playground:'ملعب الأطفال',
+    cat_gazebo:'المسرح الروماني', cat_benches:'المقاعد والاستراحة',
+    cat_entrance:'المداخل والبوابة', cat_sports:'المنطقة الرياضية',
+    cat_paging:'نظام النداء', cat_emergency:'نظام الطوارئ',
+    cat_mics:'ميكروفونات', cat_amps:'مضخمات', cat_control:'تحكم',
+    dev_path_spk:'سماعة ممر', dev_bollard:'سماعة عمودية', dev_low_post:'سماعة منخفضة',
+    dev_path_stone:'حجر صوتي',
+    dev_rock_spk:'سماعة صخرية', dev_bush_spk:'سماعة شجيرية',
+    dev_tree_spk:'سماعة شجرية', dev_log_spk:'سماعة جذعية',
+    dev_rock_big:'صخرة صوتية كبيرة',
+    dev_fountain_spk:'سماعة نافورة', dev_lake_spk:'سماعة بحيرة',
+    dev_waterproof:'مقاومة IP68', dev_underwater:'مغمورة',
+    dev_fountain_jet:'نافورة ناطقة',
+    dev_play_speaker:'سماعة ملعب', dev_play_amp:'مضخم ملعب',
+    dev_play_emergency:'طوارئ ملعب', dev_play_announce:'نداء ملعب',
+    dev_bandshell:'سماعة مسرح', dev_stage_monitor:'Monitor مسرح',
+    dev_gazebo_line:'Line Array مسرح', dev_talkback:'سماعة تحدث',
+    dev_bench_spk:'سماعة مقعد', dev_rest_spk:'سماعة استراحة',
+    dev_shade_spk:'سماعة مظلة',
+    dev_gate_spk:'سماعة بوابة', dev_welcome:'سماعة ترحيب',
+    dev_info_kiosk:'كشك معلومات', dev_sign_spk:'سماعة لافتة',
+    dev_court_spk:'سماعة ملعب رياضي', dev_gym_spk:'سماعة صالة',
+    dev_basketball:'سماعة كرة سلة',
+    dev_paging_horn:'بوق نداء', dev_paging_tower:'برج نداء',
+    dev_paging_zone:'نداء مناطق',
+    dev_emg_horn:'بوق طوارئ', dev_emg_strobe:'صفارة + فلاش',
+    dev_emg_tower:'برج طوارئ',
+    dev_wireless_mic:'ميك لاسلكي', dev_announcer:'ميك مذيع',
+    dev_ambience:'ميك محيط', dev_crowd:'ميك جمهور',
+    dev_condenser:'ميك مكثف', dev_windshield:'ميك مقاوم رياح',
+    dev_rack:'Rack Amp', dev_dsp:'DSP Matrix',
+    dev_zone_amp:'مضخم مناطق', dev_network:'شبكة صوت Dante',
+    dev_paging_ctrl:'وحدة نداء', dev_emg_ctrl:'لوحة طوارئ',
+    dev_touch:'شاشة لمس', dev_master:'وحدة رئيسية',
+    brand_jbl:'JBL', brand_yamaha:'ياماها', brand_community:'Community',
+    brand_toa:'TOA', brand_bose:'BOSE', brand_electrovoice:'Electro-Voice',
+    brand_rcf:'RCF', brand_sonance:'Sonance', brand_klipsch:'Klipsch',
+    brand_shure:'Shure',
+    to_undo:'↩️ تراجع', to_redo:'🔁 تقدم', to_deleted:'🗑️ حُذف',
+    to_saved:'💾 تم الحفظ', to_loaded:'📂 تم التحميل',
+    to_cleared:'🧹 تم التنظيف', to_shot:'📸 تم حفظ الصورة',
+    to_heat_on:'🌡️ التغطية مفعّلة', to_heat_off:'🌡️ التغطية مغلقة',
+    to_pres_on:'🎥 وضع العرض', to_pres_off:'✏️ وضع التحرير',
+    to_invalid:'ملف غير صالح', to_confirm_clear:'حذف كل الأجهزة؟',
+    rep_env_info:'معلومات البيئة', rep_equip:'جدول المعدات',
+    rep_analysis:'التحليل الصوتي',
+    rep_env_type:'نوع البيئة', rep_dim:'الأبعاد', rep_total_dev:'عدد الأجهزة',
+    rep_total_power:'القدرة الإجمالية', rep_date:'التاريخ',
+    rep_max_spl:'أقصى SPL', rep_coverage:'نسبة التغطية',
+    rep_status:'الحالة', rep_status_good:'ممتاز',
+    rep_device:'الجهاز', rep_qty:'العدد', rep_empty:'لا توجد أجهزة',
+    rep_target:'الهدف المعياري', rep_rt:'زمن الرنين (خارجي)',
+    rep_reverb:'الصدى المتوقع', rep_capacity:'سعة الزوار',
+    rep_area:'المساحة الكلية', rep_zones:'عدد المناطق',
+    rep_bg:'موسيقى خلفية', rep_sti:'وضوح النداء STI',
+    rep_paging:'نظام النداء', rep_emergency:'طوارئ EN 60849',
+    rep_playground:'منطقة الأطفال', rep_ada:'توافق ADA',
+    rep_bg_target:'موسيقى خلفية 55-65 dB',
+    rep_announce:'نداء عام STI > 0.55',
+    rep_nc:'مستوى الضجيج NC-40 (خارجي)',
+    rep_safety:'سلامة الأطفال EN 1176'
+  },
+  en: {
+    loader:'LOADING PARK…',
+    room_label:'PUBLIC PARK · BACKGROUND & PAGING',
+    hud_devices:'Devices', hud_spl:'Max SPL', hud_coverage:'Coverage',
+    report_tip:'Report', shot_tip:'Screenshot', pres_tip:'Presentation',
+    heat_tip:'Heatmap', fit_tip:'Fit', grid_tip:'Grid',
+    save_tip:'Save', load_tip:'Load', clear_tip:'Clear',
+    inf_category:'Category', inf_power:'Power', inf_height:'Height',
+    inf_position:'Position', inf_room_w:'Width', inf_room_d:'Depth',
+    sl_power:'Power', sl_rotation:'Rotation', act_delete:'🗑️ Delete',
+    rep_title:'Acoustic Design Report',
+    rep_print:'🖨️ Print / Save PDF', rep_close:'Close',
+    pres_start:'🎥 Start Presentation',
+    cat_paths:'Pathways', cat_garden:'Gardens & Trees',
+    cat_fountain:'Fountain & Lake', cat_playground:'Playground',
+    cat_gazebo:'Bandshell & Stage', cat_benches:'Benches & Rest',
+    cat_entrance:'Entrances & Gate', cat_sports:'Sports Zone',
+    cat_paging:'Paging System', cat_emergency:'Emergency System',
+    cat_mics:'Microphones', cat_amps:'Amplifiers', cat_control:'Control',
+    dev_path_spk:'Path Speaker', dev_bollard:'Bollard Speaker', dev_low_post:'Low Post',
+    dev_path_stone:'Acoustic Stone',
+    dev_rock_spk:'Rock Speaker', dev_bush_spk:'Bush Speaker',
+    dev_tree_spk:'Tree Speaker', dev_log_spk:'Log Speaker',
+    dev_rock_big:'Large Rock Speaker',
+    dev_fountain_spk:'Fountain Speaker', dev_lake_spk:'Lake Speaker',
+    dev_waterproof:'Waterproof IP68', dev_underwater:'Underwater',
+    dev_fountain_jet:'Talking Fountain',
+    dev_play_speaker:'Playground Speaker', dev_play_amp:'Playground Amp',
+    dev_play_emergency:'Playground Emergency', dev_play_announce:'Playground Announce',
+    dev_bandshell:'Bandshell Speaker', dev_stage_monitor:'Stage Monitor',
+    dev_gazebo_line:'Bandshell Line Array', dev_talkback:'Talkback Speaker',
+    dev_bench_spk:'Bench Speaker', dev_rest_spk:'Rest Speaker',
+    dev_shade_spk:'Shade Speaker',
+    dev_gate_spk:'Gate Speaker', dev_welcome:'Welcome Speaker',
+    dev_info_kiosk:'Info Kiosk', dev_sign_spk:'Sign Speaker',
+    dev_court_spk:'Court Speaker', dev_gym_spk:'Gym Speaker',
+    dev_basketball:'Basketball Speaker',
+    dev_paging_horn:'Paging Horn', dev_paging_tower:'Paging Tower',
+    dev_paging_zone:'Zone Paging',
+    dev_emg_horn:'Emergency Horn', dev_emg_strobe:'Siren + Strobe',
+    dev_emg_tower:'Emergency Tower',
+    dev_wireless_mic:'Wireless Mic', dev_announcer:'Announcer Mic',
+    dev_ambience:'Ambience Mic', dev_crowd:'Crowd Mic',
+    dev_condenser:'Condenser Mic', dev_windshield:'Windshield Mic',
+    dev_rack:'Rack Amp', dev_dsp:'DSP Matrix',
+    dev_zone_amp:'Zone Amp', dev_network:'Network Audio Dante',
+    dev_paging_ctrl:'Paging Unit', dev_emg_ctrl:'Emergency Panel',
+    dev_touch:'Touch Panel', dev_master:'Master Unit',
+    brand_jbl:'JBL', brand_yamaha:'Yamaha', brand_community:'Community',
+    brand_toa:'TOA', brand_bose:'BOSE', brand_electrovoice:'Electro-Voice',
+    brand_rcf:'RCF', brand_sonance:'Sonance', brand_klipsch:'Klipsch',
+    brand_shure:'Shure',
+    to_undo:'↩️ Undo', to_redo:'🔁 Redo', to_deleted:'🗑️ Deleted',
+    to_saved:'💾 Saved', to_loaded:'📂 Loaded',
+    to_cleared:'🧹 Cleared', to_shot:'📸 Screenshot saved',
+    to_heat_on:'🌡️ Heatmap ON', to_heat_off:'🌡️ Heatmap OFF',
+    to_pres_on:'🎥 Presentation mode', to_pres_off:'✏️ Edit mode',
+    to_invalid:'Invalid file', to_confirm_clear:'Delete all devices?',
+    rep_env_info:'Environment Info', rep_equip:'Equipment List',
+    rep_analysis:'Acoustic Analysis',
+    rep_env_type:'Environment', rep_dim:'Dimensions',
+    rep_total_dev:'Total devices', rep_total_power:'Total power',
+    rep_date:'Date',
+    rep_max_spl:'Max SPL', rep_coverage:'Coverage',
+    rep_status:'Status', rep_status_good:'Excellent',
+    rep_device:'Device', rep_qty:'Qty', rep_empty:'No devices',
+    rep_target:'Target Standard', rep_rt:'RT60 (Outdoor)',
+    rep_reverb:'Expected Reverb', rep_capacity:'Visitor Capacity',
+    rep_area:'Total Area', rep_zones:'Zone Count',
+    rep_bg:'Background Music', rep_sti:'Paging STI',
+    rep_paging:'Paging System', rep_emergency:'EN 60849 Emergency',
+    rep_playground:'Playground Zone', rep_ada:'ADA Compliance',
+    rep_bg_target:'BGM 55-65 dB',
+    rep_announce:'Public Announce STI > 0.55',
+    rep_nc:'Noise Level NC-40 (Outdoor)',
+    rep_safety:'Child Safety EN 1176'
+  }
+};
+let LANG = localStorage.getItem('auralis_lang') || 'ar';
+const T = k => I18N[LANG][k] || k;
+
+function applyLang() {
+  document.documentElement.lang = LANG;
+  document.documentElement.dir = LANG === 'ar' ? 'rtl' : 'ltr';
+  document.body.style.fontFamily = LANG === 'ar'
+    ? "'Cairo','Inter',sans-serif" : "'Inter','Cairo',sans-serif";
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.dataset.i18n; if (I18N[LANG][k]) el.textContent = I18N[LANG][k];
+  });
+  document.querySelectorAll('[data-i18n-title]').forEach(el => {
+    const k = el.dataset.i18nTitle; if (I18N[LANG][k]) el.title = I18N[LANG][k];
+  });
+  document.getElementById('langLabel').textContent = LANG === 'ar' ? 'EN' : 'ع';
+  document.getElementById('loaderTxt').textContent = T('loader');
+  document.getElementById('roomLabel').textContent = T('room_label');
+  document.getElementById('presToggle').textContent = T('pres_start');
+  document.title = LANG === 'ar' ? '⛲ AURALIS · حديقة عامة' : '⛲ AURALIS · Public Park';
+}
+
+/* ============ DATA ============ */
+const BRANDS = {
+  jbl:{color:0x10b981,tag:'JBL PRO'},
+  yamaha:{color:0x34d399,tag:'YAMAHA PRO'},
+  community:{color:0xfde047,tag:'COMMUNITY PRO'},
+  toa:{color:0xff8855,tag:'TOA'},
+  bose:{color:0x38bdf8,tag:'BOSE PRO'},
+  electrovoice:{color:0xc084fc,tag:'ELECTRO-VOICE'},
+  rcf:{color:0xf472b6,tag:'RCF'},
+  sonance:{color:0x86efac,tag:'SONANCE'},
+  klipsch:{color:0xfb923c,tag:'KLIPSCH'},
+  shure:{color:0xf59e0b,tag:'SHURE'}
+};
+
+const CATS = {
+  paths:{emoji:'🛤️',devices:[
+    ['path_spk','dev_path_spk','🛤️',3.5,40,false,'pathSpk'],
+    ['bollard','dev_bollard','🛢️',1.0,30,false,'bollard'],
+    ['low_post','dev_low_post','📮',0.6,25,false,'lowPost'],
+    ['path_stone','dev_path_stone','🪨',0.4,20,false,'pathStone']
+  ]},
+  garden:{emoji:'🌳',devices:[
+    ['rock','dev_rock_spk','🪨',0.8,30,false,'rockSpk'],
+    ['bush','dev_bush_spk','🌿',0.7,25,false,'bushSpk'],
+    ['tree','dev_tree_spk','🌳',2.5,35,false,'treeSpk'],
+    ['log','dev_log_spk','🪵',0.5,25,false,'logSpk'],
+    ['rock_big','dev_rock_big','⛰️',1.2,60,false,'rockBig']
+  ]},
+  fountain:{emoji:'⛲',devices:[
+    ['fountain','dev_fountain_spk','⛲',0.5,40,false,'fountainSpk'],
+    ['lake','dev_lake_spk','🌊',0.4,35,false,'lakeSpk'],
+    ['waterproof','dev_waterproof','💧',1.0,50,false,'waterproof'],
+    ['underwater','dev_underwater','🐠',0.3,30,false,'underwater'],
+    ['fountain_jet','dev_fountain_jet','💦',1.5,60,false,'fountainJet']
+  ]},
+  playground:{emoji:'🎠',devices:[
+    ['play_speaker','dev_play_speaker','🎠',3.5,40,false,'playSpeaker'],
+    ['play_amp','dev_play_amp','🔊',2.5,50,false,'playAmp'],
+    ['play_emergency','dev_play_emergency','🚨',3.5,60,true,'playEmergency'],
+    ['play_announce','dev_play_announce','📢',3.5,40,true,'playAnnounce']
+  ]},
+  gazebo:{emoji:'🎭',devices:[
+    ['bandshell','dev_bandshell','🎭',5.0,80,true,'bandshell'],
+    ['stage_monitor','dev_stage_monitor','🎚️',0.5,40,true,'stageMonitor'],
+    ['gazebo_line','dev_gazebo_line','🎛️',4.0,150,true,'gazeboLine'],
+    ['talkback','dev_talkback','📻',3.0,30,true,'talkback']
+  ]},
+  benches:{emoji:'🪑',devices:[
+    ['bench','dev_bench_spk','🪑',0.5,20,false,'benchSpk'],
+    ['rest','dev_rest_spk','😌',0.6,25,false,'restSpk'],
+    ['shade','dev_shade_spk','⛱️',2.5,30,false,'shadeSpk']
+  ]},
+  entrance:{emoji:'🚪',devices:[
+    ['gate','dev_gate_spk','🚪',3.5,50,false,'gateSpk'],
+    ['welcome','dev_welcome','👋',3.0,40,false,'welcome'],
+    ['info_kiosk','dev_info_kiosk','ℹ️',2.5,30,false,'infoKiosk'],
+    ['sign','dev_sign_spk','📋',2.0,25,false,'signSpk']
+  ]},
+  sports:{emoji:'⚽',devices:[
+    ['court','dev_court_spk','⚽',4.0,60,true,'courtSpk'],
+    ['gym','dev_gym_spk','🏋️',3.5,50,false,'gymSpk'],
+    ['basketball','dev_basketball','🏀',3.5,40,false,'basketball']
+  ]},
+  paging:{emoji:'📢',devices:[
+    ['paging_horn','dev_paging_horn','📯',4.5,50,true,'pagingHorn'],
+    ['paging_tower','dev_paging_tower','🗼',6.5,100,true,'pagingTower'],
+    ['paging_zone','dev_paging_zone','📻',3.5,40,false,'pagingZone']
+  ]},
+  emergency:{emoji:'🚨',devices:[
+    ['emg_horn','dev_emg_horn','📯',5.0,70,true,'emgHorn'],
+    ['emg_strobe','dev_emg_strobe','💡',4.0,40,false,'emgStrobe'],
+    ['emg_tower','dev_emg_tower','🗼',6.5,100,true,'emgTower']
+  ]},
+  mics:{emoji:'🎤',devices:[
+    ['wireless','dev_wireless_mic','🎤',1.5,0,true,'wirelessMic'],
+    ['announcer','dev_announcer','🎙️',1.8,0,true,'announcerMic'],
+    ['ambience','dev_ambience','🌫️',3.0,0,false,'ambienceMic'],
+    ['crowd','dev_crowd','👥',3.5,0,false,'crowdMic'],
+    ['condenser','dev_condenser','🎼',1.5,0,true,'condenser'],
+    ['windshield','dev_windshield','🌬️',1.8,0,true,'windshield']
+  ]},
+  amps:{emoji:'⚡',devices:[
+    ['rack','dev_rack','🎛️',0.5,0,false,'rackAmp'],
+    ['dsp','dev_dsp','🧠',0.5,0,false,'rackDsp'],
+    ['zone_amp','dev_zone_amp','⚡',0.5,0,false,'zoneAmp'],
+    ['network','dev_network','🌐',0.5,0,false,'network']
+  ]},
+  control:{emoji:'🎚️',devices:[
+    ['paging_ctrl','dev_paging_ctrl','📞',1.2,0,false,'pagingCtrl'],
+    ['emg_ctrl','dev_emg_ctrl','🚨',1.4,0,false,'emgCtrl'],
+    ['touch','dev_touch','📱',1.5,0,true,'ctrlTouch'],
+    ['master','dev_master','🎛️',1.5,0,true,'masterCtrl']
+  ]}
+};
+
+/* Park: 120×100m — paths, gardens, fountain center, playground, gazebo */
+const ROOM = {
+  name:{ ar:'حديقة عامة', en:'Public Park' },
+  size:[120, 100],
+  walls:[[-60,-50,60,-50],[60,-50,60,50],[60,50,-60,50],[-60,50,-60,-50]],
+  features:[
+    { type:'ground',     x:0, z:0, w:119.6, d:99.6 },
+    /* Grass area */
+    { type:'grass',      x:0, z:0, w:100, d:80 },
+    /* Main circular path around center */
+    { type:'circlePath', x:0, z:0, r:22 },
+    /* Cross paths */
+    { type:'mainPath',   x:0, z:0, w:6, d:100, dir:'vertical' },
+    { type:'mainPath',   x:0, z:0, w:120, d:6, dir:'horizontal' },
+    /* Central fountain */
+    { type:'fountain',   x:0, z:0, r:8 },
+    /* Lake on northeast */
+    { type:'lake',       x:35, z:-25, r:14 },
+    /* Playground on northwest */
+    { type:'playground', x:-35, z:-25, w:24, d:20 },
+    /* Gazebo/bandshell on southwest */
+    { type:'bandshell',  x:-30, z:30, r:9, H:5 },
+    /* Sports zone on southeast */
+    { type:'sportsZone', x:35, z:28, w:30, d:24 },
+    /* Main gate (south) */
+    { type:'gate',       x:0, z:48, w:12, h:6 },
+    /* Trees along paths */
+    { type:'treeRing',   x:0, z:0, r:30, count:16 },
+    { type:'treeRow',    x:-55, z:-30, count:8, dir:'vertical' },
+    { type:'treeRow',    x:55, z:-30, count:8, dir:'vertical' },
+    { type:'treeRow',    x:-55, z:20, count:6, dir:'vertical' },
+    { type:'treeRow',    x:55, z:20, count:6, dir:'vertical' },
+    /* Flower beds */
+    { type:'flowerBed',  x:-15, z:-35, w:10, d:4 },
+    { type:'flowerBed',  x:15, z:-35, w:10, d:4 },
+    { type:'flowerBed',  x:-15, z:35, w:10, d:4 },
+    { type:'flowerBed',  x:15, z:35, w:10, d:4 },
+    /* Benches along paths */
+    { type:'benches',    x:0, z:-25, count:6, dir:'horizontal' },
+    { type:'benches',    x:0, z:25, count:6, dir:'horizontal' },
+    { type:'benches',    x:-25, z:0, count:4, dir:'vertical' },
+    { type:'benches',    x:25, z:0, count:4, dir:'vertical' },
+    /* Lamp posts */
+    { type:'lampCircle', x:0, z:0, r:28, count:12 },
+    { type:'lampRow',    x:-40, z:45, count:4, dir:'horizontal' },
+    { type:'lampRow',    x:40, z:45, count:4, dir:'horizontal' }
+  ],
+  devices:[
+    /* === PATH SPEAKERS (bollard style along main paths) === */
+    ['sonance','paths','bollard',-3,-40,0],
+    ['sonance','paths','bollard',3,-40,0],
+    ['sonance','paths','bollard',-3,-30,0],
+    ['sonance','paths','bollard',3,-30,0],
+    ['sonance','paths','bollard',-3,-20,0],
+    ['sonance','paths','bollard',3,-20,0],
+    ['sonance','paths','bollard',-3,-10,0],
+    ['sonance','paths','bollard',3,-10,0],
+    ['sonance','paths','bollard',-3,10,0],
+    ['sonance','paths','bollard',3,10,0],
+    ['sonance','paths','bollard',-3,20,0],
+    ['sonance','paths','bollard',3,20,0],
+    ['sonance','paths','bollard',-3,30,0],
+    ['sonance','paths','bollard',3,30,0],
+    ['sonance','paths','bollard',-3,40,0],
+    ['sonance','paths','bollard',3,40,0],
+    /* Horizontal paths */
+    ['sonance','paths','bollard',-40,-3,0],
+    ['sonance','paths','bollard',-30,-3,0],
+    ['sonance','paths','bollard',-20,-3,0],
+    ['sonance','paths','bollard',20,-3,0],
+    ['sonance','paths','bollard',30,-3,0],
+    ['sonance','paths','bollard',40,-3,0],
+    ['sonance','paths','bollard',-40,3,0],
+    ['sonance','paths','bollard',-30,3,0],
+    ['sonance','paths','bollard',-20,3,0],
+    ['sonance','paths','bollard',20,3,0],
+    ['sonance','paths','bollard',30,3,0],
+    ['sonance','paths','bollard',40,3,0],
+    /* Low posts around circle */
+    ['sonance','paths','low_post',20,20,0],
+    ['sonance','paths','low_post',-20,20,0],
+    ['sonance','paths','low_post',20,-20,0],
+    ['sonance','paths','low_post',-20,-20,0],
+    /* Acoustic stones */
+    ['sonance','paths','path_stone',-45,0,0],
+    ['sonance','paths','path_stone',45,0,0],
+    ['sonance','paths','path_stone',0,-45,0],
+    ['sonance','paths','path_stone',0,45,0],
+
+    /* === GARDEN (hidden speakers) === */
+    /* Rock speakers in flower beds */
+    ['bose','garden','rock',-15,-35,0],
+    ['bose','garden','rock',15,-35,0],
+    ['bose','garden','rock',-15,35,0],
+    ['bose','garden','rock',15,35,0],
+    /* Bush speakers */
+    ['bose','garden','bush',-30,-15,0],
+    ['bose','garden','bush',30,-15,0],
+    ['bose','garden','bush',-30,15,0],
+    ['bose','garden','bush',30,15,0],
+    /* Tree speakers (in tree canopies) */
+    ['bose','garden','tree',-40,-40,0],
+    ['bose','garden','tree',40,-40,0],
+    ['bose','garden','tree',-40,40,0],
+    ['bose','garden','tree',40,40,0],
+    ['bose','garden','tree',0,-42,0],
+    ['bose','garden','tree',0,42,0],
+    /* Log speakers */
+    ['bose','garden','log',-50,-10,0],
+    ['bose','garden','log',50,-10,0],
+    ['bose','garden','log',-50,10,0],
+    ['bose','garden','log',50,10,0],
+    /* Big rock (larger area coverage) */
+    ['bose','garden','rock_big',-50,-40,0],
+    ['bose','garden','rock_big',50,-40,0],
+    ['bose','garden','rock_big',-50,40,0],
+    ['bose','garden','rock_big',50,40,0],
+
+    /* === FOUNTAIN & LAKE === */
+    ['yamaha','fountain','fountain',0,0,0],
+    ['yamaha','fountain','fountain',6,0,0],
+    ['yamaha','fountain','fountain',-6,0,0],
+    ['yamaha','fountain','fountain',0,6,0],
+    ['yamaha','fountain','fountain',0,-6,0],
+    ['yamaha','fountain','fountain_jet',0,0,0],
+    /* Lake speakers */
+    ['yamaha','fountain','lake',35,-25,0],
+    ['yamaha','fountain','lake',30,-20,0],
+    ['yamaha','fountain','lake',40,-30,0],
+    ['yamaha','fountain','lake',25,-30,0],
+    ['yamaha','fountain','lake',45,-20,0],
+    /* Waterproof around */
+    ['yamaha','fountain','waterproof',35,-40,0],
+    ['yamaha','fountain','waterproof',48,-25,0],
+    ['yamaha','fountain','waterproof',35,-10,0],
+    /* Underwater */
+    ['yamaha','fountain','underwater',30,-25,0],
+    ['yamaha','fountain','underwater',40,-25,0],
+
+    /* === PLAYGROUND === */
+    ['jbl','playground','play_speaker',-40,-30,0],
+    ['jbl','playground','play_speaker',-30,-30,0],
+    ['jbl','playground','play_speaker',-40,-20,0],
+    ['jbl','playground','play_speaker',-30,-20,0],
+    ['jbl','playground','play_amp',-35,-15,0],
+    /* Playground announce */
+    ['community','playground','play_announce',-35,-10,0],
+    /* Playground emergency */
+    ['community','playground','play_emergency',-45,-25,0],
+
+    /* === GAZEBO / BANDSHELL === */
+    ['rcf','gazebo','bandshell',-30,30,0],
+    ['rcf','gazebo','gazebo_line',-30,25,0],
+    ['rcf','gazebo','stage_monitor',-30,35,0],
+    ['rcf','gazebo','talkback',-25,32,0],
+    ['rcf','gazebo','talkback',-35,32,0],
+
+    /* === BENCHES === */
+    ['bose','benches','bench',-15,-25,0],
+    ['bose','benches','bench',-5,-25,0],
+    ['bose','benches','bench',5,-25,0],
+    ['bose','benches','bench',15,-25,0],
+    ['bose','benches','bench',-15,25,0],
+    ['bose','benches','bench',-5,25,0],
+    ['bose','benches','bench',5,25,0],
+    ['bose','benches','bench',15,25,0],
+    ['bose','benches','bench',-25,-15,0],
+    ['bose','benches','bench',-25,-5,0],
+    ['bose','benches','bench',25,5,0],
+    ['bose','benches','bench',25,15,0],
+    /* Rest spots */
+    ['bose','benches','rest',-45,-15,0],
+    ['bose','benches','rest',45,-15,0],
+    ['bose','benches','rest',-45,15,0],
+    ['bose','benches','rest',45,15,0],
+    /* Shade canopies */
+    ['bose','benches','shade',-30,-35,0],
+    ['bose','benches','shade',30,-35,0],
+    ['bose','benches','shade',-30,35,0],
+    ['bose','benches','shade',30,35,0],
+
+    /* === ENTRANCE / GATE === */
+    ['jbl','entrance','gate',-4,44,Math.PI],
+    ['jbl','entrance','gate',0,44,Math.PI],
+    ['jbl','entrance','gate',4,44,Math.PI],
+    ['jbl','entrance','welcome',-10,44,Math.PI],
+    ['jbl','entrance','welcome',10,44,Math.PI],
+    ['jbl','entrance','info_kiosk',-15,44,Math.PI],
+    ['jbl','entrance','info_kiosk',15,44,Math.PI],
+    ['jbl','entrance','sign',-20,44,Math.PI],
+    ['jbl','entrance','sign',20,44,Math.PI],
+
+    /* === SPORTS ZONE === */
+    ['yamaha','sports','court',25,30,Math.PI],
+    ['yamaha','sports','court',45,30,Math.PI],
+    ['yamaha','sports','gym',35,40,Math.PI],
+    ['yamaha','sports','basketball',30,20,Math.PI],
+    ['yamaha','sports','basketball',40,20,Math.PI],
+
+    /* === PAGING === */
+    ['toa','paging','paging_horn',-58,-48,Math.PI/4],
+    ['toa','paging','paging_horn',58,-48,-Math.PI/4],
+    ['toa','paging','paging_horn',-58,48,3*Math.PI/4],
+    ['toa','paging','paging_horn',58,48,-3*Math.PI/4],
+    ['toa','paging','paging_tower',-58,0,Math.PI/2],
+    ['toa','paging','paging_tower',58,0,-Math.PI/2],
+    ['toa','paging','paging_zone',0,-48,0],
+    ['toa','paging','paging_zone',0,48,Math.PI],
+
+    /* === EMERGENCY === */
+    ['community','emergency','emg_horn',-58,-48,Math.PI/4],
+    ['community','emergency','emg_horn',58,-48,-Math.PI/4],
+    ['community','emergency','emg_horn',-58,48,3*Math.PI/4],
+    ['community','emergency','emg_horn',58,48,-3*Math.PI/4],
+    ['community','emergency','emg_tower',0,-48,0],
+    ['community','emergency','emg_tower',0,48,Math.PI],
+    ['community','emergency','emg_strobe',-30,-48,0],
+    ['community','emergency','emg_strobe',30,-48,0],
+    ['community','emergency','emg_strobe',-30,48,Math.PI],
+    ['community','emergency','emg_strobe',30,48,Math.PI],
+
+    /* === MICS === */
+    ['shure','mics','wireless',-30,32,0],
+    ['shure','mics','announcer',-28,32,0],
+    ['shure','mics','ambience',-40,0,0],
+    ['shure','mics','crowd',35,28,Math.PI],
+    ['shure','mics','condenser',-30,25,0],
+    ['shure','mics','windshield',-35,0,0],
+
+    /* === AMPS + CONTROL === */
+    ['jbl','amps','rack',-58,-48,Math.PI/4],
+    ['jbl','amps','dsp',-58,-48,Math.PI/4],
+    ['jbl','amps','zone_amp',-58,-48,Math.PI/4],
+    ['jbl','amps','network',-58,-48,Math.PI/4],
+    ['bose','amps','rack',58,-48,-Math.PI/4],
+    ['bose','amps','dsp',58,-48,-Math.PI/4],
+    ['motivity','control','paging_ctrl',-58,48,3*Math.PI/4],
+    ['motivity','control','emg_ctrl',58,48,-3*Math.PI/4],
+    ['motivity','control','touch',58,-48,-Math.PI/4],
+    ['motivity','control','master',-58,48,3*Math.PI/4]
+  ]
+};
+
+/* ============ STATE ============ */
+const state = {
+  devices: [], nextId: 1,
+  curBrand: 'sonance', curCat: 'paths', curType: 'bollard',
+  selected: null, view3D: true, showHeat: true, showGrid: true, presentation: false,
+  cam: { theta:-0.5, phi:0.85, radius:180, target:new THREE.Vector3(0,4,0), tween:null },
+  history: [], historyIdx: -1
+};
+
+/* ============ THREE SETUP ============ */
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, preserveDrawingBuffer:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+if (THREE.sRGBEncoding !== undefined) renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
+
+const scene = new THREE.Scene();
+const skyColor = 0x0a1a14;
+scene.background = new THREE.Color(skyColor);
+scene.fog = new THREE.Fog(skyColor, 200, 550);
+const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1400);
+
+scene.add(new THREE.AmbientLight(0xd8f5e0, 0.55));
+scene.add(new THREE.HemisphereLight(0xb8e8c8, 0x1a2a20, 0.65));
+const sun = new THREE.DirectionalLight(0xfff5d8, 1.25);
+sun.position.set(50, 100, 40);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.camera.left = -90; sun.shadow.camera.right = 90;
+sun.shadow.camera.top = 90; sun.shadow.camera.bottom = -90;
+sun.shadow.camera.near = 1; sun.shadow.camera.far = 250;
+sun.shadow.bias = -0.0008;
+scene.add(sun);
+const fill = new THREE.DirectionalLight(0x88ffcc, 0.3);
+fill.position.set(-40, 50, -50); scene.add(fill);
+
+const roomGrp = new THREE.Group(); scene.add(roomGrp);
+const devGrp  = new THREE.Group(); scene.add(devGrp);
+const heatGrp = new THREE.Group(); scene.add(heatGrp);
+
+const grid = new THREE.GridHelper(1000, 500, 0x10b981, 0x1a2a20);
+grid.material.opacity = 0.08; grid.material.transparent = true;
+grid.position.y = 0.004; scene.add(grid);
+
+const floorMesh = new THREE.Mesh(
+  new THREE.PlaneGeometry(2000, 2000),
+  new THREE.MeshStandardMaterial({color:0x0f2418, roughness:0.98, metalness:0.02})
+);
+floorMesh.rotation.x = -Math.PI/2; floorMesh.receiveShadow = true;
+scene.add(floorMesh);
+
+/* ============ MATERIALS ============ */
+const M = {
+  body:()=>new THREE.MeshStandardMaterial({color:0x1a2a20,roughness:0.5,metalness:0.5}),
+  dark:()=>new THREE.MeshStandardMaterial({color:0x050810,roughness:0.85,metalness:0.25}),
+  gray:()=>new THREE.MeshStandardMaterial({color:0x4a5a4a,roughness:0.6,metalness:0.4}),
+  metal:()=>new THREE.MeshStandardMaterial({color:0xb8c8b8,roughness:0.3,metalness:0.85}),
+  steel:()=>new THREE.MeshStandardMaterial({color:0xa0a0a0,roughness:0.5,metalness:0.6,side:THREE.DoubleSide}),
+  grass:()=>new THREE.MeshStandardMaterial({color:0x22c55e,roughness:0.95,metalness:0.02}),
+  grassDark:()=>new THREE.MeshStandardMaterial({color:0x16a34a,roughness:0.95,metalness:0.02}),
+  grassLight:()=>new THREE.MeshStandardMaterial({color:0x4ade80,roughness:0.95,metalness:0.02}),
+  path:()=>new THREE.MeshStandardMaterial({color:0xd6c8a8,roughness:0.85,metalness:0.05}),
+  pathBorder:()=>new THREE.MeshStandardMaterial({color:0xa8a090,roughness:0.9,metalness:0.05}),
+  concrete:()=>new THREE.MeshStandardMaterial({color:0xb8b0a0,roughness:0.9,metalness:0.05}),
+  water:()=>new THREE.MeshStandardMaterial({color:0x0ea5e9,roughness:0.15,metalness:0.3,transparent:true,opacity:0.85}),
+  waterDeep:()=>new THREE.MeshStandardMaterial({color:0x0284c7,roughness:0.2,metalness:0.3,transparent:true,opacity:0.9}),
+  waterLight:()=>new THREE.MeshStandardMaterial({color:0x38bdf8,roughness:0.15,metalness:0.4,transparent:true,opacity:0.75}),
+  stone:()=>new THREE.MeshStandardMaterial({color:0x9a8a7a,roughness:0.85,metalness:0.05}),
+  stoneDark:()=>new THREE.MeshStandardMaterial({color:0x6a5a4a,roughness:0.85,metalness:0.05}),
+  rock:()=>new THREE.MeshStandardMaterial({color:0x8a7a6a,roughness:0.9,metalness:0.05}),
+  rockDark:()=>new THREE.MeshStandardMaterial({color:0x6a5a4a,roughness:0.9,metalness:0.05}),
+  wood:()=>new THREE.MeshStandardMaterial({color:0xa16207,roughness:0.8,metalness:0.05}),
+  woodLight:()=>new THREE.MeshStandardMaterial({color:0xd97706,roughness:0.8,metalness:0.05}),
+  woodDark:()=>new THREE.MeshStandardMaterial({color:0x78350f,roughness:0.85,metalness:0.05}),
+  treeTrunk:()=>new THREE.MeshStandardMaterial({color:0x5a3a20,roughness:0.9,metalness:0.05}),
+  leaves:()=>new THREE.MeshStandardMaterial({color:0x2a7a3a,roughness:0.95,metalness:0.02}),
+  leavesDark:()=>new THREE.MeshStandardMaterial({color:0x166534,roughness:0.95,metalness:0.02}),
+  bush:()=>new THREE.MeshStandardMaterial({color:0x15803d,roughness:0.95,metalness:0.02}),
+  flower1:()=>new THREE.MeshStandardMaterial({color:0xec4899,roughness:0.85,metalness:0.02}),
+  flower2:()=>new THREE.MeshStandardMaterial({color:0xfde047,roughness:0.85,metalness:0.02}),
+  flower3:()=>new THREE.MeshStandardMaterial({color:0xa855f7,roughness:0.85,metalness:0.02}),
+  flower4:()=>new THREE.MeshStandardMaterial({color:0xfb923c,roughness:0.85,metalness:0.02}),
+  lampPole:()=>new THREE.MeshStandardMaterial({color:0x2a2a2a,roughness:0.5,metalness:0.6}),
+  lampGlow:()=>new THREE.MeshStandardMaterial({color:0xfff5cc,emissive:0xffe080,emissiveIntensity:1.8,roughness:0.4}),
+  lampGlobe:()=>new THREE.MeshStandardMaterial({color:0xfff8e0,emissive:0xfde047,emissiveIntensity:1.5,roughness:0.3,transparent:true,opacity:0.9}),
+  bench:()=>new THREE.MeshStandardMaterial({color:0x8a5a2a,roughness:0.75,metalness:0.08}),
+  benchMetal:()=>new THREE.MeshStandardMaterial({color:0x2a2a2a,roughness:0.5,metalness:0.5}),
+  gazebo:()=>new THREE.MeshStandardMaterial({color:0xe8d8b8,roughness:0.75,metalness:0.1}),
+  gazeboRoof:()=>new THREE.MeshStandardMaterial({color:0xa16207,roughness:0.7,metalness:0.15}),
+  bandshell:()=>new THREE.MeshStandardMaterial({color:0x8a5a3a,roughness:0.75,metalness:0.1}),
+  bandshellRoof:()=>new THREE.MeshStandardMaterial({color:0xdc2626,roughness:0.6,metalness:0.2}),
+  court:()=>new THREE.MeshStandardMaterial({color:0x1e40af,roughness:0.85,metalness:0.05}),
+  court2:()=>new THREE.MeshStandardMaterial({color:0xdc2626,roughness:0.85,metalness:0.05}),
+  play:()=>new THREE.MeshStandardMaterial({color:0xf97316,roughness:0.7,metalness:0.15}),
+  play2:()=>new THREE.MeshStandardMaterial({color:0x38bdf8,roughness:0.7,metalness:0.15}),
+  play3:()=>new THREE.MeshStandardMaterial({color:0xa855f7,roughness:0.7,metalness:0.15}),
+  play4:()=>new THREE.MeshStandardMaterial({color:0xfde047,roughness:0.7,metalness:0.15}),
+  screen:()=>new THREE.MeshBasicMaterial({color:0x1a3a5a,transparent:true,opacity:0.9}),
+  ledRed:()=>new THREE.MeshStandardMaterial({color:0xff2222,emissive:0xff2222,emissiveIntensity:2.5}),
+  ledGreen:()=>new THREE.MeshStandardMaterial({color:0x10b981,emissive:0x10b981,emissiveIntensity:2.5}),
+  ledAmber:()=>new THREE.MeshStandardMaterial({color:0xfde047,emissive:0xfde047,emissiveIntensity:2.5}),
+  ledCyan:()=>new THREE.MeshStandardMaterial({color:0x38bdf8,emissive:0x38bdf8,emissiveIntensity:2.5})
+};
+function accentMat(c,i){return new THREE.MeshStandardMaterial({color:c,emissive:c,emissiveIntensity:i||0.7,roughness:0.3,metalness:0.5});}
+
+function getSpec(cat, typeId) {
+  const c = CATS[cat]; if (!c) return null;
+  const arr = c.devices.find(d => d[0] === typeId); if (!arr) return null;
+  return {id:arr[0], nameKey:arr[1], emoji:arr[2], h:arr[3], power:arr[4], dir:arr[5], shape:arr[6]};
+}
+function devName(spec){return T(spec.nameKey);}
+function catName(key){return T('cat_' + key);}
+function brandName(key){return BRANDS[key] ? T('brand_' + key) : '—';}
+
+/* ============ MESH FACTORY ============ */
+function makeMesh(cat, typeId, brandColor) {
+  const spec = getSpec(cat, typeId); if (!spec) return null;
+  const color = brandColor || 0x10b981;
+  const g = new THREE.Group();
+  const S = spec.shape;
+
+  switch (S) {
+    case 'pathSpk': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.5,0.35), M.body);
+      b.castShadow = true; g.add(b);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.12,18), M.dark);
+      gr.position.set(0, 0, 0.181); g.add(gr);
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.12,0.15,18), M.ledGreen);
+      ring.position.set(0, 0, 0.183); g.add(ring);
+      break;
+    }
+    case 'bollard': {
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.18,1.6,12), M.gray);
+      pole.castShadow = true; pole.position.y = -0.2; g.add(pole);
+      const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.16,0.16,0.1,12), M.body);
+      cap.position.y = 0.65; g.add(cap);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.1,18), M.dark);
+      gr.rotation.x = Math.PI/2; gr.position.y = 0.6; g.add(gr);
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.1,0.13,18), M.ledGreen);
+      ring.rotation.x = -Math.PI/2; ring.position.y = 0.595; g.add(ring);
+      /* Decorative bands */
+      for (let i=0;i<3;i++) {
+        const band = new THREE.Mesh(new THREE.TorusGeometry(0.17,0.015,6,12), M.metal);
+        band.rotation.x = Math.PI/2; band.position.y = -0.7 + i*0.5; g.add(band);
+      }
+      break;
+    }
+    case 'lowPost': {
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.15,0.7,10), M.gray);
+      pole.castShadow = true; pole.position.y = -0.15; g.add(pole);
+      const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.13,0.13,0.12,10), M.body);
+      cap.position.y = 0.26; g.add(cap);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.08,16), M.dark);
+      gr.rotation.x = Math.PI/2; gr.position.y = 0.21; g.add(gr);
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.08,0.11,16), M.ledGreen);
+      ring.rotation.x = -Math.PI/2; ring.position.y = 0.205; g.add(ring);
+      break;
+    }
+    case 'pathStone': {
+      const s = new THREE.Mesh(new THREE.DodecahedronGeometry(0.3, 0), M.rock());
+      s.scale.y = 0.6; s.castShadow = true; g.add(s);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.08,16), M.dark);
+      gr.rotation.x = -Math.PI/2; gr.position.y = 0.18; g.add(gr);
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.08,0.11,16), M.ledGreen);
+      ring.rotation.x = -Math.PI/2; ring.position.y = 0.185; g.add(ring);
+      break;
+    }
+    case 'rockSpk': {
+      const r = new THREE.Mesh(new THREE.DodecahedronGeometry(0.45, 0), M.rock());
+      r.scale.y = 0.7; r.castShadow = true; g.add(r);
+      const r2 = new THREE.Mesh(new THREE.DodecahedronGeometry(0.3, 0), M.rockDark());
+      r2.position.set(0.3, -0.1, 0.2); g.add(r2);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.1,16), M.dark);
+      gr.position.set(0, -0.1, 0.42); gr.rotation.x = 0.3; g.add(gr);
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.1,0.13,16), M.ledGreen);
+      ring.position.set(0, -0.1, 0.422); ring.rotation.x = 0.3; g.add(ring);
+      break;
+    }
+    case 'bushSpk': {
+      for (let i=0;i<5;i++) {
+        const a = (i/5)*Math.PI*2;
+        const b = new THREE.Mesh(new THREE.SphereGeometry(0.35, 12, 10), M.bush());
+        b.position.set(Math.cos(a)*0.25, 0, Math.sin(a)*0.25);
+        b.scale.y = 0.7; b.castShadow = true;
+        g.add(b);
+      }
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.08,16), M.dark);
+      gr.rotation.x = -Math.PI/2; gr.position.y = 0.24; g.add(gr);
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.08,0.11,16), M.ledGreen);
+      ring.rotation.x = -Math.PI/2; ring.position.y = 0.245; g.add(ring);
+      break;
+    }
+    case 'treeSpk': {
+      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.28,2,10), M.treeTrunk());
+      trunk.position.y = -1.2; trunk.castShadow = true; g.add(trunk);
+      for (let i=0;i<4;i++) {
+        const a = (i/4)*Math.PI*2;
+        const leaves = new THREE.Mesh(new THREE.SphereGeometry(0.9, 12, 10), i%2===0 ? M.leaves() : M.leavesDark());
+        leaves.position.set(Math.cos(a)*0.5, 0.3 + Math.random()*0.3, Math.sin(a)*0.5);
+        leaves.scale.y = 0.85;
+        leaves.castShadow = true;
+        g.add(leaves);
+      }
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.1,16), M.dark);
+      gr.rotation.x = -Math.PI/2; gr.position.y = 0.8; g.add(gr);
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.1,0.13,16), M.ledGreen);
+      ring.rotation.x = -Math.PI/2; ring.position.y = 0.805; g.add(ring);
+      break;
+    }
+    case 'logSpk': {
+      const log = new THREE.Mesh(new THREE.CylinderGeometry(0.35,0.4,1.6,12), M.wood());
+      log.rotation.z = Math.PI/2; log.castShadow = true; g.add(log);
+      const end1 = new THREE.Mesh(new THREE.CircleGeometry(0.4,16), M.woodDark());
+      end1.position.set(0.81,0,0); end1.rotation.y = Math.PI/2; g.add(end1);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.12,16), M.dark);
+      gr.rotation.z = -Math.PI/2; gr.position.set(0, 0.36, 0); g.add(gr);
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.12,0.15,16), M.ledGreen);
+      ring.rotation.z = -Math.PI/2; ring.position.set(0, 0.365, 0); g.add(ring);
+      break;
+    }
+    case 'rockBig': {
+      const r = new THREE.Mesh(new THREE.DodecahedronGeometry(0.9, 0), M.rock());
+      r.scale.y = 0.75; r.castShadow = true; g.add(r);
+      const r2 = new THREE.Mesh(new THREE.DodecahedronGeometry(0.6, 0), M.rockDark());
+      r2.position.set(0.6, -0.2, 0.3); g.add(r2);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.15,20), M.dark);
+      gr.position.set(0, -0.15, 0.82); gr.rotation.x = 0.35; g.add(gr);
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.15,0.19,20), M.ledGreen);
+      ring.position.set(0, -0.15, 0.822); ring.rotation.x = 0.35; g.add(ring);
+      break;
+    }
+    case 'fountainSpk': {
+      const d = new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.2,0.04,24), M.body);
+      d.castShadow = true; g.add(d);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.15,24), M.dark);
+      gr.rotation.x = Math.PI/2; gr.position.y = -0.022; g.add(gr);
+      const r = new THREE.Mesh(new THREE.RingGeometry(0.15,0.19,24), M.ledCyan);
+      r.rotation.x = -Math.PI/2; r.position.y = -0.023; g.add(r);
+      break;
+    }
+    case 'lakeSpk': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.5,0.45), M.body);
+      b.castShadow = true; g.add(b);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.15,20), M.dark);
+      gr.position.set(0, 0, 0.231); g.add(gr);
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.15,0.19,20), M.ledCyan);
+      ring.position.set(0, 0, 0.233); g.add(ring);
+      break;
+    }
+    case 'waterproof': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.55,0.45), M.body);
+      b.castShadow = true; g.add(b);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.15,20), M.dark);
+      gr.position.set(0, 0, 0.231); g.add(gr);
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.15,0.19,20), M.ledCyan);
+      ring.position.set(0, 0, 0.233); g.add(ring);
+      const ip = new THREE.Mesh(new THREE.BoxGeometry(0.32,0.06,0.02), M.ledCyan);
+      ip.position.set(0, 0.21, 0.231); g.add(ip);
+      break;
+    }
+    case 'underwater': {
+      const s = new THREE.Mesh(new THREE.SphereGeometry(0.22,16,12), M.body);
+      s.castShadow = true; g.add(s);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.1,16), M.ledCyan);
+      gr.position.set(0, 0.14, 0.16); gr.rotation.x = -Math.PI/4; g.add(gr);
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.1,0.13,16), M.ledCyan);
+      ring.position.set(0, 0.145, 0.161); ring.rotation.x = -Math.PI/4; g.add(ring);
+      break;
+    }
+    case 'fountainJet': {
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.25,0.3,0.4,16), M.stone());
+      base.position.y = -0.2; base.castShadow = true; g.add(base);
+      const jet = new THREE.Mesh(new THREE.ConeGeometry(0.15,1,12),
+        new THREE.MeshStandardMaterial({color:0x38bdf8,emissive:0x38bdf8,emissiveIntensity:0.8,transparent:true,opacity:0.7}));
+      jet.position.y = 0.6; g.add(jet);
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.06,8,8), M.ledCyan);
+      led.position.y = -0.35; g.add(led);
+      break;
+    }
+    case 'playSpeaker': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.65,0.4), M.play());
+      b.castShadow = true; g.add(b);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.15,20), M.dark);
+      gr.position.set(0, 0, 0.206); g.add(gr);
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.15,0.19,20), M.ledAmber);
+      ring.position.set(0, 0, 0.208); g.add(ring);
+      break;
+    }
+    case 'playAmp': {
+      const p = new THREE.Mesh(new THREE.BoxGeometry(0.6,0.8,0.4), M.play2());
+      p.castShadow = true; g.add(p);
+      for (let i=0;i<4;i++) {
+        const l = new THREE.Mesh(new THREE.BoxGeometry(0.45,0.025,0.012), M.ledGreen);
+        l.position.set(0, -0.2+i*0.13, 0.206); g.add(l);
+      }
+      break;
+    }
+    case 'playEmergency': {
+      const p = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.7,0.4),
+        new THREE.MeshStandardMaterial({color:0xdc2626,roughness:0.5,metalness:0.4}));
+      p.castShadow = true; g.add(p);
+      const beacon = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.12,0.22,14), M.ledRed);
+      beacon.position.y = 0.5; g.add(beacon);
+      break;
+    }
+    case 'playAnnounce': {
+      const p = new THREE.Mesh(new THREE.BoxGeometry(0.45,0.6,0.4), M.play3());
+      p.castShadow = true; g.add(p);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.13,18), M.dark);
+      gr.position.set(0, 0, 0.206); g.add(gr);
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.13,0.17,18), M.ledAmber);
+      ring.position.set(0, 0, 0.208); g.add(ring);
+      break;
+    }
+    case 'bandshell': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(1.2,1.6,0.8), M.bandshell());
+      b.castShadow = true; g.add(b);
+      for (let i=0;i<3;i++) {
+        const gr = new THREE.Mesh(new THREE.CircleGeometry(0.18,18), M.dark);
+        gr.position.set(-0.35+i*0.35, 0, 0.41); g.add(gr);
+        const ring = new THREE.Mesh(new THREE.RingGeometry(0.18,0.22,18), M.ledAmber);
+        ring.position.set(-0.35+i*0.35, 0, 0.412); g.add(ring);
+      }
+      const roof = new THREE.Mesh(new THREE.BoxGeometry(1.4,0.1,1), M.bandshellRoof());
+      roof.position.y = 0.9; g.add(roof);
+      break;
+    }
+    case 'stageMonitor': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.35,0.4), M.body);
+      b.castShadow = true; b.rotation.x = -0.5; g.add(b);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.13,18), M.dark);
+      gr.rotation.x = -0.5; gr.position.set(0, 0.05, 0.21); g.add(gr);
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.13,0.17,18), M.ledAmber);
+      ring.rotation.x = -0.5; ring.position.set(0, 0.06, 0.212); g.add(ring);
+      break;
+    }
+    case 'gazeboLine': {
+      for (let k=0;k<4;k++) {
+        const b = new THREE.Mesh(new THREE.BoxGeometry(1.0,0.32,0.65), M.body);
+        b.castShadow = true; b.position.y = -0.6 + k*0.36; g.add(b);
+        const t = new THREE.Mesh(new THREE.BoxGeometry(1.0,0.018,0.65), M.ledAmber);
+        t.position.y = -0.6 + k*0.36 + 0.17; g.add(t);
+      }
+      const rig = new THREE.Mesh(new THREE.BoxGeometry(1.1,0.08,0.7), M.metal);
+      rig.position.y = 0.9; g.add(rig);
+      break;
+    }
+    case 'talkback': {
+      const p = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.55,0.35), M.body);
+      p.castShadow = true; g.add(p);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.12,18), M.dark);
+      gr.position.set(0, 0, 0.181); g.add(gr);
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.12,0.15,18), M.ledGreen);
+      ring.position.set(0, 0, 0.183); g.add(ring);
+      break;
+    }
+    case 'benchSpk': {
+      const d = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.1,0.03,20), M.body);
+      d.castShadow = true; g.add(d);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.07,20), M.dark);
+      gr.rotation.x = Math.PI/2; gr.position.y = -0.017; g.add(gr);
+      const r = new THREE.Mesh(new THREE.RingGeometry(0.07,0.1,20), M.ledGreen);
+      r.rotation.x = -Math.PI/2; r.position.y = -0.018; g.add(r);
+      break;
+    }
+    case 'restSpk': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.35,0.4,0.3), M.body);
+      b.castShadow = true; g.add(b);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.1,18), M.dark);
+      gr.position.set(0, 0, 0.156); g.add(gr);
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.1,0.13,18), M.ledGreen);
+      ring.position.set(0, 0, 0.158); g.add(ring);
+      break;
+    }
+    case 'shadeSpk': {
+      const d = new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.14,0.03,22), M.body);
+      d.castShadow = true; g.add(d);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.1,22), M.dark);
+      gr.rotation.x = Math.PI/2; gr.position.y = -0.017; g.add(gr);
+      const r = new THREE.Mesh(new THREE.RingGeometry(0.1,0.14,22), M.ledGreen);
+      r.rotation.x = -Math.PI/2; r.position.y = -0.018; g.add(r);
+      break;
+    }
+    case 'gateSpk': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.55,0.7,0.45), M.body);
+      b.castShadow = true; g.add(b);
+      const w = new THREE.Mesh(new THREE.CylinderGeometry(0.17,0.17,0.014,24), M.dark);
+      w.rotation.x = Math.PI/2; w.position.set(0,-0.12,0.231); g.add(w);
+      const wr = new THREE.Mesh(new THREE.RingGeometry(0.17,0.21,24), M.ledGreen);
+      wr.position.set(0,-0.12,0.238); g.add(wr);
+      break;
+    }
+    case 'welcome': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.6,0.4), M.body);
+      b.castShadow = true; g.add(b);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.15,20), M.dark);
+      gr.position.set(0, 0, 0.206); g.add(gr);
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.15,0.19,20), M.ledAmber);
+      ring.position.set(0, 0, 0.208); g.add(ring);
+      break;
+    }
+    case 'infoKiosk': {
+      const p = new THREE.Mesh(new THREE.BoxGeometry(0.6,0.9,0.2), M.body);
+      p.position.y = 0.6; p.castShadow = true; g.add(p);
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.5,0.6), M.screen());
+      screen.position.set(0, 0.7, 0.11); g.add(screen);
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.15,1.2,12), M.metal);
+      pole.position.y = -0.3; g.add(pole);
+      break;
+    }
+    case 'signSpk': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.5,0.35), M.body);
+      b.castShadow = true; g.add(b);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.13,18), M.dark);
+      gr.position.set(0, 0, 0.181); g.add(gr);
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.13,0.16,18), M.ledAmber);
+      ring.position.set(0, 0, 0.183); g.add(ring);
+      break;
+    }
+    case 'courtSpk': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.6,0.75,0.5), M.body);
+      b.castShadow = true; g.add(b);
+      for (let i=0;i<2;i++) {
+        const gr = new THREE.Mesh(new THREE.CircleGeometry(0.18,20), M.dark);
+        gr.position.set(0, -0.15+i*0.3, 0.256); g.add(gr);
+        const ring = new THREE.Mesh(new THREE.RingGeometry(0.18,0.22,20), M.ledAmber);
+        ring.position.set(0, -0.15+i*0.3, 0.258); g.add(ring);
+      }
+      break;
+    }
+    case 'gymSpk': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.65,0.4), M.body);
+      b.castShadow = true; g.add(b);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.15,20), M.dark);
+      gr.position.set(0, 0, 0.206); g.add(gr);
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.15,0.19,20), M.ledAmber);
+      ring.position.set(0, 0, 0.208); g.add(ring);
+      break;
+    }
+    case 'basketball': {
+      const d = new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.15,0.03,22), M.body);
+      d.castShadow = true; g.add(d);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.11,22), M.dark);
+      gr.rotation.x = Math.PI/2; gr.position.y = -0.017; g.add(gr);
+      const r = new THREE.Mesh(new THREE.RingGeometry(0.11,0.15,22), M.ledAmber);
+      r.rotation.x = -Math.PI/2; r.position.y = -0.018; g.add(r);
+      break;
+    }
+    case 'pagingHorn': {
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.18,5.5,12), M.metal);
+      pole.position.y = -2.75; g.add(pole);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.4,0.5,0.2,16), M.gray);
+      base.position.y = -5.4; g.add(base);
+      const bk = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.5,0.45), M.body);
+      bk.castShadow = true; g.add(bk);
+      const horn = new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.18,0.85,20,1,true), M.steel);
+      horn.rotation.x = Math.PI/2; horn.position.z = 0.62; g.add(horn);
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.06,8,8), M.ledAmber);
+      led.position.set(0.25, 0.25, -0.28); g.add(led);
+      break;
+    }
+    case 'pagingTower': {
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.28,0.35,8.0,14), M.metal);
+      pole.position.y = -4.0; g.add(pole);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.65,0.85,0.3,16), M.gray);
+      base.position.y = -7.85; g.add(base);
+      for (let i=0;i<5;i++) {
+        const a = (i/5)*Math.PI*2;
+        const h = new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.1,0.55,16,1,true), M.steel);
+        h.rotation.z = Math.PI/2; h.rotation.y = a;
+        h.position.set(Math.cos(a)*0.4, 0, Math.sin(a)*0.4);
+        g.add(h);
+      }
+      const cap = new THREE.Mesh(new THREE.ConeGeometry(0.35,0.45,14), M.metal);
+      cap.position.y = 0.45; g.add(cap);
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.09,10,8), M.ledRed);
+      led.position.y = 0.8; g.add(led);
+      break;
+    }
+    case 'pagingZone': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.6,0.4), M.body);
+      b.castShadow = true; g.add(b);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.15,20), M.dark);
+      gr.position.set(0, 0, 0.206); g.add(gr);
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.15,0.19,20), M.ledRed);
+      ring.position.set(0, 0, 0.208); g.add(ring);
+      break;
+    }
+    case 'emgHorn': {
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.18,5.5,12), M.metal);
+      pole.position.y = -2.75; g.add(pole);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.4,0.5,0.2,16), M.gray);
+      base.position.y = -5.4; g.add(base);
+      const bk = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.5,0.45),
+        new THREE.MeshStandardMaterial({color:0xcc0000,roughness:0.5,metalness:0.4}));
+      bk.castShadow = true; g.add(bk);
+      const horn = new THREE.Mesh(new THREE.CylinderGeometry(0.45,0.18,0.8,20,1,true), M.steel);
+      horn.rotation.x = Math.PI/2; horn.position.z = 0.6; g.add(horn);
+      const beacon = new THREE.Mesh(new THREE.CylinderGeometry(0.16,0.16,0.28,16), M.ledRed);
+      beacon.position.y = 0.45; g.add(beacon);
+      break;
+    }
+    case 'emgStrobe': {
+      const d = new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.15,0.03,24), M.body);
+      d.castShadow = true; g.add(d);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.11,24), M.dark);
+      gr.rotation.x = Math.PI/2; gr.position.y = -0.017; g.add(gr);
+      const r = new THREE.Mesh(new THREE.RingGeometry(0.11,0.15,24), M.ledRed);
+      r.rotation.x = -Math.PI/2; r.position.y = -0.018; g.add(r);
+      const strobe = new THREE.Mesh(new THREE.SphereGeometry(0.055,12,10),
+        new THREE.MeshStandardMaterial({color:0xffffff,emissive:0xffffff,emissiveIntensity:2.5}));
+      strobe.position.y = -0.03; g.add(strobe);
+      break;
+    }
+    case 'emgTower': {
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.25,0.3,6.5,12), M.metal);
+      pole.position.y = -3.25; g.add(pole);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.7,0.25,16), M.gray);
+      base.position.y = -6.4; g.add(base);
+      for (let i=0;i<4;i++) {
+        const a = (i/4)*Math.PI*2;
+        const h = new THREE.Mesh(new THREE.CylinderGeometry(0.35,0.1,0.7,16,1,true), M.steel);
+        h.rotation.z = Math.PI/2; h.rotation.y = a;
+        h.position.set(Math.cos(a)*0.5, 0.2, Math.sin(a)*0.5);
+        g.add(h);
+      }
+      const beacon = new THREE.Mesh(new THREE.CylinderGeometry(0.22,0.22,0.4,16), M.ledRed);
+      beacon.position.y = 0.7; g.add(beacon);
+      break;
+    }
+    case 'wirelessMic': {
+      const body = new THREE.Mesh(new THREE.CylinderGeometry(0.045,0.045,0.24,18), M.body);
+      body.rotation.z = Math.PI/2; body.position.y = 0.5; g.add(body);
+      const h = new THREE.Mesh(new THREE.SphereGeometry(0.06,16,12,0,Math.PI*2,0,Math.PI/2), accentMat(color));
+      h.rotation.z = -Math.PI/2; h.position.set(0.15,0.5,0); g.add(h);
+      const st = new THREE.Mesh(new THREE.CylinderGeometry(0.04,0.06,0.5,8), M.gray);
+      st.position.y = 0.25; g.add(st);
+      break;
+    }
+    case 'announcerMic': {
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.13,0.16,0.06,16), M.gray);
+      base.position.y = 0.03; g.add(base);
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.5,8), M.metal);
+      pole.position.y = 0.28; g.add(pole);
+      const boom = new THREE.Mesh(new THREE.CylinderGeometry(0.015,0.015,0.4,6), M.metal);
+      boom.rotation.z = Math.PI/3; boom.position.set(-0.18,0.55,0); g.add(boom);
+      const mic = new THREE.Mesh(new THREE.CylinderGeometry(0.055,0.055,0.22,16), M.body);
+      mic.rotation.z = Math.PI/2; mic.position.set(-0.4,0.7,0); g.add(mic);
+      const grille = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.055,0.09,16,1,true), accentMat(color, 0.6));
+      grille.rotation.z = Math.PI/2; grille.position.set(-0.55,0.7,0); g.add(grille);
+      break;
+    }
+    case 'ambienceMic': {
+      const b = new THREE.Mesh(new THREE.SphereGeometry(0.1,16,12), accentMat(color, 0.9));
+      b.position.y = 1.2; g.add(b);
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,1.2,6), M.gray);
+      pole.position.y = 0.6; g.add(pole);
+      break;
+    }
+    case 'crowdMic': {
+      const b = new THREE.Mesh(new THREE.SphereGeometry(0.15,20,16), M.body);
+      b.castShadow = true; g.add(b);
+      const wind = new THREE.Mesh(new THREE.SphereGeometry(0.2,20,16,0,Math.PI*2,0,Math.PI),
+        new THREE.MeshStandardMaterial({color:0x666666,roughness:0.95,transparent:true,opacity:0.8}));
+      g.add(wind);
+      const cable = new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,1.0,6), M.gray);
+      cable.position.y = 0.75; g.add(cable);
+      break;
+    }
+    case 'condenser': {
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.15,0.06,16), M.gray);
+      base.position.y = 0.03; g.add(base);
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.018,0.018,0.55,8), M.metal);
+      pole.position.y = 0.3; g.add(pole);
+      const mic = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,0.2,16), M.body);
+      mic.position.y = 0.68; g.add(mic);
+      const grille = new THREE.Mesh(new THREE.SphereGeometry(0.055,14,10), accentMat(color, 0.6));
+      grille.position.y = 0.82; g.add(grille);
+      break;
+    }
+    case 'windshield': {
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.13,0.16,0.06,16), M.gray);
+      base.position.y = 0.03; g.add(base);
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.55,8), M.metal);
+      pole.position.y = 0.3; g.add(pole);
+      const mic = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,0.2,16), M.body);
+      mic.position.y = 0.68; g.add(mic);
+      /* Windshield foam */
+      const shield = new THREE.Mesh(new THREE.SphereGeometry(0.12,16,12),
+        new THREE.MeshStandardMaterial({color:0x333333,roughness:0.95,transparent:true,opacity:0.85}));
+      shield.position.y = 0.85; g.add(shield);
+      break;
+    }
+    case 'rackAmp': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.72,0.5,0.5), M.body);
+      b.castShadow = true; g.add(b);
+      for (let i=0;i<4;i++) {
+        const l = new THREE.Mesh(new THREE.BoxGeometry(0.55,0.025,0.012), M.ledGreen);
+        l.position.set(0,-0.15+i*0.1,0.256); g.add(l);
+      }
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.028,8,8), M.ledGreen);
+      led.position.set(-0.28,0.2,0.26); g.add(led);
+      break;
+    }
+    case 'rackDsp': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.72,0.5,0.5), M.body);
+      b.castShadow = true; g.add(b);
+      for (let i=0;i<8;i++) {
+        const zone = new THREE.Mesh(new THREE.CylinderGeometry(0.025,0.025,0.008,12), M.ledGreen);
+        zone.rotation.x = Math.PI/2; zone.position.set(-0.26 + (i%4)*0.14, -0.06 + Math.floor(i/4)*0.14, 0.256); g.add(zone);
+      }
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.32,0.16), M.screen());
+      screen.position.set(0.18, 0.1, 0.256); g.add(screen);
+      break;
+    }
+    case 'zoneAmp': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.72,0.5,0.5), M.body);
+      b.castShadow = true; g.add(b);
+      for (let i=0;i<4;i++) {
+        const zone = new THREE.Mesh(new THREE.BoxGeometry(0.15,0.03,0.012), M.ledGreen);
+        zone.position.set(-0.24 + i*0.16, 0.15, 0.256); g.add(zone);
+      }
+      for (let i=0;i<12;i++) {
+        const fin = new THREE.Mesh(new THREE.BoxGeometry(0.005,0.4,0.02), M.metal);
+        fin.position.set(-0.3 + i*0.05, 0, 0.26); g.add(fin);
+      }
+      break;
+    }
+    case 'network': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.7,0.3,0.45), M.body);
+      b.castShadow = true; g.add(b);
+      for (let i=0;i<8;i++) {
+        const port = new THREE.Mesh(new THREE.BoxGeometry(0.06,0.06,0.03), M.ledGreen);
+        port.position.set(-0.24 + i*0.06, 0, 0.235); g.add(port);
+      }
+      break;
+    }
+    case 'pagingCtrl': {
+      const base = new THREE.Mesh(new THREE.BoxGeometry(0.45,0.1,0.35), M.body);
+      base.position.y = 0.05; g.add(base);
+      for (let i=0;i<6;i++) {
+        const btn = new THREE.Mesh(new THREE.CylinderGeometry(0.025,0.025,0.014,12), M.ledGreen);
+        btn.rotation.x = Math.PI/2; btn.position.set(-0.15 + (i%3)*0.1, 0.11, -0.08 + Math.floor(i/3)*0.16); g.add(btn);
+      }
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.28,0.06), M.screen());
+      screen.position.set(0, 0.05, 0.176); g.add(screen);
+      break;
+    }
+    case 'emgCtrl': {
+      const p = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.7,0.1), M.body);
+      p.position.y = 1.0; g.add(p);
+      const btn = new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.15,0.1,24),
+        new THREE.MeshStandardMaterial({color:0xff0000,emissive:0xff0000,emissiveIntensity:1.8}));
+      btn.rotation.x = Math.PI/2; btn.position.set(0, 1.1, 0.07); g.add(btn);
+      const ring = new THREE.Mesh(new THREE.RingGeometry(0.15,0.22,24), M.ledAmber);
+      ring.position.set(0, 1.1, 0.06); g.add(ring);
+      for (let i=0;i<4;i++) {
+        const led = new THREE.Mesh(new THREE.SphereGeometry(0.022,8,8), M.ledGreen);
+        led.position.set(-0.15 + i*0.1, 0.75, 0.06); g.add(led);
+      }
+      const bp = new THREE.Mesh(new THREE.BoxGeometry(0.6,0.8,0.04), M.gray);
+      bp.position.y = 1.0; bp.position.z = -0.06; g.add(bp);
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.06,0.7,10), M.metal);
+      pole.position.y = 0.35; g.add(pole);
+      break;
+    }
+    case 'ctrlTouch': {
+      const p = new THREE.Mesh(new THREE.BoxGeometry(0.7,0.5,0.06), M.body);
+      p.position.y = 0.7; g.add(p);
+      const s = new THREE.Mesh(new THREE.PlaneGeometry(0.62,0.42),
+        new THREE.MeshBasicMaterial({color,transparent:true,opacity:0.92}));
+      s.position.set(0,0.7,0.045); g.add(s);
+      break;
+    }
+    case 'masterCtrl': {
+      const p = new THREE.Mesh(new THREE.BoxGeometry(0.75,0.55,0.08), M.body);
+      p.position.y = 0.8; g.add(p);
+      const s = new THREE.Mesh(new THREE.PlaneGeometry(0.65,0.45), M.screen());
+      s.position.set(0,0.8,0.055); g.add(s);
+      for (let i=0;i<3;i++) {
+        const knob = new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,0.02,14), M.ledGreen);
+        knob.rotation.x = Math.PI/2; knob.position.set(-0.2 + i*0.2, 0.5, 0.06); g.add(knob);
+      }
+      break;
+    }
+    default: {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.3,0.3), M.body);
+      b.castShadow = true; g.add(b);
+    }
+  }
+
+  const ring = new THREE.Mesh(
+    new THREE.RingGeometry(0.7,0.78,32),
+    new THREE.MeshBasicMaterial({color:0x10b981,transparent:true,opacity:0,
+      side:THREE.DoubleSide,depthWrite:false})
+  );
+  ring.rotation.x = -Math.PI/2; ring.position.y = 0.03; ring.name = 'selRing';
+  g.add(ring);
+  return g;
+}
+
+/* ============ BUILD ROOM ============ */
+function clearGroup(g) {
+  while (g.children.length) {
+    const c = g.children[0]; g.remove(c);
+    c.traverse?.(o => {
+      if (o.geometry) o.geometry.dispose();
+      if (o.material) {
+        if (Array.isArray(o.material)) o.material.forEach(m => m.dispose());
+        else o.material.dispose();
+      }
+    });
+  }
+}
+
+function buildRoom() {
+  clearGroup(roomGrp);
+
+  for (const f of ROOM.features) {
+    if (f.type === 'ground') {
+      const g = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.05, f.d), M.path());
+      g.position.set(f.x, 0.025, f.z); g.receiveShadow = true; roomGrp.add(g);
+    }
+
+    if (f.type === 'grass') {
+      const g = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.06, f.d), M.grass());
+      g.position.set(f.x, 0.04, f.z); g.receiveShadow = true; roomGrp.add(g);
+      /* Mowing stripes */
+      for (let i=0;i<8;i++) {
+        const stripe = new THREE.Mesh(new THREE.BoxGeometry(f.w - 1, 0.005, f.d/8 - 0.5),
+          i % 2 === 0 ? M.grassLight() : M.grassDark());
+        stripe.position.set(0, 0.075, -f.d/2 + (i+0.5)*(f.d/8));
+        roomGrp.add(stripe);
+      }
+    }
+
+    if (f.type === 'mainPath') {
+      const p = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.1, f.d), M.concrete());
+      p.position.set(f.x, 0.08, f.z); p.receiveShadow = true; roomGrp.add(p);
+      /* Path border */
+      if (f.dir === 'vertical') {
+        for (const bx of [-f.w/2, f.w/2]) {
+          const border = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.12, f.d), M.pathBorder());
+          border.position.set(f.x + bx, 0.09, f.z); roomGrp.add(border);
+        }
+      } else {
+        for (const bz of [-f.d/2, f.d/2]) {
+          const border = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.12, 0.2), M.pathBorder());
+          border.position.set(f.x, 0.09, f.z + bz); roomGrp.add(border);
+        }
+      }
+      /* Stepping stones */
+      const count = Math.floor((f.dir === 'vertical' ? f.d : f.w) / 2.5);
+      for (let i=0;i<count;i++) {
+        const px = f.dir === 'vertical' ? f.x : f.x - f.w/2 + (i + 0.5) * (f.w/count);
+        const pz = f.dir === 'vertical' ? f.z - f.d/2 + (i + 0.5) * (f.d/count) : f.z;
+        const stone = new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,0.03,8), M.pathBorder());
+        stone.position.set(px, 0.135, pz); roomGrp.add(stone);
+      }
+    }
+
+    if (f.type === 'circlePath') {
+      const torus = new THREE.Mesh(new THREE.TorusGeometry(f.r, 1.5, 8, 48), M.concrete());
+      torus.rotation.x = Math.PI/2; torus.position.set(0, 0.08, 0); roomGrp.add(torus);
+      /* Inner and outer borders */
+      for (const r of [f.r - 1.5, f.r + 1.5]) {
+        const border = new THREE.Mesh(new THREE.TorusGeometry(r, 0.15, 6, 48), M.pathBorder());
+        border.rotation.x = Math.PI/2; border.position.set(0, 0.1, 0); roomGrp.add(border);
+      }
+    }
+
+    if (f.type === 'fountain') {
+      /* Base pool */
+      const pool = new THREE.Mesh(new THREE.CylinderGeometry(f.r, f.r + 0.3, 0.6, 32), M.stone());
+      pool.position.set(f.x, 0.3, f.z); pool.receiveShadow = true; roomGrp.add(pool);
+      /* Inner water ring */
+      const water = new THREE.Mesh(new THREE.CylinderGeometry(f.r - 0.5, f.r - 0.5, 0.4, 32), M.water());
+      water.position.set(f.x, 0.5, f.z); roomGrp.add(water);
+      /* Center pedestal */
+      const ped = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.8, 2, 16), M.stone());
+      ped.position.set(f.x, 1.6, f.z); ped.castShadow = true; roomGrp.add(ped);
+      /* Upper bowl */
+      const bowl = new THREE.Mesh(new THREE.CylinderGeometry(2.2, 1.5, 0.5, 20), M.stone());
+      bowl.position.set(f.x, 2.8, f.z); roomGrp.add(bowl);
+      /* Water in bowl */
+      const bWater = new THREE.Mesh(new THREE.CylinderGeometry(2, 2, 0.15, 20), M.waterLight());
+      bWater.position.set(f.x, 3.05, f.z); roomGrp.add(bWater);
+      /* Central spray */
+      const spray = new THREE.Mesh(new THREE.ConeGeometry(0.6, 3, 12),
+        new THREE.MeshStandardMaterial({color:0x38bdf8,emissive:0x38bdf8,emissiveIntensity:0.5,transparent:true,opacity:0.6}));
+      spray.position.set(f.x, 4.5, f.z); roomGrp.add(spray);
+      /* Jets around */
+      for (let i=0;i<8;i++) {
+        const a = (i/8)*Math.PI*2;
+        const jet = new THREE.Mesh(new THREE.ConeGeometry(0.2, 1.5, 8),
+          new THREE.MeshStandardMaterial({color:0x38bdf8,emissive:0x38bdf8,emissiveIntensity:0.5,transparent:true,opacity:0.6}));
+        jet.position.set(f.x + Math.cos(a)*(f.r-1), 1.2, f.z + Math.sin(a)*(f.r-1));
+        roomGrp.add(jet);
+      }
+      /* Water spout points at edges */
+      for (let i=0;i<12;i++) {
+        const a = (i/12)*Math.PI*2;
+        const spout = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.12,0.2,8), M.stoneDark());
+        spout.position.set(f.x + Math.cos(a)*(f.r-0.3), 0.7, f.z + Math.sin(a)*(f.r-0.3));
+        roomGrp.add(spout);
+      }
+      /* Underwater lights */
+      for (let i=0;i<6;i++) {
+        const a = (i/6)*Math.PI*2;
+        const light = new THREE.PointLight(0x38bdf8, 0.8, 8, 2);
+        light.position.set(f.x + Math.cos(a)*(f.r-1.5), 0.7, f.z + Math.sin(a)*(f.r-1.5));
+        roomGrp.add(light);
+      }
+    }
+
+    if (f.type === 'lake') {
+      /* Water */
+      const water = new THREE.Mesh(new THREE.CylinderGeometry(f.r, f.r + 0.3, 0.3, 32), M.waterDeep());
+      water.position.set(f.x, 0.2, f.z); roomGrp.add(water);
+      /* Shore */
+      const shore = new THREE.Mesh(new THREE.TorusGeometry(f.r + 0.3, 0.5, 8, 40), M.stone());
+      shore.rotation.x = Math.PI/2; shore.position.set(f.x, 0.15, f.z); roomGrp.add(shore);
+      /* Small rocks around */
+      for (let i=0;i<16;i++) {
+        const a = (i/16)*Math.PI*2 + Math.random()*0.2;
+        const r = f.r + 0.4 + Math.random()*0.5;
+        const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(0.4 + Math.random()*0.3, 0), M.rock());
+        rock.position.set(f.x + Math.cos(a)*r, 0.3, f.z + Math.sin(a)*r);
+        rock.castShadow = true; roomGrp.add(rock);
+      }
+      /* Small lotus pads */
+      for (let i=0;i<5;i++) {
+        const a = Math.random()*Math.PI*2;
+        const r = Math.random() * (f.r - 3);
+        const pad = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 0.8, 0.02, 12), M.bush());
+        pad.position.set(f.x + Math.cos(a)*r, 0.37, f.z + Math.sin(a)*r);
+        roomGrp.add(pad);
+      }
+    }
+
+    if (f.type === 'playground') {
+      /* Playground surface */
+      const surf = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.08, f.d), 
+        new THREE.MeshStandardMaterial({color:0xf472b6,roughness:0.9,metalness:0.02}));
+      surf.position.set(f.x, 0.06, f.z); surf.receiveShadow = true; roomGrp.add(surf);
+      /* Decorative circle pattern */
+      const circ = new THREE.Mesh(new THREE.TorusGeometry(3, 0.15, 6, 24), M.play4());
+      circ.rotation.x = Math.PI/2; circ.position.set(f.x, 0.12, f.z); roomGrp.add(circ);
+      /* Small play structure - slide */
+      const slide = new THREE.Mesh(new THREE.BoxGeometry(2, 0.2, 4), M.play());
+      slide.rotation.x = 0.35;
+      slide.position.set(f.x - 6, 1.5, f.z - 3); slide.castShadow = true; roomGrp.add(slide);
+      const slideTower = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 3, 8), M.play2());
+      slideTower.position.set(f.x - 6, 1.5, f.z - 5.5); slideTower.castShadow = true; roomGrp.add(slideTower);
+      /* Swing set */
+      const swingFrame = new THREE.Mesh(new THREE.BoxGeometry(5, 0.2, 0.2), M.play3());
+      swingFrame.position.set(f.x + 6, 2.5, f.z); roomGrp.add(swingFrame);
+      for (const sx of [-2.3, 2.3]) {
+        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,2.7,8), M.play3());
+        leg.position.set(f.x + 6 + sx, 1.35, f.z); roomGrp.add(leg);
+      }
+      for (const sx of [-1, 1]) {
+        const chain = new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,1.8,6), M.gray);
+        chain.position.set(f.x + 6 + sx, 1.6, f.z); roomGrp.add(chain);
+        const seat = new THREE.Mesh(new THREE.BoxGeometry(0.6,0.08,0.3), M.play());
+        seat.position.set(f.x + 6 + sx, 0.7, f.z); roomGrp.add(seat);
+      }
+      /* Seesaw */
+      const seesaw = new THREE.Mesh(new THREE.BoxGeometry(3, 0.15, 0.4), M.play4());
+      seesaw.rotation.z = 0.15;
+      seesaw.position.set(f.x, 0.8, f.z + 6); roomGrp.add(seesaw);
+      const fulcrum = new THREE.Mesh(new THREE.CylinderGeometry(0.4,0.5,0.7,12), M.play2());
+      fulcrum.position.set(f.x, 0.4, f.z + 6); roomGrp.add(fulcrum);
+    }
+
+    if (f.type === 'bandshell') {
+      /* Base platform */
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(f.r, f.r + 0.5, 0.5, 16), M.concrete());
+      base.position.set(f.x, 0.25, f.z); base.receiveShadow = true; roomGrp.add(base);
+      /* Bandshell structure - half cylinder shell */
+      const shell = new THREE.Mesh(new THREE.CylinderGeometry(f.r - 1, f.r - 1, f.H, 16, 1, true, 0, Math.PI), M.bandshell());
+      shell.position.set(f.x, f.H/2 + 0.5, f.z);
+      shell.rotation.y = -Math.PI/2;
+      shell.castShadow = true; roomGrp.add(shell);
+      /* Roof */
+      const roof = new THREE.Mesh(new THREE.CylinderGeometry(f.r, f.r, 0.4, 16, 1, false, 0, Math.PI), M.bandshellRoof());
+      roof.position.set(f.x, f.H + 0.7, f.z);
+      roof.rotation.y = -Math.PI/2;
+      roomGrp.add(roof);
+      /* Back wall */
+      const wall = new THREE.Mesh(new THREE.PlaneGeometry(2*(f.r-1), f.H), M.bandshell());
+      wall.position.set(f.x, f.H/2 + 0.5, f.z - (f.r-1));
+      roomGrp.add(wall);
+      /* Stage floor */
+      const stage = new THREE.Mesh(new THREE.CylinderGeometry(f.r - 1, f.r - 1, 0.1, 24), M.wood());
+      stage.position.set(f.x, 0.55, f.z); roomGrp.add(stage);
+    }
+
+    if (f.type === 'sportsZone') {
+      /* Court surface */
+      const court = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.08, f.d), M.court());
+      court.position.set(f.x, 0.06, f.z); court.receiveShadow = true; roomGrp.add(court);
+      /* Line markings */
+      const lineW = 0.1;
+      /* Court outline */
+      const topLine = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.01, lineW), M.white());
+      topLine.position.set(f.x, 0.115, f.z - f.d/2); roomGrp.add(topLine);
+      const botLine = topLine.clone(); botLine.position.z = f.z + f.d/2; roomGrp.add(botLine);
+      const leftLine = new THREE.Mesh(new THREE.BoxGeometry(lineW, 0.01, f.d), M.white());
+      leftLine.position.set(f.x - f.w/2, 0.115, f.z); roomGrp.add(leftLine);
+      const rightLine = leftLine.clone(); rightLine.position.x = f.x + f.w/2; roomGrp.add(rightLine);
+      /* Center circle */
+      const midCirc = new THREE.Mesh(new THREE.TorusGeometry(2, 0.06, 6, 24), M.white());
+      midCirc.rotation.x = Math.PI/2; midCirc.position.set(f.x, 0.12, f.z); roomGrp.add(midCirc);
+      /* Basketball hoops at both ends */
+      for (const sx of [-1, 1]) {
+        const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.1,4,8), M.metal);
+        pole.position.set(f.x + sx*(f.w/2 - 1), 2, f.z); roomGrp.add(pole);
+        const backboard = new THREE.Mesh(new THREE.BoxGeometry(1.8, 1.2, 0.1), M.white());
+        backboard.position.set(f.x + sx*(f.w/2 - 2), 3.5, f.z); roomGrp.add(backboard);
+        const hoop = new THREE.Mesh(new THREE.TorusGeometry(0.35, 0.03, 6, 20), M.play2());
+        hoop.rotation.x = Math.PI/2;
+        hoop.position.set(f.x + sx*(f.w/2 - 2.5), 3.2, f.z); roomGrp.add(hoop);
+      }
+    }
+
+    if (f.type === 'gate') {
+      /* Gate pillars */
+      for (const side of [-1, 1]) {
+        const p = new THREE.Mesh(new THREE.BoxGeometry(1.5, f.h, 1.5), M.stone());
+        p.position.set(f.x + side*f.w/2, f.h/2, f.z); p.castShadow = true; roomGrp.add(p);
+        /* Top cap */
+        const cap = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.4, 1.8), M.stoneDark());
+        cap.position.set(f.x + side*f.w/2, f.h + 0.2, f.z); roomGrp.add(cap);
+      }
+      /* Top arch */
+      const arch = new THREE.Mesh(new THREE.BoxGeometry(f.w, 1, 1.5), M.stone());
+      arch.position.set(f.x, f.h - 0.5, f.z); roomGrp.add(arch);
+      /* Welcome sign */
+      const sign = new THREE.Mesh(new THREE.BoxGeometry(6, 1.5, 0.2), M.wood());
+      sign.position.set(f.x, f.h + 0.8, f.z); roomGrp.add(sign);
+      /* Sign text panel */
+      const panel = new THREE.Mesh(new THREE.PlaneGeometry(5.5, 1.2), M.play3());
+      panel.position.set(f.x, f.h + 0.8, f.z + 0.11); roomGrp.add(panel);
+    }
+
+    if (f.type === 'treeRing') {
+      for (let i=0;i<f.count;i++) {
+        const a = (i/f.count) * Math.PI * 2;
+        const tx = f.x + Math.cos(a) * f.r;
+        const tz = f.z + Math.sin(a) * f.r;
+        /* Trunk */
+        const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.5, 5, 10), M.treeTrunk());
+        trunk.position.set(tx, 2.5, tz); trunk.castShadow = true; roomGrp.add(trunk);
+        /* Leaves */
+        for (let k=0;k<4;k++) {
+          const leaves = new THREE.Mesh(new THREE.SphereGeometry(1.8 + Math.random()*0.5, 12, 10),
+            k % 2 === 0 ? M.leaves() : M.leavesDark());
+          leaves.position.set(tx + (Math.random()-0.5)*1.2, 5 + k*0.8 + Math.random()*0.4, tz + (Math.random()-0.5)*1.2);
+          leaves.castShadow = true; roomGrp.add(leaves);
+        }
+      }
+    }
+
+    if (f.type === 'treeRow') {
+      for (let i=0;i<f.count;i++) {
+        const tx = f.dir === 'vertical' ? f.x : f.x - (f.count-1)*4 + i*8;
+        const tz = f.dir === 'vertical' ? f.z - (f.count-1)*8 + i*16 : f.z;
+        /* Trunk */
+        const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.5, 6, 10), M.treeTrunk());
+        trunk.position.set(tx, 3, tz); trunk.castShadow = true; roomGrp.add(trunk);
+        /* Leaves */
+        for (let k=0;k<4;k++) {
+          const leaves = new THREE.Mesh(new THREE.SphereGeometry(2 + Math.random()*0.4, 12, 10),
+            k % 2 === 0 ? M.leaves() : M.leavesDark());
+          leaves.position.set(tx + (Math.random()-0.5)*1, 6 + k*0.7 + Math.random()*0.4, tz + (Math.random()-0.5)*1);
+          leaves.castShadow = true; roomGrp.add(leaves);
+        }
+      }
+    }
+
+    if (f.type === 'flowerBed') {
+      /* Bed outline */
+      const bed = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.15, f.d), M.stoneDark());
+      bed.position.set(f.x, 0.08, f.z); roomGrp.add(bed);
+      /* Flowers */
+      for (let i=0;i<30;i++) {
+        const fx = f.x - f.w/2 + 0.5 + Math.random() * (f.w - 1);
+        const fz = f.z - f.d/2 + 0.5 + Math.random() * (f.d - 1);
+        const flowerMat = [M.flower1(), M.flower2(), M.flower3(), M.flower4()][i % 4];
+        const flower = new THREE.Mesh(new THREE.SphereGeometry(0.15, 8, 6), flowerMat);
+        flower.position.set(fx, 0.25, fz); roomGrp.add(flower);
+        const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.2,6), M.bush());
+        stem.position.set(fx, 0.2, fz); roomGrp.add(stem);
+      }
+    }
+
+    if (f.type === 'benches') {
+      for (let i=0;i<f.count;i++) {
+        const bx = f.dir === 'vertical' ? f.x : f.x - (f.count-1)*4 + i*8;
+        const bz = f.dir === 'vertical' ? f.z - (f.count-1)*4 + i*8 : f.z;
+        /* Bench seat */
+        const seat = new THREE.Mesh(new THREE.BoxGeometry(f.dir === 'vertical' ? 0.6 : 2, 0.15, f.dir === 'vertical' ? 2 : 0.6), M.bench());
+        seat.position.set(bx, 0.55, bz); seat.castShadow = true; roomGrp.add(seat);
+        /* Back */
+        const back = new THREE.Mesh(new THREE.BoxGeometry(f.dir === 'vertical' ? 0.1 : 2, 0.5, f.dir === 'vertical' ? 2 : 0.1), M.bench());
+        if (f.dir === 'vertical') back.position.set(bx - 0.3, 0.9, bz);
+        else back.position.set(bx, 0.9, bz - 0.3);
+        roomGrp.add(back);
+        /* Legs */
+        for (const lx of f.dir === 'vertical' ? [-0.8, 0.8] : [-0.7, 0.7]) {
+          for (const lz of f.dir === 'vertical' ? [-0.7, 0.7] : [-0.2, 0.2]) {
+            const leg = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.5, 0.1), M.benchMetal());
+            leg.position.set(f.dir === 'vertical' ? bx : bx + lx, 0.25, f.dir === 'vertical' ? bz + lx : bz + lz);
+            roomGrp.add(leg);
+          }
+        }
+      }
+    }
+
+    if (f.type === 'lampCircle') {
+      for (let i=0;i<f.count;i++) {
+        const a = (i/f.count) * Math.PI * 2;
+        const lx = f.x + Math.cos(a) * f.r;
+        const lz = f.z + Math.sin(a) * f.r;
+        /* Pole */
+        const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.15,4.5,10), M.lampPole());
+        pole.position.set(lx, 2.25, lz); roomGrp.add(pole);
+        /* Globe */
+        const globe = new THREE.Mesh(new THREE.SphereGeometry(0.5,16,12), M.lampGlobe());
+        globe.position.set(lx, 4.7, lz); roomGrp.add(globe);
+        /* Light source */
+        const light = new THREE.PointLight(0xffe8a0, 0.7, 12, 2);
+        light.position.set(lx, 4.7, lz); roomGrp.add(light);
+      }
+    }
+
+    if (f.type === 'lampRow') {
+      for (let i=0;i<f.count;i++) {
+        const lx = f.dir === 'vertical' ? f.x : f.x - (f.count-1)*2 + i*4;
+        const lz = f.dir === 'vertical' ? f.z - (f.count-1)*7 + i*14 : f.z;
+        const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.12,3.5,10), M.lampPole());
+        pole.position.set(lx, 1.75, lz); roomGrp.add(pole);
+        const globe = new THREE.Mesh(new THREE.SphereGeometry(0.35,14,10), M.lampGlobe());
+        globe.position.set(lx, 3.7, lz); roomGrp.add(globe);
+        const light = new THREE.PointLight(0xffe8a0, 0.5, 10, 2);
+        light.position.set(lx, 3.7, lz); roomGrp.add(light);
+      }
+    }
+  }
+}
+
+/* ============ DEVICES ============ */
+const meshById = new Map();
+function buildDevices() {
+  clearGroup(devGrp); meshById.clear();
+  for (const d of state.devices) {
+    const spec = getSpec(d.cat, d.typeId); if (!spec) continue;
+    const color = BRANDS[d.brand] ? BRANDS[d.brand].color : 0x10b981;
+    const mesh = makeMesh(d.cat, d.typeId, color); if (!mesh) continue;
+    mesh.position.set(d.x, spec.h, d.z);
+    mesh.rotation.y = d.rot || 0;
+    mesh.userData.devId = d.id;
+    mesh.userData.dev = d;
+    mesh.userData.spec = spec;
+    devGrp.add(mesh);
+    meshById.set(d.id, mesh);
+  }
+  updateSelectionVisuals();
+}
+function updateSelectionVisuals() {
+  devGrp.children.forEach(m => {
+    const r = m.getObjectByName('selRing');
+    if (r) r.material.opacity = (state.selected === m.userData.devId) ? 0.9 : 0;
+  });
+}
+
+/* ============ HEATMAP ============ */
+let heatMesh = null;
+function disposeHeat() {
+  if (heatMesh) { heatGrp.remove(heatMesh); heatMesh.geometry.dispose(); heatMesh.material.dispose(); heatMesh = null; }
+}
+function buildHeatmap() {
+  disposeHeat();
+  if (!state.showHeat) return;
+  const speakers = state.devices.filter(d =>
+    d.cat === 'paths' || d.cat === 'garden' || d.cat === 'fountain' ||
+    d.cat === 'playground' || d.cat === 'gazebo' || d.cat === 'benches' ||
+    d.cat === 'entrance' || d.cat === 'sports' || d.cat === 'paging' || d.cat === 'emergency'
+  );
+  if (!speakers.length) {
+    document.getElementById('hudSpl').textContent = '—';
+    document.getElementById('hudCoverage').textContent = '0%';
+    return;
+  }
+  const SIZE = Math.max(ROOM.size[0], ROOM.size[1]) * 1.15;
+  const RES = 120;
+  const geo = new THREE.PlaneGeometry(SIZE, SIZE, RES, RES);
+  geo.rotateX(-Math.PI/2);
+  const colors = new Float32Array(geo.attributes.position.count * 3);
+  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  heatMesh = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({
+    vertexColors: true, transparent: true, opacity: 0.5,
+    depthWrite: false, side: THREE.DoubleSide
+  }));
+  heatMesh.position.y = 0.15;
+  heatMesh.renderOrder = 1;
+  heatGrp.add(heatMesh);
+  updateHeatColors();
+}
+function calcSPL(x, z) {
+  let tot = 0;
+  for (const spk of state.devices) {
+    if (spk.cat !== 'paths' && spk.cat !== 'garden' && spk.cat !== 'fountain' &&
+        spk.cat !== 'playground' && spk.cat !== 'gazebo' && spk.cat !== 'benches' &&
+        spk.cat !== 'entrance' && spk.cat !== 'sports' && spk.cat !== 'paging' && spk.cat !== 'emergency') continue;
+    const spec = getSpec(spk.cat, spk.typeId);
+    if (!spec || !spec.power) continue;
+    const power = spk.power || spec.power;
+    const dx = x - spk.x, dz = z - spk.z;
+    const dy = -spec.h;
+    const d = Math.sqrt(dx*dx + dy*dy + dz*dz);
+    if (d < 0.5) continue;
+    const s1m = 88 + 10 * Math.log10(Math.max(power,1));
+    let dl = 0;
+    if (spec.dir) {
+      const facing = spk.rot || 0;
+      const tl = Math.atan2(dx, dz);
+      let a = Math.abs(facing - tl);
+      if (a > Math.PI) a = 2*Math.PI - a;
+      dl = -11 * (1 - Math.cos(a));
+    }
+    const dL = -20 * Math.log10(d);
+    const v = s1m + dL + dl;
+    if (v < -20) continue;
+    tot += Math.pow(10, v/10);
+  }
+  return tot > 0 ? 10 * Math.log10(tot) : 0;
+}
+const SPL_STOPS = [
+  [40,0.05,0.10,0.45],[50,0.00,0.30,0.80],[58,0.00,0.65,0.95],
+  [65,0.00,0.90,0.90],[72,0.30,0.90,0.45],[80,0.85,0.90,0.25],
+  [88,1.00,0.65,0.15],[95,1.00,0.25,0.10],[105,0.85,0.05,0.15]
+];
+function splRGB(v) {
+  const S = SPL_STOPS, N = S.length;
+  if (v <= S[0][0]) return [S[0][1],S[0][2],S[0][3]];
+  if (v >= S[N-1][0]) return [S[N-1][1],S[N-1][2],S[N-1][3]];
+  for (let i=0;i<N-1;i++) {
+    const a=S[i], b=S[i+1];
+    if (v>=a[0] && v<=b[0]) {
+      const t = (v-a[0])/(b[0]-a[0]);
+      return [a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t,a[3]+(b[3]-a[3])*t];
+    }
+  }
+  return [1,1,1];
+}
+function updateHeatColors() {
+  if (!heatMesh) return;
+  const pos = heatMesh.geometry.attributes.position;
+  const col = heatMesh.geometry.attributes.color;
+  let mx = 0, covered = 0;
+  const total = pos.count;
+  for (let i=0;i<total;i++) {
+    const x = pos.getX(i), z = pos.getZ(i);
+    const v = calcSPL(x, z);
+    if (v > mx) mx = v;
+    if (v >= 55) covered++;
+    const c = splRGB(v);
+    col.setXYZ(i, c[0], c[1], c[2]);
+  }
+  col.needsUpdate = true;
+  document.getElementById('hudSpl').textContent = mx > 0 ? mx.toFixed(0) + ' dB' : '—';
+  const covPct = total > 0 ? Math.round((covered/total)*100) : 0;
+  document.getElementById('hudCoverage').textContent = covPct + '%';
+  const statSpl = document.getElementById('statSpl');
+  const statCov = document.getElementById('statCov');
+  statSpl.classList.remove('good','warn');
+  statCov.classList.remove('good','warn');
+  if (mx >= 60 && mx <= 75) statSpl.classList.add('good');
+  else if (mx > 0) statSpl.classList.add('warn');
+  if (covPct >= 65) statCov.classList.add('good');
+  else if (covPct >= 45) statCov.classList.add('warn');
+}
+
+/* ============ HISTORY ============ */
+function serialize() {
+  return JSON.stringify(state.devices.map(d => ({
+    id:d.id, brand:d.brand, cat:d.cat, typeId:d.typeId,
+    x:d.x, z:d.z, rot:d.rot, power:d.power
+  })));
+}
+function pushHistory() {
+  state.history = state.history.slice(0, state.historyIdx + 1);
+  state.history.push(serialize());
+  state.historyIdx = state.history.length - 1;
+}
+function applyHistory(json) {
+  state.devices = JSON.parse(json);
+  state.nextId = state.devices.length ? Math.max(...state.devices.map(d=>d.id))+1 : 1;
+  buildDevices(); buildHeatmap(); updateHUD(); deselect();
+}
+function undo() {
+  if (state.historyIdx > 0) { state.historyIdx--; applyHistory(state.history[state.historyIdx]); toast(T('to_undo')); }
+}
+function redo() {
+  if (state.historyIdx < state.history.length - 1) { state.historyIdx++; applyHistory(state.history[state.historyIdx]); toast(T('to_redo')); }
+}
+
+/* ============ CAMERA ============ */
+function updateCamera() {
+  const {theta, phi, radius, target} = state.cam;
+  const x = target.x + radius * Math.sin(phi) * Math.sin(theta);
+  const y = target.y + radius * Math.cos(phi);
+  const z = target.z + radius * Math.sin(phi) * Math.cos(theta);
+  camera.position.set(x, Math.max(y, 1), z);
+  camera.lookAt(target);
+}
+function tweenCamera(to, dur) {
+  const from = {theta: state.cam.theta, phi: state.cam.phi, radius: state.cam.radius, target: state.cam.target.clone()};
+  state.cam.tween = {from, to, dur, start:performance.now()};
+}
+function updateTween() {
+  const t = state.cam.tween; if (!t) return;
+  const p = Math.min(1, (performance.now() - t.start) / t.dur);
+  const e = p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p+2,3)/2;
+  state.cam.theta = t.from.theta + (t.to.theta - t.from.theta) * e;
+  state.cam.phi = t.from.phi + (t.to.phi - t.from.phi) * e;
+  state.cam.radius = t.from.radius + (t.to.radius - t.from.radius) * e;
+  state.cam.target.lerpVectors(t.from.target, t.to.target, e);
+  updateCamera();
+  if (p >= 1) state.cam.tween = null;
+}
+function setView3D(on) {
+  state.view3D = on;
+  const btn = document.getElementById('viewBtn');
+  btn.textContent = on ? '✏️ 2D' : '🎬 3D';
+  btn.classList.toggle('on', !on);
+  const r = Math.max(ROOM.size[0], ROOM.size[1]) * 1.15;
+  if (on) tweenCamera({theta:-0.5, phi:0.85, radius:r, target:new THREE.Vector3(0,4,0)}, 900);
+  else tweenCamera({theta:0, phi:0.02, radius:r, target:new THREE.Vector3(0,0,0)}, 900);
+}
+function fitView() {
+  const r = Math.max(ROOM.size[0], ROOM.size[1]) * 1.15;
+  if (state.view3D) tweenCamera({theta:-0.5, phi:0.85, radius:r, target:new THREE.Vector3(0,4,0)}, 700);
+  else tweenCamera({theta:0, phi:0.02, radius:r, target:new THREE.Vector3(0,0,0)}, 700);
+}
+
+/* ============ INTERACTION ============ */
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
+const activePointers = new Map();
+let isDown = false, moved = false, dragDev = null;
+let dragOff = {x:0, z:0};
+let startPt = {x:0, y:0};
+let pinchStart = null;
+
+function canvasPos(cx, cy) {
+  const r = canvas.getBoundingClientRect();
+  pointer.x = ((cx - r.left) / r.width) * 2 - 1;
+  pointer.y = -((cy - r.top) / r.height) * 2 + 1;
+}
+function hitDevice(cx, cy) {
+  canvasPos(cx, cy);
+  raycaster.setFromCamera(pointer, camera);
+  const hits = raycaster.intersectObjects(devGrp.children, true);
+  for (const h of hits) {
+    let o = h.object;
+    while (o && o.userData.devId === undefined) o = o.parent;
+    if (o) return o;
+  }
+  return null;
+}
+const floorPlane = new THREE.Plane(new THREE.Vector3(0,1,0), 0);
+function floorPoint(cx, cy) {
+  canvasPos(cx, cy);
+  raycaster.setFromCamera(pointer, camera);
+  const p = new THREE.Vector3();
+  return raycaster.ray.intersectPlane(floorPlane, p) ? p : null;
+}
+
+canvas.addEventListener('pointerdown', e => {
+  activePointers.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  if (activePointers.size === 1) {
+    startPt = {x:e.clientX, y:e.clientY};
+    isDown = true; moved = false; dragDev = null;
+    const hit = hitDevice(e.clientX, e.clientY);
+    if (hit) {
+      dragDev = hit;
+      const fp = floorPoint(e.clientX, e.clientY);
+      if (fp) { dragOff.x = hit.userData.dev.x - fp.x; dragOff.z = hit.userData.dev.z - fp.z; }
+    }
+  } else if (activePointers.size === 2) {
+    dragDev = null; isDown = false; moved = true;
+    const pts = [...activePointers.values()];
+    pinchStart = {dist: Math.hypot(pts[0].x-pts[1].x, pts[0].y-pts[1].y) || 1, radius: state.cam.radius};
+  }
+}, {passive:true});
+
+canvas.addEventListener('pointermove', e => {
+  if (!activePointers.has(e.pointerId)) return;
+  const prev = activePointers.get(e.pointerId);
+  activePointers.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  if (activePointers.size === 2 && pinchStart) {
+    const pts = [...activePointers.values()];
+    const d = Math.hypot(pts[0].x-pts[1].x, pts[0].y-pts[1].y) || 1;
+    state.cam.radius = Math.max(15, Math.min(600, pinchStart.radius * (pinchStart.dist/d)));
+    state.cam.tween = null; updateCamera(); return;
+  }
+  if (!isDown) return;
+  const dx = e.clientX - prev.x;
+  const dy = e.clientY - prev.y;
+  if (Math.abs(e.clientX-startPt.x) + Math.abs(e.clientY-startPt.y) > 6) moved = true;
+  if (dragDev && moved) {
+    const fp = floorPoint(e.clientX, e.clientY);
+    if (fp) {
+      const d = dragDev.userData.dev;
+      d.x = Math.round((fp.x + dragOff.x)*10)/10;
+      d.z = Math.round((fp.z + dragOff.z)*10)/10;
+      dragDev.position.set(d.x, dragDev.userData.spec.h, d.z);
+      if (state.showHeat) updateHeatColors();
+      updateInfo();
+    }
+  } else if (!dragDev && moved && !state.presentation) {
+    if (state.view3D) {
+      state.cam.tween = null;
+      state.cam.theta -= dx * 0.008;
+      state.cam.phi = Math.max(0.12, Math.min(1.52, state.cam.phi + dy * 0.008));
+      updateCamera();
+    } else {
+      state.cam.tween = null;
+      const ps = state.cam.radius * 0.0018;
+      state.cam.target.x -= (dx*Math.cos(state.cam.theta) - dy*Math.sin(state.cam.theta)) * ps;
+      state.cam.target.z -= (dx*Math.sin(state.cam.theta) + dy*Math.cos(state.cam.theta)) * ps;
+      updateCamera();
+    }
+  }
+}, {passive:true});
+
+function endPointer(e) {
+  activePointers.delete(e.pointerId);
+  if (activePointers.size === 0) {
+    if (isDown && !moved && !state.presentation) {
+      const hit = hitDevice(e.clientX, e.clientY);
+      if (hit) select(hit.userData.devId);
+      else if (state.selected !== null) deselect();
+      else {
+        const fp = floorPoint(e.clientX, e.clientY);
+        if (fp) { placeDevice(fp.x, fp.z); pushHistory(); }
+      }
+    }
+    isDown = false; dragDev = null; moved = false; pinchStart = null;
+  } else {
+    pinchStart = null; isDown = false; dragDev = null; moved = true;
+  }
+}
+canvas.addEventListener('pointerup', endPointer, {passive:true});
+canvas.addEventListener('pointercancel', endPointer, {passive:true});
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  state.cam.tween = null;
+  const factor = e.deltaY > 0 ? 1.1 : 0.9;
+  state.cam.radius = Math.max(15, Math.min(600, state.cam.radius * factor));
+  updateCamera();
+}, {passive:false});
+
+/* ============ ACTIONS ============ */
+function placeDevice(x, z) {
+  const spec = getSpec(state.curCat, state.curType); if (!spec) return;
+  const d = {id: state.nextId++, brand: state.curBrand, cat: state.curCat, typeId: state.curType,
+    x: Math.round(x*10)/10, z: Math.round(z*10)/10, rot: 0, power: spec.power};
+  state.devices.push(d);
+  buildDevices();
+  if (state.showHeat) buildHeatmap();
+  updateHUD();
+  toast(spec.emoji + ' ' + devName(spec));
+}
+function select(id) {
+  state.selected = id;
+  updateSelectionVisuals(); updateInfo();
+  document.getElementById('info').classList.add('on');
+}
+function deselect() {
+  state.selected = null;
+  updateSelectionVisuals();
+  document.getElementById('info').classList.remove('on');
+}
+function deleteSelected() {
+  if (state.selected === null) return;
+  state.devices = state.devices.filter(d => d.id !== state.selected);
+  state.selected = null;
+  document.getElementById('info').classList.remove('on');
+  buildDevices(); buildHeatmap(); updateHUD(); pushHistory();
+  toast(T('to_deleted'));
+}
+function updateInfo() {
+  if (state.selected === null) return;
+  const d = state.devices.find(x => x.id === state.selected); if (!d) return;
+  const spec = getSpec(d.cat, d.typeId); if (!spec) return;
+  document.getElementById('infName').textContent = spec.emoji + ' ' + devName(spec);
+  document.getElementById('infBrand').textContent = brandName(d.brand);
+  document.getElementById('infType').textContent = catName(d.cat);
+  document.getElementById('infPower').textContent = spec.power > 0 ? (d.power||spec.power) + ' W' : '—';
+  document.getElementById('infH').textContent = spec.h.toFixed(1) + (LANG==='ar'?' م':' m');
+  document.getElementById('infPos').textContent = d.x.toFixed(1) + ', ' + d.z.toFixed(1);
+  const pw = document.getElementById('powerSlider');
+  pw.value = d.power || spec.power;
+  document.getElementById('powerVal').textContent = (d.power||spec.power) + 'W';
+  document.getElementById('powerWrap').style.display = spec.power > 0 ? 'flex' : 'none';
+  const rs = document.getElementById('rotSlider');
+  const deg = Math.round((d.rot||0) * 180 / Math.PI);
+  rs.value = deg;
+  document.getElementById('rotVal').textContent = deg + '°';
+  document.getElementById('rotWrap').style.display = spec.dir ? 'flex' : 'none';
+  document.getElementById('roomWInput').value = ROOM.size[0];
+  document.getElementById('roomDInput').value = ROOM.size[1];
+}
+
+/* ============ UI ============ */
+function buildCats() {
+  const el = document.getElementById('cats'); el.innerHTML = '';
+  for (const key in CATS) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'cat' + (key === state.curCat ? ' on' : '');
+    b.dataset.cat = key;
+    b.textContent = CATS[key].emoji + ' ' + catName(key);
+    b.onclick = () => selectCat(key);
+    el.appendChild(b);
+  }
+}
+function buildBrands() {
+  const el = document.getElementById('brands'); el.innerHTML = '';
+  for (const key in BRANDS) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'brand' + (key === state.curBrand ? ' on' : '');
+    b.dataset.brand = key;
+    b.textContent = brandName(key);
+    b.onclick = () => selectBrand(key);
+    el.appendChild(b);
+  }
+}
+function buildTypes() {
+  const el = document.getElementById('types'); el.innerHTML = '';
+  for (const d of CATS[state.curCat].devices) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'type' + (d[0] === state.curType ? ' on' : '');
+    b.dataset.typeId = d[0];
+    b.innerHTML = '<span class="em">' + d[2] + '</span><span class="nm">' + T(d[1]) + '</span>';
+    b.onclick = () => selectType(d[0]);
+    el.appendChild(b);
+  }
+}
+function selectCat(key) {
+  state.curCat = key;
+  state.curType = CATS[key].devices[0][0];
+  document.querySelectorAll('.cat').forEach(b => b.classList.toggle('on', b.dataset.cat === key));
+  buildTypes();
+}
+function selectBrand(key) {
+  state.curBrand = key;
+  document.querySelectorAll('.brand').forEach(b => b.classList.toggle('on', b.dataset.brand === key));
+}
+function selectType(id) {
+  state.curType = id;
+  document.querySelectorAll('.type').forEach(b => b.classList.toggle('on', b.dataset.typeId === id));
+}
+function updateHUD() { document.getElementById('hudCount').textContent = state.devices.length; }
+let toastTO;
+function toast(m) {
+  const el = document.getElementById('toast');
+  el.textContent = m; el.classList.add('on');
+  clearTimeout(toastTO);
+  toastTO = setTimeout(() => el.classList.remove('on'), 1700);
+}
+function loadInitialDevices() {
+  state.devices = []; state.nextId = 1; state.selected = null;
+  for (const item of ROOM.devices) {
+    const [brand, cat, typeId, x, z, rot] = item;
+    const spec = getSpec(cat, typeId); if (!spec) continue;
+    state.devices.push({id: state.nextId++, brand, cat, typeId, x, z, rot: rot || 0, power: spec.power});
+  }
+  buildRoom(); buildDevices(); buildHeatmap(); updateHUD(); deselect();
+  state.history = [serialize()]; state.historyIdx = 0;
+}
+
+/* ============ REPORT ============ */
+function generateReport() {
+  const totalPower = state.devices.reduce((a,d) => {
+    const s = getSpec(d.cat, d.typeId);
+    return a + (s && s.power ? (d.power || s.power) : 0);
+  }, 0);
+  const counts = {};
+  const zoneCounts = {paths:0, garden:0, fountain:0, playground:0, gazebo:0, benches:0, entrance:0, sports:0, paging:0, emergency:0};
+  state.devices.forEach(d => {
+    const spec = getSpec(d.cat, d.typeId); if (!spec) return;
+    const key = brandName(d.brand) + ' · ' + devName(spec);
+    counts[key] = (counts[key] || 0) + 1;
+    if (zoneCounts[d.cat] !== undefined) zoneCounts[d.cat]++;
+  });
+  let rows = '';
+  const entries = Object.entries(counts);
+  if (entries.length) {
+    for (const [name, qty] of entries) rows += `<tr><td>${name}</td><td>${qty}</td></tr>`;
+  } else {
+    rows = `<tr><td colspan="2" style="text-align:center;color:#888">${T('rep_empty')}</td></tr>`;
+  }
+  const splVal = document.getElementById('hudSpl').textContent;
+  const covVal = document.getElementById('hudCoverage').textContent;
+
+  const rt60Display = 'N/A (Outdoor)';
+  const reverbQuality = '🌳 ' + (LANG==='ar'?'حقل مفتوح (لا صدى)':'Open field (no reverb)');
+
+  const capacity = 3000;
+  const totalArea = 120 * 100;
+  const hasBGM = state.devices.filter(d => 
+    ['paths','garden','benches','entrance'].includes(d.cat)).length >= 20;
+  const hasPlayground = state.devices.filter(d => d.cat === 'playground').length >= 3;
+  const hasGazebo = state.devices.filter(d => d.cat === 'gazebo').length >= 2;
+  const hasPaging = state.devices.some(d => d.cat === 'paging') &&
+                    state.devices.some(d => d.cat === 'control' && d.typeId === 'paging_ctrl');
+  const hasEmergency = state.devices.some(d => d.cat === 'emergency') &&
+                       state.devices.some(d => d.cat === 'control' && d.typeId === 'emg_ctrl');
+  const hasSports = state.devices.filter(d => d.cat === 'sports').length >= 3;
+  const hasFountain = state.devices.filter(d => d.cat === 'fountain').length >= 4;
+
+  document.getElementById('reportModalBody').innerHTML = `
+    <div class="report-section">
+      <h4>📍 ${T('rep_env_info')}</h4>
+      <div class="row"><span>${T('rep_env_type')}</span><span>${ROOM.name[LANG]}</span></div>
+      <div class="row"><span>${T('rep_dim')}</span><span>${ROOM.size[0]}m × ${ROOM.size[1]}m (Outdoor)</span></div>
+      <div class="row"><span>${T('rep_area')}</span><span>${totalArea.toLocaleString()} m²</span></div>
+      <div class="row"><span>${T('rep_capacity')}</span><span>~${capacity.toLocaleString()} ${LANG==='ar'?'زائر':'visitors'}</span></div>
+      <div class="row"><span>${T('rep_zones')}</span><span>${[zoneCounts.paths,zoneCounts.garden,zoneCounts.fountain,zoneCounts.playground,zoneCounts.gazebo,zoneCounts.benches,zoneCounts.entrance,zoneCounts.sports].filter(c=>c>0).length} ${LANG==='ar'?'منطقة':'zones'}</span></div>
+      <div class="row"><span>${T('rep_total_dev')}</span><span>${state.devices.length}</span></div>
+      <div class="row"><span>${T('rep_total_power')}</span><span>${(totalPower/1000).toFixed(2)} kW</span></div>
+      <div class="row"><span>${T('rep_date')}</span><span>${new Date().toLocaleString(LANG==='ar'?'ar-EG':'en-US')}</span></div>
+    </div>
+    <div class="report-section">
+      <h4>🔊 ${T('rep_equip')}</h4>
+      <table class="report-table">
+        <thead><tr><th>${T('rep_device')}</th><th style="width:80px;text-align:center">${T('rep_qty')}</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <div class="report-section">
+      <h4>📊 ${T('rep_analysis')}</h4>
+      <div class="row"><span>${T('rep_max_spl')}</span><span>${splVal}</span></div>
+      <div class="row"><span>${T('rep_coverage')}</span><span>${covVal}</span></div>
+      <div class="row"><span>${T('rep_target')}</span><span>${T('rep_bg_target')}</span></div>
+      <div class="row"><span>${T('rep_rt')}</span><span>${rt60Display}</span></div>
+      <div class="row"><span>${T('rep_reverb')}</span><span>${reverbQuality}</span></div>
+      <div class="row"><span>${T('rep_nc')}</span><span style="color:#10b981">${LANG==='ar'?'مطابق':'Compliant'}</span></div>
+      <div class="row"><span>🎵 ${T('rep_bg')}</span><span style="color:${hasBGM?'#10b981':'#fde047'}">${hasBGM ? (LANG==='ar'?'نشط (موزع)':'Active (distributed)') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>🎠 ${T('rep_playground')}</span><span style="color:${hasPlayground?'#10b981':'#fde047'}">${hasPlayground ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>🎭 ${T('cat_gazebo')}</span><span style="color:${hasGazebo?'#10b981':'#fde047'}">${hasGazebo ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>⛲ ${T('cat_fountain')}</span><span style="color:${hasFountain?'#10b981':'#fde047'}">${hasFountain ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>⚽ ${T('cat_sports')}</span><span style="color:${hasSports?'#10b981':'#fde047'}">${hasSports ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>${T('rep_paging')}</span><span style="color:${hasPaging?'#10b981':'#fde047'}">${hasPaging ? (LANG==='ar'?'نشط (8 مناطق)':'Active (8 zones)') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>${T('rep_emergency')}</span><span style="color:${hasEmergency?'#10b981':'#fde047'}">${hasEmergency ? (LANG==='ar'?'مطابق (نشط)':'Compliant (Active)') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>${T('rep_safety')}</span><span style="color:#10b981">${LANG==='ar'?'مطابق':'Compliant'}</span></div>
+      <div class="row"><span>${T('rep_ada')}</span><span style="color:#10b981">${LANG==='ar'?'مطابق':'Compliant'}</span></div>
+      <div class="row"><span>${T('rep_status')}</span><span style="color:#10b981">${T('rep_status_good')}</span></div>
+    </div>
+  `;
+  document.getElementById('reportModal').classList.add('on');
+}
+
+/* ============ EVENTS ============ */
+document.getElementById('langBtn').onclick = () => {
+  LANG = LANG === 'ar' ? 'en' : 'ar';
+  localStorage.setItem('auralis_lang', LANG);
+  applyLang();
+  buildCats(); buildBrands(); buildTypes();
+  if (state.selected !== null) updateInfo();
+  toast(LANG === 'ar' ? '🌐 العربية' : '🌐 English');
+};
+document.getElementById('reportBtn').onclick = generateReport;
+document.getElementById('closeModalBtn').onclick = () => document.getElementById('reportModal').classList.remove('on');
+document.getElementById('closeModalBtn2').onclick = () => document.getElementById('reportModal').classList.remove('on');
+document.getElementById('printReportBtn').onclick = () => window.print();
+
+document.getElementById('saveBtn').onclick = () => {
+  const data = JSON.stringify({app:'AURALIS', version:1, room:'park',
+    devices: state.devices.map(d => ({id:d.id, brand:d.brand, cat:d.cat, typeId:d.typeId, x:d.x, z:d.z, rot:d.rot, power:d.power}))
+  }, null, 2);
+  const blob = new Blob([data], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'auralis-park-' + Date.now() + '.json';
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  toast(T('to_saved'));
+};
+document.getElementById('loadBtn').onclick = () => document.getElementById('fileInput').click();
+document.getElementById('fileInput').onchange = e => {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      state.devices = (data.devices||[]).map(d => ({
+        id: d.id,
+        brand: BRANDS[d.brand] ? d.brand : 'sonance',
+        cat: CATS[d.cat] ? d.cat : 'paths',
+        typeId: d.typeId,
+        x:+d.x||0, z:+d.z||0, rot:+d.rot||0, power:+d.power||0
+      })).filter(d => getSpec(d.cat, d.typeId));
+      state.nextId = state.devices.length ? Math.max(...state.devices.map(d=>d.id))+1 : 1;
+      buildDevices(); buildHeatmap(); updateHUD(); fitView();
+      state.history = [serialize()]; state.historyIdx = 0;
+      toast(T('to_loaded'));
+    } catch(err) { alert(T('to_invalid')); }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+};
+
+document.getElementById('viewBtn').onclick = () => setView3D(!state.view3D);
+document.getElementById('shotBtn').onclick = () => {
+  renderer.render(scene, camera);
+  const a = document.createElement('a');
+  a.href = canvas.toDataURL('image/png');
+  a.download = 'auralis-park-' + Date.now() + '.png';
+  document.body.appendChild(a); a.click(); a.remove();
+  toast(T('to_shot'));
+};
+document.getElementById('presBtn').onclick = togglePres;
+document.getElementById('presToggle').onclick = togglePres;
+document.getElementById('exitPres').onclick = togglePres;
+function togglePres() {
+  state.presentation = !state.presentation;
+  document.getElementById('hd').classList.toggle('hide', state.presentation);
+  document.getElementById('tools').classList.toggle('hide', state.presentation);
+  document.getElementById('picker').classList.toggle('hide', state.presentation);
+  document.getElementById('hud').style.opacity = state.presentation ? '0' : '1';
+  document.getElementById('info').classList.remove('on');
+  document.getElementById('exitPres').classList.toggle('on', state.presentation);
+  toast(state.presentation ? T('to_pres_on') : T('to_pres_off'));
+}
+document.getElementById('heatBtn').onclick = function() {
+  state.showHeat = !state.showHeat;
+  this.classList.toggle('on', state.showHeat);
+  buildHeatmap();
+  toast(state.showHeat ? T('to_heat_on') : T('to_heat_off'));
+};
+document.getElementById('fitBtn').onclick = fitView;
+document.getElementById('gridBtn').onclick = function() {
+  state.showGrid = !state.showGrid;
+  this.classList.toggle('on', state.showGrid);
+  grid.visible = state.showGrid;
+};
+document.getElementById('clearBtn').onclick = () => {
+  if (!confirm(T('to_confirm_clear'))) return;
+  state.devices = []; state.selected = null;
+  document.getElementById('info').classList.remove('on');
+  buildDevices(); buildHeatmap(); updateHUD(); pushHistory();
+  toast(T('to_cleared'));
+};
+document.getElementById('delBtn').onclick = deleteSelected;
+document.getElementById('powerSlider').oninput = e => {
+  if (state.selected === null) return;
+  const d = state.devices.find(x => x.id === state.selected); if (!d) return;
+  d.power = parseInt(e.target.value,10) || 0;
+  document.getElementById('powerVal').textContent = d.power + 'W';
+  document.getElementById('infPower').textContent = d.power + ' W';
+  if (state.showHeat) updateHeatColors();
+};
+document.getElementById('powerSlider').onchange = () => pushHistory();
+document.getElementById('rotSlider').oninput = e => {
+  if (state.selected === null) return;
+  const d = state.devices.find(x => x.id === state.selected); if (!d) return;
+  d.rot = parseInt(e.target.value,10) * Math.PI / 180;
+  const m = meshById.get(d.id);
+  if (m) m.rotation.y = d.rot;
+  document.getElementById('rotVal').textContent = e.target.value + '°';
+  if (state.showHeat) updateHeatColors();
+};
+document.getElementById('rotSlider').onchange = () => pushHistory();
+document.getElementById('roomWInput').onchange = e => {
+  const v = Math.max(40, Math.min(300, parseFloat(e.target.value) || 120));
+  ROOM.size[0] = v; e.target.value = v;
+  buildRoom(); buildHeatmap();
+};
+document.getElementById('roomDInput').onchange = e => {
+  const v = Math.max(40, Math.min(300, parseFloat(e.target.value) || 100));
+  ROOM.size[1] = v; e.target.value = v;
+  buildRoom(); buildHeatmap();
+};
+document.addEventListener('keydown', e => {
+  const tag = (e.target.tagName || '').toUpperCase();
+  if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+  if ((e.ctrlKey||e.metaKey) && e.key.toLowerCase() === 'z') { e.preventDefault(); undo(); }
+  else if ((e.ctrlKey||e.metaKey) && e.key.toLowerCase() === 'y') { e.preventDefault(); redo(); }
+  else if (e.key === 'Delete' || e.key === 'Backspace') { e.preventDefault(); deleteSelected(); }
+  else if (e.key === 'Escape') { deselect(); document.getElementById('reportModal').classList.remove('on'); }
+  else if (e.key === 'Tab') { e.preventDefault(); setView3D(!state.view3D); }
+});
+
+/* ============ RESIZE ============ */
+function onResize() {
+  const w = window.innerWidth, h = window.innerHeight;
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(w, h, false);
+}
+window.addEventListener('resize', onResize);
+window.addEventListener('orientationchange', () => setTimeout(onResize, 250));
+
+/* ============ LOOP & INIT ============ */
+function animate() {
+  requestAnimationFrame(animate);
+  updateTween();
+  const t = performance.now() * 0.003;
+  devGrp.children.forEach(m => {
+    const r = m.getObjectByName('selRing');
+    if (r && r.material.opacity > 0) r.scale.setScalar(1 + Math.sin(t) * 0.08);
+  });
+  renderer.render(scene, camera);
+}
+
+function init() {
+  applyLang();
+  buildCats(); buildBrands(); buildTypes();
+  loadInitialDevices();
+  onResize();
+  animate();
+  setTimeout(() => document.getElementById('loader').classList.add('off'), 600);
+  console.log('%c✅ AURALIS · Public Park ready · Background & Paging',
+    'color:#10b981;font-weight:bold;font-size:14px');
+}
+
+init();
+</script>
+</body>
+</html>
