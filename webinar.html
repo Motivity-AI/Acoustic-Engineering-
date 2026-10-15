@@ -1,0 +1,2578 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#1a0a1e">
+<title>🎥 AURALIS · Webinar Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#1a0a1e;--panel:rgba(44,20,48,.94);--card:rgba(76,36,84,.7);
+  --line:rgba(236,72,153,.14);--line2:rgba(236,72,153,.5);
+  --txt:#fff0ff;--txt2:#d8a8e0;--txt3:#8a5a90;
+  --pink:#ec4899;--pink2:#f472b6;--magenta:#d946ef;--violet:#a855f7;
+  --red:#ef4444;--amber:#fbbf24;--mint:#4fe4b8;--cyan:#06b6d4;
+  --sh:0 8px 32px rgba(0,0,0,.7);--font:'Cairo','Inter',sans-serif;
+}
+html[lang="en"]{--font:'Inter','Cairo',sans-serif}
+html[lang="en"] body{font-family:var(--font)}
+html{height:100%;overflow:hidden;-webkit-text-size-adjust:100%}
+body{position:fixed;inset:0;overflow:hidden;background:var(--bg);color:var(--txt);
+  font-family:var(--font);font-size:14px;user-select:none;-webkit-user-select:none}
+#c{position:fixed;inset:0;width:100%;height:100%;touch-action:none;display:block;cursor:crosshair}
+#loader{position:fixed;inset:0;z-index:9999;background:
+  radial-gradient(circle at 50% 40%,rgba(236,72,153,.22),transparent 60%),#1a0a1e;
+  display:grid;place-items:center;transition:opacity .6s,visibility .6s}
+#loader.off{opacity:0;visibility:hidden}
+#loader .box{text-align:center}
+#loader .sym{font-size:70px;filter:drop-shadow(0 0 40px rgba(236,72,153,.85));
+  animation:pulse 1.6s ease-in-out infinite}
+#loader .txt{margin-top:14px;color:var(--txt2);letter-spacing:3.5px;font-size:12px;font-weight:700}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.1);opacity:.7}}
+header{position:fixed;top:0;left:0;right:0;min-height:56px;z-index:100;padding:8px 14px;
+  padding-top:calc(8px + env(safe-area-inset-top,0));background:var(--panel);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--line);display:flex;align-items:center;gap:9px;
+  transition:transform .4s cubic-bezier(.4,0,.2,1)}
+header.hide{transform:translateY(-110%)}
+.logo{width:38px;height:38px;border-radius:11px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--pink),var(--magenta));display:grid;place-items:center;
+  font-size:20px;color:#1a0a1e;box-shadow:0 4px 16px rgba(236,72,153,.55);
+  border:1px solid rgba(236,72,153,.3)}
+.title{display:flex;flex-direction:column;gap:1px;min-width:0}
+.title .t1{font-size:14px;font-weight:900;letter-spacing:2px;
+  background:linear-gradient(135deg,#fff,var(--pink));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  white-space:nowrap}
+.title .t2{font-size:9.5px;color:var(--txt3);letter-spacing:1.2px;
+  font-family:'JetBrains Mono',monospace;white-space:nowrap}
+.spacer{flex:1}
+.langBtn{height:38px;min-width:50px;padding:0 12px;border-radius:11px;
+  background:var(--card);border:1px solid var(--line);color:var(--txt);
+  font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  transition:all .2s;flex-shrink:0}
+.langBtn:hover{border-color:var(--pink);color:var(--pink)}
+.langBtn:active{transform:scale(.95)}
+.btn{height:38px;min-width:38px;padding:0 12px;border-radius:11px;background:var(--card);
+  border:1px solid var(--line);color:var(--txt);font-family:inherit;font-size:13px;
+  font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  gap:6px;transition:transform .15s;flex-shrink:0}
+.btn:hover{border-color:var(--line2)}
+.btn:active{transform:scale(.94)}
+.btn.on{background:linear-gradient(135deg,var(--pink),var(--magenta));color:#fff;border-color:transparent}
+.hud{position:fixed;top:76px;inset-inline-end:12px;z-index:50;
+  display:flex;flex-direction:column;gap:7px;pointer-events:none;transition:opacity .3s}
+.hud .stat{background:var(--panel);backdrop-filter:blur(20px);border:1px solid var(--line);
+  padding:7px 13px;border-radius:11px;font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--txt2);text-align:center;min-width:82px;transition:border-color .3s}
+.hud .stat b{color:var(--cyan);font-weight:700;font-size:13px;display:block;margin-top:2px}
+.hud .stat.good b{color:var(--mint)}
+.hud .stat.warn b{color:var(--amber)}
+.tools{position:fixed;inset-inline-end:12px;bottom:185px;z-index:60;
+  display:flex;flex-direction:column;gap:8px;transition:transform .4s,opacity .3s}
+.tools.hide{transform:translateX(-160%);opacity:0}
+.tool{width:48px;height:48px;border-radius:14px;border:1px solid var(--line);
+  background:var(--panel);backdrop-filter:blur(20px);color:var(--txt);
+  font-size:20px;cursor:pointer;display:grid;place-items:center;
+  box-shadow:var(--sh);transition:all .2s cubic-bezier(.34,1.56,.64,1)}
+.tool:hover{border-color:var(--line2);transform:translateY(-2px)}
+.tool:active{transform:scale(.92)}
+.tool.on{background:linear-gradient(135deg,var(--pink),var(--magenta));
+  border-color:transparent;color:#fff;box-shadow:0 8px 24px rgba(236,72,153,.55)}
+.info{position:fixed;top:76px;inset-inline-start:12px;z-index:70;width:250px;
+  padding:15px;border-radius:16px;background:var(--panel);
+  backdrop-filter:blur(24px);border:1px solid var(--line2);box-shadow:var(--sh);
+  transform:translateX(calc(-100% - 30px));opacity:0;
+  transition:all .35s cubic-bezier(.34,1.56,.64,1);
+  pointer-events:none;max-height:calc(100vh - 210px);overflow-y:auto}
+.info.on{transform:translateX(0);opacity:1;pointer-events:auto}
+.info h4{font-size:13px;font-weight:800;margin-bottom:3px;color:var(--pink);
+  display:flex;align-items:center;gap:7px}
+.info .tag{font-size:9.5px;color:var(--txt3);margin-bottom:11px;
+  font-family:'JetBrains Mono',monospace;letter-spacing:.6px;text-transform:uppercase}
+.info .row{display:flex;justify-content:space-between;align-items:center;
+  padding:5px 0;font-size:11px;border-bottom:1px dashed var(--line)}
+.info .row:last-of-type{border:none}
+.info .row span:first-child{color:var(--txt3)}
+.info .row span:last-child{color:var(--txt);font-weight:700;font-family:'JetBrains Mono',monospace}
+.info .slider{margin-top:8px;display:flex;align-items:center;gap:7px}
+.info .slider label{font-size:10px;color:var(--txt3);min-width:48px}
+.info .slider input{flex:1;-webkit-appearance:none;appearance:none;height:3px;
+  border-radius:2px;background:rgba(255,255,255,.12);outline:none}
+.info .slider input::-webkit-slider-thumb{-webkit-appearance:none;
+  width:14px;height:14px;border-radius:50%;background:var(--pink);
+  box-shadow:0 0 8px rgba(236,72,153,.7);cursor:pointer}
+.info .slider b{font-size:10px;color:var(--pink);
+  font-family:'JetBrains Mono',monospace;min-width:42px;text-align:end}
+.info .numInput{width:64px;background:var(--card);border:1px solid var(--line);
+  color:var(--txt);border-radius:6px;padding:3px 6px;font-family:inherit;font-size:11px}
+.info .actions{display:flex;gap:6px;margin-top:12px}
+.info .actions button{flex:1;padding:9px;border-radius:10px;font-family:inherit;
+  font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--line);
+  background:var(--card);color:var(--txt);transition:all .2s}
+.info .actions button:hover{background:rgba(255,255,255,.05)}
+.info .actions button.del{background:rgba(255,122,156,.15);color:#ff7a9c;
+  border-color:rgba(255,122,156,.4)}
+.picker{position:fixed;bottom:0;left:0;right:0;z-index:80;padding:10px 12px;
+  padding-bottom:calc(10px + env(safe-area-inset-bottom,0));
+  background:var(--panel);backdrop-filter:blur(24px);
+  border-top:1px solid var(--line);
+  transition:transform .4s cubic-bezier(.4,0,.2,1)}
+.picker.hide{transform:translateY(110%)}
+.cats,.brands{display:flex;gap:6px;margin-bottom:7px;overflow-x:auto;
+  scrollbar-width:none;padding-bottom:1px}
+.cats::-webkit-scrollbar,.brands::-webkit-scrollbar{display:none}
+.cat{padding:7px 14px;border-radius:10px;flex-shrink:0;background:var(--card);
+  border:1.5px solid transparent;color:var(--txt2);font-family:inherit;
+  font-size:11.5px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}
+.cat.on{background:linear-gradient(135deg,var(--pink),var(--magenta));color:#fff;
+  box-shadow:0 4px 12px rgba(236,72,153,.5)}
+.brand{padding:6px 12px;border-radius:9px;flex-shrink:0;background:var(--card);
+  border:1px solid transparent;color:var(--txt2);font-family:inherit;font-size:11px;
+  font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}
+.brand.on{border-color:var(--cyan);color:var(--cyan);background:rgba(6,182,212,.12)}
+.types{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:6px;
+  max-height:120px;overflow-y:auto;scrollbar-width:thin;padding:1px}
+.types::-webkit-scrollbar{width:4px}
+.types::-webkit-scrollbar-thumb{background:var(--line2);border-radius:2px}
+.type{padding:8px 4px;border-radius:10px;background:var(--card);
+  border:1.5px solid transparent;color:var(--txt2);font-family:inherit;
+  font-size:9.5px;font-weight:700;cursor:pointer;transition:all .2s;
+  display:flex;flex-direction:column;align-items:center;gap:3px;min-height:58px}
+.type:hover{border-color:var(--line2)}
+.type:active{transform:scale(.94)}
+.type.on{background:linear-gradient(135deg,var(--pink),var(--magenta));color:#fff;
+  box-shadow:0 5px 16px rgba(236,72,153,.5)}
+.type .em{font-size:20px;line-height:1}
+.type .nm{font-size:9px;line-height:1.2;text-align:center}
+.toast{position:fixed;bottom:195px;left:50%;transform:translateX(-50%) translateY(20px);
+  padding:11px 22px;border-radius:14px;background:var(--panel);
+  backdrop-filter:blur(20px);border:1px solid var(--line2);
+  font-size:13px;font-weight:700;color:var(--txt);opacity:0;pointer-events:none;
+  transition:all .3s;z-index:200;white-space:nowrap;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.presBtn{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
+  z-index:90;padding:13px 26px;border-radius:30px;
+  background:linear-gradient(135deg,var(--pink),var(--magenta));
+  color:#fff;font-family:inherit;font-size:13px;font-weight:800;
+  border:0;cursor:pointer;display:none;box-shadow:0 12px 40px rgba(236,72,153,.55)}
+.presBtn.on{display:block;animation:showB .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes showB{from{transform:translateX(-50%) scale(.5);opacity:0}}
+.exitP{position:fixed;top:calc(22px + env(safe-area-inset-top,0));
+  inset-inline-end:22px;z-index:100;width:46px;height:46px;border-radius:50%;
+  background:rgba(44,20,48,.85);backdrop-filter:blur(20px);
+  border:1px solid var(--line);color:var(--txt);font-size:20px;cursor:pointer;
+  display:none;place-items:center;transition:all .2s}
+.exitP.on{display:grid}
+.exitP:active{transform:scale(.9)}
+.modal{position:fixed;inset:0;background:rgba(26,10,32,.92);backdrop-filter:blur(10px);
+  z-index:1000;display:none;align-items:center;justify-content:center;padding:18px}
+.modal.on{display:flex;animation:fadeIn .25s}
+@keyframes fadeIn{from{opacity:0}}
+.modal-content{background:#2a1030;border:1px solid var(--line2);border-radius:20px;
+  width:100%;max-width:760px;max-height:88vh;display:flex;flex-direction:column;
+  box-shadow:0 24px 80px rgba(0,0,0,.85);overflow:hidden;
+  animation:slideUp .35s cubic-bezier(.34,1.56,.64,1)}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0}}
+.modal-header{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;
+  align-items:center;justify-content:space-between;gap:12px;background:rgba(44,20,48,.8)}
+.modal-header h3{color:var(--pink);font-size:15px;font-weight:800;display:flex;align-items:center;gap:9px}
+.modal-body{padding:22px;overflow-y:auto;font-size:13px;line-height:1.65}
+.report-section{margin-bottom:20px}
+.report-section:last-child{margin-bottom:0}
+.report-section h4{color:var(--cyan);font-size:14px;margin-bottom:10px;
+  border-bottom:1px solid var(--line);padding-bottom:6px;display:flex;align-items:center;gap:8px}
+.modal-body .row{display:flex;justify-content:space-between;gap:12px;
+  padding:7px 0;font-size:12.5px;border-bottom:1px dashed var(--line)}
+.modal-body .row:last-child{border:none}
+.modal-body .row span:first-child{color:var(--txt3)}
+.modal-body .row span:last-child{font-weight:700;font-family:'JetBrains Mono',monospace}
+.report-table{width:100%;border-collapse:collapse;margin-top:10px;
+  border-radius:10px;overflow:hidden}
+.report-table th,.report-table td{border:1px solid var(--line);
+  padding:10px 12px;text-align:start;font-size:12px}
+.report-table th{background:rgba(236,72,153,.22);color:#fbcfe8;font-weight:800}
+.report-table tr:nth-child(even) td{background:rgba(236,72,153,.03)}
+.modal-footer{padding:16px 20px;border-top:1px solid var(--line);
+  display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+@media (max-width:600px){
+  .title .t2{display:none}
+  .langBtn .label{display:none}
+  .langBtn{min-width:42px;padding:0 10px}
+  .btn{padding:0 9px;font-size:12px}
+  .info{width:220px}
+  .tool{width:44px;height:44px;font-size:18px}
+  .types{grid-template-columns:repeat(auto-fill,minmax(66px,1fr))}
+}
+@media print{
+  body{background:#fff;color:#000;position:static}
+  header,.tools,.hud,.picker,.presBtn,.exitP,.info,#c,.toast,#loader{display:none!important}
+  .modal{position:absolute;inset:0;background:#fff;padding:0;display:block!important}
+  .modal-content{border:none;box-shadow:none;max-height:none;width:100%;color:#000;background:#fff;animation:none}
+  .modal-header{background:none;border-bottom:2px solid #000}
+  .modal-header h3{color:#000}
+  .modal-footer{display:none}
+  .modal-body .row span:first-child{color:#555}
+  .report-section h4{color:#000}
+  .report-table th{background:#eee;color:#000}
+  .report-table th,.report-table td{border:1px solid #999}
+}
+</style>
+</head>
+<body>
+
+<div id="loader"><div class="box">
+  <div class="sym">🎥</div>
+  <div class="txt" id="loaderTxt">LOADING STUDIO…</div>
+</div></div>
+
+<canvas id="c"></canvas>
+
+<header id="hd">
+  <div class="logo">🎥</div>
+  <div class="title">
+    <div class="t1">AURALIS</div>
+    <div class="t2" id="roomLabel">WEBINAR STUDIO · BROADCAST · STREAMING · PRODUCTION</div>
+  </div>
+  <div class="spacer"></div>
+  <button class="langBtn" id="langBtn" title="Language">
+    <span class="flag">🌐</span>
+    <span class="label" id="langLabel">EN</span>
+  </button>
+  <button class="btn" id="reportBtn" data-i18n-title="report_tip">📄</button>
+  <button class="btn" id="viewBtn">🎬 3D</button>
+  <button class="btn" id="shotBtn" data-i18n-title="shot_tip">📸</button>
+  <button class="btn" id="presBtn" data-i18n-title="pres_tip">🎥</button>
+</header>
+
+<div class="hud" id="hud">
+  <div class="stat" id="statDev"><span data-i18n="hud_devices">Devices</span><b id="hudCount">0</b></div>
+  <div class="stat" id="statSpl"><span data-i18n="hud_spl">Max SPL</span><b id="hudSpl">—</b></div>
+  <div class="stat" id="statCov"><span data-i18n="hud_coverage">Coverage</span><b id="hudCoverage">—</b></div>
+</div>
+
+<div class="tools" id="tools">
+  <button class="tool on" id="heatBtn" data-i18n-title="heat_tip">🌡️</button>
+  <button class="tool" id="fitBtn" data-i18n-title="fit_tip">🎯</button>
+  <button class="tool on" id="gridBtn" data-i18n-title="grid_tip">▦</button>
+  <button class="tool" id="saveBtn" data-i18n-title="save_tip">💾</button>
+  <button class="tool" id="loadBtn" data-i18n-title="load_tip">📂</button>
+  <button class="tool" id="clearBtn" data-i18n-title="clear_tip">🧹</button>
+</div>
+
+<input type="file" id="fileInput" style="display:none" accept=".json">
+
+<div class="info" id="info">
+  <h4>📦 <span id="infName">—</span></h4>
+  <div class="tag" id="infBrand">—</div>
+  <div class="row"><span data-i18n="inf_category">Category</span><span id="infType">—</span></div>
+  <div class="row"><span data-i18n="inf_power">Power</span><span id="infPower">—</span></div>
+  <div class="row"><span data-i18n="inf_height">Height</span><span id="infH">—</span></div>
+  <div class="row"><span data-i18n="inf_position">Position</span><span id="infPos">—</span></div>
+  <div class="slider" id="powerWrap">
+    <label data-i18n="sl_power">Power</label>
+    <input type="range" id="powerSlider" min="5" max="500" step="5" value="20">
+    <b id="powerVal">20W</b>
+  </div>
+  <div class="slider" id="rotWrap">
+    <label data-i18n="sl_rotation">Rotation</label>
+    <input type="range" id="rotSlider" min="-180" max="180" step="5" value="0">
+    <b id="rotVal">0°</b>
+  </div>
+  <div class="row" style="margin-top:8px">
+    <span data-i18n="inf_room_w">Width</span>
+    <input type="number" id="roomWInput" class="numInput" min="8" max="40">
+  </div>
+  <div class="row">
+    <span data-i18n="inf_room_d">Depth</span>
+    <input type="number" id="roomDInput" class="numInput" min="8" max="40">
+  </div>
+  <div class="actions">
+    <button class="del" id="delBtn" data-i18n="act_delete">🗑️ Delete</button>
+  </div>
+</div>
+
+<div class="picker" id="picker">
+  <div class="cats" id="cats"></div>
+  <div class="brands" id="brands"></div>
+  <div class="types" id="types"></div>
+</div>
+
+<div class="modal" id="reportModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>📋 <span data-i18n="rep_title">Acoustic Design Report</span></h3>
+      <button class="btn" id="closeModalBtn" style="height:32px;min-width:32px;padding:0 8px">✕</button>
+    </div>
+    <div class="modal-body" id="reportModalBody"></div>
+    <div class="modal-footer">
+      <button class="btn on" id="printReportBtn" data-i18n="rep_print">🖨️ Print / Save PDF</button>
+      <button class="btn" id="closeModalBtn2" data-i18n="rep_close">Close</button>
+    </div>
+  </div>
+</div>
+
+<button class="presBtn" id="presToggle" data-i18n="pres_start">🎥 Start Presentation</button>
+<button class="exitP" id="exitPres">✕</button>
+<div class="toast" id="toast"></div>
+
+<script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
+<script>
+'use strict';
+
+/* ============ I18N ============ */
+const I18N = {
+  ar: {
+    loader:'جارٍ تحميل الاستوديو…',
+    room_label:'استوديو بث · بث مباشر · إنتاج',
+    hud_devices:'الأجهزة', hud_spl:'أقصى SPL', hud_coverage:'التغطية',
+    report_tip:'تقرير', shot_tip:'لقطة', pres_tip:'عرض',
+    heat_tip:'خريطة حرارية', fit_tip:'ملاءمة', grid_tip:'الشبكة',
+    save_tip:'حفظ', load_tip:'فتح', clear_tip:'حذف الكل',
+    inf_category:'الفئة', inf_power:'القوة', inf_height:'الارتفاع',
+    inf_position:'الموقع', inf_room_w:'العرض', inf_room_d:'الطول',
+    sl_power:'القوة', sl_rotation:'الاتجاه', act_delete:'🗑️ حذف',
+    rep_title:'التقرير الهندسي الصوتي',
+    rep_print:'🖨️ طباعة / حفظ PDF', rep_close:'إغلاق',
+    pres_start:'🎥 بدء العرض',
+    cat_hostMic:'مايكات المذيع', cat_guestMic:'مايكات الضيوف',
+    cat_lavMic:'مايكات لافالير', cat_headsetMic:'مايكات Headset',
+    cat_studioMon:'Monitors الاستوديو', cat_ceilingMic:'مايكات سقفية',
+    cat_mainPA:'الـ PA الرئيسي', cat_ceilingSpk:'سماعات سقفية',
+    cat_deskMon:'Monitors مكتبية', cat_delay:'أبراج تأخير',
+    cat_ptzCamera:'كاميرات PTZ', cat_fixedCam:'كاميرات ثابتة',
+    cat_cameraTracking:'تتبع الكاميرا', cat_streaming:'البث المباشر',
+    cat_recording:'التسجيل', cat_lighting:'إضاءة الاستوديو',
+    cat_greenscreen:'الشاشة الخضراء', cat_teleprompter:'Teleprompter',
+    cat_control:'غرفة التحكم', cat_paging:'نداء', cat_emergency:'طوارئ',
+    dev_host_mic:'ميك المذيع', dev_host_gooseneck:'ميك عنق المذيع',
+    dev_host_handheld:'ميك يدوي مذيع',
+    dev_guest_mic:'ميك ضيف', dev_guest_boundary:'ميك لوحي ضيف',
+    dev_guest_wireless:'ميك لاسلكي ضيف', dev_panel_mic:'ميك لجنة',
+    dev_lav:'ميك لافالير', dev_lav_pro:'ميك لافالير احترافي',
+    dev_lav_wireless:'ميك لافالير لاسلكي',
+    dev_headset:'Headset مذيع', dev_earset:'Earset محترف',
+    dev_ifb:'IFB',
+    dev_studio_mon_sm:'Monitor صغير', dev_studio_mon_lg:'Monitor كبير',
+    dev_reference_mon:'Monitor مرجعي',
+    dev_ceiling_array:'مصفوفة سقفية', dev_beamforming:'Beamforming',
+    dev_line_small:'Line Array صغير', dev_line_lg:'Line Array كبير',
+    dev_center_cluster:'Cluster مركزي',
+    dev_ceiling_spk:'سماعة سقفية', dev_ceiling_net:'سقفية شبكية',
+    dev_ceiling_pendant:'معلقة سقفية',
+    dev_desk_mon:'Monitor مكتبي', dev_desk_mon_lg:'Monitor مكتبي كبير',
+    dev_delay_small:'برج تأخير صغير', dev_delay_lg:'برج تأخير كبير',
+    dev_ptz_4k:'PTZ 4K', dev_ptz_speaker:'PTZ متتبع',
+    dev_ptz_wide:'PTZ واسع', dev_ptz_ceiling:'PTZ سقفي',
+    dev_fixed_wide:'كاميرا واسعة', dev_fixed_close:'كاميرا قريبة',
+    dev_fixed_shoulder:'Shoulder Cam',
+    dev_tracking_proc:'معالج تتبع', dev_tracking_ai:'تتبع AI',
+    dev_tracking_sensor:'مستعرض تتبع',
+    dev_stream_encoder:'مشفر بث', dev_stream_cloud:'بث سحابي',
+    dev_switcher:'Switcher', dev_capture:'بطاقة التقاط',
+    dev_recorder:'مسجل', dev_ssd_recorder:'مسجل SSD',
+    dev_redundant:'مسجل احتياطي', dev_backup_deck:'Deck احتياطي',
+    dev_key_light:'Key Light', dev_fill_light:'Fill Light',
+    dev_back_light:'Back Light', dev_softbox:'Softbox',
+    dev_rgb_light:'RGB Light', dev_ring_light:'Ring Light',
+    dev_green_screen:'شاشة خضراء', dev_green_frame:'إطار أخضر',
+    dev_teleprompter:'Teleprompter', dev_prompt_monitor:'شاشة Prompt',
+    dev_touch:'شاشة لمس', dev_av_ctrl:'وحدة AV',
+    dev_video_switcher:'Video Switcher',
+    dev_paging_horn:'بوق نداء', dev_paging_ceiling:'نداء سقفي',
+    dev_emg_horn:'بوق طوارئ', dev_emg_strobe:'فلاش طوارئ',
+    brand_shure:'Shure', brand_bose:'BOSE', brand_yamaha:'ياماها',
+    brand_sennheiser:'Sennheiser', brand_biamp:'Biamp',
+    brand_qsc:'QSC', brand_crestron:'Crestron', brand_extron:'Extron',
+    brand_logitech:'Logitech', brand_ptzoptics:'PTZOptics',
+    brand_avg:'AVer', brand_sony:'Sony', brand_panasonic:'Panasonic',
+    brand_blackmagic:'Blackmagic', brand_rode:'RØDE', brand_akg:'AKG',
+    brand_dpa:'DPA', brand_neewer:'Neewer', brand_elgato:'Elgato',
+    brand_aputure:'Aputure', brand_atem:'ATEM',
+    to_undo:'↩️ تراجع', to_redo:'🔁 تقدم', to_deleted:'🗑️ حُذف',
+    to_saved:'💾 تم الحفظ', to_loaded:'📂 تم التحميل',
+    to_cleared:'🧹 تم التنظيف', to_shot:'📸 تم حفظ الصورة',
+    to_heat_on:'🌡️ التغطية مفعّلة', to_heat_off:'🌡️ التغطية مغلقة',
+    to_pres_on:'🎥 وضع العرض', to_pres_off:'✏️ وضع التحرير',
+    to_invalid:'ملف غير صالح', to_confirm_clear:'حذف كل الأجهزة؟',
+    rep_env_info:'معلومات البيئة', rep_equip:'جدول المعدات',
+    rep_analysis:'التحليل الصوتي',
+    rep_env_type:'نوع البيئة', rep_dim:'الأبعاد', rep_total_dev:'عدد الأجهزة',
+    rep_total_power:'القدرة الإجمالية', rep_date:'التاريخ',
+    rep_max_spl:'أقصى SPL', rep_coverage:'نسبة التغطية',
+    rep_status:'الحالة', rep_status_good:'ممتاز',
+    rep_device:'الجهاز', rep_qty:'العدد', rep_empty:'لا توجد أجهزة',
+    rep_target:'الهدف المعياري', rep_rt:'زمن الرنين RT60',
+    rep_reverb:'الصدى المتوقع', rep_capacity:'سعة الحضور',
+    rep_area:'المساحة', rep_zones:'عدد المناطق',
+    rep_mics:'عدد الميكروفونات', rep_cameras:'عدد الكاميرات',
+    rep_lighting:'عدد الإضاءات', rep_streaming:'أجهزة البث',
+    rep_paging:'نظام النداء', rep_emergency:'طوارئ EN 60849',
+    rep_ada:'توافق ADA', rep_av:'توافق AV',
+    rep_sti:'وضوح الكلام STI', rep_nc:'مستوى الضجيج NC',
+    rep_sti_target:'STI > 0.80 (بث مباشر)',
+    rep_rt60_target:'RT60 = 0.3-0.4s (استوديو)',
+    rep_nc_target:'NC-20 (استوديو بث)',
+    rep_iso:'ISO 9921 (وضوح الكلام)',
+    rep_iec:'IEC 60914 (معدات بث)',
+    rep_broadcast:'معايير البث EBU',
+    rep_hearing:'مطابقة السماعات',
+    rep_recording:'جودة التسجيل 4K HDR',
+    rep_streaming_std:'RTMP · HLS · SRT'
+  },
+  en: {
+    loader:'LOADING STUDIO…',
+    room_label:'WEBINAR STUDIO · BROADCAST · STREAMING · PRODUCTION',
+    hud_devices:'Devices', hud_spl:'Max SPL', hud_coverage:'Coverage',
+    report_tip:'Report', shot_tip:'Screenshot', pres_tip:'Presentation',
+    heat_tip:'Heatmap', fit_tip:'Fit', grid_tip:'Grid',
+    save_tip:'Save', load_tip:'Load', clear_tip:'Clear',
+    inf_category:'Category', inf_power:'Power', inf_height:'Height',
+    inf_position:'Position', inf_room_w:'Width', inf_room_d:'Depth',
+    sl_power:'Power', sl_rotation:'Rotation', act_delete:'🗑️ Delete',
+    rep_title:'Acoustic Design Report',
+    rep_print:'🖨️ Print / Save PDF', rep_close:'Close',
+    pres_start:'🎥 Start Presentation',
+    cat_hostMic:'Host Mics', cat_guestMic:'Guest Mics',
+    cat_lavMic:'Lavalier Mics', cat_headsetMic:'Headset Mics',
+    cat_studioMon:'Studio Monitors', cat_ceilingMic:'Ceiling Mics',
+    cat_mainPA:'Main PA', cat_ceilingSpk:'Ceiling Speakers',
+    cat_deskMon:'Desk Monitors', cat_delay:'Delay Towers',
+    cat_ptzCamera:'PTZ Cameras', cat_fixedCam:'Fixed Cameras',
+    cat_cameraTracking:'Camera Tracking', cat_streaming:'Streaming',
+    cat_recording:'Recording', cat_lighting:'Studio Lighting',
+    cat_greenscreen:'Green Screen', cat_teleprompter:'Teleprompter',
+    cat_control:'Control Room', cat_paging:'Paging', cat_emergency:'Emergency',
+    dev_host_mic:'Host Mic', dev_host_gooseneck:'Host Gooseneck Mic',
+    dev_host_handheld:'Host Handheld Mic',
+    dev_guest_mic:'Guest Mic', dev_guest_boundary:'Guest Boundary Mic',
+    dev_guest_wireless:'Guest Wireless Mic', dev_panel_mic:'Panel Mic',
+    dev_lav:'Lavalier Mic', dev_lav_pro:'Professional Lavalier',
+    dev_lav_wireless:'Wireless Lavalier',
+    dev_headset:'Host Headset', dev_earset:'Professional Earset',
+    dev_ifb:'IFB',
+    dev_studio_mon_sm:'Small Monitor', dev_studio_mon_lg:'Large Monitor',
+    dev_reference_mon:'Reference Monitor',
+    dev_ceiling_array:'Ceiling Array', dev_beamforming:'Beamforming',
+    dev_line_small:'Small Line Array', dev_line_lg:'Large Line Array',
+    dev_center_cluster:'Center Cluster',
+    dev_ceiling_spk:'Ceiling Speaker', dev_ceiling_net:'Networked Ceiling',
+    dev_ceiling_pendant:'Pendant Speaker',
+    dev_desk_mon:'Desk Monitor', dev_desk_mon_lg:'Large Desk Monitor',
+    dev_delay_small:'Small Delay Tower', dev_delay_lg:'Large Delay Tower',
+    dev_ptz_4k:'PTZ 4K', dev_ptz_speaker:'Speaker-Tracking PTZ',
+    dev_ptz_wide:'Wide PTZ', dev_ptz_ceiling:'Ceiling PTZ',
+    dev_fixed_wide:'Wide Camera', dev_fixed_close:'Close Camera',
+    dev_fixed_shoulder:'Shoulder Cam',
+    dev_tracking_proc:'Tracking Processor', dev_tracking_ai:'AI Tracking',
+    dev_tracking_sensor:'Tracking Sensor',
+    dev_stream_encoder:'Streaming Encoder', dev_stream_cloud:'Cloud Streaming',
+    dev_switcher:'Video Switcher', dev_capture:'Capture Card',
+    dev_recorder:'Recorder', dev_ssd_recorder:'SSD Recorder',
+    dev_redundant:'Redundant Recorder', dev_backup_deck:'Backup Deck',
+    dev_key_light:'Key Light', dev_fill_light:'Fill Light',
+    dev_back_light:'Back Light', dev_softbox:'Softbox',
+    dev_rgb_light:'RGB Light', dev_ring_light:'Ring Light',
+    dev_green_screen:'Green Screen', dev_green_frame:'Green Frame',
+    dev_teleprompter:'Teleprompter', dev_prompt_monitor:'Prompt Monitor',
+    dev_touch:'Touch Panel', dev_av_ctrl:'AV Controller',
+    dev_video_switcher:'Video Switcher',
+    dev_paging_horn:'Paging Horn', dev_paging_ceiling:'Ceiling Paging',
+    dev_emg_horn:'Emergency Horn', dev_emg_strobe:'Emergency Strobe',
+    brand_shure:'Shure', brand_bose:'BOSE', brand_yamaha:'Yamaha',
+    brand_sennheiser:'Sennheiser', brand_biamp:'Biamp',
+    brand_qsc:'QSC', brand_crestron:'Crestron', brand_extron:'Extron',
+    brand_logitech:'Logitech', brand_ptzoptics:'PTZOptics',
+    brand_avg:'AVer', brand_sony:'Sony', brand_panasonic:'Panasonic',
+    brand_blackmagic:'Blackmagic', brand_rode:'RØDE', brand_akg:'AKG',
+    brand_dpa:'DPA', brand_neewer:'Neewer', brand_elgato:'Elgato',
+    brand_aputure:'Aputure', brand_atem:'ATEM',
+    to_undo:'↩️ Undo', to_redo:'🔁 Redo', to_deleted:'🗑️ Deleted',
+    to_saved:'💾 Saved', to_loaded:'📂 Loaded',
+    to_cleared:'🧹 Cleared', to_shot:'📸 Screenshot saved',
+    to_heat_on:'🌡️ Heatmap ON', to_heat_off:'🌡️ Heatmap OFF',
+    to_pres_on:'🎥 Presentation mode', to_pres_off:'✏️ Edit mode',
+    to_invalid:'Invalid file', to_confirm_clear:'Delete all devices?',
+    rep_env_info:'Environment Info', rep_equip:'Equipment List',
+    rep_analysis:'Acoustic Analysis',
+    rep_env_type:'Environment', rep_dim:'Dimensions',
+    rep_total_dev:'Total devices', rep_total_power:'Total power',
+    rep_date:'Date',
+    rep_max_spl:'Max SPL', rep_coverage:'Coverage',
+    rep_status:'Status', rep_status_good:'Excellent',
+    rep_device:'Device', rep_qty:'Qty', rep_empty:'No devices',
+    rep_target:'Target Standard', rep_rt:'RT60 Reverberation',
+    rep_reverb:'Expected Reverb', rep_capacity:'Capacity',
+    rep_area:'Area', rep_zones:'Zone Count',
+    rep_mics:'Mic Count', rep_cameras:'Camera Count',
+    rep_lighting:'Lighting Count', rep_streaming:'Streaming Devices',
+    rep_paging:'Paging System', rep_emergency:'EN 60849 Emergency',
+    rep_ada:'ADA Compliance', rep_av:'AV Compliance',
+    rep_sti:'Speech Intelligibility STI', rep_nc:'Noise Level NC',
+    rep_sti_target:'STI > 0.80 (Live Broadcast)',
+    rep_rt60_target:'RT60 = 0.3-0.4s (Studio)',
+    rep_nc_target:'NC-20 (Broadcast Studio)',
+    rep_iso:'ISO 9921 (Speech Intelligibility)',
+    rep_iec:'IEC 60914 (Broadcast Equipment)',
+    rep_broadcast:'EBU Broadcast Standards',
+    rep_hearing:'Monitor Compliance',
+    rep_recording:'4K HDR Recording Quality',
+    rep_streaming_std:'RTMP · HLS · SRT'
+  }
+};
+let LANG = localStorage.getItem('auralis_lang') || 'ar';
+const T = k => I18N[LANG][k] || k;
+
+function applyLang() {
+  document.documentElement.lang = LANG;
+  document.documentElement.dir = LANG === 'ar' ? 'rtl' : 'ltr';
+  document.body.style.fontFamily = LANG === 'ar'
+    ? "'Cairo','Inter',sans-serif" : "'Inter','Cairo',sans-serif";
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.dataset.i18n; if (I18N[LANG][k]) el.textContent = I18N[LANG][k];
+  });
+  document.querySelectorAll('[data-i18n-title]').forEach(el => {
+    const k = el.dataset.i18nTitle; if (I18N[LANG][k]) el.title = I18N[LANG][k];
+  });
+  document.getElementById('langLabel').textContent = LANG === 'ar' ? 'EN' : 'ع';
+  document.getElementById('loaderTxt').textContent = T('loader');
+  document.getElementById('roomLabel').textContent = T('room_label');
+  document.getElementById('presToggle').textContent = T('pres_start');
+  document.title = LANG === 'ar' ? '🎥 AURALIS · استوديو بث' : '🎥 AURALIS · Webinar Studio';
+}
+
+/* ============ DATA ============ */
+const BRANDS = {
+  shure:{color:0xec4899,tag:'SHURE'},
+  bose:{color:0x06b6d4,tag:'BOSE PRO'},
+  yamaha:{color:0xa855f7,tag:'YAMAHA'},
+  sennheiser:{color:0xd946ef,tag:'SENNHEISER'},
+  biamp:{color:0x4fe4b8,tag:'BIAMP'},
+  qsc:{color:0xfbbf24,tag:'QSC'},
+  crestron:{color:0xa78bfa,tag:'CRESTRON'},
+  extron:{color:0x38bdf8,tag:'EXTRON'},
+  logitech:{color:0x60a5fa,tag:'LOGITECH'},
+  ptzoptics:{color:0xfb7185,tag:'PTZOptics'},
+  avg:{color:0xf97316,tag:'AVer'},
+  sony:{color:0x3b82f6,tag:'SONY'},
+  panasonic:{color:0xf472b6,tag:'PANASONIC'},
+  blackmagic:{color:0xf43f5e,tag:'BLACKMAGIC'},
+  rode:{color:0xfbbf24,tag:'RØDE'},
+  akg:{color:0x6366f1,tag:'AKG'},
+  dpa:{color:0x8b5cf6,tag:'DPA'},
+  neewer:{color:0xfacc15,tag:'NEEWER'},
+  elgato:{color:0x0ea5e9,tag:'ELGATO'},
+  aputure:{color:0xf97316,tag:'APUTURE'},
+  atem:{color:0xdc2626,tag:'ATEM'}
+};
+
+const CATS = {
+  hostMic:{emoji:'🎙️',devices:[
+    ['host_mic','dev_host_mic','🎙️',1.3,0,true,'hostMic'],
+    ['host_gooseneck','dev_host_gooseneck','🎙️',1.2,0,true,'hostGooseneck'],
+    ['host_handheld','dev_host_handheld','🎤',1.5,0,true,'hostHandheld']
+  ]},
+  guestMic:{emoji:'👥',devices:[
+    ['guest_mic','dev_guest_mic','🎤',1.3,0,true,'guestMic'],
+    ['guest_boundary','dev_guest_boundary','🎙️',0.9,0,false,'guestBoundary'],
+    ['guest_wireless','dev_guest_wireless','📡',1.3,0,true,'guestWireless'],
+    ['panel_mic','dev_panel_mic','👔',1.3,0,true,'panelMic']
+  ]},
+  lavMic:{emoji:'🧷',devices:[
+    ['lav','dev_lav','🧷',1.4,0,false,'lavMicW'],
+    ['lav_pro','dev_lav_pro','🎤',1.4,0,false,'lavPro'],
+    ['lav_wireless','dev_lav_wireless','📡',1.4,0,false,'lavWireless']
+  ]},
+  headsetMic:{emoji:'🎧',devices:[
+    ['headset','dev_headset','🎧',1.8,0,true,'headsetMic'],
+    ['earset','dev_earset','👂',1.7,0,true,'earsetMic'],
+    ['ifb','dev_ifb','📻',1.5,0,false,'ifbMic']
+  ]},
+  studioMon:{emoji:'🔊',devices:[
+    ['studio_mon_sm','dev_studio_mon_sm','🔊',1.4,60,true,'studioMonSm'],
+    ['studio_mon_lg','dev_studio_mon_lg','🔊',1.6,100,true,'studioMonLg'],
+    ['reference_mon','dev_reference_mon','🎚️',1.5,80,true,'refMon']
+  ]},
+  ceilingMic:{emoji:'🔊',devices:[
+    ['ceiling_array','dev_ceiling_array','🎙️',3.5,0,false,'ceilingArray'],
+    ['beamforming','dev_beamforming','📡',3.5,0,false,'beamforming']
+  ]},
+  mainPA:{emoji:'🎛️',devices:[
+    ['line_small','dev_line_small','🎛️',4.5,250,true,'lineSmall'],
+    ['line_lg','dev_line_lg','🎛️',6.0,500,true,'lineLg'],
+    ['center_cluster','dev_center_cluster','🎛️',5.5,400,true,'centerCluster']
+  ]},
+  ceilingSpk:{emoji:'🔈',devices:[
+    ['ceiling_spk','dev_ceiling_spk','🔈',3.5,30,false,'ceilingSpk'],
+    ['ceiling_net','dev_ceiling_net','🌐',3.5,30,false,'ceilingNet'],
+    ['ceiling_pendant','dev_ceiling_pendant','🎈',3.2,40,false,'ceilingPendant']
+  ]},
+  deskMon:{emoji:'🔉',devices:[
+    ['desk_mon','dev_desk_mon','🔉',1.3,40,true,'deskMon'],
+    ['desk_mon_lg','dev_desk_mon_lg','🔊',1.3,80,true,'deskMonLg']
+  ]},
+  delay:{emoji:'📡',devices:[
+    ['delay_small','dev_delay_small','🗼',5.0,100,true,'delaySmall'],
+    ['delay_lg','dev_delay_lg','🗼',7.0,200,true,'delayLg']
+  ]},
+  ptzCamera:{emoji:'📹',devices:[
+    ['ptz_4k','dev_ptz_4k','📹',2.5,0,true,'ptz4k'],
+    ['ptz_speaker','dev_ptz_speaker','🎯',2.5,0,true,'ptzSpeaker'],
+    ['ptz_wide','dev_ptz_wide','🎥',2.5,0,true,'ptzWide'],
+    ['ptz_ceiling','dev_ptz_ceiling','📹',3.5,0,true,'ptzCeiling']
+  ]},
+  fixedCam:{emoji:'🎬',devices:[
+    ['fixed_wide','dev_fixed_wide','🎬',1.5,0,true,'fixedWide'],
+    ['fixed_close','dev_fixed_close','📸',1.8,0,true,'fixedClose'],
+    ['fixed_shoulder','dev_fixed_shoulder','🎥',1.7,0,true,'fixedShoulder']
+  ]},
+  cameraTracking:{emoji:'🎯',devices:[
+    ['tracking_proc','dev_tracking_proc','🧠',0.5,0,false,'trackingProc'],
+    ['tracking_ai','dev_tracking_ai','🤖',0.5,0,false,'trackingAI'],
+    ['tracking_sensor','dev_tracking_sensor','📡',3.5,0,false,'trackingSensor']
+  ]},
+  streaming:{emoji:'📡',devices:[
+    ['stream_encoder','dev_stream_encoder','💻',0.5,0,false,'streamEncoder'],
+    ['stream_cloud','dev_stream_cloud','☁️',0.5,0,false,'streamCloud'],
+    ['switcher','dev_switcher','🎛️',0.5,0,false,'videoSwitcher'],
+    ['capture','dev_capture','🎥',0.5,0,false,'captureCard']
+  ]},
+  recording:{emoji:'📼',devices:[
+    ['recorder','dev_recorder','📼',0.5,0,false,'recorder'],
+    ['ssd_recorder','dev_ssd_recorder','💾',0.5,0,false,'ssdRecorder'],
+    ['redundant','dev_redundant','🔄',0.5,0,false,'redundantRec'],
+    ['backup_deck','dev_backup_deck','📼',0.5,0,false,'backupDeck']
+  ]},
+  lighting:{emoji:'💡',devices:[
+    ['key_light','dev_key_light','💡',2.8,0,false,'keyLight'],
+    ['fill_light','dev_fill_light','💡',2.8,0,false,'fillLight'],
+    ['back_light','dev_back_light','💡',2.8,0,false,'backLight'],
+    ['softbox','dev_softbox','⬜',2.8,0,false,'softbox'],
+    ['rgb_light','dev_rgb_light','🌈',2.8,0,false,'rgbLight'],
+    ['ring_light','dev_ring_light','⭕',2.5,0,false,'ringLight']
+  ]},
+  greenscreen:{emoji:'🟢',devices:[
+    ['green_screen','dev_green_screen','🟢',2.5,0,false,'greenScreen'],
+    ['green_frame','dev_green_frame','📐',2.5,0,false,'greenFrame']
+  ]},
+  teleprompter:{emoji:'📺',devices:[
+    ['teleprompter','dev_teleprompter','📺',2.2,0,false,'teleprompter'],
+    ['prompt_monitor','dev_prompt_monitor','📺',1.5,0,false,'promptMonitor']
+  ]},
+  control:{emoji:'🎚️',devices:[
+    ['touch','dev_touch','📱',1.5,0,true,'touchPanel'],
+    ['av_ctrl','dev_av_ctrl','🎛️',1.5,0,false,'avCtrl'],
+    ['video_switcher','dev_video_switcher','🎬',1.5,0,false,'vidSwitcher']
+  ]},
+  paging:{emoji:'📢',devices:[
+    ['paging_ceiling','dev_paging_ceiling','📢',3.5,20,false,'pagingCeiling'],
+    ['paging_horn','dev_paging_horn','📯',5.0,60,true,'pagingHorn']
+  ]},
+  emergency:{emoji:'🚨',devices:[
+    ['emg_horn','dev_emg_horn','📯',5.5,80,true,'emgHorn'],
+    ['emg_strobe','dev_emg_strobe','💡',4.5,50,false,'emgStrobe']
+  ]}
+};
+
+/* Studio: 16×12m with dual studio setup */
+const ROOM = {
+  name:{ ar:'استوديو بث احترافي', en:'Professional Broadcast Studio' },
+  size:[16, 12],
+  walls:[[-8,-6,8,-6],[8,-6,8,6],[8,6,-8,6],[-8,6,-8,-6]],
+  features:[
+    { type:'floor',  x:0, z:0, w:15.6, d:11.6 },
+    { type:'ceiling', x:0, z:0, w:15.6, d:11.6, h:4.5 },
+    { type:'wall', x:0, z:-5.9, w:16, h:4.5, d:0.2 },
+    { type:'wall', x:8, z:0, w:0.2, h:4.5, d:12 },
+    { type:'wall', x:-8, z:0, w:0.2, h:4.5, d:12 },
+    { type:'wall', x:0, z:5.9, w:16, h:4.5, d:0.2 },
+    /* Green screen backdrop */
+    { type:'greenscreen', x:0, z:-5.5, w:12, h:3.5 },
+    /* Main anchor desk (center) */
+    { type:'anchorDesk', x:0, z:2, w:5, d:1.2, H:1 },
+    /* Guest table (side) */
+    { type:'guestTable', x:-5, z:0, w:3, d:1.5, H:0.9 },
+    /* Co-host desk */
+    { type:'cohostDesk', x:5, z:0, w:3, d:1.5, H:0.9 },
+    /* Control room (back) */
+    { type:'controlRoom', x:0, z:5, w:8, d:2.5, H:3 },
+    /* Teleprompter position */
+    { type:'prompter', x:0, z:-3, h:1.5 },
+    /* Entry doors */
+    { type:'door', x:-7.9, z:5, w:1.2, h:2.4 },
+    { type:'door', x:7.9, z:5, w:1.2, h:2.4 }
+  ],
+  devices:[
+    /* === HOST MICROPHONES (anchor desk) === */
+    ['shure','hostMic','host_mic',-1.5,2.3,Math.PI],
+    ['shure','hostMic','host_mic',0,2.3,Math.PI],
+    ['shure','hostMic','host_mic',1.5,2.3,Math.PI],
+    ['shure','hostMic','host_gooseneck',-2,2,Math.PI],
+    ['shure','hostMic','host_gooseneck',2,2,Math.PI],
+    ['sennheiser','hostMic','host_handheld',0,3.5,Math.PI],
+
+    /* === GUEST MICROPHONES === */
+    ['shure','guestMic','guest_mic',-6,0,Math.PI/2],
+    ['shure','guestMic','guest_mic',-4,0,Math.PI/2],
+    ['shure','guestMic','guest_boundary',-5,-0.5,0],
+    ['sennheiser','guestMic','guest_wireless',-5.5,1,Math.PI/2],
+    ['sennheiser','guestMic','panel_mic',-4.5,-1,Math.PI/2],
+    ['shure','guestMic','guest_mic',4,0,-Math.PI/2],
+    ['shure','guestMic','guest_mic',6,0,-Math.PI/2],
+    ['sennheiser','guestMic','guest_wireless',5,1,-Math.PI/2],
+    ['sennheiser','guestMic','panel_mic',5.5,-0.5,-Math.PI/2],
+
+    /* === LAVALIER MICROPHONES === */
+    ['dpa','lavMic','lav',-1,1.6,0],
+    ['dpa','lavMic','lav_pro',0,1.6,0],
+    ['dpa','lavMic','lav_pro',1,1.6,0],
+    ['rode','lavMic','lav_wireless',3,1.2,0],
+    ['rode','lavMic','lav_wireless',-3,1.2,0],
+
+    /* === HEADSET MICROPHONES === */
+    ['sennheiser','headsetMic','headset',-6,3.5,Math.PI/3],
+    ['sennheiser','headsetMic','headset',6,3.5,-Math.PI/3],
+    ['sennheiser','headsetMic','earset',0,3.8,Math.PI],
+    ['sennheiser','headsetMic','ifb',-5,2.5,0],
+    ['sennheiser','headsetMic','ifb',5,2.5,0],
+
+    /* === STUDIO MONITORS === */
+    ['yamaha','studioMon','studio_mon_sm',-5,-4,Math.PI/4],
+    ['yamaha','studioMon','studio_mon_sm',5,-4,-Math.PI/4],
+    ['yamaha','studioMon','studio_mon_lg',-7,-4,Math.PI/4],
+    ['yamaha','studioMon','studio_mon_lg',7,-4,-Math.PI/4],
+    ['qsc','studioMon','reference_mon',0,-4,Math.PI],
+
+    /* === CEILING MICROPHONES === */
+    ['shure','ceilingMic','ceiling_array',-3,3,0],
+    ['shure','ceilingMic','ceiling_array',3,3,0],
+    ['shure','ceilingMic','beamforming',0,3,0],
+
+    /* === MAIN PA === */
+    ['jbl','mainPA','line_small',-6,5,Math.PI],
+    ['jbl','mainPA','line_small',6,5,Math.PI],
+    ['jbl','mainPA','line_lg',-3,5,Math.PI],
+    ['jbl','mainPA','line_lg',3,5,Math.PI],
+    ['jbl','mainPA','center_cluster',0,5,Math.PI],
+
+    /* === CEILING SPEAKERS === */
+    ['bose','ceilingSpk','ceiling_spk',-6,-3,0],
+    ['bose','ceilingSpk','ceiling_spk',6,-3,0],
+    ['bose','ceilingSpk','ceiling_spk',-6,3,0],
+    ['bose','ceilingSpk','ceiling_spk',6,3,0],
+    ['bose','ceilingSpk','ceiling_net',-3,1,0],
+    ['bose','ceilingSpk','ceiling_net',3,1,0],
+    ['bose','ceilingSpk','ceiling_pendant',0,0,0],
+
+    /* === DESK MONITORS === */
+    ['yamaha','deskMon','desk_mon',-1.5,1.3,0],
+    ['yamaha','deskMon','desk_mon',1.5,1.3,0],
+    ['yamaha','deskMon','desk_mon_lg',0,1.3,0],
+
+    /* === DELAY TOWERS === */
+    ['rcf','delay','delay_small',-4,4,Math.PI],
+    ['rcf','delay','delay_small',4,4,Math.PI],
+    ['rcf','delay','delay_lg',0,4.5,Math.PI],
+
+    /* === PTZ CAMERAS === */
+    ['ptzoptics','ptzCamera','ptz_4k',0,-5,0],
+    ['avg','ptzCamera','ptz_speaker',-6,-5,Math.PI/6],
+    ['avg','ptzCamera','ptz_wide',6,-5,-Math.PI/6],
+    ['logitech','ptzCamera','ptz_ceiling',-3,0,0],
+    ['logitech','ptzCamera','ptz_ceiling',3,0,0],
+
+    /* === FIXED CAMERAS === */
+    ['sony','fixedCam','fixed_wide',-7,-4,Math.PI/4],
+    ['sony','fixedCam','fixed_wide',7,-4,-Math.PI/4],
+    ['sony','fixedCam','fixed_close',0,-4.5,0],
+    ['panasonic','fixedCam','fixed_shoulder',-7,0,Math.PI/2],
+    ['panasonic','fixedCam','fixed_shoulder',7,0,-Math.PI/2],
+
+    /* === CAMERA TRACKING === */
+    ['logitech','cameraTracking','tracking_proc',7.5,5.3,Math.PI],
+    ['logitech','cameraTracking','tracking_ai',7.3,5.2,Math.PI],
+    ['logitech','cameraTracking','tracking_sensor',0,-4.5,0],
+
+    /* === STREAMING === */
+    ['blackmagic','streaming','stream_encoder',7.4,-5.3,-Math.PI/4],
+    ['blackmagic','streaming','stream_cloud',7.3,-5.2,-Math.PI/4],
+    ['atem','streaming','switcher',7.2,-5.1,-Math.PI/4],
+    ['elgato','streaming','capture',7.4,-4.9,-Math.PI/4],
+
+    /* === RECORDING (in control room) === */
+    ['blackmagic','recording','recorder',-2,5,0],
+    ['blackmagic','recording','ssd_recorder',0,5,0],
+    ['blackmagic','recording','redundant',2,5,0],
+    ['sony','recording','backup_deck',-2,5.3,0],
+
+    /* === LIGHTING === */
+    ['aputure','lighting','key_light',-5,-3,Math.PI/4],
+    ['aputure','lighting','fill_light',5,-3,-Math.PI/4],
+    ['aputure','lighting','back_light',-3,-4.5,0],
+    ['aputure','lighting','back_light',3,-4.5,0],
+    ['aputure','lighting','softbox',-5,2,Math.PI/4],
+    ['aputure','lighting','softbox',5,2,-Math.PI/4],
+    ['neewer','lighting','rgb_light',-7,3,Math.PI/2],
+    ['neewer','lighting','rgb_light',7,3,-Math.PI/2],
+    ['neewer','lighting','ring_light',0,2.8,Math.PI],
+
+    /* === GREEN SCREEN === */
+    ['neewer','greenscreen','green_screen',0,-5.5,0],
+    ['neewer','greenscreen','green_frame',0,-5.5,0],
+
+    /* === TELEPROMPTER === */
+    ['neewer','teleprompter','teleprompter',0,-3,0],
+    ['neewer','teleprompter','prompt_monitor',0,1.5,Math.PI],
+
+    /* === CONTROL === */
+    ['crestron','control','touch',6,-5,0],
+    ['crestron','control','touch',-6,-5,0],
+    ['extron','control','av_ctrl',7.5,-4.8,-Math.PI/4],
+    ['atem','control','video_switcher',6,5,0],
+
+    /* === PAGING === */
+    ['bose','paging','paging_ceiling',-6,-4,0],
+    ['bose','paging','paging_ceiling',6,-4,0],
+    ['toa','paging','paging_horn',-7.5,5.5,3*Math.PI/4],
+    ['toa','paging','paging_horn',7.5,5.5,-3*Math.PI/4],
+
+    /* === EMERGENCY === */
+    ['toa','emergency','emg_horn',-7.5,-5.5,Math.PI/4],
+    ['toa','emergency','emg_horn',7.5,-5.5,-Math.PI/4],
+    ['toa','emergency','emg_strobe',-4,5.7,Math.PI],
+    ['toa','emergency','emg_strobe',4,5.7,Math.PI]
+  ]
+};
+
+/* ============ STATE ============ */
+const state = {
+  devices: [], nextId: 1,
+  curBrand: 'shure', curCat: 'hostMic', curType: 'host_mic',
+  selected: null, view3D: true, showHeat: true, showGrid: true, presentation: false,
+  cam: { theta:-0.5, phi:0.85, radius:34, target:new THREE.Vector3(0,1.5,0), tween:null },
+  history: [], historyIdx: -1
+};
+
+/* ============ THREE SETUP ============ */
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, preserveDrawingBuffer:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+if (THREE.sRGBEncoding !== undefined) renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.2;
+
+const scene = new THREE.Scene();
+const skyColor = 0x1a0a1e;
+scene.background = new THREE.Color(skyColor);
+scene.fog = new THREE.Fog(skyColor, 40, 120);
+const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 500);
+
+scene.add(new THREE.AmbientLight(0xffe0ff, 0.5));
+scene.add(new THREE.HemisphereLight(0xffc8ff, 0x2a1030, 0.6));
+const sun = new THREE.DirectionalLight(0xfff0ff, 1.0);
+sun.position.set(8, 12, 6);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.camera.left = -12; sun.shadow.camera.right = 12;
+sun.shadow.camera.top = 12; sun.shadow.camera.bottom = -12;
+sun.shadow.camera.near = 1; sun.shadow.camera.far = 40;
+sun.shadow.bias = -0.0005;
+scene.add(sun);
+const fill = new THREE.DirectionalLight(0xffa8e0, 0.5);
+fill.position.set(-6, 8, -4); scene.add(fill);
+const fill2 = new THREE.DirectionalLight(0xd0a8ff, 0.4);
+fill2.position.set(0, 6, -10); scene.add(fill2);
+
+const roomGrp = new THREE.Group(); scene.add(roomGrp);
+const devGrp  = new THREE.Group(); scene.add(devGrp);
+const heatGrp = new THREE.Group(); scene.add(heatGrp);
+
+const grid = new THREE.GridHelper(200, 100, 0xec4899, 0x2a1030);
+grid.material.opacity = 0.12; grid.material.transparent = true;
+grid.position.y = 0.004; scene.add(grid);
+
+/* ============ MATERIALS ============ */
+const M = {
+  body:()=>new THREE.MeshStandardMaterial({color:0x1a2035,roughness:0.5,metalness:0.5}),
+  dark:()=>new THREE.MeshStandardMaterial({color:0x050810,roughness:0.85,metalness:0.25}),
+  gray:()=>new THREE.MeshStandardMaterial({color:0x3a4250,roughness:0.6,metalness:0.4}),
+  metal:()=>new THREE.MeshStandardMaterial({color:0xb0b8c8,roughness:0.3,metalness:0.85}),
+  steel:()=>new THREE.MeshStandardMaterial({color:0x9098a8,roughness:0.5,metalness:0.6,side:THREE.DoubleSide}),
+  wood:()=>new THREE.MeshStandardMaterial({color:0x5a3a20,roughness:0.85,metalness:0.05}),
+  woodDark:()=>new THREE.MeshStandardMaterial({color:0x4a2a10,roughness:0.85,metalness:0.05}),
+  deskTop:()=>new THREE.MeshStandardMaterial({color:0x2a1a10,roughness:0.35,metalness:0.1}),
+  deskEdge:()=>new THREE.MeshStandardMaterial({color:0x8a5a30,roughness:0.65,metalness:0.15}),
+  carpet:()=>new THREE.MeshStandardMaterial({color:0x1a1a2e,roughness:0.95,metalness:0.02}),
+  wall:()=>new THREE.MeshStandardMaterial({color:0x2a2040,roughness:0.85,metalness:0.08}),
+  wallAccent:()=>new THREE.MeshStandardMaterial({color:0x3a2050,roughness:0.8,metalness:0.1}),
+  ceiling:()=>new THREE.MeshStandardMaterial({color:0x150a20,roughness:0.9,metalness:0.05}),
+  ceilingPanel:()=>new THREE.MeshStandardMaterial({color:0xe8d0f0,emissive:0xf0c0ff,emissiveIntensity:0.4,roughness:0.7,metalness:0.1}),
+  greenScreen:()=>new THREE.MeshStandardMaterial({color:0x1a8a3a,roughness:0.85,metalness:0.05}),
+  greenFrame:()=>new THREE.MeshStandardMaterial({color:0x2a2a3a,roughness:0.6,metalness:0.4}),
+  glass:()=>new THREE.MeshStandardMaterial({color:0x60a5fa,roughness:0.1,metalness:0.5,transparent:true,opacity:0.35}),
+  door:()=>new THREE.MeshStandardMaterial({color:0x1a1f30,roughness:0.7,metalness:0.2}),
+  doorFrame:()=>new THREE.MeshStandardMaterial({color:0x4a5260,roughness:0.6,metalness:0.4}),
+  controlBooth:()=>new THREE.MeshStandardMaterial({color:0x2a2a3a,roughness:0.7,metalness:0.2}),
+  controlGlass:()=>new THREE.MeshBasicMaterial({color:0x60a5fa,transparent:true,opacity:0.4}),
+  monitorScreen:()=>new THREE.MeshBasicMaterial({color:0x1a3a7a}),
+  monitorFrame:()=>new THREE.MeshStandardMaterial({color:0x0a0a0a,roughness:0.6,metalness:0.3}),
+  softbox:()=>new THREE.MeshStandardMaterial({color:0xf0f0f0,emissive:0xfff8e0,emissiveIntensity:0.8,roughness:0.7,metalness:0.05}),
+  ledRed:()=>new THREE.MeshStandardMaterial({color:0xff2222,emissive:0xff2222,emissiveIntensity:2.5}),
+  ledGreen:()=>new THREE.MeshStandardMaterial({color:0x22ff44,emissive:0x22ff44,emissiveIntensity:2.5}),
+  ledAmber:()=>new THREE.MeshStandardMaterial({color:0xfbbf24,emissive:0xfbbf24,emissiveIntensity:2.5}),
+  ledPink:()=>new THREE.MeshStandardMaterial({color:0xec4899,emissive:0xec4899,emissiveIntensity:2.5}),
+  ledCyan:()=>new THREE.MeshStandardMaterial({color:0x06b6d4,emissive:0x06b6d4,emissiveIntensity:2.5}),
+  ledViolet:()=>new THREE.MeshStandardMaterial({color:0xa855f7,emissive:0xa855f7,emissiveIntensity:2.5}),
+  ledMagenta:()=>new THREE.MeshStandardMaterial({color:0xd946ef,emissive:0xd946ef,emissiveIntensity:2.5}),
+  ledRGB:()=>new THREE.MeshStandardMaterial({color:0xff0080,emissive:0xff0080,emissiveIntensity:2.5}),
+  screen:()=>new THREE.MeshBasicMaterial({color:0x1a3a5a,transparent:true,opacity:0.9})
+};
+function accentMat(c,i){return new THREE.MeshStandardMaterial({color:c,emissive:c,emissiveIntensity:i||0.7,roughness:0.3,metalness:0.5});}
+
+function getSpec(cat, typeId) {
+  const c = CATS[cat]; if (!c) return null;
+  const arr = c.devices.find(d => d[0] === typeId); if (!arr) return null;
+  return {id:arr[0], nameKey:arr[1], emoji:arr[2], h:arr[3], power:arr[4], dir:arr[5], shape:arr[6]};
+}
+function devName(spec){return T(spec.nameKey);}
+function catName(key){return T('cat_' + key);}
+function brandName(key){return BRANDS[key] ? T('brand_' + key) : '—';}
+
+/* ============ MESH FACTORY ============ */
+function makeMesh(cat, typeId, brandColor) {
+  const spec = getSpec(cat, typeId); if (!spec) return null;
+  const color = brandColor || 0xec4899;
+  const g = new THREE.Group();
+  const S = spec.shape;
+
+  switch (S) {
+    case 'hostMic': {
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.07,0.02,14), M.dark());
+      g.add(base);
+      const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.4,8), M.metal);
+      neck.position.y = 0.2; g.add(neck);
+      const head = new THREE.Mesh(new THREE.CapsuleGeometry ? new THREE.CapsuleGeometry(0.015,0.06,6,10) : new THREE.SphereGeometry(0.02,10,8), M.dark());
+      head.position.y = 0.43; g.add(head);
+      const led = new THREE.Mesh(new THREE.TorusGeometry(0.05,0.006,6,16), M.ledPink);
+      led.rotation.x = Math.PI/2; led.position.y = 0.015; g.add(led);
+      break;
+    }
+    case 'hostGooseneck': {
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.06,0.02,14), M.dark());
+      g.add(base);
+      const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.007,0.007,0.4,8), M.metal);
+      neck.position.y = 0.2; g.add(neck);
+      const head = new THREE.Mesh(new THREE.CapsuleGeometry ? new THREE.CapsuleGeometry(0.016,0.07,6,10) : new THREE.SphereGeometry(0.022,10,8), M.dark());
+      head.position.y = 0.45; g.add(head);
+      const led = new THREE.Mesh(new THREE.TorusGeometry(0.04,0.005,6,14), M.ledPink);
+      led.rotation.x = Math.PI/2; led.position.y = 0.014; g.add(led);
+      break;
+    }
+    case 'hostHandheld': {
+      const body = new THREE.Mesh(new THREE.CylinderGeometry(0.04,0.04,0.22,16), M.body);
+      body.rotation.z = Math.PI/2; body.position.y = 0.5; g.add(body);
+      const h = new THREE.Mesh(new THREE.SphereGeometry(0.055,14,10,0,Math.PI*2,0,Math.PI/2), accentMat(color));
+      h.rotation.z = -Math.PI/2; h.position.set(0.14,0.5,0); g.add(h);
+      const st = new THREE.Mesh(new THREE.CylinderGeometry(0.035,0.055,0.45,8), M.gray);
+      st.position.y = 0.25; g.add(st);
+      break;
+    }
+    case 'guestMic': {
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.07,0.02,14), M.dark());
+      g.add(base);
+      const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.35,8), M.metal);
+      neck.position.y = 0.175; g.add(neck);
+      const head = new THREE.Mesh(new THREE.SphereGeometry(0.018,10,8), M.dark());
+      head.position.y = 0.37; g.add(head);
+      const led = new THREE.Mesh(new THREE.TorusGeometry(0.04,0.005,6,14), M.ledPink);
+      led.rotation.x = Math.PI/2; led.position.y = 0.014; g.add(led);
+      break;
+    }
+    case 'guestBoundary': {
+      const b = new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.1,0.02,16), M.dark());
+      g.add(b);
+      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.07,20), M.steel);
+      grille.rotation.x = -Math.PI/2; grille.position.y = 0.012; g.add(grille);
+      const led = new THREE.Mesh(new THREE.TorusGeometry(0.075,0.006,6,18), M.ledPink);
+      led.rotation.x = Math.PI/2; led.position.y = 0.013; g.add(led);
+      break;
+    }
+    case 'guestWireless': {
+      const base = new THREE.Mesh(new THREE.BoxGeometry(0.1,0.02,0.07), M.dark());
+      g.add(base);
+      const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.007,0.007,0.3,8), M.metal);
+      neck.position.y = 0.15; g.add(neck);
+      const head = new THREE.Mesh(new THREE.SphereGeometry(0.018,10,8), M.dark());
+      head.position.y = 0.32; g.add(head);
+      const led = new THREE.Mesh(new THREE.TorusGeometry(0.04,0.005,6,14), M.ledAmber);
+      led.rotation.x = Math.PI/2; led.position.y = 0.015; g.add(led);
+      break;
+    }
+    case 'panelMic': {
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.08,0.02,16), M.dark());
+      g.add(base);
+      const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.009,0.009,0.5,8), M.metal);
+      neck.position.y = 0.25; g.add(neck);
+      const head = new THREE.Mesh(new THREE.CapsuleGeometry ? new THREE.CapsuleGeometry(0.018,0.08,6,10) : new THREE.SphereGeometry(0.025,10,8), M.dark());
+      head.position.y = 0.55; g.add(head);
+      const led = new THREE.Mesh(new THREE.TorusGeometry(0.05,0.006,6,16), M.ledPink);
+      led.rotation.x = Math.PI/2; led.position.y = 0.016; g.add(led);
+      break;
+    }
+    case 'lavMicW': {
+      const b = new THREE.Mesh(new THREE.SphereGeometry(0.05,14,12), accentMat(color, 1.2));
+      b.position.y = 0.5; g.add(b);
+      const clip = new THREE.Mesh(new THREE.TorusGeometry(0.06,0.008,6,14), M.gray);
+      clip.rotation.x = Math.PI/2; clip.position.y = 0.42; g.add(clip);
+      break;
+    }
+    case 'lavPro': {
+      const b = new THREE.Mesh(new THREE.SphereGeometry(0.04,14,12), accentMat(color, 1.4));
+      b.position.y = 0.5; g.add(b);
+      const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,0.05,12), M.dark());
+      cap.position.y = 0.45; g.add(cap);
+      const clip = new THREE.Mesh(new THREE.TorusGeometry(0.05,0.007,6,14), M.gray);
+      clip.rotation.x = Math.PI/2; clip.position.y = 0.4; g.add(clip);
+      break;
+    }
+    case 'lavWireless': {
+      const b = new THREE.Mesh(new THREE.SphereGeometry(0.045,14,12), accentMat(color, 1.2));
+      b.position.y = 0.5; g.add(b);
+      const ant = new THREE.Mesh(new THREE.CylinderGeometry(0.006,0.006,0.15,6), M.metal);
+      ant.position.y = 0.35; g.add(ant);
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.012,8,6), M.ledGreen);
+      led.position.set(0.04, 0.45, 0.04); g.add(led);
+      break;
+    }
+    case 'headsetMic': {
+      const band = new THREE.Mesh(new THREE.TorusGeometry(0.15,0.015,8,20,Math.PI), M.body);
+      band.rotation.x = Math.PI/2; band.position.y = 0.5; g.add(band);
+      const earL = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,0.035,16), M.body);
+      earL.rotation.z = Math.PI/2; earL.position.set(-0.15, 0.5, 0); g.add(earL);
+      const earR = earL.clone(); earR.position.x = 0.15; g.add(earR);
+      const mic = new THREE.Mesh(new THREE.CylinderGeometry(0.01,0.01,0.18,6), M.metal);
+      mic.position.set(0.15, 0.38, 0.08); mic.rotation.z = 0.6; g.add(mic);
+      const cap = new THREE.Mesh(new THREE.SphereGeometry(0.02,10,8), M.dark());
+      cap.position.set(0.22, 0.28, 0.14); g.add(cap);
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.012,8,6), M.ledPink);
+      led.position.set(-0.15, 0.52, 0.04); g.add(led);
+      break;
+    }
+    case 'earsetMic': {
+      const hook = new THREE.Mesh(new THREE.TorusGeometry(0.06,0.008,6,14,Math.PI*1.5), M.body);
+      hook.rotation.x = Math.PI/2; hook.position.y = 0.5; g.add(hook);
+      const mic = new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.22,6), M.metal);
+      mic.position.set(0.08, 0.4, 0.05); mic.rotation.z = -0.3; g.add(mic);
+      const cap = new THREE.Mesh(new THREE.SphereGeometry(0.018,10,8), M.dark());
+      cap.position.set(0.14, 0.3, 0.1); g.add(cap);
+      break;
+    }
+    case 'ifbMic': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.12,0.08,0.06), M.body);
+      b.position.y = 0.5; g.add(b);
+      const ant = new THREE.Mesh(new THREE.CylinderGeometry(0.006,0.006,0.15,6), M.metal);
+      ant.position.set(0.05, 0.6, 0); g.add(ant);
+      const clip = new THREE.Mesh(new THREE.BoxGeometry(0.03,0.04,0.02), M.metal);
+      clip.position.y = 0.44; g.add(clip);
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.01,8,6), M.ledAmber);
+      led.position.set(-0.03, 0.52, 0.031); g.add(led);
+      break;
+    }
+    case 'studioMonSm': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.28,0.4,0.28), M.body);
+      b.castShadow = true; g.add(b);
+      const w = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,0.02,16), M.dark());
+      w.rotation.x = Math.PI/2; w.position.set(0,-0.08,0.15); g.add(w);
+      const wr = new THREE.Mesh(new THREE.RingGeometry(0.08,0.1,16), M.ledViolet);
+      wr.position.set(0,-0.08,0.152); g.add(wr);
+      const t = new THREE.Mesh(new THREE.CylinderGeometry(0.04,0.04,0.018,14), M.ledViolet);
+      t.rotation.x = Math.PI/2; t.position.set(0,0.1,0.15); g.add(t);
+      break;
+    }
+    case 'studioMonLg': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.55,0.38), M.body);
+      b.castShadow = true; g.add(b);
+      const w = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.12,0.025,20), M.dark());
+      w.rotation.x = Math.PI/2; w.position.set(0,-0.1,0.2); g.add(w);
+      const wr = new THREE.Mesh(new THREE.RingGeometry(0.12,0.15,20), M.ledViolet);
+      wr.position.set(0,-0.1,0.203); g.add(wr);
+      const t = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,0.02,16), M.ledViolet);
+      t.rotation.x = Math.PI/2; t.position.set(0,0.15,0.2); g.add(t);
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.015,8,6), M.ledGreen);
+      led.position.set(0.15, -0.23, 0.2); g.add(led);
+      break;
+    }
+    case 'refMon': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.35,0.4), M.body);
+      b.castShadow = true; g.add(b);
+      for (let i=0;i<2;i++) {
+        const w = new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.09,0.02,16), M.dark());
+        w.rotation.x = Math.PI/2; w.position.set(-0.15+i*0.3, 0, 0.21); g.add(w);
+        const wr = new THREE.Mesh(new THREE.RingGeometry(0.09,0.12,16), M.ledViolet);
+        wr.position.set(-0.15+i*0.3, 0, 0.212); g.add(wr);
+      }
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.15,0.08), M.screen());
+      screen.position.set(0, 0.1, 0.21); g.add(screen);
+      break;
+    }
+    case 'ceilingArray': {
+      const body = new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.32,0.055,32), M.body);
+      g.add(body);
+      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.26,32), M.steel);
+      grille.rotation.x = -Math.PI/2; grille.position.y = -0.029; g.add(grille);
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(0.28,0.007,6,32), M.ledPink);
+      ring.rotation.x = Math.PI/2; ring.position.y = -0.03; g.add(ring);
+      break;
+    }
+    case 'beamforming': {
+      const body = new THREE.Mesh(new THREE.CylinderGeometry(0.24,0.26,0.05,24), M.body);
+      g.add(body);
+      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.2,24), M.steel);
+      grille.rotation.x = -Math.PI/2; grille.position.y = -0.026; g.add(grille);
+      for (let i=0;i<6;i++) {
+        const a = (i/6)*Math.PI*2;
+        const led = new THREE.Mesh(new THREE.CircleGeometry(0.018,8), M.ledPink);
+        led.rotation.x = -Math.PI/2;
+        led.position.set(Math.cos(a)*0.16, -0.027, Math.sin(a)*0.16); g.add(led);
+      }
+      break;
+    }
+    case 'lineSmall': {
+      for (let k=0;k<5;k++) {
+        const b = new THREE.Mesh(new THREE.BoxGeometry(1.2,0.36,0.75), M.body);
+        b.castShadow = true; b.position.y = -0.7 + k*0.4; g.add(b);
+        for (let i=0;i<5;i++) {
+          const d = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.1,0.016,16), M.dark());
+          d.rotation.z = Math.PI/2; d.position.set(-0.44+i*0.22, -0.7+k*0.4, 0.39); g.add(d);
+        }
+        const t = new THREE.Mesh(new THREE.BoxGeometry(1.2,0.02,0.75), M.ledPink);
+        t.position.y = -0.7 + k*0.4 + 0.19; g.add(t);
+      }
+      const rig = new THREE.Mesh(new THREE.BoxGeometry(1.3,0.1,0.85), M.metal);
+      rig.position.y = 1.3; g.add(rig);
+      break;
+    }
+    case 'lineLg': {
+      for (let k=0;k<8;k++) {
+        const b = new THREE.Mesh(new THREE.BoxGeometry(1.5,0.4,0.95), M.body);
+        b.castShadow = true; b.position.y = -1.5 + k*0.44; g.add(b);
+        for (let i=0;i<6;i++) {
+          const d = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.12,0.018,16), M.dark());
+          d.rotation.z = Math.PI/2; d.position.set(-0.56+i*0.23, -1.5+k*0.44, 0.49); g.add(d);
+        }
+        const t = new THREE.Mesh(new THREE.BoxGeometry(1.5,0.022,0.95), M.ledPink);
+        t.position.y = -1.5 + k*0.44 + 0.22; g.add(t);
+      }
+      const rig = new THREE.Mesh(new THREE.BoxGeometry(1.6,0.12,1.1), M.metal);
+      rig.position.y = 2.2; g.add(rig);
+      break;
+    }
+    case 'centerCluster': {
+      const box = new THREE.Mesh(new THREE.BoxGeometry(1.6,1,0.9), M.body);
+      box.castShadow = true; g.add(box);
+      for (let i=0;i<2;i++) {
+        const gr = new THREE.Mesh(new THREE.CircleGeometry(0.38,24), M.dark());
+        gr.position.set(-0.4+i*0.8, 0, 0.46); g.add(gr);
+        const ring = new THREE.Mesh(new THREE.RingGeometry(0.38,0.46,24), M.ledPink);
+        ring.position.set(-0.4+i*0.8, 0, 0.462); g.add(ring);
+      }
+      break;
+    }
+    case 'ceilingSpk': {
+      const d = new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.14,0.045,24), M.body);
+      g.add(d);
+      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.12,24), M.steel);
+      grille.rotation.x = -Math.PI/2; grille.position.y = -0.024; g.add(grille);
+      const r = new THREE.Mesh(new THREE.TorusGeometry(0.13,0.005,6,24), M.ledPink);
+      r.rotation.x = Math.PI/2; r.position.y = -0.025; g.add(r);
+      break;
+    }
+    case 'ceilingNet': {
+      const d = new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.14,0.045,24), M.body);
+      g.add(d);
+      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.12,24), M.steel);
+      grille.rotation.x = -Math.PI/2; grille.position.y = -0.024; g.add(grille);
+      const r = new THREE.Mesh(new THREE.TorusGeometry(0.13,0.005,6,24), M.ledGreen);
+      r.rotation.x = Math.PI/2; r.position.y = -0.025; g.add(r);
+      break;
+    }
+    case 'ceilingPendant': {
+      const cable = new THREE.Mesh(new THREE.CylinderGeometry(0.006,0.006,1.5,6), M.dark());
+      cable.position.y = 0.75; g.add(cable);
+      const body = new THREE.Mesh(new THREE.SphereGeometry(0.18,20,14), M.body);
+      g.add(body);
+      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.13,20), M.steel);
+      grille.rotation.x = Math.PI/2; grille.position.y = -0.16; g.add(grille);
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(0.17,0.006,6,20), M.ledPink);
+      ring.rotation.x = Math.PI/2; ring.position.y = -0.168; g.add(ring);
+      break;
+    }
+    case 'deskMon': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.22,0.3,0.22), M.body);
+      b.castShadow = true; g.add(b);
+      const w = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,0.02,14), M.dark());
+      w.rotation.x = Math.PI/2; w.position.set(0,-0.06,0.12); g.add(w);
+      const wr = new THREE.Mesh(new THREE.RingGeometry(0.06,0.08,14), M.ledPink);
+      wr.position.set(0,-0.06,0.122); g.add(wr);
+      break;
+    }
+    case 'deskMonLg': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.4,0.3), M.body);
+      b.castShadow = true; g.add(b);
+      const w = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,0.025,16), M.dark());
+      w.rotation.x = Math.PI/2; w.position.set(0,-0.08,0.16); g.add(w);
+      const wr = new THREE.Mesh(new THREE.RingGeometry(0.08,0.1,16), M.ledPink);
+      wr.position.set(0,-0.08,0.162); g.add(wr);
+      const t = new THREE.Mesh(new THREE.CylinderGeometry(0.04,0.04,0.018,14), M.ledPink);
+      t.rotation.x = Math.PI/2; t.position.set(0,0.1,0.16); g.add(t);
+      break;
+    }
+    case 'delaySmall': {
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.15,3,12), M.metal);
+      pole.position.y = -1.5; g.add(pole);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.4,0.2,16), M.gray);
+      base.position.y = -2.9; g.add(base);
+      for (let k=0;k<2;k++) {
+        const b = new THREE.Mesh(new THREE.BoxGeometry(0.6,0.3,0.5), M.body);
+        b.castShadow = true; b.position.y = -0.2 + k*0.35; g.add(b);
+        const t = new THREE.Mesh(new THREE.BoxGeometry(0.6,0.018,0.5), M.ledPink);
+        t.position.y = -0.2 + k*0.35 + 0.16; g.add(t);
+      }
+      break;
+    }
+    case 'delayLg': {
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.2,5,12), M.metal);
+      pole.position.y = -2.5; g.add(pole);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.4,0.5,0.25,16), M.gray);
+      base.position.y = -4.85; g.add(base);
+      for (let k=0;k<3;k++) {
+        const b = new THREE.Mesh(new THREE.BoxGeometry(0.8,0.32,0.6), M.body);
+        b.castShadow = true; b.position.y = -0.4 + k*0.38; g.add(b);
+        const t = new THREE.Mesh(new THREE.BoxGeometry(0.8,0.02,0.6), M.ledPink);
+        t.position.y = -0.4 + k*0.38 + 0.17; g.add(t);
+      }
+      break;
+    }
+    case 'ptz4k': {
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.11,0.13,0.05,16), M.dark());
+      g.add(base);
+      const panBase = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.11,0.07,16), M.body);
+      panBase.position.y = 0.06; g.add(panBase);
+      const tilt = new THREE.Mesh(new THREE.SphereGeometry(0.09,16,12), M.body);
+      tilt.position.y = 0.17; g.add(tilt);
+      const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.06,0.1,16), M.dark());
+      lens.rotation.x = Math.PI/2; lens.position.set(0, 0.17, 0.1); g.add(lens);
+      const glass = new THREE.Mesh(new THREE.CircleGeometry(0.045,16), M.ledCyan);
+      glass.position.set(0, 0.17, 0.155); g.add(glass);
+      const tally = new THREE.Mesh(new THREE.SphereGeometry(0.015,8,6), M.ledRed);
+      tally.position.set(0.07, 0.19, 0.06); g.add(tally);
+      break;
+    }
+    case 'ptzSpeaker': {
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.14,0.05,16), M.dark());
+      g.add(base);
+      const panBase = new THREE.Mesh(new THREE.CylinderGeometry(0.11,0.12,0.08,16), M.body);
+      panBase.position.y = 0.065; g.add(panBase);
+      const tilt = new THREE.Mesh(new THREE.SphereGeometry(0.1,16,12), M.body);
+      tilt.position.y = 0.19; g.add(tilt);
+      const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.055,0.065,0.11,16), M.dark());
+      lens.rotation.x = Math.PI/2; lens.position.set(0, 0.19, 0.11); g.add(lens);
+      const glass = new THREE.Mesh(new THREE.CircleGeometry(0.05,16), M.ledMagenta);
+      glass.position.set(0, 0.19, 0.17); g.add(glass);
+      const trackRing = new THREE.Mesh(new THREE.TorusGeometry(0.065,0.008,6,20), M.ledMagenta);
+      trackRing.position.set(0, 0.19, 0.165); g.add(trackRing);
+      break;
+    }
+    case 'ptzWide': {
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.13,0.15,0.05,16), M.dark());
+      g.add(base);
+      const panBase = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.13,0.08,16), M.body);
+      panBase.position.y = 0.065; g.add(panBase);
+      const tilt = new THREE.Mesh(new THREE.SphereGeometry(0.11,16,12), M.body);
+      tilt.position.y = 0.2; g.add(tilt);
+      const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.065,0.075,0.13,16), M.dark());
+      lens.rotation.x = Math.PI/2; lens.position.set(0, 0.2, 0.13); g.add(lens);
+      const glass = new THREE.Mesh(new THREE.CircleGeometry(0.06,16), M.ledCyan);
+      glass.position.set(0, 0.2, 0.195); g.add(glass);
+      break;
+    }
+    case 'ptzCeiling': {
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.15,0.05,16), M.dark());
+      g.add(base);
+      const dome = new THREE.Mesh(new THREE.SphereGeometry(0.13,20,12,0,Math.PI*2,Math.PI/2,Math.PI/2), M.body);
+      dome.position.y = -0.02; g.add(dome);
+      const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.06,0.08,16), M.dark());
+      lens.rotation.x = Math.PI/2; lens.position.set(0, -0.15, 0.06); g.add(lens);
+      const glass = new THREE.Mesh(new THREE.CircleGeometry(0.045,16), M.ledCyan);
+      glass.position.set(0, -0.15, 0.11); g.add(glass);
+      break;
+    }
+    case 'fixedWide': {
+      const body = new THREE.Mesh(new THREE.BoxGeometry(0.22,0.15,0.28), M.dark());
+      body.castShadow = true; g.add(body);
+      const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.07,0.14,16), M.body);
+      lens.rotation.x = Math.PI/2; lens.position.set(0, 0, 0.19); g.add(lens);
+      const glass = new THREE.Mesh(new THREE.CircleGeometry(0.055,16), M.ledCyan);
+      glass.position.set(0, 0, 0.26); g.add(glass);
+      const tally = new THREE.Mesh(new THREE.SphereGeometry(0.012,8,6), M.ledRed);
+      tally.position.set(0.08, 0.06, 0.14); g.add(tally);
+      break;
+    }
+    case 'fixedClose': {
+      const body = new THREE.Mesh(new THREE.BoxGeometry(0.2,0.14,0.32), M.dark());
+      body.castShadow = true; g.add(body);
+      const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.08,0.2,16), M.body);
+      lens.rotation.x = Math.PI/2; lens.position.set(0, 0, 0.22); g.add(lens);
+      const glass = new THREE.Mesh(new THREE.CircleGeometry(0.065,16), M.ledCyan);
+      glass.position.set(0, 0, 0.32); g.add(glass);
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(0.08,0.008,6,20), M.ledCyan);
+      ring.position.set(0, 0, 0.3); g.add(ring);
+      break;
+    }
+    case 'fixedShoulder': {
+      const body = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.22,0.4), M.dark());
+      body.castShadow = true; g.add(body);
+      const grip = new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,0.2,10), M.body);
+      grip.rotation.z = Math.PI/2; grip.position.set(0.18, 0.05, 0); g.add(grip);
+      const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.08,0.18,16), M.body);
+      lens.rotation.x = Math.PI/2; lens.position.set(0, 0, 0.25); g.add(lens);
+      const glass = new THREE.Mesh(new THREE.CircleGeometry(0.065,16), M.ledCyan);
+      glass.position.set(0, 0, 0.34); g.add(glass);
+      const tally = new THREE.Mesh(new THREE.SphereGeometry(0.014,8,6), M.ledRed);
+      tally.position.set(-0.13, 0.08, 0.13); g.add(tally);
+      break;
+    }
+    case 'trackingProc': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.45,0.4,0.35), M.body);
+      g.add(b);
+      for (let i=0;i<3;i++) {
+        const led = new THREE.Mesh(new THREE.SphereGeometry(0.018,8,6), [M.ledGreen, M.ledAmber, M.ledCyan][i]);
+        led.position.set(-0.15 + i*0.07, 0.15, 0.18); g.add(led);
+      }
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.22,0.14), M.screen());
+      screen.position.set(0.08, -0.05, 0.176); g.add(screen);
+      break;
+    }
+    case 'trackingAI': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.35,0.3), M.body);
+      g.add(b);
+      const chip = new THREE.Mesh(new THREE.BoxGeometry(0.14,0.14,0.02), M.ledMagenta);
+      chip.position.set(0, 0, 0.16); g.add(chip);
+      for (let i=0;i<4;i++) {
+        const pin = new THREE.Mesh(new THREE.BoxGeometry(0.018,0.035,0.01), M.metal);
+        pin.position.set(-0.07 + i*0.045, -0.09, 0.16); g.add(pin);
+      }
+      break;
+    }
+    case 'trackingSensor': {
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.08,0.035,16), M.dark());
+      g.add(base);
+      const dome = new THREE.Mesh(new THREE.SphereGeometry(0.055,16,10,0,Math.PI*2,0,Math.PI/2), M.glass());
+      dome.position.y = 0.017; g.add(dome);
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.016,8,6), M.ledRed);
+      led.position.set(0, 0.045, 0.045); g.add(led);
+      break;
+    }
+    case 'streamEncoder': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.2,0.35), M.body);
+      g.add(b);
+      const live = new THREE.Mesh(new THREE.SphereGeometry(0.03,10,8), M.ledRed);
+      live.position.set(-0.15, 0.05, 0.18); g.add(live);
+      for (let i=0;i<4;i++) {
+        const led = new THREE.Mesh(new THREE.SphereGeometry(0.012,6,6), M.ledCyan);
+        led.position.set(-0.05 + i*0.05, 0.05, 0.18); g.add(led);
+      }
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.15,0.08), M.screen());
+      screen.position.set(0.15, -0.02, 0.18); g.add(screen);
+      break;
+    }
+    case 'streamCloud': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.18,0.3), M.body);
+      g.add(b);
+      const cloud = new THREE.Mesh(new THREE.SphereGeometry(0.035,10,8), M.ledCyan);
+      cloud.position.set(-0.12, 0.04, 0.16); g.add(cloud);
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.012,6,6), M.ledGreen);
+      led.position.set(0.08, 0.04, 0.16); g.add(led);
+      break;
+    }
+    case 'videoSwitcher': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.15,0.35), M.body);
+      g.add(b);
+      for (let i=0;i<8;i++) {
+        const btn = new THREE.Mesh(new THREE.BoxGeometry(0.04,0.03,0.02), [M.ledRed, M.ledGreen, M.ledAmber, M.ledCyan][i%4]);
+        btn.position.set(-0.19 + i*0.05, 0.02, 0.18); g.add(btn);
+      }
+      /* T-bar */
+      const tbar = new THREE.Mesh(new THREE.BoxGeometry(0.03,0.15,0.03), M.metal);
+      tbar.position.set(0, 0, 0.2); g.add(tbar);
+      break;
+    }
+    case 'captureCard': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.35,0.15,0.25), M.body);
+      g.add(b);
+      const hdmi = new THREE.Mesh(new THREE.BoxGeometry(0.06,0.04,0.02), M.metal);
+      hdmi.position.set(-0.1, 0, 0.135); g.add(hdmi);
+      const usb = new THREE.Mesh(new THREE.BoxGeometry(0.04,0.03,0.02), M.metal);
+      usb.position.set(0.1, 0, 0.135); g.add(usb);
+      break;
+    }
+    case 'recorder': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.3,0.3), M.body);
+      g.add(b);
+      const rec = new THREE.Mesh(new THREE.SphereGeometry(0.03,10,8), M.ledRed);
+      rec.position.set(-0.1, 0.1, 0.16); g.add(rec);
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.018,8,6), M.ledGreen);
+      led.position.set(0.1, 0.1, 0.16); g.add(led);
+      break;
+    }
+    case 'ssdRecorder': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.15,0.3), M.body);
+      g.add(b);
+      for (let i=0;i<2;i++) {
+        const slot = new THREE.Mesh(new THREE.BoxGeometry(0.12,0.06,0.02), M.ledGreen);
+        slot.position.set(-0.08 + i*0.16, 0, 0.16); g.add(slot);
+      }
+      const rec = new THREE.Mesh(new THREE.SphereGeometry(0.02,8,6), M.ledRed);
+      rec.position.set(-0.15, 0.05, 0.16); g.add(rec);
+      break;
+    }
+    case 'redundantRec': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.45,0.2,0.32), M.body);
+      g.add(b);
+      for (let i=0;i<3;i++) {
+        const led = new THREE.Mesh(new THREE.SphereGeometry(0.014,8,6), [M.ledGreen, M.ledAmber, M.ledRed][i]);
+        led.position.set(-0.13 + i*0.13, 0.05, 0.17); g.add(led);
+      }
+      break;
+    }
+    case 'backupDeck': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.15,0.3), M.body);
+      g.add(b);
+      const slot = new THREE.Mesh(new THREE.BoxGeometry(0.15,0.06,0.02), M.dark());
+      slot.position.set(0, 0, 0.16); g.add(slot);
+      break;
+    }
+    case 'keyLight': {
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.08,3,10), M.metal);
+      pole.position.y = -1.5; g.add(pole);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.3,0.15,14), M.gray);
+      base.position.y = -2.9; g.add(base);
+      const head = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.35,0.15), M.body);
+      head.castShadow = true; g.add(head);
+      const panel = new THREE.Mesh(new THREE.PlaneGeometry(0.36,0.3), M.softbox());
+      panel.position.set(0, 0, 0.08); g.add(panel);
+      /* LED indicator */
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.02,8,6), M.ledAmber);
+      led.position.set(-0.15, 0.12, 0.09); g.add(led);
+      /* Light emission */
+      const light = new THREE.PointLight(0xfff0d0, 0.6, 8, 2);
+      light.position.set(0, 0, 0.3); g.add(light);
+      break;
+    }
+    case 'fillLight': {
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.07,2.8,10), M.metal);
+      pole.position.y = -1.4; g.add(pole);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.28,0.15,14), M.gray);
+      base.position.y = -2.7; g.add(base);
+      const head = new THREE.Mesh(new THREE.BoxGeometry(0.35,0.3,0.13), M.body);
+      head.castShadow = true; g.add(head);
+      const panel = new THREE.Mesh(new THREE.PlaneGeometry(0.32,0.26), M.softbox());
+      panel.position.set(0, 0, 0.07); g.add(panel);
+      const light = new THREE.PointLight(0xd0e0ff, 0.4, 7, 2);
+      light.position.set(0, 0, 0.25); g.add(light);
+      break;
+    }
+    case 'backLight': {
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.07,2.6,10), M.metal);
+      pole.position.y = -1.3; g.add(pole);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.28,0.15,14), M.gray);
+      base.position.y = -2.5; g.add(base);
+      const head = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.28,0.12), M.body);
+      head.castShadow = true; g.add(head);
+      const panel = new THREE.Mesh(new THREE.PlaneGeometry(0.26,0.24), M.softbox());
+      panel.position.set(0, 0, 0.06); g.add(panel);
+      const light = new THREE.PointLight(0xffa0c0, 0.5, 6, 2);
+      light.position.set(0, 0, 0.2); g.add(light);
+      break;
+    }
+    case 'softbox': {
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.07,2.8,10), M.metal);
+      pole.position.y = -1.4; g.add(pole);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.28,0.15,14), M.gray);
+      base.position.y = -2.7; g.add(base);
+      const panel = new THREE.Mesh(new THREE.BoxGeometry(0.7,0.7,0.05), M.softbox());
+      panel.position.y = 0.15; g.add(panel);
+      const frame = new THREE.Mesh(new THREE.BoxGeometry(0.75,0.75,0.08), M.body);
+      frame.position.y = 0.15; g.add(frame);
+      const light = new THREE.PointLight(0xfff8e0, 0.5, 7, 2);
+      light.position.set(0, 0.15, 0.3); g.add(light);
+      break;
+    }
+    case 'rgbLight': {
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.07,2.6,10), M.metal);
+      pole.position.y = -1.3; g.add(pole);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.28,0.15,14), M.gray);
+      base.position.y = -2.5; g.add(base);
+      const bar = new THREE.Mesh(new THREE.BoxGeometry(0.08,0.7,0.08), M.body);
+      bar.position.y = 0.3; g.add(bar);
+      /* RGB LEDs */
+      for (let i=0;i<4;i++) {
+        const led = new THREE.Mesh(new THREE.BoxGeometry(0.06,0.1,0.06), M.ledRGB);
+        led.position.set(0, 0.1 + i*0.15, 0); g.add(led);
+      }
+      break;
+    }
+    case 'ringLight': {
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.07,2.3,10), M.metal);
+      pole.position.y = -1.15; g.add(pole);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.28,0.15,14), M.gray);
+      base.position.y = -2.2; g.add(base);
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(0.28,0.06,10,24), M.softbox());
+      ring.rotation.x = Math.PI/2; ring.position.y = 0.15; g.add(ring);
+      const center = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,0.06,16), M.dark());
+      center.rotation.x = Math.PI/2; center.position.set(0, 0.15, 0); g.add(center);
+      const light = new THREE.PointLight(0xfff0e0, 0.5, 5, 2);
+      light.position.set(0, 0.15, 0.2); g.add(light);
+      break;
+    }
+    case 'greenScreen': {
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(12, 3.5), M.greenScreen());
+      screen.position.set(0, 1.75, 0); g.add(screen);
+      /* Frame top */
+      const topFrame = new THREE.Mesh(new THREE.BoxGeometry(12.2, 0.1, 0.1), M.greenFrame());
+      topFrame.position.set(0, 3.5, 0); g.add(topFrame);
+      break;
+    }
+    case 'greenFrame': {
+      const frame = new THREE.Mesh(new THREE.BoxGeometry(12, 0.08, 0.08), M.greenFrame());
+      frame.position.set(0, 0, 0); g.add(frame);
+      break;
+    }
+    case 'teleprompter': {
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.1,2,10), M.metal);
+      pole.position.y = -1; g.add(pole);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.25,0.35,0.15,14), M.gray);
+      base.position.y = -1.9; g.add(base);
+      const body = new THREE.Mesh(new THREE.BoxGeometry(0.6,0.4,0.25), M.body);
+      body.castShadow = true; g.add(body);
+      /* Prompt screen (semi-transparent) */
+      const glass = new THREE.Mesh(new THREE.PlaneGeometry(0.5,0.3),
+        new THREE.MeshBasicMaterial({color:0x0a3a5a,transparent:true,opacity:0.6}));
+      glass.position.set(0, 0.1, 0.13); g.add(glass);
+      /* LED */
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.015,8,6), M.ledGreen);
+      led.position.set(-0.2, -0.15, 0.13); g.add(led);
+      break;
+    }
+    case 'promptMonitor': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.35,0.1), M.body);
+      b.castShadow = true; g.add(b);
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.44,0.28),
+        new THREE.MeshBasicMaterial({color:0x0a3a5a,transparent:true,opacity:0.9}));
+      screen.position.set(0, 0, 0.055); g.add(screen);
+      break;
+    }
+    case 'touchPanel': {
+      const body = new THREE.Mesh(new THREE.BoxGeometry(0.22,0.15,0.02), M.body);
+      g.add(body);
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.19,0.12),
+        new THREE.MeshBasicMaterial({color:0x0a3a5a,transparent:true,opacity:0.9}));
+      screen.position.set(0, 0, 0.011); g.add(screen);
+      const icon1 = new THREE.Mesh(new THREE.CircleGeometry(0.014,8), M.ledPink);
+      icon1.position.set(-0.055, 0, 0.012); g.add(icon1);
+      const icon2 = new THREE.Mesh(new THREE.CircleGeometry(0.014,8), M.ledGreen);
+      icon2.position.set(0, 0, 0.012); g.add(icon2);
+      const icon3 = new THREE.Mesh(new THREE.CircleGeometry(0.014,8), M.ledAmber);
+      icon3.position.set(0.055, 0, 0.012); g.add(icon3);
+      break;
+    }
+    case 'avCtrl': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.4,0.35), M.body);
+      g.add(b);
+      for (let i=0;i<4;i++) {
+        const port = new THREE.Mesh(new THREE.BoxGeometry(0.05,0.05,0.02), M.ledGreen);
+        port.position.set(-0.15 + i*0.1, -0.1, 0.18); g.add(port);
+      }
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.018,8,6), M.ledCyan);
+      led.position.set(0.15, 0.12, 0.18); g.add(led);
+      break;
+    }
+    case 'vidSwitcher': {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.18,0.35), M.body);
+      g.add(b);
+      for (let i=0;i<8;i++) {
+        const btn = new THREE.Mesh(new THREE.BoxGeometry(0.04,0.03,0.02),
+          [M.ledRed, M.ledGreen, M.ledAmber, M.ledCyan][i%4]);
+        btn.position.set(-0.19 + i*0.05, 0.02, 0.18); g.add(btn);
+      }
+      break;
+    }
+    case 'pagingCeiling': {
+      const d = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.12,0.04,20), M.body);
+      g.add(d);
+      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.1,20), M.steel);
+      grille.rotation.x = -Math.PI/2; grille.position.y = -0.021; g.add(grille);
+      const r = new THREE.Mesh(new THREE.TorusGeometry(0.11,0.005,6,20), M.ledAmber);
+      r.rotation.x = Math.PI/2; r.position.y = -0.022; g.add(r);
+      break;
+    }
+    case 'pagingHorn': {
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.1,3,10), M.metal);
+      pole.position.y = -1.5; g.add(pole);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.25,0.15,12), M.gray);
+      base.position.y = -2.9; g.add(base);
+      const bk = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.3,0.25), M.body);
+      bk.castShadow = true; g.add(bk);
+      const horn = new THREE.Mesh(new THREE.CylinderGeometry(0.28,0.1,0.45,16,1,true), M.steel);
+      horn.rotation.x = Math.PI/2; horn.position.z = 0.33; g.add(horn);
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.03,8,6), M.ledAmber);
+      led.position.set(0.15, 0.15, -0.15); g.add(led);
+      break;
+    }
+    case 'emgHorn': {
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.1,3,10), M.metal);
+      pole.position.y = -1.5; g.add(pole);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.25,0.15,12), M.gray);
+      base.position.y = -2.9; g.add(base);
+      const bk = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.3,0.25),
+        new THREE.MeshStandardMaterial({color:0xcc0000,roughness:0.5,metalness:0.4}));
+      bk.castShadow = true; g.add(bk);
+      const horn = new THREE.Mesh(new THREE.CylinderGeometry(0.26,0.1,0.42,16,1,true), M.steel);
+      horn.rotation.x = Math.PI/2; horn.position.z = 0.31; g.add(horn);
+      const beacon = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,0.15,12), M.ledRed);
+      beacon.position.y = 0.22; g.add(beacon);
+      break;
+    }
+    case 'emgStrobe': {
+      const d = new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.09,0.02,20), M.body);
+      g.add(d);
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.07,20), M.dark());
+      gr.rotation.x = Math.PI/2; gr.position.y = -0.012; g.add(gr);
+      const r = new THREE.Mesh(new THREE.RingGeometry(0.07,0.09,20), M.ledRed);
+      r.rotation.x = -Math.PI/2; r.position.y = -0.013; g.add(r);
+      const strobe = new THREE.Mesh(new THREE.SphereGeometry(0.035,10,8),
+        new THREE.MeshStandardMaterial({color:0xffffff,emissive:0xffffff,emissiveIntensity:2.5}));
+      strobe.position.y = -0.02; g.add(strobe);
+      break;
+    }
+    default: {
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.3,0.3), M.body);
+      b.castShadow = true; g.add(b);
+    }
+  }
+
+  const ring = new THREE.Mesh(
+    new THREE.RingGeometry(0.7,0.78,32),
+    new THREE.MeshBasicMaterial({color:0xec4899,transparent:true,opacity:0,
+      side:THREE.DoubleSide,depthWrite:false})
+  );
+  ring.rotation.x = -Math.PI/2; ring.position.y = 0.03; ring.name = 'selRing';
+  g.add(ring);
+  return g;
+}
+
+/* ============ BUILD ROOM ============ */
+function clearGroup(g) {
+  while (g.children.length) {
+    const c = g.children[0]; g.remove(c);
+    c.traverse?.(o => {
+      if (o.geometry) o.geometry.dispose();
+      if (o.material) {
+        if (Array.isArray(o.material)) o.material.forEach(m => m.dispose());
+        else o.material.dispose();
+      }
+    });
+  }
+}
+
+function buildRoom() {
+  clearGroup(roomGrp);
+
+  for (const f of ROOM.features) {
+    if (f.type === 'floor') {
+      const fl = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.05, f.d), M.carpet());
+      fl.position.set(f.x, 0.025, f.z); fl.receiveShadow = true; roomGrp.add(fl);
+    }
+
+    if (f.type === 'ceiling') {
+      const ceil = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.1, f.d), M.ceiling());
+      ceil.position.set(f.x, f.h, f.z); roomGrp.add(ceil);
+      for (let i=0;i<10;i++) {
+        for (let j=0;j<8;j++) {
+          const panel = new THREE.Mesh(new THREE.BoxGeometry(1.4,0.06,1.4), M.ceilingPanel());
+          panel.position.set(-6.3 + i*1.4, f.h - 0.04, -4.9 + j*1.4);
+          roomGrp.add(panel);
+        }
+      }
+      for (let i=0;i<4;i++) {
+        const light = new THREE.PointLight(0xfff0ff, 0.5, 12, 2);
+        light.position.set(-5 + i*3.3, f.h - 0.4, 0); roomGrp.add(light);
+      }
+    }
+
+    if (f.type === 'wall') {
+      const wall = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.h, f.d), M.wall());
+      wall.position.set(f.x, f.h/2, f.z); wall.receiveShadow = true; roomGrp.add(wall);
+      /* Wall accent panels */
+      const isSide = f.w < f.d;
+      const length = isSide ? f.d : f.w;
+      for (let i=0;i<Math.floor(length/3);i++) {
+        for (let r=0;r<2;r++) {
+          const panel = new THREE.Mesh(
+            new THREE.BoxGeometry(isSide ? 0.02 : 2.8, 1.4, isSide ? 2.8 : 0.02),
+            r % 2 === 0 ? M.wallAccent() : M.wall()
+          );
+          const y = 1 + r * 1.8;
+          if (isSide) panel.position.set(f.x + (f.x>0?-0.02:0.02), y, f.z - length/2 + 1.5 + i*3);
+          else panel.position.set(f.x - length/2 + 1.5 + i*3, y, f.z + (f.z>0?-0.02:0.02));
+          roomGrp.add(panel);
+        }
+      }
+    }
+
+    if (f.type === 'greenscreen') {
+      /* Green screen backdrop */
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(f.w, f.h), M.greenScreen());
+      screen.position.set(f.x, f.h/2 + 0.05, f.z); roomGrp.add(screen);
+      /* Top frame */
+      const topFrame = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.2, 0.1, 0.1), M.greenFrame());
+      topFrame.position.set(f.x, f.h + 0.05, f.z); roomGrp.add(topFrame);
+      /* Side frames */
+      for (const sx of [-1, 1]) {
+        const sideFrame = new THREE.Mesh(new THREE.BoxGeometry(0.1, f.h, 0.1), M.greenFrame());
+        sideFrame.position.set(f.x + sx*f.w/2, f.h/2 + 0.05, f.z); roomGrp.add(sideFrame);
+      }
+      /* Bottom frame */
+      const botFrame = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.2, 0.1, 0.1), M.greenFrame());
+      botFrame.position.set(f.x, 0.05, f.z); roomGrp.add(botFrame);
+    }
+
+    if (f.type === 'anchorDesk') {
+      /* Main anchor desk */
+      const top = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.08, f.d), M.deskTop());
+      top.position.set(f.x, f.H, f.z); top.castShadow = true; top.receiveShadow = true; roomGrp.add(top);
+      const edge = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.1, 0.05, f.d + 0.1), M.deskEdge());
+      edge.position.set(f.x, f.H - 0.04, f.z); roomGrp.add(edge);
+      /* Table front panel */
+      const front = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.H - 0.1, 0.05), M.deskEdge());
+      front.position.set(f.x, f.H/2 - 0.05, f.z - f.d/2 + 0.02); roomGrp.add(front);
+      /* Legs */
+      for (const sx of [-1, 1]) {
+        const leg = new THREE.Mesh(new THREE.BoxGeometry(0.15, f.H - 0.1, f.d - 0.2), M.gray);
+        leg.position.set(f.x + sx*(f.w/2 - 0.4), (f.H - 0.1)/2, f.z); roomGrp.add(leg);
+      }
+      /* Monitor on desk */
+      const monBase = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.02, 0.15), M.body);
+      monBase.position.set(f.x, f.H + 0.05, f.z + 0.3); roomGrp.add(monBase);
+      const monPost = new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.3,8), M.metal);
+      monPost.position.set(f.x, f.H + 0.2, f.z + 0.3); roomGrp.add(monPost);
+      const monScreen = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.4, 0.03), M.monitorFrame());
+      monScreen.position.set(f.x, f.H + 0.55, f.z + 0.3); roomGrp.add(monScreen);
+      const monDisplay = new THREE.Mesh(new THREE.PlaneGeometry(0.66, 0.36), M.monitorScreen());
+      monDisplay.position.set(f.x, f.H + 0.55, f.z + 0.32); roomGrp.add(monDisplay);
+    }
+
+    if (f.type === 'guestTable' || f.type === 'cohostDesk') {
+      const top = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.06, f.d), M.deskTop());
+      top.position.set(f.x, f.H, f.z); top.castShadow = true; roomGrp.add(top);
+      const edge = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.1, 0.04, f.d + 0.1), M.deskEdge());
+      edge.position.set(f.x, f.H - 0.03, f.z); roomGrp.add(edge.);
+      /* Legs */
+      for (const sx oftheta [-1, 1]) {
+        const leg) = new THREE.Mesh(new THREE.BoxGeometry(0. -1, f.H - 0.08, f.d - dy 0.2), M.gray);
+        leg.position.set(f.x + sx*(f.w/2 - 0.3), (f.H - 0.08)/2, f.z); roomGrp.add(leg);
+      }
+    }
+
+    if (f.type === 'controlRoom') {
+      /* Control room structure */
+      const body = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.H, f.d), M.controlBooth());
+      body.position.set(f.x, f.H/2, f.z); body.castShadow = true; roomGrp.add(body);
+      const roof = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.3, 0.2, f.d + 0.3), M.wall());
+      roof.position.set(f.x, f.H + 0.1, f.z); roomGrp.add(roof);
+      /* Glass window (front) */
+      const glass = new THREE.Mesh(new THREE.PlaneGeometry(f.w - 1, f.H - 1.2), M.controlGlass());
+      glass.position.set(f.x, f.H/2, f.z - f.d/2 - 0.01); roomGrp.add(glass);
+      /* "ON AIR" sign */
+      const sign = new THREE.Mesh(new THREE.PlaneGeometry(2.5, 0.6), M.ledRed());
+      sign.position.set(f.x, f.H - 0.4, f.z - f.d/2 - 0.02); roomGrp.add(sign);
+      /* Door */
+      const door = new THREE.Mesh(new THREE.BoxGeometry(0.9, 2.2, 0.06), M.door());
+      door.position.set(f.x + f.w/2 - 0.8, 1.1, f.z - f.d/2 - 0.04); roomGrp.add(door);
+    }
+
+    if (f.type === 'prompter') {
+      /* Teleprompter pole */
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.08, 1.5, 10), M.metal);
+      pole.position.set(f.x, 0.75, f.z); roomGrp.add(pole);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.3, 0.15, 14), M.gray);
+      base.position.set(f.x, 0.08, f.z); roomGrp.add(base);
+      const body = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.4, 0.2), M.body);
+      body.position.set(f.x, 1.6, f.z); roomGrp.add(body);
+      const glass = new THREE.Mesh(new THREE.PlaneGeometry(0.5, 0.3),
+        new THREE.MeshBasicMaterial({color:0x0a3a5a,transparent:true,opacity:0.7}));
+      glass.position.set(f.x, 1.6, f.z + 0.11); roomGrp.add(glass);
+    }
+
+    if (f.type === 'door') {
+      const frame = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.15, f.h + 0.1, 0.1), M.doorFrame());
+      frame.position.set(f.x, f.h/2 + 0.05, f.z); roomGrp.add(frame);
+      const door = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.h, 0.06), M.door());
+      door.position.set(f.x, f.h/2, f.z + 0.06); roomGrp.add(door);
+      const handle = new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.2,10), M.metal);
+      handle.rotation.z = Math.PI/2;
+      handle.position.set(f.x + f.w/2 - 0.15, f.h/2, f.z + 0.11); roomGrp.add(handle);
+      /* Exit sign */
+      const exitSign = new THREE.Mesh(new THREE.PlaneGeometry(0.6, 0.3), M.ledGreen());
+      exitSign.position.set(f.x, f.h + 0.3, f.z); roomGrp.add(exitSign);
+    }
+  }
+
+  /* Add chairs at desks */
+  const chairPositions = [
+    /* Anchor desk chairs */
+    [-1.5, 3.2, Math.PI],
+    [0, 3.2, Math.PI],
+    [1.5, 3.2, Math.PI],
+    /* Guest table chairs */
+    [-6, 1.3, 0],
+    [-5, 1.3, 0],
+    [-4, 1.3, 0],
+    /* Co-host chairs */
+    [4, 1.3, 0],
+    [5, 1.3, 0],
+    [6, 1.3, 0]
+  ];
+
+  chairPositions.forEach(([cx, cz, ry]) => {
+    const chair = new THREE.Group();
+    const seat = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.08, 0.5), M.body);
+    seat.position.y = 0.45; chair.add(seat);
+    const back = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.55, 0.07), M.dark());
+    back.position.set(0, 0.72, 0.25); chair.add(back);
+    const post = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.06,0.35,10), M.gray);
+    post.position.y = 0.22; chair.add(post);
+    const base = new THREE.Mesh(new THREE.CylinderGeometry(0.28,0.28,0.05,16), M.gray);
+    base.position.y = 0.03; chair.add(base);
+    for (let i=0;i<5;i++) {
+      const a = (i/5)*Math.PI*2;
+      const wheel = new THREE.Mesh(new THREE.SphereGeometry(0.04,8,6), M.dark());
+      wheel.position.set(Math.cos(a)*0.22, 0.04, Math.sin(a)*0.22);
+      chair.add(wheel);
+    }
+    chair.position.set(cx, 0, cz); chair.rotation.y = ry;
+    roomGrp.add(chair);
+  });
+}
+
+/* ============ DEVICES ============ */
+const meshById = new Map();
+function buildDevices() {
+  clearGroup(devGrp); meshById.clear();
+  for (const d of state.devices) {
+    const spec = getSpec(d.cat, d.typeId); if (!spec) continue;
+    const color = BRANDS[d.brand] ? BRANDS[d.brand].color : 0xec4899;
+    const mesh = makeMesh(d.cat, d.typeId, color); if (!mesh) continue;
+    mesh.position.set(d.x, spec.h, d.z);
+    mesh.rotation.y = d.rot || 0;
+    mesh.userData.devId = d.id;
+    mesh.userData.dev = d;
+    mesh.userData.spec = spec;
+    devGrp.add(mesh);
+    meshById.set(d.id, mesh);
+  }
+  updateSelectionVisuals();
+}
+function updateSelectionVisuals() {
+  devGrp.children.forEach(m => {
+    const r = m.getObjectByName('selRing');
+    if (r) r.material.opacity = (state.selected === m.userData.devId) ? 0.9 : 0;
+  });
+}
+
+/* ============ HEATMAP ============ */
+let heatMesh = null;
+function disposeHeat() {
+  if (heatMesh) { heatGrp.remove(heatMesh); heatMesh.geometry.dispose(); heatMesh.material.dispose(); heatMesh = null; }
+}
+function buildHeatmap() {
+  disposeHeat();
+  if (!state.showHeat) return;
+  const speakers = state.devices.filter(d =>
+    ['mainPA','ceilingSpk','deskMon','studioMon','delay','paging','emergency'].includes(d.cat)
+  );
+  if (!speakers.length) {
+    document.getElementById('hudSpl').textContent = '—';
+    document.getElementById('hudCoverage').textContent = '0%';
+    return;
+  }
+  const SIZE = Math.max(ROOM.size[0], ROOM.size[1]) * 1.15;
+  const RES = 60;
+  const geo = new THREE.PlaneGeometry(SIZE, SIZE, RES, RES);
+  geo.rotateX(-Math.PI/2);
+  const colors = new Float32Array(geo.attributes.position.count * 3);
+  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  heatMesh = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({
+    vertexColors: true, transparent: true, opacity: 0.5,
+    depthWrite: false, side: THREE.DoubleSide
+  }));
+  heatMesh.position.y = 0.15;
+  heatMesh.renderOrder = 1;
+  heatGrp.add(heatMesh);
+  updateHeatColors();
+}
+function calcSPL(x, z) {
+  let tot = 0;
+  for (const spk of state.devices) {
+    if (!['mainPA','ceilingSpk','deskMon','studioMon','delay','paging','emergency'].includes(spk.cat)) continue;
+    const spec = getSpec(spk.cat, spk.typeId);
+    if (!spec || !spec.power) continue;
+    const power = spk.power || spec.power;
+    const dx = x - spk.x, dz = z - spk.z;
+    const dy = -spec.h;
+    const d = Math.sqrt(dx*dx + dy*dy + dz*dz);
+    if (d < 0.5) continue;
+    const s1m = 88 + 10 * Math.log10(Math.max(power,1));
+    let dl = 0;
+    if (spec.dir) {
+      const facing = spk.rot || 0;
+      const tl = Math.atan2(dx, dz);
+      let a = Math.abs(facing - tl);
+      if (a > Math.PI) a = 2*Math.PI - a;
+      dl = -11 * (1 - Math.cos(a));
+    }
+    const dL = -20 * Math.log10(d);
+    const v = s1m + dL + dl;
+    if (v < -20) continue;
+    tot += Math.pow(10, v/10);
+  }
+  return tot > 0 ? 10 * Math.log10(tot) : 0;
+}
+const SPL_STOPS = [
+  [45,0.05,0.10,0.45],[55,0.00,0.30,0.80],[63,0.00,0.65,0.95],
+  [70,0.00,0.90,0.90],[77,0.30,0.90,0.45],[84,0.85,0.90,0.25],
+  [92,1.00,0.65,0.15],[100,1.00,0.25,0.10],[115,0.85,0.05,0.15]
+];
+function splRGB(v) {
+  const S = SPL_STOPS, N = S.length;
+  if (v <= S[0][0]) return [S[0][1],S[0][2],S[0][3]];
+  if (v >= S[N-1][0]) return [S[N-1][1],S[N-1][2],S[N-1][3]];
+  for (let i=0;i<N-1;i++) {
+    const a=S[i], b=S[i+1];
+    if (v>=a[0] && v<=b[0]) {
+      const t = (v-a[0])/(b[0]-a[0]);
+      return [a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t,a[3]+(b[3]-a[3])*t];
+    }
+  }
+  return [1,1,1];
+}
+function updateHeatColors() {
+  if (!heatMesh) return;
+  const pos = heatMesh.geometry.attributes.position;
+  const col = heatMesh.geometry.attributes.color;
+  let mx = 0, covered = 0;
+  const total = pos.count;
+  for (let i=0;i<total;i++) {
+    const x = pos.getX(i), z = pos.getZ(i);
+    const v = calcSPL(x, z);
+    if (v > mx) mx = v;
+    if (v >= 68) covered++;
+    const c = splRGB(v);
+    col.setXYZ(i, c[0], c[1], c[2]);
+  }
+  col.needsUpdate = true;
+  document.getElementById('hudSpl').textContent = mx > 0 ? mx.toFixed(0) + ' dB' : '—';
+  const covPct = total > 0 ? Math.round((covered/total)*100) : 0;
+  document.getElementById('hudCoverage').textContent = covPct + '%';
+  const statSpl = document.getElementById('statSpl');
+  const statCov = document.getElementById('statCov');
+  statSpl.classList.remove('good','warn');
+  statCov.classList.remove('good','warn');
+  if (mx >= 65 && mx <= 85) statSpl.classList.add('good');
+  else if (mx > 0) statSpl.classList.add('warn');
+  if (covPct >= 70) statCov.classList.add('good');
+  else if (covPct >= 45) statCov.classList.add('warn');
+}
+
+/* ============ HISTORY ============ */
+function serialize() {
+  return JSON.stringify(state.devices.map(d => ({
+    id:d.id, brand:d.brand, cat:d.cat, typeId:d.typeId,
+    x:d.x, z:d.z, rot:d.rot, power:d.power
+  })));
+}
+function pushHistory() {
+  state.history = state.history.slice(0, state.historyIdx + 1);
+  state.history.push(serialize());
+  state.historyIdx = state.history.length - 1;
+}
+function applyHistory(json) {
+  state.devices = JSON.parse(json);
+  state.nextId = state.devices.length ? Math.max(...state.devices.map(d=>d.id))+1 : 1;
+  buildDevices(); buildHeatmap(); updateHUD(); deselect();
+}
+function undo() {
+  if (state.historyIdx > 0) { state.historyIdx--; applyHistory(state.history[state.historyIdx]); toast(T('to_undo')); }
+}
+function redo() {
+  if (state.historyIdx < state.history.length - 1) { state.historyIdx++; applyHistory(state.history[state.historyIdx]); toast(T('to_redo')); }
+}
+
+/* ============ CAMERA ============ */
+function updateCamera() {
+  const {theta, phi, radius, target} = state.cam;
+  const x = target.x + radius * Math.sin(phi) * Math.sin(theta);
+  const y = target.y + radius * Math.cos(phi);
+  const z = target.z + radius * Math.sin(phi) * Math.cos(theta);
+  camera.position.set(x, Math.max(y, 0.5), z);
+  camera.lookAt(target);
+}
+function tweenCamera(to, dur) {
+  const from = {theta: state.cam.theta, phi: state.cam.phi, radius: state.cam.radius, target: state.cam.target.clone()};
+  state.cam.tween = {from, to, dur, start:performance.now()};
+}
+function updateTween() {
+  const t = state.cam.tween; if (!t) return;
+  const p = Math.min(1, (performance.now() - t.start) / t.dur);
+  const e = p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p+2,3)/2;
+  state.cam.theta = t.from.theta + (t.to.theta - t.from.theta) * e;
+  state.cam.phi = t.from.phi + (t.to.phi - t.from.phi) * e;
+  state.cam.radius = t.from.radius + (t.to.radius - t.from.radius) * e;
+  state.cam.target.lerpVectors(t.from.target, t.to.target, e);
+  updateCamera();
+  if (p >= 1) state.cam.tween = null;
+}
+function setView3D(on) {
+  state.view3D = on;
+  const btn = document.getElementById('viewBtn');
+  btn.textContent = on ? '✏️ 2D' : '🎬 3D';
+  btn.classList.toggle('on', !on);
+  const r = Math.max(ROOM.size[0], ROOM.size[1]) * 1.6;
+  if (on) tweenCamera({theta:-0.5, phi:0.9, radius:r, target:new THREE.Vector3(0,1.5,0)}, 900);
+  else tweenCamera({theta:0, phi:0.02, radius:r, target:new THREE.Vector3(0,0,0)}, 900);
+}
+function fitView() {
+  const r = Math.max(ROOM.size[0], ROOM.size[1]) * 1.6;
+  if (state.view3D) tweenCamera({theta:-0.5, phi:0.9, radius:r, target:new THREE.Vector3(0,1.5,0)}, 700);
+  else tweenCamera({theta:0, phi:0.02, radius:r, target:new THREE.Vector3(0,0,0)}, 700);
+}
+
+/* ============ INTERACTION ============ */
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
+const activePointers = new Map();
+let isDown = false, moved = false, dragDev = null;
+let dragOff = {x:0, z:0};
+let startPt = {x:0, y:0};
+let pinchStart = null;
+
+function canvasPos(cx, cy) {
+  const r = canvas.getBoundingClientRect();
+  pointer.x = ((cx - r.left) / r.width) * 2 - 1;
+  pointer.y = -((cy - r.top) / r.height) * 2 + 1;
+}
+function hitDevice(cx, cy) {
+  canvasPos(cx, cy);
+  raycaster.setFromCamera(pointer, camera);
+  const hits = raycaster.intersectObjects(devGrp.children, true);
+  for (const h of hits) {
+    let o = h.object;
+    while (o && o.userData.devId === undefined) o = o.parent;
+    if (o) return o;
+  }
+  return null;
+}
+const floorPlane = new THREE.Plane(new THREE.Vector3(0,1,0), 0);
+function floorPoint(cx, cy) {
+  canvasPos(cx, cy);
+  raycaster.setFromCamera(pointer, camera);
+  const p = new THREE.Vector3();
+  return raycaster.ray.intersectPlane(floorPlane, p) ? p : null;
+}
+
+canvas.addEventListener('pointerdown', e => {
+  activePointers.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  if (activePointers.size === 1) {
+    startPt = {x:e.clientX, y:e.clientY};
+    isDown = true; moved = false; dragDev = null;
+    const hit = hitDevice(e.clientX, e.clientY);
+    if (hit) {
+      dragDev = hit;
+      const fp = floorPoint(e.clientX, e.clientY);
+      if (fp) { dragOff.x = hit.userData.dev.x - fp.x; dragOff.z = hit.userData.dev.z - fp.z; }
+    }
+  } else if (activePointers.size === 2) {
+    dragDev = null; isDown = false; moved = true;
+    const pts = [...activePointers.values()];
+    pinchStart = {dist: Math.hypot(pts[0].x-pts[1].x, pts[0].y-pts[1].y) || 1, radius: state.cam.radius};
+  }
+}, {passive:true});
+
+canvas.addEventListener('pointermove', e => {
+  if (!activePointers.has(e.pointerId)) return;
+  const prev = activePointers.get(e.pointerId);
+  activePointers.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  if (activePointers.size === 2 && pinchStart) {
+    const pts = [...activePointers.values()];
+    const d = Math.hypot(pts[0].x-pts[1].x, pts[0].y-pts[1].y) || 1;
+    state.cam.radius = Math.max(5, Math.min(120, pinchStart.radius * (pinchStart.dist/d)));
+    state.cam.tween = null; updateCamera(); return;
+  }
+  if (!isDown) return;
+  const dx = e.clientX - prev.x;
+  const dy = e.clientY - prev.y;
+  if (Math.abs(e.clientX-startPt.x) + Math.abs(e.clientY-startPt.y) > 6) moved = true;
+  if (dragDev && moved) {
+    const fp = floorPoint(e.clientX, e.clientY);
+    if (fp) {
+      const d = dragDev.userData.dev;
+      d.x = Math.round((fp.x + dragOff.x)*10)/10;
+      d.z = Math.round((fp.z + dragOff.z)*10)/10;
+      dragDev.position.set(d.x, dragDev.userData.spec.h, d.z);
+      if (state.showHeat) updateHeatColors();
+      updateInfo();
+    }
+  } else if (!dragDev && moved && !state.presentation) {
+    if (state.view3D) {
+      state.cam.tween = null;
+      state.cam.theta -= dx * 0.008;
+      state.cam.phi = Math.max(0.12, Math.min(1.5, state.cam.phi + dy * 0.008));
+      updateCamera();
+    } else {
+      state.cam.tween = null;
+      const ps = state.cam.radius * 0.0018;
+      state.cam.target.x -= (dx*Math.cos(state.cam*Math.sin(state.cam.theta)) * ps;
+      state.cam.target.z -= (dx*Math.sin(state.cam.theta) + dy*Math.cos(state.cam.theta)) * ps;
+      updateCamera();
+    }
+  }
+}, {passive:true});
+
+function endPointer(e) {
+  activePointers.delete(e.pointerId);
+  if (activePointers.size === 0) {
+    if (isDown && !moved && !state.presentation) {
+      const hit = hitDevice(e.clientX, e.clientY);
+      if (hit) select(hit.userData.devId);
+      else if (state.selected !== null) deselect();
+      else {
+        const fp = floorPoint(e.clientX, e.clientY);
+        if (fp) { placeDevice(fp.x, fp.z); pushHistory(); }
+      }
+    }
+    isDown = false; dragDev = null; moved = false; pinchStart = null;
+  } else {
+    pinchStart = null; isDown = false; dragDev = null; moved = true;
+  }
+}
+canvas.addEventListener('pointerup', endPointer, {passive:true});
+canvas.addEventListener('pointercancel', endPointer, {passive:true});
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  state.cam.tween = null;
+  const factor = e.deltaY > 0 ? 1.1 : 0.9;
+  state.cam.radius = Math.max(5, Math.min(120, state.cam.radius * factor));
+  updateCamera();
+}, {passive:false});
+
+/* ============ ACTIONS ============ */
+function placeDevice(x, z) {
+  const spec = getSpec(state.curCat, state.curType); if (!spec) return;
+  const d = {id: state.nextId++, brand: state.curBrand, cat: state.curCat, typeId: state.curType,
+    x: Math.round(x*10)/10, z: Math.round(z*10)/10, rot: 0, power: spec.power};
+  state.devices.push(d);
+  buildDevices();
+  if (state.showHeat) buildHeatmap();
+  updateHUD();
+  toast(spec.emoji + ' ' + devName(spec));
+}
+function select(id) {
+  state.selected = id;
+  updateSelectionVisuals(); updateInfo();
+  document.getElementById('info').classList.add('on');
+}
+function deselect() {
+  state.selected = null;
+  updateSelectionVisuals();
+  document.getElementById('info').classList.remove('on');
+}
+function deleteSelected() {
+  if (state.selected === null) return;
+  state.devices = state.devices.filter(d => d.id !== state.selected);
+  state.selected = null;
+  document.getElementById('info').classList.remove('on');
+  buildDevices(); buildHeatmap(); updateHUD(); pushHistory();
+  toast(T('to_deleted'));
+}
+function updateInfo() {
+  if (state.selected === null) return;
+  const d = state.devices.find(x => x.id === state.selected); if (!d) return;
+  const spec = getSpec(d.cat, d.typeId); if (!spec) return;
+  document.getElementById('infName').textContent = spec.emoji + ' ' + devName(spec);
+  document.getElementById('infBrand').textContent = brandName(d.brand);
+  document.getElementById('infType').textContent = catName(d.cat);
+  document.getElementById('infPower').textContent = spec.power > 0 ? (d.power||spec.power) + ' W' : '—';
+  document.getElementById('infH').textContent = spec.h.toFixed(1) + (LANG==='ar'?' م':' m');
+  document.getElementById('infPos').textContent = d.x.toFixed(1) + ', ' + d.z.toFixed(1);
+  const pw = document.getElementById('powerSlider');
+  pw.value = d.power || spec.power;
+  document.getElementById('powerVal').textContent = (d.power||spec.power) + 'W';
+  document.getElementById('powerWrap').style.display = spec.power > 0 ? 'flex' : 'none';
+  const rs = document.getElementById('rotSlider');
+  const deg = Math.round((d.rot||0) * 180 / Math.PI);
+  rs.value = deg;
+  document.getElementById('rotVal').textContent = deg + '°';
+  document.getElementById('rotWrap').style.display = spec.dir ? 'flex' : 'none';
+  document.getElementById('roomWInput').value = ROOM.size[0];
+  document.getElementById('roomDInput').value = ROOM.size[1];
+}
+
+/* ============ UI ============ */
+function buildCats() {
+  const el = document.getElementById('cats'); el.innerHTML = '';
+  for (const key in CATS) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'cat' + (key === state.curCat ? ' on' : '');
+    b.dataset.cat = key;
+    b.textContent = CATS[key].emoji + ' ' + catName(key);
+    b.onclick = () => selectCat(key);
+    el.appendChild(b);
+  }
+}
+function buildBrands() {
+  const el = document.getElementById('brands'); el.innerHTML = '';
+  for (const key in BRANDS) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'brand' + (key === state.curBrand ? ' on' : '');
+    b.dataset.brand = key;
+    b.textContent = brandName(key);
+    b.onclick = () => selectBrand(key);
+    el.appendChild(b);
+  }
+}
+function buildTypes() {
+  const el = document.getElementById('types'); el.innerHTML = '';
+  for (const d of CATS[state.curCat].devices) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'type' + (d[0] === state.curType ? ' on' : '');
+    b.dataset.typeId = d[0];
+    b.innerHTML = '<span class="em">' + d[2] + '</span><span class="nm">' + T(d[1]) + '</span>';
+    b.onclick = () => selectType(d[0]);
+    el.appendChild(b);
+  }
+}
+function selectCat(key) {
+  state.curCat = key;
+  state.curType = CATS[key].devices[0][0];
+  document.querySelectorAll('.cat').forEach(b => b.classList.toggle('on', b.dataset.cat === key));
+  buildTypes();
+}
+function selectBrand(key) {
+  state.curBrand = key;
+  document.querySelectorAll('.brand').forEach(b => b.classList.toggle('on', b.dataset.brand === key));
+}
+function selectType(id) {
+  state.curType = id;
+  document.querySelectorAll('.type').forEach(b => b.classList.toggle('on', b.dataset.typeId === id));
+}
+function updateHUD() { document.getElementById('hudCount').textContent = state.devices.length; }
+let toastTO;
+function toast(m) {
+  const el = document.getElementById('toast');
+  el.textContent = m; el.classList.add('on');
+  clearTimeout(toastTO);
+  toastTO = setTimeout(() => el.classList.remove('on'), 1700);
+}
+function loadInitialDevices() {
+  state.devices = []; state.nextId = 1; state.selected = null;
+  for (const item of ROOM.devices) {
+    const [brand, cat, typeId, x, z, rot] = item;
+    const spec = getSpec(cat, typeId); if (!spec) continue;
+    state.devices.push({id: state.nextId++, brand, cat, typeId, x, z, rot: rot || 0, power: spec.power});
+  }
+  buildRoom(); buildDevices(); buildHeatmap(); updateHUD(); deselect();
+  state.history = [serialize()]; state.historyIdx = 0;
+}
+
+/* ============ REPORT ============ */
+function generateReport() {
+  const totalPower = state.devices.reduce((a,d) => {
+    const s = getSpec(d.cat, d.typeId);
+    return a + (s && s.power ? (d.power || s.power) : 0);
+  }, 0);
+  const counts = {};
+  state.devices.forEach(d => {
+    const spec = getSpec(d.cat, d.typeId); if (!spec) return;
+    const key = brandName(d.brand) + ' · ' + devName(spec);
+    counts[key] = (counts[key] || 0) + 1;
+  });
+  let rows = '';
+  const entries = Object.entries(counts);
+  if (entries.length) {
+    for (const [name, qty] of entries) rows += `<tr><td>${name}</td><td>${qty}</td></tr>`;
+  } else {
+    rows = `<tr><td colspan="2" style="text-align:center;color:#888">${T('rep_empty')}</td></tr>`;
+  }
+  const splVal = document.getElementById('hudSpl').textContent;
+  const covVal = document.getElementById('hudCoverage').textContent;
+
+  const rt60 = 0.35;
+  const capacity = 15;
+  const micCount = state.devices.filter(d => d.cat.includes('Mic')).length;
+  const cameraCount = state.devices.filter(d => d.cat === 'ptzCamera' || d.cat === 'fixedCam').length;
+  const lightCount = state.devices.filter(d => d.cat === 'lighting').length;
+  const streamCount = state.devices.filter(d => d.cat === 'streaming').length;
+  const hasHost = state.devices.filter(d => d.cat === 'hostMic').length >= 2;
+  const hasGuest = state.devices.filter(d => d.cat === 'guestMic').length >= 2;
+  const hasLav = state.devices.filter(d => d.cat === 'lavMic').length >= 2;
+  const hasHeadset = state.devices.filter(d => d.cat === 'headsetMic').length >= 2;
+  const hasStudioMon = state.devices.filter(d => d.cat === 'studioMon').length >= 3;
+  const hasMainPA = state.devices.filter(d => d.cat === 'mainPA').length >= 2;
+  const hasCeilingSpk = state.devices.filter(d => d.cat === 'ceilingSpk').length >= 3;
+  const hasDeskMon = state.devices.filter(d => d.cat === 'deskMon').length >= 2;
+  const hasPTZ = state.devices.filter(d => d.cat === 'ptzCamera').length >= 2;
+  const hasFixed = state.devices.filter(d => d.cat === 'fixedCam').length >= 2;
+  const hasTracking = state.devices.filter(d => d.cat === 'cameraTracking').length >= 2;
+  const hasStreaming = state.devices.filter(d => d.cat === 'streaming').length >= 2;
+  const hasRecording = state.devices.filter(d => d.cat === 'recording').length >= 2;
+  const hasLighting = state.devices.filter(d => d.cat === 'lighting').length >= 4;
+  const hasGreen = state.devices.filter(d => d.cat === 'greenscreen').length >= 2;
+  const hasPrompter = state.devices.filter(d => d.cat === 'teleprompter').length >= 1;
+  const hasPaging = state.devices.some(d => d.cat === 'paging');
+  const hasEmergency = state.devices.some(d => d.cat === 'emergency');
+
+  document.getElementById('reportModalBody').innerHTML = `
+    <div class="report-section">
+      <h4>📍 ${T('rep_env_info')}</h4>
+      <div class="row"><span>${T('rep_env_type')}</span><span>${ROOM.name[LANG]}</span></div>
+      <div class="row"><span>${T('rep_dim')}</span><span>${ROOM.size[0]}m × ${ROOM.size[1]}m</span></div>
+      <div class="row"><span>${T('rep_area')}</span><span>${(ROOM.size[0]*ROOM.size[1]).toLocaleString()} m²</span></div>
+      <div class="row"><span>${T('rep_capacity')}</span><span>~${capacity} ${LANG==='ar'?'شخص':'people'}</span></div>
+      <div class="row"><span>${T('rep_mics')}</span><span>${micCount}</span></div>
+      <div class="row"><span>${T('rep_cameras')}</span><span>${cameraCount}</span></div>
+      <div class="row"><span>${T('rep_lighting')}</span><span>${lightCount}</span></div>
+      <div class="row"><span>${T('rep_streaming')}</span><span>${streamCount}</span></div>
+      <div class="row"><span>${T('rep_total_dev')}</span><span>${state.devices.length}</span></div>
+      <div class="row"><span>${T('rep_total_power')}</span><span>${(totalPower/1000).toFixed(2)} kW</span></div>
+      <div class="row"><span>${T('rep_date')}</span><span>${new Date().toLocaleString(LANG==='ar'?'ar-EG':'en-US')}</span></div>
+    </div>
+    <div class="report-section">
+      <h4>🔊 ${T('rep_equip')}</h4>
+      <table class="report-table">
+        <thead><tr><th>${T('rep_device')}</th><th style="width:80px;text-align:center">${T('rep_qty')}</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <div class="report-section">
+      <h4>📊 ${T('rep_analysis')}</h4>
+      <div class="row"><span>${T('rep_max_spl')}</span><span>${splVal}</span></div>
+      <div class="row"><span>${T('rep_coverage')}</span><span>${covVal}</span></div>
+      <div class="row"><span>${T('rep_sti')}</span><span>${T('rep_sti_target')}</span></div>
+      <div class="row"><span>${T('rep_rt')}</span><span>${rt60.toFixed(2)}s</span></div>
+      <div class="row"><span>${T('rep_nc')}</span><span>${T('rep_nc_target')}</span></div>
+      <div class="row"><span>🎙️ ${T('cat_hostMic')}</span><span style="color:${hasHost?'#ec4899':'#fbbf24'}">${hasHost ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>👥 ${T('cat_guestMic')}</span><span style="color:${hasGuest?'#ec4899':'#fbbf24'}">${hasGuest ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>🧷 ${T('cat_lavMic')}</span><span style="color:${hasLav?'#ec4899':'#fbbf24'}">${hasLav ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>🎧 ${T('cat_headsetMic')}</span><span style="color:${hasHeadset?'#ec4899':'#fbbf24'}">${hasHeadset ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>🔊 ${T('cat_studioMon')}</span><span style="color:${hasStudioMon?'#ec4899':'#fbbf24'}">${hasStudioMon ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>🎛️ ${T('cat_mainPA')}</span><span style="color:${hasMainPA?'#ec4899':'#fbbf24'}">${hasMainPA ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>🔈 ${T('cat_ceilingSpk')}</span><span style="color:${hasCeilingSpk?'#ec4899':'#fbbf24'}">${hasCeilingSpk ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>🔉 ${T('cat_deskMon')}</span><span style="color:${hasDeskMon?'#ec4899':'#fbbf24'}">${hasDeskMon ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>📹 ${T('cat_ptzCamera')}</span><span style="color:${hasPTZ?'#ec4899':'#fbbf24'}">${hasPTZ ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>🎬 ${T('cat_fixedCam')}</span><span style="color:${hasFixed?'#ec4899':'#fbbf24'}">${hasFixed ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>🎯 ${T('cat_cameraTracking')}</span><span style="color:${hasTracking?'#ec4899':'#fbbf24'}">${hasTracking ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>📡 ${T('cat_streaming')}</span><span style="color:${hasStreaming?'#ec4899':'#fbbf24'}">${hasStreaming ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>📼 ${T('cat_recording')}</span><span style="color:${hasRecording?'#ec4899':'#fbbf24'}">${hasRecording ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>💡 ${T('cat_lighting')}</span><span style="color:${hasLighting?'#ec4899':'#fbbf24'}">${hasLighting ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>🟢 ${T('cat_greenscreen')}</span><span style="color:${hasGreen?'#ec4899':'#fbbf24'}">${hasGreen ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>📺 ${T('cat_teleprompter')}</span><span style="color:${hasPrompter?'#ec4899':'#fbbf24'}">${hasPrompter ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>${T('rep_paging')}</span><span style="color:${hasPaging?'#ec4899':'#fbbf24'}">${hasPaging ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>${T('rep_emergency')}</span><span style="color:${hasEmergency?'#ec4899':'#fbbf24'}">${hasEmergency ? (LANG==='ar'?'مطابق (نشط)':'Compliant (Active)') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>${T('rep_broadcast')}</span><span style="color:#ec4899">${LANG==='ar'?'مطابق EBU':'EBU Compliant'}</span></div>
+      <div class="row"><span>${T('rep_recording')}</span><span style="color:#ec4899">${LANG==='ar'?'4K HDR':'4K HDR'}</span></div>
+      <div class="row"><span>${T('rep_streaming_std')}</span><span style="color:#ec4899">${LANG==='ar'?'مدعوم':'Supported'}</span></div>
+      <div class="row"><span>${T('rep_iso')}</span><span style="color:#ec4899">${LANG==='ar'?'مطابق':'Compliant'}</span></div>
+      <div class="row"><span>${T('rep_iec')}</span><span style="color:#ec4899">${LANG==='ar'?'مطابق':'Compliant'}</span></div>
+      <div class="row"><span>${T('rep_status')}</span><span style="color:#ec4899">${T('rep_status_good')}</span></div>
+    </div>
+  `;
+  document.getElementById('reportModal').classList.add('on');
+}
+
+/* ============ EVENTS ============ */
+document.getElementById('langBtn').onclick = () => {
+  LANG = LANG === 'ar' ? 'en' : 'ar';
+  localStorage.setItem('auralis_lang', LANG);
+  applyLang();
+  buildCats(); buildBrands(); buildTypes();
+  if (state.selected !== null) updateInfo();
+  toast(LANG === 'ar' ? '🌐 العربية' : '🌐 English');
+};
+document.getElementById('reportBtn').onclick = generateReport;
+document.getElementById('closeModalBtn').onclick = () => document.getElementById('reportModal').classList.remove('on');
+document.getElementById('closeModalBtn2').onclick = () => document.getElementById('reportModal').classList.remove('on');
+document.getElementById('printReportBtn').onclick = () => window.print();
+
+document.getElementById('saveBtn').onclick = () => {
+  const data = JSON.stringify({app:'AURALIS', version:1, room:'webinar',
+    devices: state.devices.map(d => ({id:d.id, brand:d.brand, cat:d.cat, typeId:d.typeId, x:d.x, z:d.z, rot:d.rot, power:d.power}))
+  }, null, 2);
+  const blob = new Blob([data], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'auralis-webinar-' + Date.now() + '.json';
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  toast(T('to_saved'));
+};
+document.getElementById('loadBtn').onclick = () => document.getElementById('fileInput').click();
+document.getElementById('fileInput').onchange = e => {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      state.devices = (data.devices||[]).map(d => ({
+        id: d.id,
+        brand: BRANDS[d.brand] ? d.brand : 'shure',
+        cat: CATS[d.cat] ? d.cat : 'hostMic',
+        typeId: d.typeId,
+        x:+d.x||0, z:+d.z||0, rot:+d.rot||0, power:+d.power||0
+      })).filter(d => getSpec(d.cat, d.typeId));
+      state.nextId = state.devices.length ? Math.max(...state.devices.map(d=>d.id))+1 : 1;
+      buildDevices(); buildHeatmap(); updateHUD(); fitView();
+      state.history = [serialize()]; state.historyIdx = 0;
+      toast(T('to_loaded'));
+    } catch(err) { alert(T('to_invalid')); }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+};
+
+document.getElementById('viewBtn').onclick = () => setView3D(!state.view3D);
+document.getElementById('shotBtn').onclick = () => {
+  renderer.render(scene, camera);
+  const a = document.createElement('a');
+  a.href = canvas.toDataURL('image/png');
+  a.download = 'auralis-webinar-' + Date.now() + '.png';
+  document.body.appendChild(a); a.click(); a.remove();
+  toast(T('to_shot'));
+};
+document.getElementById('presBtn').onclick = togglePres;
+document.getElementById('presToggle').onclick = togglePres;
+document.getElementById('exitPres').onclick = togglePres;
+function togglePres() {
+  state.presentation = !state.presentation;
+  document.getElementById('hd').classList.toggle('hide', state.presentation);
+  document.getElementById('tools').classList.toggle('hide', state.presentation);
+  document.getElementById('picker').classList.toggle('hide', state.presentation);
+  document.getElementById('hud').style.opacity = state.presentation ? '0' : '1';
+  document.getElementById('info').classList.remove('on');
+  document.getElementById('exitPres').classList.toggle('on', state.presentation);
+  toast(state.presentation ? T('to_pres_on') : T('to_pres_off'));
+}
+document.getElementById('heatBtn').onclick = function() {
+  state.showHeat = !state.showHeat;
+  this.classList.toggle('on', state.showHeat);
+  buildHeatmap();
+  toast(state.showHeat ? T('to_heat_on') : T('to_heat_off'));
+};
+document.getElementById('fitBtn').onclick = fitView;
+document.getElementById('gridBtn').onclick = function() {
+  state.showGrid = !state.showGrid;
+  this.classList.toggle('on', state.showGrid);
+  grid.visible = state.showGrid;
+};
+document.getElementById('clearBtn').onclick = () => {
+  if (!confirm(T('to_confirm_clear'))) return;
+  state.devices = []; state.selected = null;
+  document.getElementById('info').classList.remove('on');
+  buildDevices(); buildHeatmap(); updateHUD(); pushHistory();
+  toast(T('to_cleared'));
+};
+document.getElementById('delBtn').onclick = deleteSelected;
+document.getElementById('powerSlider').oninput = e => {
+  if (state.selected === null) return;
+  const d = state.devices.find(x => x.id === state.selected); if (!d) return;
+  d.power = parseInt(e.target.value,10) || 0;
+  document.getElementById('powerVal').textContent = d.power + 'W';
+  document.getElementById('infPower').textContent = d.power + ' W';
+  if (state.showHeat) updateHeatColors();
+};
+document.getElementById('powerSlider').onchange = () => pushHistory();
+document.getElementById('rotSlider').oninput = e => {
+  if (state.selected === null) return;
+  const d = state.devices.find(x => x.id === state.selected); if (!d) return;
+  d.rot = parseInt(e.target.value,10) * Math.PI / 180;
+  const m = meshById.get(d.id);
+  if (m) m.rotation.y = d.rot;
+  document.getElementById('rotVal').textContent = e.target.value + '°';
+  if (state.showHeat) updateHeatColors();
+};
+document.getElementById('rotSlider').onchange = () => pushHistory();
+document.getElementById('roomWInput').onchange = e => {
+  const v = Math.max(8, Math.min(40, parseFloat(e.target.value) || 16));
+  ROOM.size[0] = v; e.target.value = v;
+  buildRoom(); buildHeatmap();
+};
+document.getElementById('roomDInput').onchange = e => {
+  const v = Math.max(8, Math.min(40, parseFloat(e.target.value) || 12));
+  ROOM.size[1] = v; e.target.value = v;
+  buildRoom(); buildHeatmap();
+};
+document.addEventListener('keydown', e => {
+  const tag = (e.target.tagName || '').toUpperCase();
+  if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+  if ((e.ctrlKey||e.metaKey) && e.key.toLowerCase() === 'z') { e.preventDefault(); undo(); }
+  else if ((e.ctrlKey||e.metaKey) && e.key.toLowerCase() === 'y') { e.preventDefault(); redo(); }
+  else if (e.key === 'Delete' || e.key === 'Backspace') { e.preventDefault(); deleteSelected(); }
+  else if (e.key === 'Escape') { deselect(); document.getElementById('reportModal').classList.remove('on'); }
+  else if (e.key === 'Tab') { e.preventDefault(); setView3D(!state.view3D); }
+});
+
+/* ============ RESIZE ============ */
+function onResize() {
+  const w = window.innerWidth, h = window.innerHeight;
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(w, h, false);
+}
+window.addEventListener('resize', onResize);
+window.addEventListener('orientationchange', () => setTimeout(onResize, 250));
+
+/* ============ LOOP & INIT ============ */
+function animate() {
+  requestAnimationFrame(animate);
+  updateTween();
+  const t = performance.now() * 0.003;
+  devGrp.children.forEach(m => {
+    const r = m.getObjectByName('selRing');
+    if (r && r.material.opacity > 0) r.scale.setScalar(1 + Math.sin(t) * 0.08);
+  });
+  renderer.render(scene, camera);
+}
+
+function init() {
+  applyLang();
+  buildCats(); buildBrands(); buildTypes();
+  loadInitialDevices();
+  onResize();
+  animate();
+  setTimeout(() => document.getElementById('loader').classList.add('off'), 600);
+  console.log('%c✅ AURALIS · Webinar Studio ready · Broadcast · Streaming · Production',
+    'color:#ec4899;font-weight:bold;font-size:14px');
+}
+
+init();
+</script>
+</body>
+</html>
