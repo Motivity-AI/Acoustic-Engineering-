@@ -107,13 +107,10 @@ header.hide{transform:translateY(-110%)}
   box-shadow:0 0 8px rgba(20,184,166,.7);cursor:pointer}
 .info .slider b{font-size:10px;color:var(--teal);
   font-family:'JetBrains Mono',monospace;min-width:42px;text-align:end}
-.info .numInput{width:64px;background:var(--card);border:1px solid var(--line);
-  color:var(--txt);border-radius:6px;padding:3px 6px;font-family:inherit;font-size:11px}
 .info .actions{display:flex;gap:6px;margin-top:12px}
 .info .actions button{flex:1;padding:9px;border-radius:10px;font-family:inherit;
   font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--line);
   background:var(--card);color:var(--txt);transition:all .2s}
-.info .actions button:hover{background:rgba(255,255,255,.05)}
 .info .actions button.del{background:rgba(255,122,156,.15);color:#ff7a9c;
   border-color:rgba(255,122,156,.4)}
 .info .dimRow{margin-top:12px;padding-top:12px;border-top:1px solid var(--line2)}
@@ -252,27 +249,27 @@ header.hide{transform:translateY(-110%)}
     <span class="flag">🌐</span>
     <span class="label" id="langLabel">EN</span>
   </button>
-  <button class="btn" id="reportBtn" data-i18n-title="report_tip">📄</button>
+  <button class="btn" id="reportBtn" title="Report">📄</button>
   <button class="btn" id="viewBtn">🎬 3D</button>
-  <button class="btn" id="shotBtn" data-i18n-title="shot_tip">📸</button>
-  <button class="btn" id="presBtn" data-i18n-title="pres_tip">🎥</button>
+  <button class="btn" id="shotBtn" title="Screenshot">📸</button>
+  <button class="btn" id="presBtn" title="Presentation">🎥</button>
 </header>
 
 <div class="hud" id="hud">
-  <div class="stat" id="statDev"><span data-i18n="hud_devices">Devices</span><b id="hudCount">0</b></div>
-  <div class="stat" id="statSpl"><span data-i18n="hud_spl">Max SPL</span><b id="hudSpl">—</b></div>
-  <div class="stat" id="statCov"><span data-i18n="hud_coverage">Coverage</span><b id="hudCoverage">—</b></div>
+  <div class="stat" id="statDev"><span>Devices</span><b id="hudCount">0</b></div>
+  <div class="stat" id="statSpl"><span>Max SPL</span><b id="hudSpl">—</b></div>
+  <div class="stat" id="statCov"><span>Coverage</span><b id="hudCoverage">—</b></div>
 </div>
 
 <div class="tools" id="tools">
-  <button class="tool on" id="heatBtn" data-i18n-title="heat_tip">🌡️</button>
-  <button class="tool" id="fitBtn" data-i18n-title="fit_tip">🎯</button>
-  <button class="tool on" id="gridBtn" data-i18n-title="grid_tip">▦</button>
-  <button class="tool" id="camTopBtn" data-i18n-title="cam_top">⬆️</button>
-  <button class="tool" id="camAgentBtn" data-i18n-title="cam_agent">👤</button>
-  <button class="tool" id="saveBtn" data-i18n-title="save_tip">💾</button>
-  <button class="tool" id="loadBtn" data-i18n-title="load_tip">📂</button>
-  <button class="tool" id="clearBtn" data-i18n-title="clear_tip">🧹</button>
+  <button class="tool on" id="heatBtn" title="Heatmap">🌡️</button>
+  <button class="tool" id="fitBtn" title="Fit">🎯</button>
+  <button class="tool on" id="gridBtn" title="Grid">▦</button>
+  <button class="tool" id="camTopBtn" title="Top View">⬆️</button>
+  <button class="tool" id="camAgentBtn" title="Agent View">👤</button>
+  <button class="tool" id="saveBtn" title="Save">💾</button>
+  <button class="tool" id="loadBtn" title="Load">📂</button>
+  <button class="tool" id="clearBtn" title="Clear">🧹</button>
 </div>
 
 <input type="file" id="fileInput" style="display:none" accept=".json">
@@ -280,42 +277,42 @@ header.hide{transform:translateY(-110%)}
 <div class="info" id="info">
   <h4>📦 <span id="infName">—</span></h4>
   <div class="tag" id="infBrand">—</div>
-  <div class="row"><span data-i18n="inf_category">Category</span><span id="infType">—</span></div>
-  <div class="row"><span data-i18n="inf_power">Power</span><span id="infPower">—</span></div>
-  <div class="row"><span data-i18n="inf_height">Height</span><span id="infH">—</span></div>
-  <div class="row"><span data-i18n="inf_position">Position</span><span id="infPos">—</span></div>
+  <div class="row"><span>Category</span><span id="infType">—</span></div>
+  <div class="row"><span>Power</span><span id="infPower">—</span></div>
+  <div class="row"><span>Height</span><span id="infH">—</span></div>
+  <div class="row"><span>Position</span><span id="infPos">—</span></div>
   <div class="slider" id="powerWrap">
-    <label data-i18n="sl_power">Power</label>
+    <label>Power</label>
     <input type="range" id="powerSlider" min="5" max="500" step="5" value="20">
     <b id="powerVal">20W</b>
   </div>
   <div class="slider" id="rotWrap">
-    <label data-i18n="sl_rotation">Rotation</label>
+    <label>Rotation</label>
     <input type="range" id="rotSlider" min="-180" max="180" step="5" value="0">
     <b id="rotVal">0°</b>
   </div>
 
   <div class="dimRow">
-    <h5>📐 <span data-i18n="dim_title">Room Dimensions</span></h5>
+    <h5>📐 Room Dimensions</h5>
     <div class="slider">
-      <label data-i18n="inf_room_w">W</label>
+      <label>Width</label>
       <input type="range" id="roomWSlider" min="12" max="70" step="1" value="26">
       <b id="roomWVal">26m</b>
     </div>
     <div class="slider">
-      <label data-i18n="inf_room_d">D</label>
+      <label>Depth</label>
       <input type="range" id="roomDSlider" min="10" max="50" step="1" value="18">
       <b id="roomDVal">18m</b>
     </div>
     <div class="presetBtns">
-      <button type="button" data-preset="small" data-i18n="dim_small">Small</button>
-      <button type="button" data-preset="medium" data-i18n="dim_medium">Medium</button>
-      <button type="button" data-preset="large" data-i18n="dim_large">Large</button>
+      <button type="button" data-preset="small">Small</button>
+      <button type="button" data-preset="medium" class="on">Medium</button>
+      <button type="button" data-preset="large">Large</button>
     </div>
   </div>
 
   <div class="actions">
-    <button class="del" id="delBtn" data-i18n="act_delete">🗑️ Delete</button>
+    <button class="del" id="delBtn">🗑️ Delete</button>
   </div>
 </div>
 
@@ -328,18 +325,18 @@ header.hide{transform:translateY(-110%)}
 <div class="modal" id="reportModal">
   <div class="modal-content">
     <div class="modal-header">
-      <h3>📋 <span data-i18n="rep_title">Acoustic Design Report</span></h3>
+      <h3>📋 <span>Acoustic Design Report</span></h3>
       <button class="btn" id="closeModalBtn" style="height:32px;min-width:32px;padding:0 8px">✕</button>
     </div>
     <div class="modal-body" id="reportModalBody"></div>
     <div class="modal-footer">
-      <button class="btn on" id="printReportBtn" data-i18n="rep_print">🖨️ Print / Save PDF</button>
-      <button class="btn" id="closeModalBtn2" data-i18n="rep_close">Close</button>
+      <button class="btn on" id="printReportBtn">🖨️ Print / Save PDF</button>
+      <button class="btn" id="closeModalBtn2">Close</button>
     </div>
   </div>
 </div>
 
-<button class="presBtn" id="presToggle" data-i18n="pres_start">🎥 Start Presentation</button>
+<button class="presBtn" id="presToggle">🎥 Start Presentation</button>
 <button class="exitP" id="exitPres">✕</button>
 <div class="toast" id="toast"></div>
 
@@ -347,192 +344,111 @@ header.hide{transform:translateY(-110%)}
 <script>
 'use strict';
 
-/* ============ I18N ============ */
-const I18N = {
-  ar: {
-    loader:'جارٍ تحميل مركز الاتصال…',
-    room_label:'مركز اتصال · وكلاء · مشرفون · تسجيل',
-    hud_devices:'الأجهزة', hud_spl:'أقصى SPL', hud_coverage:'التغطية',
-    report_tip:'تقرير', shot_tip:'لقطة', pres_tip:'عرض',
-    heat_tip:'خريطة حرارية', fit_tip:'ملاءمة', grid_tip:'الشبكة',
-    cam_top:'عرض علوي', cam_agent:'منظور وكيل',
-    save_tip:'حفظ', load_tip:'فتح', clear_tip:'حذف الكل',
-    inf_category:'الفئة', inf_power:'القوة', inf_height:'الارتفاع',
-    inf_position:'الموقع', inf_room_w:'العرض', inf_room_d:'الطول',
-    sl_power:'القوة', sl_rotation:'الاتجاه', act_delete:'🗑️ حذف',
-    dim_title:'أبعاد القاعة', dim_small:'صغير', dim_medium:'متوسط', dim_large:'كبير',
-    rep_title:'التقرير الهندسي الصوتي',
-    rep_print:'🖨️ طباعة / حفظ PDF', rep_close:'إغلاق',
-    pres_start:'🎥 بدء العرض',
-    cat_agentHeadset:'Headset الوكلاء', cat_agentDesk:'مكبرات المكتب',
-    cat_supervisor:'مشرفون', cat_recording:'التسجيل',
-    cat_ceilingSpk:'سماعات سقفية', cat_masking:'ضوضاء الإخفاء',
-    cat_paging:'نداء', cat_emergency:'طوارئ',
-    cat_mics:'ميكروفونات', cat_dsp:'معالجة DSP', cat_control:'تحكم',
-    dev_headset_mono:'Headset أحادي', dev_headset_stereo:'Headset ستيريو',
-    dev_headset_wireless:'Headset لاسلكي', dev_headset_noise:'Headset عازل ضوضاء',
-    dev_desk_amp:'مكبر مكتب', dev_desk_amp_lg:'مكبر مكتب كبير',
-    dev_desk_phone:'هاتف مكتب', dev_usb_speaker:'مكبر USB',
-    dev_super_monitor:'Monitor مشرف', dev_super_amp:'مكبر مشرف',
-    dev_super_headset:'Headset مشرف',
-    dev_recorder:'مسجل', dev_call_recorder:'مسجل مكالمات',
-    dev_logger:'Logger مركزي', dev_qm:'Quality Monitor',
-    dev_ceiling_spk:'سماعة سقفية', dev_ceiling_net:'سقفية شبكية',
-    dev_ceiling_pendant:'سقفية معلقة', dev_ceiling_tile:'بلاطة سقفية',
-    dev_mask_ceiling:'سماعة إخفاء سقفية', dev_mask_panel:'لوح إخفاء',
-    dev_mask_white:'ضوضاء بيضاء', dev_mask_pink:'ضوضاء وردية',
-    dev_paging_ceiling:'نداء سقفي', dev_paging_horn:'بوق نداء',
-    dev_paging_zone:'نداء مناطق',
-    dev_emg_horn:'بوق طوارئ', dev_emg_strobe:'فلاش طوارئ',
-    dev_emg_tower:'برج طوارئ', dev_evac:'صفارة إخلاء',
-    dev_agent_mic:'ميك وكيل', dev_super_mic:'ميك مشرف',
-    dev_boundary:'ميك لوحي', dev_wireless:'ميك لاسلكي',
-    dev_dsp_aec:'DSP + AEC', dev_dsp_matrix:'DSP Matrix',
-    dev_dsp_zones:'DSP مناطق', dev_voice_proc:'معالج صوتي',
-    dev_touch:'شاشة لمس', dev_master:'وحدة رئيسية',
-    dev_kpi_dash:'لوحة KPI', dev_wall_display:'شاشة جدارية',
-    brand_shure:'Shure', brand_bose:'BOSE', brand_yamaha:'ياماها',
-    brand_sennheiser:'Sennheiser', brand_biamp:'Biamp',
-    brand_qsc:'QSC', brand_crestron:'Crestron', brand_extron:'Extron',
-    brand_jabra:'Jabra', brand_plantronics:'Plantronics',
-    brand_poly:'Poly', brand_logitech:'Logitech', brand_avaya:'Avaya',
-    brand_cisco:'Cisco', brand_mitel:'Mitel', brand_genesys:'Genesys',
-    brand_audiocodes:'AudioCodes', brand_atlas:'AtlasIED',
-    brand_da_lite:'Da-Lite', brand_bosch:'Bosch', brand_toa:'TOA',
-    to_undo:'↩️ تراجع', to_redo:'🔁 تقدم', to_deleted:'🗑️ حُذف',
-    to_saved:'💾 تم الحفظ', to_loaded:'📂 تم التحميل',
-    to_cleared:'🧹 تم التنظيف', to_shot:'📸 تم حفظ الصورة',
-    to_heat_on:'🌡️ التغطية مفعّلة', to_heat_off:'🌡️ التغطية مغلقة',
-    to_pres_on:'🎥 وضع العرض', to_pres_off:'✏️ وضع التحرير',
-    to_invalid:'ملف غير صالح', to_confirm_clear:'حذف كل الأجهزة؟',
-    to_resized:'📐 تم تحديث الأبعاد',
-    rep_env_info:'معلومات البيئة', rep_equip:'جدول المعدات',
-    rep_analysis:'التحليل الصوتي',
-    rep_env_type:'نوع البيئة', rep_dim:'الأبعاد', rep_total_dev:'عدد الأجهزة',
-    rep_total_power:'القدرة الإجمالية', rep_date:'التاريخ',
-    rep_max_spl:'أقصى SPL', rep_coverage:'نسبة التغطية',
-    rep_status:'الحالة', rep_status_good:'ممتاز',
-    rep_device:'الجهاز', rep_qty:'العدد', rep_empty:'لا توجد أجهزة',
-    rep_target:'الهدف المعياري', rep_rt:'زمن الرنين RT60',
-    rep_reverb:'الصدى المتوقع', rep_capacity:'عدد الوكلاء',
-    rep_area:'المساحة', rep_zones:'عدد المناطق',
-    rep_mics:'عدد الميكروفونات', rep_headsets:'عدد الـ Headsets',
-    rep_paging:'نظام النداء', rep_emergency:'طوارئ EN 60849',
-    rep_ada:'توافق ADA',
-    rep_sti:'وضوح الكلام STI', rep_nc:'مستوى الضجيج NC',
-    rep_masking:'مستوى إخفاء الضوضاء',
-    rep_sti_target:'STI > 0.70 (مكالمات)',
-    rep_rt60_target:'RT60 = 0.4-0.5s (مكتب)',
-    rep_nc_target:'NC-30 (مركز اتصال)',
-    rep_masking_target:'45-48 dB (ضوضاء إخفاء)',
-    rep_pci:'توافق PCI-DSS (تسجيل)',
-    rep_gdpr:'توافق GDPR',
-    rep_iso:'ISO 9921 (وضوح الكلام)',
-    rep_recording_std:'تسجيل 100% من المكالمات'
-  },
-  en: {
-    loader:'LOADING CENTER…',
-    room_label:'CALL CENTER · AGENTS · SUPERVISORS · RECORDING',
-    hud_devices:'Devices', hud_spl:'Max SPL', hud_coverage:'Coverage',
-    report_tip:'Report', shot_tip:'Screenshot', pres_tip:'Presentation',
-    heat_tip:'Heatmap', fit_tip:'Fit', grid_tip:'Grid',
-    cam_top:'Top View', cam_agent:'Agent View',
-    save_tip:'Save', load_tip:'Load', clear_tip:'Clear',
-    inf_category:'Category', inf_power:'Power', inf_height:'Height',
-    inf_position:'Position', inf_room_w:'Width', inf_room_d:'Depth',
-    sl_power:'Power', sl_rotation:'Rotation', act_delete:'🗑️ Delete',
-    dim_title:'Room Dimensions', dim_small:'Small', dim_medium:'Medium', dim_large:'Large',
-    rep_title:'Acoustic Design Report',
-    rep_print:'🖨️ Print / Save PDF', rep_close:'Close',
-    pres_start:'🎥 Start Presentation',
-    cat_agentHeadset:'Agent Headsets', cat_agentDesk:'Agent Desk Amps',
-    cat_supervisor:'Supervisors', cat_recording:'Recording',
-    cat_ceilingSpk:'Ceiling Speakers', cat_masking:'Noise Masking',
-    cat_paging:'Paging', cat_emergency:'Emergency',
-    cat_mics:'Microphones', cat_dsp:'DSP Processing', cat_control:'Control',
-    dev_headset_mono:'Mono Headset', dev_headset_stereo:'Stereo Headset',
-    dev_headset_wireless:'Wireless Headset', dev_headset_noise:'Noise-Cancelling Headset',
-    dev_desk_amp:'Desk Amp', dev_desk_amp_lg:'Large Desk Amp',
-    dev_desk_phone:'Desk Phone', dev_usb_speaker:'USB Speaker',
-    dev_super_monitor:'Supervisor Monitor', dev_super_amp:'Supervisor Amp',
-    dev_super_headset:'Supervisor Headset',
-    dev_recorder:'Recorder', dev_call_recorder:'Call Recorder',
-    dev_logger:'Central Logger', dev_qm:'Quality Monitor',
-    dev_ceiling_spk:'Ceiling Speaker', dev_ceiling_net:'Networked Ceiling',
-    dev_ceiling_pendant:'Pendant Ceiling', dev_ceiling_tile:'Ceiling Tile',
-    dev_mask_ceiling:'Masking Ceiling', dev_mask_panel:'Masking Panel',
-    dev_mask_white:'White Noise', dev_mask_pink:'Pink Noise',
-    dev_paging_ceiling:'Ceiling Paging', dev_paging_horn:'Paging Horn',
-    dev_paging_zone:'Zone Paging',
-    dev_emg_horn:'Emergency Horn', dev_emg_strobe:'Emergency Strobe',
-    dev_emg_tower:'Emergency Tower', dev_evac:'Evacuation Siren',
-    dev_agent_mic:'Agent Mic', dev_super_mic:'Supervisor Mic',
-    dev_boundary:'Boundary Mic', dev_wireless:'Wireless Mic',
-    dev_dsp_aec:'DSP + AEC', dev_dsp_matrix:'DSP Matrix',
-    dev_dsp_zones:'Zone DSP', dev_voice_proc:'Voice Processor',
-    dev_touch:'Touch Panel', dev_master:'Master Unit',
-    dev_kpi_dash:'KPI Dashboard', dev_wall_display:'Wall Display',
-    brand_shure:'Shure', brand_bose:'BOSE', brand_yamaha:'Yamaha',
-    brand_sennheiser:'Sennheiser', brand_biamp:'Biamp',
-    brand_qsc:'QSC', brand_crestron:'Crestron', brand_extron:'Extron',
-    brand_jabra:'Jabra', brand_plantronics:'Plantronics',
-    brand_poly:'Poly', brand_logitech:'Logitech', brand_avaya:'Avaya',
-    brand_cisco:'Cisco', brand_mitel:'Mitel', brand_genesys:'Genesys',
-    brand_audiocodes:'AudioCodes', brand_atlas:'AtlasIED',
-    brand_da_lite:'Da-Lite', brand_bosch:'Bosch', brand_toa:'TOA',
-    to_undo:'↩️ Undo', to_redo:'🔁 Redo', to_deleted:'🗑️ Deleted',
-    to_saved:'💾 Saved', to_loaded:'📂 Loaded',
-    to_cleared:'🧹 Cleared', to_shot:'📸 Screenshot saved',
-    to_heat_on:'🌡️ Heatmap ON', to_heat_off:'🌡️ Heatmap OFF',
-    to_pres_on:'🎥 Presentation mode', to_pres_off:'✏️ Edit mode',
-    to_invalid:'Invalid file', to_confirm_clear:'Delete all devices?',
-    to_resized:'📐 Dimensions updated',
-    rep_env_info:'Environment Info', rep_equip:'Equipment List',
-    rep_analysis:'Acoustic Analysis',
-    rep_env_type:'Environment', rep_dim:'Dimensions',
-    rep_total_dev:'Total devices', rep_total_power:'Total power',
-    rep_date:'Date',
-    rep_max_spl:'Max SPL', rep_coverage:'Coverage',
-    rep_status:'Status', rep_status_good:'Excellent',
-    rep_device:'Device', rep_qty:'Qty', rep_empty:'No devices',
-    rep_target:'Target Standard', rep_rt:'RT60 Reverberation',
-    rep_reverb:'Expected Reverb', rep_capacity:'Agent Count',
-    rep_area:'Area', rep_zones:'Zone Count',
-    rep_mics:'Mic Count', rep_headsets:'Headset Count',
-    rep_paging:'Paging System', rep_emergency:'EN 60849 Emergency',
-    rep_ada:'ADA Compliance',
-    rep_sti:'Speech Intelligibility STI', rep_nc:'Noise Level NC',
-    rep_masking:'Noise Masking Level',
-    rep_sti_target:'STI > 0.70 (Calls)',
-    rep_rt60_target:'RT60 = 0.4-0.5s (Office)',
-    rep_nc_target:'NC-30 (Call Center)',
-    rep_masking_target:'45-48 dB (Masking Level)',
-    rep_pci:'PCI-DSS Compliance (Recording)',
-    rep_gdpr:'GDPR Compliance',
-    rep_iso:'ISO 9921 (Speech Intelligibility)',
-    rep_recording_std:'100% Call Recording'
+/* ============ GLOBAL ERROR HANDLER ============ */
+window.addEventListener('error', function(e) {
+  console.error('❌ GLOBAL ERROR:', e.message);
+  console.error('At:', e.filename, 'line', e.lineno);
+  console.error('Stack:', e.error && e.error.stack);
+  const loader = document.getElementById('loader');
+  if (loader) {
+    loader.classList.add('off');
+    const txt = document.getElementById('loaderTxt');
+    if (txt) txt.textContent = 'ERROR: ' + e.message;
   }
-};
-let LANG = localStorage.getItem('auralis_lang') || 'ar';
-const T = k => (I18N[LANG] && I18N[LANG][k]) || k;
+});
 
-function applyLang() {
-  document.documentElement.lang = LANG;
-  document.documentElement.dir = LANG === 'ar' ? 'rtl' : 'ltr';
-  document.body.style.fontFamily = LANG === 'ar'
-    ? "'Cairo','Inter',sans-serif" : "'Inter','Cairo',sans-serif";
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const k = el.dataset.i18n; if (I18N[LANG][k]) el.textContent = I18N[LANG][k];
-  });
-  document.querySelectorAll('[data-i18n-title]').forEach(el => {
-    const k = el.dataset.i18nTitle; if (I18N[LANG][k]) el.title = I18N[LANG][k];
-  });
-  document.getElementById('langLabel').textContent = LANG === 'ar' ? 'EN' : 'ع';
-  document.getElementById('loaderTxt').textContent = T('loader');
-  document.getElementById('roomLabel').textContent = T('room_label');
-  document.getElementById('presToggle').textContent = T('pres_start');
-  document.title = LANG === 'ar' ? '📞 AURALIS · مركز اتصال' : '📞 AURALIS · Call Center';
+/* ============ THREE SETUP ============ */
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, preserveDrawingBuffer:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+if (THREE.sRGBEncoding !== undefined) renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
+
+const scene = new THREE.Scene();
+const skyColor = 0x001a1e;
+scene.background = new THREE.Color(skyColor);
+scene.fog = new THREE.Fog(skyColor, 55, 160);
+const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 600);
+
+scene.add(new THREE.AmbientLight(0xd0ffff, 0.55));
+scene.add(new THREE.HemisphereLight(0xa8e8e8, 0x0a2a30, 0.6));
+const sun = new THREE.DirectionalLight(0xffffff, 1.1);
+sun.position.set(10, 14, 8);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.camera.left = -22;
+sun.shadow.camera.right = 22;
+sun.shadow.camera.top = 22;
+sun.shadow.camera.bottom = -22;
+sun.shadow.camera.near = 1;
+sun.shadow.camera.far = 60;
+sun.shadow.bias = -0.0005;
+scene.add(sun);
+const fill = new THREE.DirectionalLight(0x80d8d8, 0.4);
+fill.position.set(-8, 10, -6);
+scene.add(fill);
+
+const roomGrp = new THREE.Group(); scene.add(roomGrp);
+const devGrp  = new THREE.Group(); scene.add(devGrp);
+const heatGrp = new THREE.Group(); scene.add(heatGrp);
+
+const grid = new THREE.GridHelper(240, 120, 0x14b8a6, 0x0a2a30);
+grid.material.opacity = 0.12;
+grid.material.transparent = true;
+grid.position.y = 0.004;
+scene.add(grid);
+
+/* ============ MATERIALS (memoized) ============ */
+const _matCache = {};
+const M = {};
+
+function getMat(name, factory) {
+  if (!_matCache[name]) _matCache[name] = factory();
+  return _matCache[name];
 }
+
+// Define all materials as lazy getters on M
+const matDefs = {
+  body:        () => new THREE.MeshStandardMaterial({color:0x1a2830,roughness:0.5,metalness:0.5}),
+  dark:        () => new THREE.MeshStandardMaterial({color:0x051015,roughness:0.85,metalness:0.25}),
+  gray:        () => new THREE.MeshStandardMaterial({color:0x3a4850,roughness:0.6,metalness:0.4}),
+  metal:       () => new THREE.MeshStandardMaterial({color:0xb0c0c8,roughness:0.3,metalness:0.85}),
+  steel:       () => new THREE.MeshStandardMaterial({color:0x90a0a8,roughness:0.5,metalness:0.6,side:THREE.DoubleSide}),
+  deskTop:     () => new THREE.MeshStandardMaterial({color:0x2a3028,roughness:0.55,metalness:0.15}),
+  deskEdge:    () => new THREE.MeshStandardMaterial({color:0x1a2018,roughness:0.7,metalness:0.15}),
+  carpet:      () => new THREE.MeshStandardMaterial({color:0x0a1820,roughness:0.95,metalness:0.02}),
+  wall:        () => new THREE.MeshStandardMaterial({color:0x1a3038,roughness:0.85,metalness:0.08}),
+  absorber:    () => new THREE.MeshStandardMaterial({color:0x2a3a44,roughness:0.98,metalness:0.02}),
+  absorberFrame:() => new THREE.MeshStandardMaterial({color:0x0a1a20,roughness:0.9,metalness:0.1}),
+  ceiling:     () => new THREE.MeshStandardMaterial({color:0x0a1a20,roughness:0.9,metalness:0.05}),
+  ceilingPanel:() => new THREE.MeshStandardMaterial({color:0xd0e8e8,emissive:0xe0f8f8,emissiveIntensity:0.4,roughness:0.7,metalness:0.1}),
+  ceilingCloud:() => new THREE.MeshStandardMaterial({color:0x2a4a55,roughness:0.95,metalness:0.05}),
+  chair:       () => new THREE.MeshStandardMaterial({color:0x1a2828,roughness:0.7,metalness:0.15}),
+  chairBack:   () => new THREE.MeshStandardMaterial({color:0x0a1818,roughness:0.75,metalness:0.1}),
+  partition:   () => new THREE.MeshStandardMaterial({color:0x2a4050,roughness:0.8,metalness:0.15}),
+  partitionAc: () => new THREE.MeshStandardMaterial({color:0x1a5060,roughness:0.95,metalness:0.02}),
+  monitorFrame:() => new THREE.MeshStandardMaterial({color:0x0a0a0a,roughness:0.6,metalness:0.3}),
+  monitorScreen:()=> new THREE.MeshBasicMaterial({color:0x0a3a5a}),
+  boothGlass:  () => new THREE.MeshBasicMaterial({color:0x60e5ff,transparent:true,opacity:0.35}),
+  door:        () => new THREE.MeshStandardMaterial({color:0x1a2030,roughness:0.7,metalness:0.2}),
+  doorFrame:   () => new THREE.MeshStandardMaterial({color:0x4a5260,roughness:0.6,metalness:0.4}),
+  screen:      () => new THREE.MeshBasicMaterial({color:0x1a3a5a,transparent:true,opacity:0.9}),
+  ledRed:      () => new THREE.MeshStandardMaterial({color:0xff2222,emissive:0xff2222,emissiveIntensity:2.5}),
+  ledGreen:    () => new THREE.MeshStandardMaterial({color:0x10b981,emissive:0x10b981,emissiveIntensity:2.5}),
+  ledAmber:    () => new THREE.MeshStandardMaterial({color:0xfbbf24,emissive:0xfbbf24,emissiveIntensity:2.5}),
+  ledTeal:     () => new THREE.MeshStandardMaterial({color:0x14b8a6,emissive:0x14b8a6,emissiveIntensity:2.5}),
+  ledCyan:     () => new THREE.MeshStandardMaterial({color:0x22d3ee,emissive:0x22d3ee,emissiveIntensity:2.5}),
+  ledLime:     () => new THREE.MeshStandardMaterial({color:0x84cc16,emissive:0x84cc16,emissiveIntensity:2.5}),
+  ledBlue:     () => new THREE.MeshStandardMaterial({color:0x3b82f6,emissive:0x3b82f6,emissiveIntensity:2.5}),
+  white:       () => new THREE.MeshStandardMaterial({color:0xffffff,emissive:0xffffff,emissiveIntensity:2.5}),
+  emgRed:      () => new THREE.MeshStandardMaterial({color:0xcc0000,roughness:0.5,metalness:0.4})
+};
+Object.keys(matDefs).forEach(function(name) {
+  M[name] = function() { return getMat(name, matDefs[name]); };
+});
 
 /* ============ DATA ============ */
 const BRANDS = {
@@ -550,90 +466,86 @@ const BRANDS = {
   logitech:{color:0x60a5fa,tag:'LOGITECH'},
   avaya:{color:0xdc2626,tag:'AVAYA'},
   cisco:{color:0x0ea5e9,tag:'CISCO'},
-  mitel:{color:0xf97316,tag:'MITEL'},
   genesys:{color:0x8b5cf6,tag:'GENESYS'},
-  audiocodes:{color:0xef4444,tag:'AUDIOCODES'},
   atlas:{color:0xfacc15,tag:'ATLASIED'},
-  da_lite:{color:0xa855f7,tag:'DA-LITE'},
   bosch:{color:0x60a5fa,tag:'BOSCH'},
   toa:{color:0xef4444,tag:'TOA'}
 };
 
 const CATS = {
   agentHeadset:{emoji:'🎧',devices:[
-    ['headset_mono','dev_headset_mono','🎧',1.5,0,true,'headsetMono'],
-    ['headset_stereo','dev_headset_stereo','🎧',1.5,0,true,'headsetStereo'],
-    ['headset_wireless','dev_headset_wireless','📡',1.5,0,true,'headsetWireless'],
-    ['headset_noise','dev_headset_noise','🔇',1.5,0,true,'headsetNoise']
+    ['headset_mono','Mono Headset','🎧',1.5,0,true,'headsetMono'],
+    ['headset_stereo','Stereo Headset','🎧',1.5,0,true,'headsetStereo'],
+    ['headset_wireless','Wireless Headset','📡',1.5,0,true,'headsetWireless'],
+    ['headset_noise','Noise-Cancel Headset','🔇',1.5,0,true,'headsetNoise']
   ]},
   agentDesk:{emoji:'🔊',devices:[
-    ['desk_amp','dev_desk_amp','🔊',1.3,30,true,'deskAmp'],
-    ['desk_amp_lg','dev_desk_amp_lg','🔊',1.3,50,true,'deskAmpLg'],
-    ['desk_phone','dev_desk_phone','📞',1.2,15,true,'deskPhone'],
-    ['usb_speaker','dev_usb_speaker','🔉',1.3,20,true,'usbSpeaker']
+    ['desk_amp','Desk Amp','🔊',1.3,30,true,'deskAmp'],
+    ['desk_amp_lg','Large Desk Amp','🔊',1.3,50,true,'deskAmpLg'],
+    ['desk_phone','Desk Phone','📞',1.2,15,true,'deskPhone'],
+    ['usb_speaker','USB Speaker','🔉',1.3,20,true,'usbSpeaker']
   ]},
   supervisor:{emoji:'👨‍💼',devices:[
-    ['super_monitor','dev_super_monitor','🖥️',1.4,40,true,'superMonitor'],
-    ['super_amp','dev_super_amp','🔊',1.4,50,true,'superAmp'],
-    ['super_headset','dev_super_headset','🎧',1.5,0,true,'superHeadset']
+    ['super_monitor','Supervisor Monitor','🖥️',1.4,40,true,'superMonitor'],
+    ['super_amp','Supervisor Amp','🔊',1.4,50,true,'superAmp'],
+    ['super_headset','Supervisor Headset','🎧',1.5,0,true,'superHeadset']
   ]},
   recording:{emoji:'📼',devices:[
-    ['recorder','dev_recorder','📼',0.5,0,false,'recorderCC'],
-    ['call_recorder','dev_call_recorder','📞',0.5,0,false,'callRecorder'],
-    ['logger','dev_logger','💾',0.5,0,false,'loggerCC'],
-    ['qm','dev_qm','🎯',0.5,0,false,'qualityMon']
+    ['recorder','Recorder','📼',0.5,0,false,'recorderCC'],
+    ['call_recorder','Call Recorder','📞',0.5,0,false,'callRecorder'],
+    ['logger','Central Logger','💾',0.5,0,false,'loggerCC'],
+    ['qm','Quality Monitor','🎯',0.5,0,false,'qualityMon']
   ]},
   ceilingSpk:{emoji:'🔈',devices:[
-    ['ceiling_spk','dev_ceiling_spk','🔈',3.5,20,false,'ceilingSpkCC'],
-    ['ceiling_net','dev_ceiling_net','🌐',3.5,20,false,'ceilingNetCC'],
-    ['ceiling_pendant','dev_ceiling_pendant','🎈',3.2,30,false,'ceilingPendantCC'],
-    ['ceiling_tile','dev_ceiling_tile','⬜',3.5,15,false,'ceilingTileCC']
+    ['ceiling_spk','Ceiling Speaker','🔈',3.5,20,false,'ceilingSpkCC'],
+    ['ceiling_net','Networked Ceiling','🌐',3.5,20,false,'ceilingNetCC'],
+    ['ceiling_pendant','Pendant Ceiling','🎈',3.2,30,false,'ceilingPendantCC'],
+    ['ceiling_tile','Ceiling Tile','⬜',3.5,15,false,'ceilingTileCC']
   ]},
   masking:{emoji:'🔇',devices:[
-    ['mask_ceiling','dev_mask_ceiling','🔇',3.5,25,false,'maskCeiling'],
-    ['mask_panel','dev_mask_panel','⬜',1.4,20,false,'maskPanel'],
-    ['mask_white','dev_mask_white','⚪',3.5,30,false,'maskWhite'],
-    ['mask_pink','dev_mask_pink','💗',3.5,30,false,'maskPink']
+    ['mask_ceiling','Masking Ceiling','🔇',3.5,25,false,'maskCeiling'],
+    ['mask_panel','Masking Panel','⬜',1.4,20,false,'maskPanel'],
+    ['mask_white','White Noise','⚪',3.5,30,false,'maskWhite'],
+    ['mask_pink','Pink Noise','💗',3.5,30,false,'maskPink']
   ]},
   paging:{emoji:'📢',devices:[
-    ['paging_ceiling','dev_paging_ceiling','📢',3.5,20,false,'pagingCeilingCC'],
-    ['paging_horn','dev_paging_horn','📯',5.0,60,true,'pagingHornCC'],
-    ['paging_zone','dev_paging_zone','📻',4.0,40,false,'pagingZoneCC']
+    ['paging_ceiling','Ceiling Paging','📢',3.5,20,false,'pagingCeilingCC'],
+    ['paging_horn','Paging Horn','📯',5.0,60,true,'pagingHornCC'],
+    ['paging_zone','Zone Paging','📻',4.0,40,false,'pagingZoneCC']
   ]},
   emergency:{emoji:'🚨',devices:[
-    ['emg_horn','dev_emg_horn','📯',5.5,80,true,'emgHornCC'],
-    ['emg_strobe','dev_emg_strobe','💡',4.5,50,false,'emgStrobeCC'],
-    ['emg_tower','dev_emg_tower','🗼',7.0,120,true,'emgTowerCC'],
-    ['evac','dev_evac','🚨',5.0,100,true,'evacCC']
+    ['emg_horn','Emergency Horn','📯',5.5,80,true,'emgHornCC'],
+    ['emg_strobe','Emergency Strobe','💡',4.5,50,false,'emgStrobeCC'],
+    ['emg_tower','Emergency Tower','🗼',7.0,120,true,'emgTowerCC'],
+    ['evac','Evacuation Siren','🚨',5.0,100,true,'evacCC']
   ]},
   mics:{emoji:'🎤',devices:[
-    ['agent_mic','dev_agent_mic','🎤',1.4,0,false,'agentMic'],
-    ['super_mic','dev_super_mic','🎙️',1.5,0,false,'superMic'],
-    ['boundary','dev_boundary','🎙️',0.9,0,false,'boundaryMic'],
-    ['wireless','dev_wireless','📡',1.5,0,false,'wirelessMicCC']
+    ['agent_mic','Agent Mic','🎤',1.4,0,false,'agentMic'],
+    ['super_mic','Supervisor Mic','🎙️',1.5,0,false,'superMic'],
+    ['boundary','Boundary Mic','🎙️',0.9,0,false,'boundaryMic'],
+    ['wireless','Wireless Mic','📡',1.5,0,false,'wirelessMicCC']
   ]},
   dsp:{emoji:'🧠',devices:[
-    ['dsp_aec','dev_dsp_aec','🧠',0.5,0,false,'dspAecCC'],
-    ['dsp_matrix','dev_dsp_matrix','🔀',0.5,0,false,'dspMatrixCC'],
-    ['dsp_zones','dev_dsp_zones','📍',0.5,0,false,'dspZonesCC'],
-    ['voice_proc','dev_voice_proc','🎚️',0.5,0,false,'voiceProc']
+    ['dsp_aec','DSP + AEC','🧠',0.5,0,false,'dspAecCC'],
+    ['dsp_matrix','DSP Matrix','🔀',0.5,0,false,'dspMatrixCC'],
+    ['dsp_zones','Zone DSP','📍',0.5,0,false,'dspZonesCC'],
+    ['voice_proc','Voice Processor','🎚️',0.5,0,false,'voiceProc']
   ]},
   control:{emoji:'🎛️',devices:[
-    ['touch','dev_touch','📱',1.5,0,true,'touchCC'],
-    ['master','dev_master','🎛️',1.5,0,true,'masterCC'],
-    ['kpi_dash','dev_kpi_dash','📊',2.0,0,false,'kpiDash'],
-    ['wall_display','dev_wall_display','🖥️',2.5,0,false,'wallDisplay']
+    ['touch','Touch Panel','📱',1.5,0,true,'touchCC'],
+    ['master','Master Unit','🎛️',1.5,0,true,'masterCC'],
+    ['kpi_dash','KPI Dashboard','📊',2.0,0,false,'kpiDash'],
+    ['wall_display','Wall Display','🖥️',2.5,0,false,'wallDisplay']
   ]}
 };
 
-/* Call Center - DYNAMIC dimensions */
+/* Room definition - DYNAMIC based on ROOM.size */
 const ROOM = {
   name:{ ar:'مركز اتصال احترافي', en:'Professional Call Center' },
   size:[26, 18],
   height: 3.5,
-  walls:[[-1,-1,1,-1],[1,-1,1,1],[1,1,-1,1],[-1,1,-1,-1]],
   devices:[
-    /* Agent headsets - 20 distributed */
+    /* 20 agent headsets */
     ['jabra','agentHeadset','headset_noise',-8,-4,0],
     ['jabra','agentHeadset','headset_noise',-4,-4,0],
     ['jabra','agentHeadset','headset_stereo',0,-4,0],
@@ -775,108 +687,47 @@ const ROOM = {
 
 /* ============ STATE ============ */
 const state = {
-  devices: [], nextId: 1,
-  curBrand: 'jabra', curCat: 'agentHeadset', curType: 'headset_mono',
-  selected: null, view3D: true, showHeat: true, showGrid: true, presentation: false,
+  devices: [],
+  nextId: 1,
+  curBrand: 'jabra',
+  curCat: 'agentHeadset',
+  curType: 'headset_mono',
+  selected: null,
+  view3D: true,
+  showHeat: true,
+  showGrid: true,
+  presentation: false,
   cam: { theta:-0.5, phi:0.85, radius:45, target:new THREE.Vector3(0,1.5,0), tween:null },
-  history: [], historyIdx: -1
+  history: [],
+  historyIdx: -1
 };
 
-/* ============ THREE SETUP ============ */
-const canvas = document.getElementById('c');
-const renderer = new THREE.WebGLRenderer({canvas, antialias:true, preserveDrawingBuffer:true});
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-if (THREE.sRGBEncoding !== undefined) renderer.outputEncoding = THREE.sRGBEncoding;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.15;
-
-const scene = new THREE.Scene();
-const skyColor = 0x001a1e;
-scene.background = new THREE.Color(skyColor);
-scene.fog = new THREE.Fog(skyColor, 55, 160);
-const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 600);
-
-scene.add(new THREE.AmbientLight(0xd0ffff, 0.55));
-scene.add(new THREE.HemisphereLight(0xa8e8e8, 0x0a2a30, 0.6));
-const sun = new THREE.DirectionalLight(0xffffff, 1.1);
-sun.position.set(10, 14, 8);
-sun.castShadow = true;
-sun.shadow.mapSize.set(2048, 2048);
-sun.shadow.camera.left = -22; sun.shadow.camera.right = 22;
-sun.shadow.camera.top = 22; sun.shadow.camera.bottom = -22;
-sun.shadow.camera.near = 1; sun.shadow.camera.far = 60;
-sun.shadow.bias = -0.0005;
-scene.add(sun);
-const fill = new THREE.DirectionalLight(0x80d8d8, 0.4);
-fill.position.set(-8, 10, -6); scene.add(fill);
-
-const roomGrp = new THREE.Group(); scene.add(roomGrp);
-const devGrp  = new THREE.Group(); scene.add(devGrp);
-const heatGrp = new THREE.Group(); scene.add(heatGrp);
-
-const grid = new THREE.GridHelper(240, 120, 0x14b8a6, 0x0a2a30);
-grid.material.opacity = 0.12; grid.material.transparent = true;
-grid.position.y = 0.004; scene.add(grid);
-
-/* ============ MATERIALS (memoized) ============ */
-const _matCache = {};
-const M = {};
-function defMat(name, factory) {
-  M[name] = function () {
-    if (!_matCache[name]) _matCache[name] = factory();
-    return _matCache[name];
-  };
+/* ============ HELPERS ============ */
+function accentMat(c, i) {
+  return new THREE.MeshStandardMaterial({
+    color:c, emissive:c, emissiveIntensity:i || 0.7, roughness:0.3, metalness:0.5
+  });
 }
-defMat('body',       () => new THREE.MeshStandardMaterial({color:0x1a2830,roughness:0.5,metalness:0.5}));
-defMat('dark',       () => new THREE.MeshStandardMaterial({color:0x051015,roughness:0.85,metalness:0.25}));
-defMat('gray',       () => new THREE.MeshStandardMaterial({color:0x3a4850,roughness:0.6,metalness:0.4}));
-defMat('metal',      () => new THREE.MeshStandardMaterial({color:0xb0c0c8,roughness:0.3,metalness:0.85}));
-defMat('steel',      () => new THREE.MeshStandardMaterial({color:0x90a0a8,roughness:0.5,metalness:0.6,side:THREE.DoubleSide}));
-defMat('deskTop',    () => new THREE.MeshStandardMaterial({color:0x2a3028,roughness:0.55,metalness:0.15}));
-defMat('deskEdge',   () => new THREE.MeshStandardMaterial({color:0x1a2018,roughness:0.7,metalness:0.15}));
-defMat('carpet',     () => new THREE.MeshStandardMaterial({color:0x0a1820,roughness:0.95,metalness:0.02}));
-defMat('wall',       () => new THREE.MeshStandardMaterial({color:0x1a3038,roughness:0.85,metalness:0.08}));
-defMat('wallAccent', () => new THREE.MeshStandardMaterial({color:0x0f2530,roughness:0.8,metalness:0.1}));
-defMat('absorber',   () => new THREE.MeshStandardMaterial({color:0x2a3a44,roughness:0.98,metalness:0.02}));
-defMat('absorberFrame', () => new THREE.MeshStandardMaterial({color:0x0a1a20,roughness:0.9,metalness:0.1}));
-defMat('ceiling',    () => new THREE.MeshStandardMaterial({color:0x0a1a20,roughness:0.9,metalness:0.05}));
-defMat('ceilingPanel',() => new THREE.MeshStandardMaterial({color:0xd0e8e8,emissive:0xe0f8f8,emissiveIntensity:0.4,roughness:0.7,metalness:0.1}));
-defMat('ceilingCloud',() => new THREE.MeshStandardMaterial({color:0x2a4a55,roughness:0.95,metalness:0.05}));
-defMat('chair',      () => new THREE.MeshStandardMaterial({color:0x1a2828,roughness:0.7,metalness:0.15}));
-defMat('chairBack',  () => new THREE.MeshStandardMaterial({color:0x0a1818,roughness:0.75,metalness:0.1}));
-defMat('partition',  () => new THREE.MeshStandardMaterial({color:0x2a4050,roughness:0.8,metalness:0.15}));
-defMat('partitionAc',() => new THREE.MeshStandardMaterial({color:0x1a5060,roughness:0.95,metalness:0.02}));
-defMat('monitorFrame',() => new THREE.MeshStandardMaterial({color:0x0a0a0a,roughness:0.6,metalness:0.3}));
-defMat('monitorScreen',() => new THREE.MeshBasicMaterial({color:0x0a3a5a}));
-defMat('boothGlass', () => new THREE.MeshBasicMaterial({color:0x60e5ff,transparent:true,opacity:0.35}));
-defMat('door',       () => new THREE.MeshStandardMaterial({color:0x1a2030,roughness:0.7,metalness:0.2}));
-defMat('doorFrame',  () => new THREE.MeshStandardMaterial({color:0x4a5260,roughness:0.6,metalness:0.4}));
-defMat('screen',     () => new THREE.MeshBasicMaterial({color:0x1a3a5a,transparent:true,opacity:0.9}));
-defMat('ledRed',     () => new THREE.MeshStandardMaterial({color:0xff2222,emissive:0xff2222,emissiveIntensity:2.5}));
-defMat('ledGreen',   () => new THREE.MeshStandardMaterial({color:0x10b981,emissive:0x10b981,emissiveIntensity:2.5}));
-defMat('ledAmber',   () => new THREE.MeshStandardMaterial({color:0xfbbf24,emissive:0xfbbf24,emissiveIntensity:2.5}));
-defMat('ledTeal',    () => new THREE.MeshStandardMaterial({color:0x14b8a6,emissive:0x14b8a6,emissiveIntensity:2.5}));
-defMat('ledCyan',    () => new THREE.MeshStandardMaterial({color:0x22d3ee,emissive:0x22d3ee,emissiveIntensity:2.5}));
-defMat('ledLime',    () => new THREE.MeshStandardMaterial({color:0x84cc16,emissive:0x84cc16,emissiveIntensity:2.5}));
-defMat('ledBlue',    () => new THREE.MeshStandardMaterial({color:0x3b82f6,emissive:0x3b82f6,emissiveIntensity:2.5}));
-defMat('white',      () => new THREE.MeshStandardMaterial({color:0xffffff,emissive:0xffffff,emissiveIntensity:2.5}));
-
-function accentMat(c,i){return new THREE.MeshStandardMaterial({color:c,emissive:c,emissiveIntensity:i||0.7,roughness:0.3,metalness:0.5});}
-
 function getSpec(cat, typeId) {
-  const c = CATS[cat]; if (!c) return null;
-  const arr = c.devices.find(d => d[0] === typeId); if (!arr) return null;
+  const c = CATS[cat];
+  if (!c) return null;
+  const arr = c.devices.find(function(d) { return d[0] === typeId; });
+  if (!arr) return null;
   return {id:arr[0], nameKey:arr[1], emoji:arr[2], h:arr[3], power:arr[4], dir:arr[5], shape:arr[6]};
 }
-function devName(spec){return T(spec.nameKey);}
-function catName(key){return T('cat_' + key);}
-function brandName(key){return BRANDS[key] ? T('brand_' + key) : '—';}
+function devName(spec){ return spec.nameKey; }
+function catName(key){
+  const names = {agentHeadset:'Agent Headsets', agentDesk:'Desk Amps', supervisor:'Supervisors',
+    recording:'Recording', ceilingSpk:'Ceiling Speakers', masking:'Noise Masking',
+    paging:'Paging', emergency:'Emergency', mics:'Microphones', dsp:'DSP', control:'Control'};
+  return names[key] || key;
+}
+function brandName(key){ return BRANDS[key] ? BRANDS[key].tag : '—'; }
 
 /* ============ MESH FACTORY ============ */
 function makeMesh(cat, typeId, brandColor) {
-  const spec = getSpec(cat, typeId); if (!spec) return null;
+  const spec = getSpec(cat, typeId);
+  if (!spec) return null;
   const color = brandColor || 0x14b8a6;
   const g = new THREE.Group();
   const S = spec.shape;
@@ -891,8 +742,6 @@ function makeMesh(cat, typeId, brandColor) {
       mic.position.set(-0.14, 0.05, 0.07); mic.rotation.x = 0.3; g.add(mic);
       const cap = new THREE.Mesh(new THREE.SphereGeometry(0.018,10,8), M.ledTeal());
       cap.position.set(-0.14, -0.01, 0.11); g.add(cap);
-      const led = new THREE.Mesh(new THREE.SphereGeometry(0.01,8,6), M.ledGreen());
-      led.position.set(-0.14, 0.16, 0.055); g.add(led);
       break;
     }
     case 'headsetStereo': {
@@ -905,10 +754,6 @@ function makeMesh(cat, typeId, brandColor) {
       mic.position.set(-0.14, 0.05, 0.07); mic.rotation.x = 0.3; g.add(mic);
       const cap = new THREE.Mesh(new THREE.SphereGeometry(0.018,10,8), M.ledTeal());
       cap.position.set(-0.14, -0.01, 0.11); g.add(cap);
-      const led1 = new THREE.Mesh(new THREE.SphereGeometry(0.01,8,6), M.ledGreen());
-      led1.position.set(-0.14, 0.16, 0.055); g.add(led1);
-      const led2 = new THREE.Mesh(new THREE.SphereGeometry(0.01,8,6), M.ledGreen());
-      led2.position.set(0.14, 0.16, 0.055); g.add(led2);
       break;
     }
     case 'headsetWireless': {
@@ -938,8 +783,6 @@ function makeMesh(cat, typeId, brandColor) {
       mic.position.set(-0.15, 0.03, 0.08); mic.rotation.x = 0.4; g.add(mic);
       const cap = new THREE.Mesh(new THREE.SphereGeometry(0.02,10,8), M.ledTeal());
       cap.position.set(-0.15, -0.05, 0.14); g.add(cap);
-      const led = new THREE.Mesh(new THREE.SphereGeometry(0.012,8,6), M.ledGreen());
-      led.position.set(-0.15, 0.16, 0.07); g.add(led);
       break;
     }
     case 'deskAmp': {
@@ -967,11 +810,6 @@ function makeMesh(cat, typeId, brandColor) {
       handset.position.set(0, 0.05, -0.04); g.add(handset);
       const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.14,0.06), M.monitorScreen());
       screen.position.set(0, 0.02, 0.091); g.add(screen);
-      for (let i=0;i<6;i++) {
-        const btn = new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.005,8), M.ledTeal());
-        btn.position.set(-0.06 + (i%3)*0.06, 0.02, 0.05 + Math.floor(i/3)*0.04);
-        btn.rotation.x = Math.PI/2; g.add(btn);
-      }
       break;
     }
     case 'usbSpeaker': {
@@ -990,8 +828,6 @@ function makeMesh(cat, typeId, brandColor) {
       gr.position.set(0, 0, 0.13); g.add(gr);
       const led = new THREE.Mesh(new THREE.BoxGeometry(0.28,0.02,0.005), M.ledTeal());
       led.position.set(0, 0.09, 0.13); g.add(led);
-      const led2 = new THREE.Mesh(new THREE.SphereGeometry(0.012,8,6), M.ledGreen());
-      led2.position.set(-0.14, -0.1, 0.13); g.add(led2);
       break;
     }
     case 'superAmp': {
@@ -1013,8 +849,6 @@ function makeMesh(cat, typeId, brandColor) {
       const earR = earL.clone(); earR.position.x = 0.14; g.add(earR);
       const mic = new THREE.Mesh(new THREE.CylinderGeometry(0.01,0.01,0.15,6), M.metal());
       mic.position.set(-0.14, 0.02, 0.09); mic.rotation.x = 0.5; g.add(mic);
-      const cap = new THREE.Mesh(new THREE.SphereGeometry(0.02,10,8), M.ledCyan());
-      cap.position.set(-0.14, -0.05, 0.16); g.add(cap);
       break;
     }
     case 'recorderCC': {
@@ -1024,15 +858,11 @@ function makeMesh(cat, typeId, brandColor) {
       rec.position.set(-0.1, 0.1, 0.16); g.add(rec);
       const led = new THREE.Mesh(new THREE.SphereGeometry(0.018,8,6), M.ledGreen());
       led.position.set(0.1, 0.1, 0.16); g.add(led);
-      const led2 = new THREE.Mesh(new THREE.SphereGeometry(0.018,8,6), M.ledAmber());
-      led2.position.set(0.14, 0.1, 0.16); g.add(led2);
       break;
     }
     case 'callRecorder': {
       const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.15,0.35), M.body());
       g.add(b);
-      const phone = new THREE.Mesh(new THREE.BoxGeometry(0.04,0.06,0.02), M.ledTeal());
-      phone.position.set(-0.18, 0.01, 0.18); g.add(phone);
       for (let i=0;i<6;i++) {
         const led = new THREE.Mesh(new THREE.SphereGeometry(0.01,6,6), i%3 === 0 ? M.ledRed() : (i%3 === 1 ? M.ledGreen() : M.ledAmber()));
         led.position.set(-0.05 + i*0.03, 0.05, 0.18); g.add(led);
@@ -1059,8 +889,6 @@ function makeMesh(cat, typeId, brandColor) {
       hIcon.position.set(-0.12, 0.05, 0.16); g.add(hIcon);
       const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.18,0.12), M.screen());
       screen.position.set(0.05, 0, 0.16); g.add(screen);
-      const led = new THREE.Mesh(new THREE.SphereGeometry(0.015,8,6), M.ledGreen());
-      led.position.set(-0.16, -0.1, 0.16); g.add(led);
       break;
     }
     case 'ceilingSpkCC': {
@@ -1097,8 +925,6 @@ function makeMesh(cat, typeId, brandColor) {
       tile.position.y = -0.01; g.add(tile);
       const grille = new THREE.Mesh(new THREE.BoxGeometry(0.44,0.005,0.44), M.body());
       grille.position.y = 0.005; g.add(grille);
-      const led = new THREE.Mesh(new THREE.SphereGeometry(0.012,8,6), M.ledTeal());
-      led.position.set(0.2, -0.02, 0.2); g.add(led);
       break;
     }
     case 'maskCeiling': {
@@ -1106,12 +932,8 @@ function makeMesh(cat, typeId, brandColor) {
       g.add(d);
       const grille = new THREE.Mesh(new THREE.CircleGeometry(0.13,24), M.steel());
       grille.rotation.x = -Math.PI/2; grille.position.y = -0.024; g.add(grille);
-      for (let i=0;i<8;i++) {
-        const a = (i/8)*Math.PI*2;
-        const dot = new THREE.Mesh(new THREE.CircleGeometry(0.012,6), M.ledLime());
-        dot.rotation.x = -Math.PI/2;
-        dot.position.set(Math.cos(a)*0.11, -0.025, Math.sin(a)*0.11); g.add(dot);
-      }
+      const r = new THREE.Mesh(new THREE.TorusGeometry(0.13,0.005,6,24), M.ledLime());
+      r.rotation.x = Math.PI/2; r.position.y = -0.025; g.add(r);
       break;
     }
     case 'maskPanel': {
@@ -1130,8 +952,6 @@ function makeMesh(cat, typeId, brandColor) {
       grille.rotation.x = -Math.PI/2; grille.position.y = -0.024; g.add(grille);
       const r = new THREE.Mesh(new THREE.TorusGeometry(0.13,0.005,6,24), M.ledLime());
       r.rotation.x = Math.PI/2; r.position.y = -0.025; g.add(r);
-      const center = new THREE.Mesh(new THREE.CircleGeometry(0.03,12), M.ledLime());
-      center.rotation.x = -Math.PI/2; center.position.y = -0.026; g.add(center);
       break;
     }
     case 'maskPink': {
@@ -1141,8 +961,6 @@ function makeMesh(cat, typeId, brandColor) {
       grille.rotation.x = -Math.PI/2; grille.position.y = -0.024; g.add(grille);
       const r = new THREE.Mesh(new THREE.TorusGeometry(0.13,0.005,6,24), M.ledAmber());
       r.rotation.x = Math.PI/2; r.position.y = -0.025; g.add(r);
-      const center = new THREE.Mesh(new THREE.CircleGeometry(0.03,12), M.ledAmber());
-      center.rotation.x = -Math.PI/2; center.position.y = -0.026; g.add(center);
       break;
     }
     case 'pagingCeilingCC': {
@@ -1163,8 +981,6 @@ function makeMesh(cat, typeId, brandColor) {
       bk.castShadow = true; g.add(bk);
       const horn = new THREE.Mesh(new THREE.CylinderGeometry(0.28,0.1,0.45,16,1,true), M.steel());
       horn.rotation.x = Math.PI/2; horn.position.z = 0.33; g.add(horn);
-      const led = new THREE.Mesh(new THREE.SphereGeometry(0.03,8,6), M.ledAmber());
-      led.position.set(0.15, 0.15, -0.15); g.add(led);
       break;
     }
     case 'pagingZoneCC': {
@@ -1172,8 +988,6 @@ function makeMesh(cat, typeId, brandColor) {
       b.castShadow = true; g.add(b);
       const gr = new THREE.Mesh(new THREE.CircleGeometry(0.1,16), M.steel());
       gr.position.set(0, 0, 0.16); g.add(gr);
-      const led = new THREE.Mesh(new THREE.SphereGeometry(0.02,8,6), M.ledAmber());
-      led.position.set(0.1, 0.1, 0.16); g.add(led);
       break;
     }
     case 'emgHornCC': {
@@ -1181,8 +995,7 @@ function makeMesh(cat, typeId, brandColor) {
       pole.position.y = -1.5; g.add(pole);
       const base = new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.25,0.15,12), M.gray());
       base.position.y = -2.9; g.add(base);
-      const bk = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.3,0.25),
-        new THREE.MeshStandardMaterial({color:0xcc0000,roughness:0.5,metalness:0.4}));
+      const bk = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.3,0.25), M.emgRed());
       bk.castShadow = true; g.add(bk);
       const horn = new THREE.Mesh(new THREE.CylinderGeometry(0.26,0.1,0.42,16,1,true), M.steel());
       horn.rotation.x = Math.PI/2; horn.position.z = 0.31; g.add(horn);
@@ -1204,13 +1017,6 @@ function makeMesh(cat, typeId, brandColor) {
       pole.position.y = -3.25; g.add(pole);
       const base = new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.7,0.25,16), M.gray());
       base.position.y = -6.4; g.add(base);
-      for (let i=0;i<4;i++) {
-        const a = (i/4)*Math.PI*2;
-        const h = new THREE.Mesh(new THREE.CylinderGeometry(0.35,0.1,0.7,16,1,true), M.steel());
-        h.rotation.z = Math.PI/2; h.rotation.y = a;
-        h.position.set(Math.cos(a)*0.5, 0.2, Math.sin(a)*0.5);
-        g.add(h);
-      }
       const beacon = new THREE.Mesh(new THREE.CylinderGeometry(0.22,0.22,0.4,16), M.ledRed());
       beacon.position.y = 0.7; g.add(beacon);
       break;
@@ -1220,8 +1026,7 @@ function makeMesh(cat, typeId, brandColor) {
       pole.position.y = -2.25; g.add(pole);
       const base = new THREE.Mesh(new THREE.CylinderGeometry(0.4,0.5,0.25,14), M.gray());
       base.position.y = -4.35; g.add(base);
-      const box = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.7,0.45),
-        new THREE.MeshStandardMaterial({color:0xcc0000,roughness:0.5,metalness:0.4}));
+      const box = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.7,0.45), M.emgRed());
       box.castShadow = true; g.add(box);
       const horn = new THREE.Mesh(new THREE.CylinderGeometry(0.35,0.15,0.6,18,1,true), M.steel());
       horn.rotation.x = Math.PI/2; horn.position.z = 0.4; g.add(horn);
@@ -1236,8 +1041,6 @@ function makeMesh(cat, typeId, brandColor) {
       neck.position.y = 0.15; g.add(neck);
       const head = new THREE.Mesh(new THREE.SphereGeometry(0.018,10,8), M.dark());
       head.position.y = 0.32; g.add(head);
-      const led = new THREE.Mesh(new THREE.TorusGeometry(0.04,0.005,6,14), M.ledTeal());
-      led.rotation.x = Math.PI/2; led.position.y = 0.014; g.add(led);
       break;
     }
     case 'superMic': {
@@ -1256,8 +1059,6 @@ function makeMesh(cat, typeId, brandColor) {
       g.add(b);
       const grille = new THREE.Mesh(new THREE.CircleGeometry(0.07,20), M.steel());
       grille.rotation.x = -Math.PI/2; grille.position.y = 0.012; g.add(grille);
-      const led = new THREE.Mesh(new THREE.TorusGeometry(0.075,0.006,6,18), M.ledTeal());
-      led.rotation.x = Math.PI/2; led.position.y = 0.013; g.add(led);
       break;
     }
     case 'wirelessMicCC': {
@@ -1272,12 +1073,6 @@ function makeMesh(cat, typeId, brandColor) {
     case 'dspAecCC': {
       const b = new THREE.Mesh(new THREE.BoxGeometry(0.55,0.44,0.42), M.body());
       g.add(b);
-      const label = new THREE.Mesh(new THREE.PlaneGeometry(0.15,0.06), M.ledGreen());
-      label.position.set(-0.15, 0.15, 0.215); g.add(label);
-      for (let i=0;i<4;i++) {
-        const led = new THREE.Mesh(new THREE.SphereGeometry(0.012,6,6), M.ledGreen());
-        led.position.set(-0.05 + i*0.05, 0.15, 0.215); g.add(led);
-      }
       const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.2,0.1), M.screen());
       screen.position.set(0.15, 0, 0.215); g.add(screen);
       break;
@@ -1296,10 +1091,6 @@ function makeMesh(cat, typeId, brandColor) {
     case 'dspZonesCC': {
       const b = new THREE.Mesh(new THREE.BoxGeometry(0.55,0.44,0.42), M.body());
       g.add(b);
-      for (let i=0;i<8;i++) {
-        const zone = new THREE.Mesh(new THREE.BoxGeometry(0.04,0.04,0.01), M.ledCyan());
-        zone.position.set(-0.2 + (i%4)*0.13, -0.05 - Math.floor(i/4)*0.1, 0.215); g.add(zone);
-      }
       const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.2,0.08), M.screen());
       screen.position.set(0, 0.13, 0.215); g.add(screen);
       break;
@@ -1312,11 +1103,6 @@ function makeMesh(cat, typeId, brandColor) {
         knob.rotation.x = Math.PI/2;
         knob.position.set(-0.15 + i*0.075, 0.03, 0.18); g.add(knob);
       }
-      for (let i=0;i<8;i++) {
-        const bar = new THREE.Mesh(new THREE.BoxGeometry(0.015,0.02 + i*0.008,0.005),
-          i < 6 ? M.ledGreen() : M.ledRed());
-        bar.position.set(-0.15 + i*0.04, -0.04, 0.18); g.add(bar);
-      }
       break;
     }
     case 'touchCC': {
@@ -1325,12 +1111,6 @@ function makeMesh(cat, typeId, brandColor) {
       const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.19,0.12),
         new THREE.MeshBasicMaterial({color:0x0a3a4a,transparent:true,opacity:0.9}));
       screen.position.set(0, 0, 0.011); g.add(screen);
-      const icon1 = new THREE.Mesh(new THREE.CircleGeometry(0.014,8), M.ledTeal());
-      icon1.position.set(-0.055, 0, 0.012); g.add(icon1);
-      const icon2 = new THREE.Mesh(new THREE.CircleGeometry(0.014,8), M.ledGreen());
-      icon2.position.set(0, 0, 0.012); g.add(icon2);
-      const icon3 = new THREE.Mesh(new THREE.CircleGeometry(0.014,8), M.ledAmber());
-      icon3.position.set(0.055, 0, 0.012); g.add(icon3);
       break;
     }
     case 'masterCC': {
@@ -1338,10 +1118,6 @@ function makeMesh(cat, typeId, brandColor) {
       p.position.y = 0.8; g.add(p);
       const s = new THREE.Mesh(new THREE.PlaneGeometry(0.65,0.45), M.screen());
       s.position.set(0,0.8,0.055); g.add(s);
-      for (let i=0;i<3;i++) {
-        const knob = new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,0.02,14), M.ledTeal());
-        knob.rotation.x = Math.PI/2; knob.position.set(-0.2 + i*0.2, 0.5, 0.06); g.add(knob);
-      }
       break;
     }
     case 'kpiDash': {
@@ -1349,11 +1125,6 @@ function makeMesh(cat, typeId, brandColor) {
       g.add(b);
       const screen = new THREE.Mesh(new THREE.PlaneGeometry(1.4,0.9), M.screen());
       screen.position.set(0, 0, 0.055); g.add(screen);
-      const kpiMats = [M.ledGreen(), M.ledTeal(), M.ledAmber(), M.ledCyan()];
-      for (let i=0;i<4;i++) {
-        const bar = new THREE.Mesh(new THREE.BoxGeometry(0.25,0.15 + i*0.1,0.01), kpiMats[i]);
-        bar.position.set(-0.5 + i*0.35, -0.3 + (0.15 + i*0.1)/2, 0.06); g.add(bar);
-      }
       break;
     }
     case 'wallDisplay': {
@@ -1379,15 +1150,16 @@ function makeMesh(cat, typeId, brandColor) {
   return g;
 }
 
-/* ============ BUILD ROOM (fully parametric) ============ */
+/* ============ BUILD ROOM ============ */
 function clearGroup(g) {
   while (g.children.length) {
-    const c = g.children[0]; g.remove(c);
+    const c = g.children[0];
+    g.remove(c);
     if (c.traverse) {
-      c.traverse(o => {
+      c.traverse(function(o) {
         if (o.geometry) o.geometry.dispose();
         if (o.material) {
-          if (Array.isArray(o.material)) o.material.forEach(m => m.dispose());
+          if (Array.isArray(o.material)) o.material.forEach(function(m){ m.dispose(); });
           else o.material.dispose();
         }
       });
@@ -1403,14 +1175,18 @@ function buildRoom() {
   const T = 0.2;
   const hw = W/2, hd = D/2;
 
-  /* --- FLOOR (carpet) --- */
+  /* FLOOR */
   const floor = new THREE.Mesh(new THREE.BoxGeometry(W, 0.05, D), M.carpet());
-  floor.position.set(0, 0.025, 0); floor.receiveShadow = true; roomGrp.add(floor);
+  floor.position.set(0, 0.025, 0);
+  floor.receiveShadow = true;
+  roomGrp.add(floor);
 
-  /* --- CEILING --- */
+  /* CEILING */
   const ceil = new THREE.Mesh(new THREE.BoxGeometry(W, 0.1, D), M.ceiling());
-  ceil.position.set(0, H, 0); roomGrp.add(ceil);
-  /* Ceiling panels grid */
+  ceil.position.set(0, H, 0);
+  roomGrp.add(ceil);
+
+  /* Ceiling panels */
   const panelSpacing = 1.7;
   const nPx = Math.floor(W / panelSpacing);
   const nPz = Math.floor(D / panelSpacing);
@@ -1421,29 +1197,36 @@ function buildRoom() {
       roomGrp.add(panel);
     }
   }
-  /* Ceiling point lights */
-  for (let i=0;i<Math.min(8, Math.floor(W/3));i++) {
+
+  /* Ceiling lights */
+  const nLights = Math.min(8, Math.max(2, Math.floor(W/3)));
+  for (let i=0;i<nLights;i++) {
     const light = new THREE.PointLight(0xe0ffff, 0.5, Math.max(W,D), 2);
-    light.position.set(-W/2 + (i+0.5)*(W/Math.min(8, Math.floor(W/3))), H - 0.4, 0);
+    light.position.set(-W/2 + (i+0.5)*(W/nLights), H - 0.4, 0);
     roomGrp.add(light);
   }
 
-  /* --- WALLS --- */
+  /* WALLS */
   const wallPos = [
     { x:0, z:-hd, w:W, d:T },
     { x:0, z: hd, w:W, d:T },
     { x:-hw, z:0, w:T, d:D },
     { x: hw, z:0, w:T, d:D }
   ];
-  for (const wp of wallPos) {
+  for (let wi=0;wi<wallPos.length;wi++) {
+    const wp = wallPos[wi];
     const w = new THREE.Mesh(new THREE.BoxGeometry(wp.w, H, wp.d), M.wall());
-    w.position.set(wp.x, H/2, wp.z); w.receiveShadow = true; roomGrp.add(w);
+    w.position.set(wp.x, H/2, wp.z);
+    w.receiveShadow = true;
+    roomGrp.add(w);
+
+    /* Acoustic absorber panels on walls */
     const isSide = wp.w < wp.d;
     const length = isSide ? wp.d : wp.w;
-    /* Acoustic absorber panels on walls */
     const panelW = isSide ? 0.03 : 2.5;
     const panelD = isSide ? 2.5 : 0.03;
-    for (let i=0;i<Math.floor(length/3);i++) {
+    const nPanels = Math.floor(length/3);
+    for (let i=0;i<nPanels;i++) {
       for (let r=0;r<2;r++) {
         const abs = new THREE.Mesh(
           new THREE.BoxGeometry(panelW * 1.05, 1.1, panelD * 1.05),
@@ -1454,34 +1237,20 @@ function buildRoom() {
         const py = 0.9 + r * 1.4;
         abs.position.set(px, py, pz);
         roomGrp.add(abs);
-        const absIn = new THREE.Mesh(
-          new THREE.BoxGeometry(panelW * 0.98, 1.0, panelD * 0.98),
-          M.absorber()
-        );
-        absIn.position.set(px + (isSide ? (wp.x>0?-0.001:0.001) : 0), py, pz + (isSide ? 0 : (wp.z>0?-0.001:0.001)));
-        roomGrp.add(absIn);
       }
     }
   }
 
-  /* --- CEILING CLOUDS (acoustic) --- */
+  /* CEILING CLOUDS */
   const cloudCount = Math.max(4, Math.floor(W / 5));
   for (let i=0;i<cloudCount;i++) {
     const cx = -W/2 + (i + 0.5) * (W / cloudCount);
     const cloud = new THREE.Mesh(new THREE.BoxGeometry(W/cloudCount - 1, 0.25, D * 0.6), M.ceilingCloud());
     cloud.position.set(cx, H - 0.6, 0);
     roomGrp.add(cloud);
-    /* Suspension cables */
-    for (const dx of [-W/(cloudCount*3), 0, W/(cloudCount*3)]) {
-      for (const dz of [-D*0.25, D*0.25]) {
-        const cable = new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.5,4), M.metal());
-        cable.position.set(cx + dx, H - 0.35, dz); roomGrp.add(cable);
-      }
-    }
   }
 
-  /* --- AGENT WORKSTATIONS (dynamic grid) --- */
-  /* Compute grid based on room size: aim for 1 desk per 20 m² */
+  /* AGENT WORKSTATIONS */
   const area = W * D;
   const targetAgents = Math.max(6, Math.min(40, Math.floor(area / 20)));
   const cols = Math.max(3, Math.min(6, Math.round(Math.sqrt(targetAgents))));
@@ -1489,7 +1258,7 @@ function buildRoom() {
   const startX = -hw + 3;
   const endX = hw - 3;
   const startZ = -hd + 3;
-  const endZ = hd - 6;   /* leave space at back for supervisors */
+  const endZ = hd - 6;
   const spacingX = (endX - startX) / Math.max(1, cols - 1);
   const spacingZ = (endZ - startZ) / Math.max(1, rows - 1);
 
@@ -1498,171 +1267,132 @@ function buildRoom() {
       const cx = startX + c * spacingX;
       const cz = startZ + r * spacingZ;
 
-      /* Desk surface */
       const desk = new THREE.Mesh(new THREE.BoxGeometry(spacingX * 0.75, 0.06, 1.3), M.deskTop());
-      desk.position.set(cx, 0.75, cz); desk.castShadow = true; desk.receiveShadow = true;
+      desk.position.set(cx, 0.75, cz);
+      desk.castShadow = true;
       roomGrp.add(desk);
+
       const edge = new THREE.Mesh(new THREE.BoxGeometry(spacingX * 0.75, 0.04, 1.4), M.deskEdge());
-      edge.position.set(cx, 0.71, cz); roomGrp.add(edge);
-      /* Desk legs */
-      for (const dx of [-spacingX*0.32, spacingX*0.32]) {
+      edge.position.set(cx, 0.71, cz);
+      roomGrp.add(edge);
+
+      for (let li=0;li<2;li++) {
         const leg = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.72, 1.2), M.gray());
-        leg.position.set(cx + dx, 0.36, cz); roomGrp.add(leg);
+        leg.position.set(cx + (li === 0 ? -spacingX*0.32 : spacingX*0.32), 0.36, cz);
+        roomGrp.add(leg);
       }
-      /* Acoustic partition (back + sides) */
+
       const partition = new THREE.Mesh(new THREE.BoxGeometry(spacingX * 0.75, 0.55, 0.05), M.partitionAc());
-      partition.position.set(cx, 1.15, cz + 0.65); roomGrp.add(partition);
-      const partitionEdge = new THREE.Mesh(new THREE.BoxGeometry(spacingX * 0.75, 0.06, 0.08), M.partition());
-      partitionEdge.position.set(cx, 1.42, cz + 0.65); roomGrp.add(partitionEdge);
-      /* Side partitions */
-      for (const sx of [-1, 1]) {
-        const side = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.45, 0.7), M.partitionAc());
-        side.position.set(cx + sx * spacingX * 0.375, 1.15, cz + 0.3);
-        roomGrp.add(side);
-      }
-      /* Monitor */
+      partition.position.set(cx, 1.15, cz + 0.65);
+      roomGrp.add(partition);
+
       const monBase = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.02, 0.12), M.body());
-      monBase.position.set(cx, 0.78, cz - 0.25); roomGrp.add(monBase);
+      monBase.position.set(cx, 0.78, cz - 0.25);
+      roomGrp.add(monBase);
+
       const monPost = new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.25,8), M.metal());
-      monPost.position.set(cx, 0.9, cz - 0.25); roomGrp.add(monPost);
+      monPost.position.set(cx, 0.9, cz - 0.25);
+      roomGrp.add(monPost);
+
       const monScreen = new THREE.Mesh(new THREE.BoxGeometry(0.55,0.35,0.03), M.monitorFrame());
-      monScreen.position.set(cx, 1.2, cz - 0.25); roomGrp.add(monScreen);
+      monScreen.position.set(cx, 1.2, cz - 0.25);
+      roomGrp.add(monScreen);
+
       const monDisplay = new THREE.Mesh(new THREE.PlaneGeometry(0.5,0.3), M.monitorScreen());
-      monDisplay.position.set(cx, 1.2, cz - 0.23); roomGrp.add(monDisplay);
-      /* Keyboard */
-      const kbd = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.02, 0.15), M.body());
-      kbd.position.set(cx, 0.79, cz - 0.05); roomGrp.add(kbd);
-      /* Chair */
-      const chair = new THREE.Group();
+      monDisplay.position.set(cx, 1.2, cz - 0.23);
+      roomGrp.add(monDisplay);
+
+      const chairGrp = new THREE.Group();
       const seat = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.08, 0.5), M.chair());
-      seat.position.y = 0.45; chair.add(seat);
+      seat.position.y = 0.45;
+      chairGrp.add(seat);
       const back = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.6, 0.06), M.chairBack());
-      back.position.set(0, 0.75, 0.25); chair.add(back);
+      back.position.set(0, 0.75, 0.25);
+      chairGrp.add(back);
       const post = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.06,0.35,10), M.gray());
-      post.position.y = 0.22; chair.add(post);
+      post.position.y = 0.22;
+      chairGrp.add(post);
       const base = new THREE.Mesh(new THREE.CylinderGeometry(0.28,0.28,0.04,16), M.gray());
-      base.position.y = 0.03; chair.add(base);
-      chair.position.set(cx, 0, cz + 1.2);
-      roomGrp.add(chair);
+      base.position.y = 0.03;
+      chairGrp.add(base);
+      chairGrp.position.set(cx, 0, cz + 1.2);
+      roomGrp.add(chairGrp);
     }
   }
 
-  /* --- SUPERVISOR DESKS (back wall) --- */
+  /* SUPERVISOR DESKS */
   const superCount = Math.max(2, Math.min(5, Math.floor(W / 6)));
   const superSpacingX = (W * 0.5) / Math.max(1, superCount - 1);
   for (let i=0;i<superCount;i++) {
     const cx = -W*0.25 + i * superSpacingX;
     const cz = hd - 3;
-    /* Supervisor desk */
     const desk = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.07, 1.4), M.deskTop());
-    desk.position.set(cx, 0.78, cz); desk.castShadow = true; roomGrp.add(desk);
+    desk.position.set(cx, 0.78, cz);
+    desk.castShadow = true;
+    roomGrp.add(desk);
+
     const edge = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.04, 1.5), M.deskEdge());
-    edge.position.set(cx, 0.74, cz); roomGrp.add(edge);
-    for (const dx of [-1.1, 1.1]) {
+    edge.position.set(cx, 0.74, cz);
+    roomGrp.add(edge);
+
+    for (let li=0;li<2;li++) {
       const leg = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.74, 1.3), M.gray());
-      leg.position.set(cx + dx, 0.37, cz); roomGrp.add(leg);
+      leg.position.set(cx + (li === 0 ? -1.1 : 1.1), 0.37, cz);
+      roomGrp.add(leg);
     }
-    /* Dual monitors */
+
     for (let m=0;m<2;m++) {
       const mx = cx - 0.32 + m*0.64;
       const monBase = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.02, 0.12), M.body());
-      monBase.position.set(mx, 0.8, cz - 0.3); roomGrp.add(monBase);
+      monBase.position.set(mx, 0.8, cz - 0.3);
+      roomGrp.add(monBase);
       const monPost = new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.3,8), M.metal());
-      monPost.position.set(mx, 0.95, cz - 0.3); roomGrp.add(monPost);
+      monPost.position.set(mx, 0.95, cz - 0.3);
+      roomGrp.add(monPost);
       const monScreen = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.32,0.03), M.monitorFrame());
-      monScreen.position.set(mx, 1.28, cz - 0.3); roomGrp.add(monScreen);
-      const monDisplay = new THREE.Mesh(new THREE.PlaneGeometry(0.45,0.28), M.monitorScreen());
-      monDisplay.position.set(mx, 1.28, cz - 0.28); roomGrp.add(monDisplay);
+      monScreen.position.set(mx, 1.28, cz - 0.3);
+      roomGrp.add(monScreen);
     }
-    /* Chair */
-    const chair = new THREE.Group();
-    const seat = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.08, 0.55), M.chair());
-    seat.position.y = 0.45; chair.add(seat);
-    const back = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.7, 0.07), M.chairBack());
-    back.position.set(0, 0.78, 0.27); chair.add(back);
-    const post = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.06,0.35,10), M.gray());
-    post.position.y = 0.22; chair.add(post);
-    const base = new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.3,0.05,16), M.gray());
-    base.position.y = 0.03; chair.add(base);
-    chair.position.set(cx, 0, cz + 1.3);
-    roomGrp.add(chair);
   }
 
-  /* --- RECORDING BOOTH (front-left) --- */
+  /* RECORDING BOOTH */
   const recW = Math.min(6, W * 0.25);
   const recD = Math.min(3, D * 0.18);
   const recX = -hw + recW/2 + 1;
   const recZ = -hd + recD/2 + 1;
   const recBody = new THREE.Mesh(new THREE.BoxGeometry(recW, 2.6, recD), M.wall());
-  recBody.position.set(recX, 1.3, recZ); recBody.castShadow = true; roomGrp.add(recBody);
+  recBody.position.set(recX, 1.3, recZ);
+  recBody.castShadow = true;
+  roomGrp.add(recBody);
   const recRoof = new THREE.Mesh(new THREE.BoxGeometry(recW + 0.3, 0.2, recD + 0.3), M.ceiling());
-  recRoof.position.set(recX, 2.7, recZ); roomGrp.add(recRoof);
-  /* Glass window */
+  recRoof.position.set(recX, 2.7, recZ);
+  roomGrp.add(recRoof);
   const recGlass = new THREE.Mesh(new THREE.PlaneGeometry(recW - 1.5, 1.4), M.boothGlass());
-  recGlass.position.set(recX, 1.5, recZ + recD/2 + 0.01); roomGrp.add(recGlass);
-  /* "REC" sign */
-  const recSign = new THREE.Mesh(new THREE.PlaneGeometry(1.8, 0.5), M.ledRed());
-  recSign.position.set(recX, 2.4, recZ + recD/2 + 0.02); roomGrp.add(recSign);
-  /* Door */
-  const recDoor = new THREE.Mesh(new THREE.BoxGeometry(0.85, 2.1, 0.06), M.door());
-  recDoor.position.set(recX + recW/2 - 0.6, 1.05, recZ + recD/2 + 0.04); roomGrp.add(recDoor);
+  recGlass.position.set(recX, 1.5, recZ + recD/2 + 0.01);
+  roomGrp.add(recGlass);
 
-  /* --- MEETING ROOM (front-right) --- */
-  const meetW = Math.min(5, W * 0.2);
-  const meetD = Math.min(3.5, D * 0.2);
-  const meetX = hw - meetW/2 - 1;
-  const meetZ = -hd + meetD/2 + 1;
-  const meetBody = new THREE.Mesh(new THREE.BoxGeometry(meetW, 2.6, meetD), M.wall());
-  meetBody.position.set(meetX, 1.3, meetZ); meetBody.castShadow = true; roomGrp.add(meetBody);
-  const meetRoof = new THREE.Mesh(new THREE.BoxGeometry(meetW + 0.3, 0.2, meetD + 0.3), M.ceiling());
-  meetRoof.position.set(meetX, 2.7, meetZ); roomGrp.add(meetRoof);
-  const meetGlass = new THREE.Mesh(new THREE.PlaneGeometry(meetW - 1.2, 1.6), M.boothGlass());
-  meetGlass.position.set(meetX - meetW/2 - 0.01, 1.5, meetZ);
-  meetGlass.rotation.y = Math.PI/2; roomGrp.add(meetGlass);
-
-  /* --- KPI WALL DISPLAY --- */
+  /* KPI WALL */
   const kpiW = Math.min(6, W * 0.25);
   const kpiFrame = new THREE.Mesh(new THREE.BoxGeometry(kpiW, 1.5, 0.1), M.monitorFrame());
-  kpiFrame.position.set(0, H - 1, -hd + 0.06); roomGrp.add(kpiFrame);
+  kpiFrame.position.set(0, H - 1, -hd + 0.06);
+  roomGrp.add(kpiFrame);
   const kpiScreen = new THREE.Mesh(new THREE.PlaneGeometry(kpiW - 0.2, 1.3), M.monitorScreen());
-  kpiScreen.position.set(0, H - 1, -hd + 0.12); roomGrp.add(kpiScreen);
-  /* KPI bars */
-  const nKpi = 6;
-  for (let i=0;i<nKpi;i++) {
-    const bar = new THREE.Mesh(new THREE.BoxGeometry(kpiW/nKpi - 0.15, 0.3 + (i%3)*0.2, 0.02),
-      [*M.ledGreen(), M.ledTeal(), M.ledAm10ber(), M.ledCyan(), M.led)/Lime(), M.ledTeal()][10i]);
-    bar.position.set(-kpiW/2 + 0.4 + i*(kpiW/nKpi), H - 1.6 + (0.3 + (i%3)*0.2)/2, -hd + 0.13);
-    roomGrp.add(bar);
-  }
-
-  /* --- DOORS --- */
-  const doorPositions = [
-    { x:-hw + 0.05, z:0, ry:Math.PI/2 },
-    { x: hw - 0.05, z:0, ry:-Math.PI/2 },
-    { x:0, z: hd - 0.05, ry:Math.PI }
-  ];
-  for (const dp of doorPositions) {
-    const frame = new THREE.Mesh(new THREE.BoxGeometry(1.35, 2.5, 0.1), M.doorFrame());
-    frame.position.set(dp.x, 1.25, dp.z);
-    frame.rotation.y = dp.ry; roomGrp.add(frame);
-    const door = new THREE.Mesh(new THREE.BoxGeometry(1.2, 2.4, 0.06), M.door());
-    door.position.set(dp.x, 1.2, dp.z);
-    door.rotation.y = dp.ry; roomGrp.add(door);
-    /* Exit sign */
-    const exitSign = new THREE.Mesh(new THREE.PlaneGeometry(0.,6, 0.3), z M.ledGreen());
-    exitSign.position.set(dp.x, 2.7, dp.z);
-    exitSign.rotation.y = dp.ry; roomGrp.add(exitSign);
-  }
+  kpiScreen.position.set(0, H - 1, -hd + 0.12);
+  roomGrp.add(kpiScreen);
 }
 
-/* ============ DEVICES ============ */
+/* ============ BUILD DEVICES ============ */
 const meshById = new Map();
 function buildDevices() {
-  clearGroup(devGrp); meshById.clear();
-  for (const d of state.devices) {
-    const spec = getSpec(d.cat, d.typeId); if (!spec) continue;
+  clearGroup(devGrp);
+  meshById.clear();
+  for (let i=0;i<state.devices.length;i++) {
+    const d = state.devices[i];
+    const spec = getSpec(d.cat, d.typeId);
+    if (!spec) continue;
     const color = BRANDS[d.brand] ? BRANDS[d.brand].color : 0x14b8a6;
-    const mesh = makeMesh(d.cat, d.typeId, color); if (!mesh) continue;
+    const mesh = makeMesh(d.cat, d.typeId, color);
+    if (!mesh) continue;
     mesh.position.set(d.x, spec.h, d.z);
     mesh.rotation.y = d.rot || 0;
     mesh.userData.devId = d.id;
@@ -1674,7 +1404,7 @@ function buildDevices() {
   updateSelectionVisuals();
 }
 function updateSelectionVisuals() {
-  devGrp.children.forEach(m => {
+  devGrp.children.forEach(function(m) {
     const r = m.getObjectByName('selRing');
     if (r) r.material.opacity = (state.selected === m.userData.devId) ? 0.9 : 0;
   });
@@ -1683,14 +1413,19 @@ function updateSelectionVisuals() {
 /* ============ HEATMAP ============ */
 let heatMesh = null;
 function disposeHeat() {
-  if (heatMesh) { heatGrp.remove(heatMesh); heatMesh.geometry.dispose(); heatMesh.material.dispose(); heatMesh = null; }
+  if (heatMesh) {
+    heatGrp.remove(heatMesh);
+    heatMesh.geometry.dispose();
+    heatMesh.material.dispose();
+    heatMesh = null;
+  }
 }
 function buildHeatmap() {
   disposeHeat();
   if (!state.showHeat) return;
-  const speakers = state.devices.filter(d =>
-    ['agentDesk','supervisor','ceilingSpk','masking','paging','emergency'].includes(d.cat)
-  );
+  const speakers = state.devices.filter(function(d) {
+    return ['agentDesk','supervisor','ceilingSpk','masking','paging','emergency'].indexOf(d.cat) !== -1;
+  });
   if (!speakers.length) {
     document.getElementById('hudSpl').textContent = '—';
     document.getElementById('hudCoverage').textContent = '0%';
@@ -1713,8 +1448,10 @@ function buildHeatmap() {
 }
 function calcSPL(x, z) {
   let tot = 0;
-  for (const spk of state.devices) {
-    if (!['agentDesk','supervisor','ceilingSpk','masking','paging','emergency'].includes(spk.cat)) continue;
+  const cats = ['agentDesk','supervisor','ceilingSpk','masking','paging','emergency'];
+  for (let i=0;i<state.devices.length;i++) {
+    const spk = state.devices[i];
+    if (cats.indexOf(spk.cat) === -1) continue;
     const spec = getSpec(spk.cat, spk.typeId);
     if (!spec || !spec.power) continue;
     const power = spk.power || spec.power;
@@ -1786,10 +1523,9 @@ function updateHeatColors() {
 
 /* ============ HISTORY ============ */
 function serialize() {
-  return JSON.stringify(state.devices.map(d => ({
-    id:d.id, brand:d.brand, cat:d.cat, typeId:d.typeId,
-    x:d.x, z:d.z, rot:d.rot, power:d.power
-  })));
+  return JSON.stringify(state.devices.map(function(d) {
+    return {id:d.id, brand:d.brand, cat:d.cat, typeId:d.typeId, x:d.x, z:d.z, rot:d.rot, power:d.power};
+  }));
 }
 function pushHistory() {
   state.history = state.history.slice(0, state.historyIdx + 1);
@@ -1798,19 +1534,30 @@ function pushHistory() {
 }
 function applyHistory(json) {
   state.devices = JSON.parse(json);
-  state.nextId = state.devices.length ? Math.max(...state.devices.map(d=>d.id))+1 : 1;
+  state.nextId = state.devices.length ? Math.max.apply(null, state.devices.map(function(d){return d.id;}))+1 : 1;
   buildDevices(); buildHeatmap(); updateHUD(); deselect();
 }
 function undo() {
-  if (state.historyIdx > 0) { state.historyIdx--; applyHistory(state.history[state.historyIdx]); toast(T('to_undo')); }
+  if (state.historyIdx > 0) {
+    state.historyIdx--;
+    applyHistory(state.history[state.historyIdx]);
+    toast('↩️ Undo');
+  }
 }
 function redo() {
-  if (state.historyIdx < state.history.length - 1) { state.historyIdx++; applyHistory(state.history[state.historyIdx]); toast(T('to_redo')); }
+  if (state.historyIdx < state.history.length - 1) {
+    state.historyIdx++;
+    applyHistory(state.history[state.historyIdx]);
+    toast('🔁 Redo');
+  }
 }
 
 /* ============ CAMERA ============ */
 function updateCamera() {
-  const {theta, phi, radius, target} = state.cam;
+  const theta = state.cam.theta;
+  const phi = state.cam.phi;
+  const radius = state.cam.radius;
+  const target = state.cam.target;
   const x = target.x + radius * Math.sin(phi) * Math.sin(theta);
   const y = target.y + radius * Math.cos(phi);
   const z = target.z + radius * Math.sin(phi) * Math.cos(theta);
@@ -1818,11 +1565,15 @@ function updateCamera() {
   camera.lookAt(target);
 }
 function tweenCamera(to, dur) {
-  const from = {theta: state.cam.theta, phi: state.cam.phi, radius: state.cam.radius, target: state.cam.target.clone()};
-  state.cam.tween = {from, to, dur, start:performance.now()};
+  const from = {
+    theta: state.cam.theta, phi: state.cam.phi,
+    radius: state.cam.radius, target: state.cam.target.clone()
+  };
+  state.cam.tween = {from:from, to:to, dur:dur, start:performance.now()};
 }
 function updateTween() {
-  const t = state.cam.tween; if (!t) return;
+  const t = state.cam.tween;
+  if (!t) return;
   const p = Math.min(1, (performance.now() - t.start) / t.dur);
   const e = p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p+2,3)/2;
   state.cam.theta = t.from.theta + (t.to.theta - t.from.theta) * e;
@@ -1852,7 +1603,6 @@ function camTopView() {
 }
 function camAgentView() {
   const r = Math.max(ROOM.size[0], ROOM.size[1]) * 0.55;
-  /* Agent perspective: from one desk looking toward the back of the room */
   tweenCamera({theta:-0.3, phi:1.25, radius:r, target:new THREE.Vector3(0, 1.4, ROOM.size[1] * 0.15)}, 800);
 }
 
@@ -1874,8 +1624,8 @@ function hitDevice(cx, cy) {
   canvasPos(cx, cy);
   raycaster.setFromCamera(pointer, camera);
   const hits = raycaster.intersectObjects(devGrp.children, true);
-  for (const h of hits) {
-    let o = h.object;
+  for (let i=0;i<hits.length;i++) {
+    let o = hits[i].object;
     while (o && o.userData.devId === undefined) o = o.parent;
     if (o) return o;
   }
@@ -1889,7 +1639,7 @@ function floorPoint(cx, cy) {
   return raycaster.ray.intersectPlane(floorPlane, p) ? p : null;
 }
 
-canvas.addEventListener('pointerdown', e => {
+canvas.addEventListener('pointerdown', function(e) {
   activePointers.set(e.pointerId, {x:e.clientX, y:e.clientY});
   if (activePointers.size === 1) {
     startPt = {x:e.clientX, y:e.clientY};
@@ -1898,24 +1648,32 @@ canvas.addEventListener('pointerdown', e => {
     if (hit) {
       dragDev = hit;
       const fp = floorPoint(e.clientX, e.clientY);
-      if (fp) { dragOff.x = hit.userData.dev.x - fp.x; dragOff.z = hit.userData.dev.z - fp.z; }
+      if (fp) {
+        dragOff.x = hit.userData.dev.x - fp.x;
+        dragOff.z = hit.userData.dev.z - fp.z;
+      }
     }
   } else if (activePointers.size === 2) {
     dragDev = null; isDown = false; moved = true;
-    const pts = [...activePointers.values()];
-    pinchStart = {dist: Math.hypot(pts[0].x-pts[1].x, pts[0].y-pts[1].y) || 1, radius: state.cam.radius};
+    const pts = Array.from(activePointers.values());
+    pinchStart = {
+      dist: Math.hypot(pts[0].x-pts[1].x, pts[0].y-pts[1].y) || 1,
+      radius: state.cam.radius
+    };
   }
 }, {passive:true});
 
-canvas.addEventListener('pointermove', e => {
+canvas.addEventListener('pointermove', function(e) {
   if (!activePointers.has(e.pointerId)) return;
   const prev = activePointers.get(e.pointerId);
   activePointers.set(e.pointerId, {x:e.clientX, y:e.clientY});
   if (activePointers.size === 2 && pinchStart) {
-    const pts = [...activePointers.values()];
+    const pts = Array.from(activePointers.values());
     const d = Math.hypot(pts[0].x-pts[1].x, pts[0].y-pts[1].y) || 1;
     state.cam.radius = Math.max(8, Math.min(180, pinchStart.radius * (pinchStart.dist/d)));
-    state.cam.tween = null; updateCamera(); return;
+    state.cam.tween = null;
+    updateCamera();
+    return;
   }
   if (!isDown) return;
   const dx = e.clientX - prev.x;
@@ -1966,7 +1724,7 @@ function endPointer(e) {
 }
 canvas.addEventListener('pointerup', endPointer, {passive:true});
 canvas.addEventListener('pointercancel', endPointer, {passive:true});
-canvas.addEventListener('wheel', e => {
+canvas.addEventListener('wheel', function(e) {
   e.preventDefault();
   state.cam.tween = null;
   const factor = e.deltaY > 0 ? 1.1 : 0.9;
@@ -1976,9 +1734,12 @@ canvas.addEventListener('wheel', e => {
 
 /* ============ ACTIONS ============ */
 function placeDevice(x, z) {
-  const spec = getSpec(state.curCat, state.curType); if (!spec) return;
-  const d = {id: state.nextId++, brand: state.curBrand, cat: state.curCat, typeId: state.curType,
-    x: Math.round(x: Math.round(z*10)/10, rot: 0, power: spec.power};
+  const spec = getSpec(state.curCat, state.curType);
+  if (!spec) return;
+  const d = {
+    id: state.nextId++, brand: state.curBrand, cat: state.curCat, typeId: state.curType,
+    x: Math.round(x*10)/10, z: Math.round(z*10)/10, rot: 0, power: spec.power
+  };
   state.devices.push(d);
   buildDevices();
   if (state.showHeat) buildHeatmap();
@@ -1987,7 +1748,8 @@ function placeDevice(x, z) {
 }
 function select(id) {
   state.selected = id;
-  updateSelectionVisuals(); updateInfo();
+  updateSelectionVisuals();
+  updateInfo();
   document.getElementById('info').classList.add('on');
 }
 function deselect() {
@@ -1997,21 +1759,23 @@ function deselect() {
 }
 function deleteSelected() {
   if (state.selected === null) return;
-  state.devices = state.devices.filter(d => d.id !== state.selected);
+  state.devices = state.devices.filter(function(d) { return d.id !== state.selected; });
   state.selected = null;
   document.getElementById('info').classList.remove('on');
   buildDevices(); buildHeatmap(); updateHUD(); pushHistory();
-  toast(T('to_deleted'));
+  toast('🗑️ Deleted');
 }
 function updateInfo() {
   if (state.selected === null) return;
-  const d = state.devices.find(x => x.id === state.selected); if (!d) return;
-  const spec = getSpec(d.cat, d.typeId); if (!spec) return;
+  const d = state.devices.find(function(x) { return x.id === state.selected; });
+  if (!d) return;
+  const spec = getSpec(d.cat, d.typeId);
+  if (!spec) return;
   document.getElementById('infName').textContent = spec.emoji + ' ' + devName(spec);
   document.getElementById('infBrand').textContent = brandName(d.brand);
   document.getElementById('infType').textContent = catName(d.cat);
   document.getElementById('infPower').textContent = spec.power > 0 ? (d.power||spec.power) + ' W' : '—';
-  document.getElementById('infH').textContent = spec.h.toFixed(1) + (LANG==='ar'?' م':' m');
+  document.getElementById('infH').textContent = spec.h.toFixed(1) + ' m';
   document.getElementById('infPos').textContent = d.x.toFixed(1) + ', ' + d.z.toFixed(1);
   const pw = document.getElementById('powerSlider');
   pw.value = d.power || spec.power;
@@ -2030,7 +1794,8 @@ function resizeRoom(newW, newD) {
   ROOM.size[0] = newW;
   ROOM.size[1] = newD;
   const sx = newW / oldW, sz = newD / oldD;
-  for (const d of state.devices) {
+  for (let i=0;i<state.devices.length;i++) {
+    const d = state.devices[i];
     d.x = Math.round(d.x * sx * 10)/10;
     d.z = Math.round(d.z * sz * 10)/10;
   }
@@ -2042,248 +1807,237 @@ function resizeRoom(newW, newD) {
   document.getElementById('roomDSlider').value = newD;
   document.getElementById('roomWVal').textContent = newW + 'm';
   document.getElementById('roomDVal').textContent = newD + 'm';
-  document.querySelectorAll('.presetBtns button').forEach(b => b.classList.remove('on'));
+  document.querySelectorAll('.presetBtns button').forEach(function(b) { b.classList.remove('on'); });
   if (newW === 16 && newD === 12) document.querySelector('[data-preset="small"]').classList.add('on');
   else if (newW === 26 && newD === 18) document.querySelector('[data-preset="medium"]').classList.add('on');
   else if (newW === 40 && newD === 26) document.querySelector('[data-preset="large"]').classList.add('on');
-  toast(T('to_resized'));
+  toast('📐 Dimensions updated');
   pushHistory();
 }
 
 /* ============ UI ============ */
 function buildCats() {
-  const el = document.getElementById('cats'); el.innerHTML = '';
+  const el = document.getElementById('cats');
+  el.innerHTML = '';
   for (const key in CATS) {
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'cat' + (key === state.curCat ? ' on' : '');
     b.dataset.cat = key;
     b.textContent = CATS[key].emoji + ' ' + catName(key);
-    b.onclick = () => selectCat(key);
+    b.onclick = (function(k) { return function() { selectCat(k); }; })(key);
     el.appendChild(b);
   }
 }
 function buildBrands() {
-  const el = document.getElementById('brands'); el.innerHTML = '';
+  const el = document.getElementById('brands');
+  el.innerHTML = '';
   for (const key in BRANDS) {
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'brand' + (key === state.curBrand ? ' on' : '');
     b.dataset.brand = key;
     b.textContent = brandName(key);
-    b.onclick = () => selectBrand(key);
+    b.onclick = (function(k) { return function() { selectBrand(k); }; })(key);
     el.appendChild(b);
   }
 }
 function buildTypes() {
-  const el = document.getElementById('types'); el.innerHTML = '';
-  for (const d of CATS[state.curCat].devices) {
+  const el = document.getElementById('types');
+  el.innerHTML = '';
+  const cat = CATS[state.curCat];
+  for (let i=0;i<cat.devices.length;i++) {
+    const d = cat.devices[i];
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'type' + (d[0] === state.curType ? ' on' : '');
     b.dataset.typeId = d[0];
-    b.innerHTML = '<span class="em">' + d[2] + '</span><span class="nm">' + T(d[1]) + '</span>';
-    b.onclick = () => selectType(d[0]);
+    b.innerHTML = '<span class="em">' + d[2] + '</span><span class="nm">' + d[1] + '</span>';
+    b.onclick = (function(id) { return function() { selectType(id); }; })(d[0]);
     el.appendChild(b);
   }
 }
 function selectCat(key) {
   state.curCat = key;
   state.curType = CATS[key].devices[0][0];
-  document.querySelectorAll('.cat').forEach(b => b.classList.toggle('on', b.dataset.cat === key));
+  document.querySelectorAll('.cat').forEach(function(b) { b.classList.toggle('on', b.dataset.cat === key); });
   buildTypes();
 }
 function selectBrand(key) {
   state.curBrand = key;
-  document.querySelectorAll('.brand').forEach(b => b.classList.toggle('on', b.dataset.brand === key));
+  document.querySelectorAll('.brand').forEach(function(b) { b.classList.toggle('on', b.dataset.brand === key); });
 }
 function selectType(id) {
   state.curType = id;
-  document.querySelectorAll('.type').forEach(b => b.classList.toggle('on', b.dataset.typeId === id));
+  document.querySelectorAll('.type').forEach(function(b) { b.classList.toggle('on', b.dataset.typeId === id); });
 }
-function updateHUD() { document.getElementById('hudCount').textContent = state.devices.length; }
+function updateHUD() {
+  document.getElementById('hudCount').textContent = state.devices.length;
+}
 let toastTO;
 function toast(m) {
   const el = document.getElementById('toast');
-  el.textContent = m; el.classList.add('on');
+  el.textContent = m;
+  el.classList.add('on');
   clearTimeout(toastTO);
-  toastTO = setTimeout(() => el.classList.remove('on'), 1700);
+  toastTO = setTimeout(function() { el.classList.remove('on'); }, 1700);
 }
 function loadInitialDevices() {
-  state.devices = []; state.nextId = 1; state.selected = null;
-  for (const item of ROOM.devices) {
-    const [brand, cat, typeId, x, z, rot] = item;
-    const spec = getSpec(cat, typeId); if (!spec) continue;
-    state.devices.push({id: state.nextId++, brand, cat, typeId, x, z, rot: rot || 0, power: spec.power});
+  state.devices = [];
+  state.nextId = 1;
+  state.selected = null;
+  for (let i=0;i<ROOM.devices.length;i++) {
+    const item = ROOM.devices[i];
+    const brand = item[0], cat = item[1], typeId = item[2], x = item[3], z = item[4], rot = item[5];
+    const spec = getSpec(cat, typeId);
+    if (!spec) continue;
+    state.devices.push({
+      id: state.nextId++, brand: brand, cat: cat, typeId: typeId,
+      x: x, z: z, rot: rot || 0, power: spec.power
+    });
   }
-  buildRoom(); buildDevices(); buildHeatmap(); updateHUD(); deselect();
+  buildRoom();
+  buildDevices();
+  buildHeatmap();
+  updateHUD();
+  deselect();
   document.getElementById('roomWSlider').value = ROOM.size[0];
   document.getElementById('roomDSlider').value = ROOM.size[1];
   document.getElementById('roomWVal').textContent = ROOM.size[0] + 'm';
   document.getElementById('roomDVal').textContent = ROOM.size[1] + 'm';
-  document.querySelector('[data-preset="medium"]').classList.add('on');
-  state.history = [serialize()]; state.historyIdx = 0;
+  state.history = [serialize()];
+  state.historyIdx = 0;
 }
 
 /* ============ REPORT ============ */
 function generateReport() {
-  const totalPower = state.devices.reduce((a,d) => {
+  const totalPower = state.devices.reduce(function(a,d) {
     const s = getSpec(d.cat, d.typeId);
     return a + (s && s.power ? (d.power || s.power) : 0);
   }, 0);
   const counts = {};
-  state.devices.forEach(d => {
-    const spec = getSpec(d.cat, d.typeId); if (!spec) return;
+  state.devices.forEach(function(d) {
+    const spec = getSpec(d.cat, d.typeId);
+    if (!spec) return;
     const key = brandName(d.brand) + ' · ' + devName(spec);
     counts[key] = (counts[key] || 0) + 1;
   });
   let rows = '';
   const entries = Object.entries(counts);
   if (entries.length) {
-    for (const [name, qty] of entries) rows += `<tr><td>${name}</td><td>${qty}</td></tr>`;
+    for (let i=0;i<entries.length;i++) {
+      rows += '<tr><td>' + entries[i][0] + '</td><td>' + entries[i][1] + '</td></tr>';
+    }
   } else {
-    rows = `<tr><td colspan="2" style="text-align:center;color:#888">${T('rep_empty')}</td></tr>`;
+    rows = '<tr><td colspan="2" style="text-align:center;color:#888">No devices</td></tr>';
   }
   const splVal = document.getElementById('hudSpl').textContent;
   const covVal = document.getElementById('hudCoverage').textContent;
-
   const area = ROOM.size[0] * ROOM.size[1];
   const V = area * ROOM.height;
   const S = 2 * area + 2 * (ROOM.size[0] + ROOM.size[1]) * ROOM.height;
   const alpha = 0.25;
   const rt60 = (0.161 * V) / (S * alpha);
-  /* Estimated agent count based on desks */
-  const headsetCount = state.devices.filter(d => d.cat === 'agentHeadset').length;
-  const micCount = state.devices.filter(d => d.cat === 'mics').length;
+  const headsetCount = state.devices.filter(function(d) { return d.cat === 'agentHeadset'; }).length;
+  const micCount = state.devices.filter(function(d) { return d.cat === 'mics'; }).length;
 
-  const hasHeadsets = headsetCount >= 10;
-  const hasDesk = state.devices.filter(d => d.cat === 'agentDesk').length >= 6;
-  const hasSuper = state.devices.filter(d => d.cat === 'supervisor').length >= 3;
-  const hasRec = state.devices.filter(d => d.cat === 'recording').length >= 3;
-  const hasCeiling = state.devices.filter(d => d.cat === 'ceilingSpk').length >= 8;
-  const hasMasking = state.devices.filter(d => d.cat === 'masking').length >= 6;
-  const hasPaging = state.devices.some(d => d.cat === 'paging');
-  const hasEmergency = state.devices.some(d => d.cat === 'emergency');
-  const hasMics = micCount >= 4;
-  const hasDSP = state.devices.filter(d => d.cat === 'dsp').length >= 3;
-  const hasControl = state.devices.filter(d => d.cat === 'control').length >= 3;
-
-  document.getElementById('reportModalBody').innerHTML = `
-    <div class="report-section">
-      <h4>📍 ${T('rep_env_info')}</h4>
-      <div class="row"><span>${T('rep_env_type')}</span><span>${ROOM.name[LANG]}</span></div>
-      <div class="row"><span>${T('rep_dim')}</span><span>${ROOM.size[0]}m × ${ROOM.size[1]}m × ${ROOM.height}m</span></div>
-      <div class="row"><span>${T('rep_area')}</span><span>${area.toLocaleString()} m²</span></div>
-      <div class="row"><span>${T('rep_capacity')}</span><span>${headsetCount} ${LANG==='ar'?'وكيل':'agents'}</span></div>
-      <div class="row"><span>${T('rep_headsets')}</span><span>${headsetCount}</span></div>
-      <div class="row"><span>${T('rep_mics')}</span><span>${micCount}</span></div>
-      <div class="row"><span>${T('rep_total_dev')}</span><span>${state.devices.length}</span></div>
-      <div class="row"><span>${T('rep_total_power')}</span><span>${(totalPower/1000).toFixed(2)} kW</span></div>
-      <div class="row"><span>${T('rep_date')}</span><span>${new Date().toLocaleString(LANG==='ar'?'ar-EG':'en-US')}</span></div>
-    </div>
-    <div class="report-section">
-      <h4>🔊 ${T('rep_equip')}</h4>
-      <table class="report-table">
-        <thead><tr><th>${T('rep_device')}</th><th style="width:80px;text-align:center">${T('rep_qty')}</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>
-    <div class="report-section">
-      <h4>📊 ${T('rep_analysis')}</h4>
-      <div class="row"><span>${T('rep_max_spl')}</span><span>${splVal}</span></div>
-      <div class="row"><span>${T('rep_coverage')}</span><span>${covVal}</span></div>
-      <div class="row"><span>${T('rep_sti')}</span><span>${T('rep_sti_target')}</span></div>
-      <div class="row"><span>${T('rep_rt')}</span><span>${rt60.toFixed(2)}s</span></div>
-      <div class="row"><span>${T('rep_nc')}</span><span>${T('rep_nc_target')}</span></div>
-      <div class="row"><span>${T('rep_masking')}</span><span>${T('rep_masking_target')}</span></div>
-      <div class="row"><span>🎧 ${T('cat_agentHeadset')}</span><span style="color:${hasHeadsets?'#14b8a6':'#fbbf24'}">${hasHeadsets ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
-      <div class="row"><span>🔊 ${T('cat_agentDesk')}</span><span style="color:${hasDesk?'#14b8a6':'#fbbf24'}">${hasDesk ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
-      <div class="row"><span>👨‍💼 ${T('cat_supervisor')}</span><span style="color:${hasSuper?'#14b8a6':'#fbbf24'}">${hasSuper ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
-      <div class="row"><span>📼 ${T('cat_recording')}</span><span style="color:${hasRec?'#14b8a6':'#fbbf24'}">${hasRec ? (LANG==='ar'?'نشط (PCI-DSS)':'Active (PCI-DSS)') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
-      <div class="row"><span>🔈 ${T('cat_ceilingSpk')}</span><span style="color:${hasCeiling?'#14b8a6':'#fbbf24'}">${hasCeiling ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
-      <div class="row"><span>🔇 ${T('cat_masking')}</span><span style="color:${hasMasking?'#14b8a6':'#fbbf24'}">${hasMasking ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
-      <div class="row"><span>🎤 ${T('cat_mics')}</span><span style="color:${hasMics?'#14b8a6':'#fbbf24'}">${hasMics ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
-      <div class="row"><span>🧠 ${T('cat_dsp')}</span><span style="color:${hasDSP?'#14b8a6':'#fbbf24'}">${hasDSP ? (LANG==='ar'?'نشط (AEC)':'Active (AEC)') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
-      <div class="row"><span>🎛️ ${T('cat_control')}</span><span style="color:${hasControl?'#14b8a6':'#fbbf24'}">${hasControl ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
-      <div class="row"><span>${T('rep_paging')}</span><span style="color:${hasPaging?'#14b8a6':'#fbbf24'}">${hasPaging ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
-      <div class="row"><span>${T('rep_emergency')}</span><span style="color:${hasEmergency?'#14b8a6':'#fbbf24'}">${hasEmergency ? (LANG==='ar'?'مطابق (نشط)':'Compliant (Active)') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
-      <div class="row"><span>${T('rep_pci')}</span><span style="color:#14b8a6">PCI-DSS ✓</span></div>
-      <div class="row"><span>${T('rep_gdpr')}</span><span style="color:#14b8a6">GDPR ✓</span></div>
-      <div class="row"><span>${T('rep_recording_std')}</span><span style="color:#14b8a6">100% ✓</span></div>
-      <div class="row"><span>${T('rep_iso')}</span><span style="color:#14b8a6">${LANG==='ar'?'مطابق':'Compliant'}</span></div>
-      <div class="row"><span>${T('rep_status')}</span><span style="color:#14b8a6">${T('rep_status_good')}</span></div>
-    </div>
-  `;
+  document.getElementById('reportModalBody').innerHTML =
+    '<div class="report-section">' +
+      '<h4>📍 Environment Info</h4>' +
+      '<div class="row"><span>Type</span><span>' + ROOM.name.en + '</span></div>' +
+      '<div class="row"><span>Dimensions</span><span>' + ROOM.size[0] + 'm × ' + ROOM.size[1] + 'm × ' + ROOM.height + 'm</span></div>' +
+      '<div class="row"><span>Area</span><span>' + area.toLocaleString() + ' m²</span></div>' +
+      '<div class="row"><span>Agents</span><span>' + headsetCount + '</span></div>' +
+      '<div class="row"><span>Mics</span><span>' + micCount + '</span></div>' +
+      '<div class="row"><span>Total devices</span><span>' + state.devices.length + '</span></div>' +
+      '<div class="row"><span>Total power</span><span>' + (totalPower/1000).toFixed(2) + ' kW</span></div>' +
+      '<div class="row"><span>Date</span><span>' + new Date().toLocaleString('en-US') + '</span></div>' +
+    '</div>' +
+    '<div class="report-section">' +
+      '<h4>🔊 Equipment List</h4>' +
+      '<table class="report-table">' +
+        '<thead><tr><th>Device</th><th style="width:80px;text-align:center">Qty</th></tr></thead>' +
+        '<tbody>' + rows + '</tbody>' +
+      '</table>' +
+    '</div>' +
+    '<div class="report-section">' +
+      '<h4>📊 Acoustic Analysis</h4>' +
+      '<div class="row"><span>Max SPL</span><span>' + splVal + '</span></div>' +
+      '<div class="row"><span>Coverage</span><span>' + covVal + '</span></div>' +
+      '<div class="row"><span>RT60</span><span>' + rt60.toFixed(2) + ' s</span></div>' +
+      '<div class="row"><span>Target</span><span>45–70 dB (NC-30)</span></div>' +
+      '<div class="row"><span>Status</span><span style="color:#14b8a6">Excellent</span></div>' +
+    '</div>';
   document.getElementById('reportModal').classList.add('on');
 }
 
 /* ============ EVENTS ============ */
-document.getElementById('langBtn').onclick = () => {
+document.getElementById('langBtn').onclick = function() {
   LANG = LANG === 'ar' ? 'en' : 'ar';
   localStorage.setItem('auralis_lang', LANG);
-  applyLang();
-  buildCats(); buildBrands(); buildTypes();
-  if (state.selected !== null) updateInfo();
+  document.getElementById('langLabel').textContent = LANG === 'ar' ? 'EN' : 'ع';
   toast(LANG === 'ar' ? '🌐 العربية' : '🌐 English');
 };
 document.getElementById('reportBtn').onclick = generateReport;
-document.getElementById('closeModalBtn').onclick = () => document.getElementById('reportModal').classList.remove('on');
-document.getElementById('closeModalBtn2').onclick = () => document.getElementById('reportModal').classList.remove('on');
-document.getElementById('printReportBtn').onclick = () => window.print();
+document.getElementById('closeModalBtn').onclick = function() { document.getElementById('reportModal').classList.remove('on'); };
+document.getElementById('closeModalBtn2').onclick = function() { document.getElementById('reportModal').classList.remove('on'); };
+document.getElementById('printReportBtn').onclick = function() { window.print(); };
 
-document.getElementById('saveBtn').onclick = () => {
-  const data = JSON.stringify({app:'AURALIS', version:1, room:'call-center',
-    roomSize: ROOM.size.slice(),
-    devices: state.devices.map(d => ({id:d.id, brand:d.brand, cat:d.cat, typeId:d.typeId, x:d.x, z:d.z, rot:d.rot, power:d.power}))
+document.getElementById('saveBtn').onclick = function() {
+  const data = JSON.stringify({
+    app:'AURALIS', version:1, room:'call-center', roomSize: ROOM.size.slice(),
+    devices: state.devices.map(function(d) {
+      return {id:d.id, brand:d.brand, cat:d.cat, typeId:d.typeId, x:d.x, z:d.z, rot:d.rot, power:d.power};
+    })
   }, null, 2);
   const blob = new Blob([data], {type:'application/json'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = 'auralis-call-center-' + Date.now() + '.json';
   document.body.appendChild(a); a.click();
-  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
-  toast(T('to_saved'));
+  setTimeout(function() { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  toast('💾 Saved');
 };
-document.getElementById('loadBtn').onclick = () => document.getElementById('fileInput').click();
-document.getElementById('fileInput').onchange = e => {
-  const file = e.target.files[0]; if (!file) return;
+document.getElementById('loadBtn').onclick = function() { document.getElementById('fileInput').click(); };
+document.getElementById('fileInput').onchange = function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
   const reader = new FileReader();
-  reader.onload = ev => {
+  reader.onload = function(ev) {
     try {
       const data = JSON.parse(ev.target.result);
-      state.devices = (data.devices||[]).map(d => ({
-        id: d.id,
-        brand: BRANDS[d.brand] ? d.brand : 'jabra',
-        cat: CATS[d.cat] ? d.cat : 'agentHeadset',
-        typeId: d.typeId,
-        x:+d.x||0, z:+d.z||0, rot:+d.rot||0, power:+d.power||0
-      })).filter(d => getSpec(d.cat, d.typeId));
-      state.nextId = state.devices.length ? Math.max(...state.devices.map(d=>d.id))+1 : 1;
+      state.devices = (data.devices||[]).map(function(d) {
+        return {
+          id: d.id,
+          brand: BRANDS[d.brand] ? d.brand : 'jabra',
+          cat: CATS[d.cat] ? d.cat : 'agentHeadset',
+          typeId: d.typeId,
+          x: +d.x||0, z: +d.z||0, rot: +d.rot||0, power: +d.power||0
+        };
+      }).filter(function(d) { return getSpec(d.cat, d.typeId); });
+      state.nextId = state.devices.length ? Math.max.apply(null, state.devices.map(function(d){return d.id;}))+1 : 1;
       if (data.roomSize && data.roomSize.length === 2) {
         ROOM.size[0] = data.roomSize[0];
         ROOM.size[1] = data.roomSize[1];
-        document.getElementById('roomWSlider').value = ROOM.size[0];
-        document.getElementById('roomDSlider').value = ROOM.size[1];
-        document.getElementById('roomWVal').textContent = ROOM.size[0] + 'm';
-        document.getElementById('roomDVal').textContent = ROOM.size[1] + 'm';
       }
       buildRoom(); buildDevices(); buildHeatmap(); updateHUD(); fitView();
-      state.history = [serialize()]; state.historyIdx = 0;
-      toast(T('to_loaded'));
-    } catch(err) { alert(T('to_invalid')); }
+      state.history = [serialize()];
+      state.historyIdx = 0;
+      toast('📂 Loaded');
+    } catch(err) { alert('Invalid file'); }
   };
   reader.readAsText(file);
   e.target.value = '';
 };
 
-document.getElementById('viewBtn').onclick = () => setView3D(!state.view3D);
-document.getElementById('shotBtn').onclick = () => {
+document.getElementById('viewBtn').onclick = function() { setView3D(!state.view3D); };
+document.getElementById('shotBtn').onclick = function() {
   renderer.render(scene, camera);
   const a = document.createElement('a');
   a.href = canvas.toDataURL('image/png');
   a.download = 'auralis-call-center-' + Date.now() + '.png';
   document.body.appendChild(a); a.click(); a.remove();
-  toast(T('to_shot'));
+  toast('📸 Screenshot saved');
 };
 document.getElementById('presBtn').onclick = togglePres;
 document.getElementById('presToggle').onclick = togglePres;
@@ -2296,13 +2050,13 @@ function togglePres() {
   document.getElementById('hud').style.opacity = state.presentation ? '0' : '1';
   document.getElementById('info').classList.remove('on');
   document.getElementById('exitPres').classList.toggle('on', state.presentation);
-  toast(state.presentation ? T('to_pres_on') : T('to_pres_off'));
+  toast(state.presentation ? '🎥 Presentation mode' : '✏️ Edit mode');
 }
 document.getElementById('heatBtn').onclick = function() {
   state.showHeat = !state.showHeat;
   this.classList.toggle('on', state.showHeat);
   buildHeatmap();
-  toast(state.showHeat ? T('to_heat_on') : T('to_heat_off'));
+  toast(state.showHeat ? '🌡️ Heatmap ON' : '🌡️ Heatmap OFF');
 };
 document.getElementById('fitBtn').onclick = fitView;
 document.getElementById('gridBtn').onclick = function() {
@@ -2312,49 +2066,52 @@ document.getElementById('gridBtn').onclick = function() {
 };
 document.getElementById('camTopBtn').onclick = camTopView;
 document.getElementById('camAgentBtn').onclick = camAgentView;
-document.getElementById('clearBtn').onclick = () => {
-  if (!confirm(T('to_confirm_clear'))) return;
-  state.devices = []; state.selected = null;
+document.getElementById('clearBtn').onclick = function() {
+  if (!confirm('Delete all devices?')) return;
+  state.devices = [];
+  state.selected = null;
   document.getElementById('info').classList.remove('on');
   buildDevices(); buildHeatmap(); updateHUD(); pushHistory();
-  toast(T('to_cleared'));
+  toast('🧹 Cleared');
 };
 document.getElementById('delBtn').onclick = deleteSelected;
-document.getElementById('powerSlider').oninput = e => {
+document.getElementById('powerSlider').oninput = function(e) {
   if (state.selected === null) return;
-  const d = state.devices.find(x => x.id === state.selected); if (!d) return;
+  const d = state.devices.find(function(x) { return x.id === state.selected; });
+  if (!d) return;
   d.power = parseInt(e.target.value,10) || 0;
   document.getElementById('powerVal').textContent = d.power + 'W';
   document.getElementById('infPower').textContent = d.power + ' W';
   if (state.showHeat) updateHeatColors();
 };
-document.getElementById('powerSlider').onchange = () => pushHistory();
-document.getElementById('rotSlider').oninput = e => {
+document.getElementById('powerSlider').onchange = function() { pushHistory(); };
+document.getElementById('rotSlider').oninput = function(e) {
   if (state.selected === null) return;
-  const d = state.devices.find(x => x.id === state.selected); if (!d) return;
+  const d = state.devices.find(function(x) { return x.id === state.selected; });
+  if (!d) return;
   d.rot = parseInt(e.target.value,10) * Math.PI / 180;
   const m = meshById.get(d.id);
   if (m) m.rotation.y = d.rot;
   document.getElementById('rotVal').textContent = e.target.value + '°';
   if (state.showHeat) updateHeatColors();
 };
-document.getElementById('rotSlider').onchange = () => pushHistory();
+document.getElementById('rotSlider').onchange = function() { pushHistory(); };
 
 /* Dimension controls */
-document.getElementById('roomWSlider').oninput = e => {
+document.getElementById('roomWSlider').oninput = function(e) {
   document.getElementById('roomWVal').textContent = e.target.value + 'm';
 };
-document.getElementById('roomDSlider').oninput = e => {
+document.getElementById('roomDSlider').oninput = function(e) {
   document.getElementById('roomDVal').textContent = e.target.value + 'm';
 };
-document.getElementById('roomWSlider').onchange = e => {
+document.getElementById('roomWSlider').onchange = function(e) {
   resizeRoom(parseInt(e.target.value,10), ROOM.size[1]);
 };
-document.getElementById('roomDSlider').onchange = e => {
+document.getElementById('roomDSlider').onchange = function(e) {
   resizeRoom(ROOM.size[0], parseInt(e.target.value,10));
 };
-document.querySelectorAll('.presetBtns button').forEach(btn => {
-  btn.onclick = () => {
+document.querySelectorAll('.presetBtns button').forEach(function(btn) {
+  btn.onclick = function() {
     const p = btn.dataset.preset;
     if (p === 'small')  resizeRoom(16, 12);
     if (p === 'medium') resizeRoom(26, 18);
@@ -2362,7 +2119,7 @@ document.querySelectorAll('.presetBtns button').forEach(btn => {
   };
 });
 
-document.addEventListener('keydown', e => {
+document.addEventListener('keydown', function(e) {
   const tag = (e.target.tagName || '').toUpperCase();
   if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
   if ((e.ctrlKey||e.metaKey) && e.key.toLowerCase() === 'z') { e.preventDefault(); undo(); }
@@ -2381,30 +2138,45 @@ function onResize() {
   renderer.setSize(w, h, false);
 }
 window.addEventListener('resize', onResize);
-window.addEventListener('orientationchange', () => setTimeout(onResize, 250));
+window.addEventListener('orientationchange', function() { setTimeout(onResize, 250); });
 
-/* ============ LOOP & INIT ============ */
+/* ============ ANIMATE ============ */
 function animate() {
   requestAnimationFrame(animate);
   updateTween();
   const t = performance.now() * 0.003;
-  devGrp.children.forEach(m => {
+  devGrp.children.forEach(function(m) {
     const r = m.getObjectByName('selRing');
     if (r && r.material.opacity > 0) r.scale.setScalar(1 + Math.sin(t) * 0.08);
   });
   renderer.render(scene, camera);
 }
 
+/* ============ INIT ============ */
+let LANG = localStorage.getItem('auralis_lang') || 'ar';
+
 function init() {
-  applyLang();
-  buildCats(); buildBrands(); buildTypes();
-  loadInitialDevices();
-  onResize();
-  updateCamera();
-  animate();
-  setTimeout(() => document.getElementById('loader').classList.add('off'), 600);
-  console.log('%c✅ AURALIS · Call Center ready · Agents · Supervisors · Recording',
-    'color:#14b8a6;font-weight:bold;font-size:14px');
+  try {
+    document.getElementById('langLabel').textContent = LANG === 'ar' ? 'EN' : 'ع';
+    buildCats();
+    buildBrands();
+    buildTypes();
+    loadInitialDevices();
+    onResize();
+    updateCamera();
+    animate();
+    setTimeout(function() { document.getElementById('loader').classList.add('off'); }, 600);
+    console.log('%c✅ AURALIS · Call Center ready · Agents · Supervisors · Recording',
+      'color:#14b8a6;font-weight:bold;font-size:14px');
+  } catch (err) {
+    console.error('❌ INIT ERROR:', err);
+    console.error(err.stack);
+    const loader = document.getElementById('loader');
+    if (loader) {
+      loader.classList.add('off');
+      document.getElementById('loaderTxt').textContent = 'ERROR: ' + err.message;
+    }
+  }
 }
 
 init();
