@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#001a1e">
-<title>📞 AURALIS · Call Center</title>
+<title>📞 AURALIS · مركز اتصال</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -249,27 +249,27 @@ header.hide{transform:translateY(-110%)}
     <span class="flag">🌐</span>
     <span class="label" id="langLabel">EN</span>
   </button>
-  <button class="btn" id="reportBtn" title="Report">📄</button>
+  <button class="btn" id="reportBtn" data-i18n-title="report_tip">📄</button>
   <button class="btn" id="viewBtn">🎬 3D</button>
-  <button class="btn" id="shotBtn" title="Screenshot">📸</button>
-  <button class="btn" id="presBtn" title="Presentation">🎥</button>
+  <button class="btn" id="shotBtn" data-i18n-title="shot_tip">📸</button>
+  <button class="btn" id="presBtn" data-i18n-title="pres_tip">🎥</button>
 </header>
 
 <div class="hud" id="hud">
-  <div class="stat" id="statDev"><span>Devices</span><b id="hudCount">0</b></div>
-  <div class="stat" id="statSpl"><span>Max SPL</span><b id="hudSpl">—</b></div>
-  <div class="stat" id="statCov"><span>Coverage</span><b id="hudCoverage">—</b></div>
+  <div class="stat" id="statDev"><span data-i18n="hud_devices">الأجهزة</span><b id="hudCount">0</b></div>
+  <div class="stat" id="statSpl"><span data-i18n="hud_spl">أقصى SPL</span><b id="hudSpl">—</b></div>
+  <div class="stat" id="statCov"><span data-i18n="hud_coverage">التغطية</span><b id="hudCoverage">—</b></div>
 </div>
 
 <div class="tools" id="tools">
-  <button class="tool on" id="heatBtn" title="Heatmap">🌡️</button>
-  <button class="tool" id="fitBtn" title="Fit">🎯</button>
-  <button class="tool on" id="gridBtn" title="Grid">▦</button>
-  <button class="tool" id="camTopBtn" title="Top View">⬆️</button>
-  <button class="tool" id="camAgentBtn" title="Agent View">👤</button>
-  <button class="tool" id="saveBtn" title="Save">💾</button>
-  <button class="tool" id="loadBtn" title="Load">📂</button>
-  <button class="tool" id="clearBtn" title="Clear">🧹</button>
+  <button class="tool on" id="heatBtn" data-i18n-title="heat_tip">🌡️</button>
+  <button class="tool" id="fitBtn" data-i18n-title="fit_tip">🎯</button>
+  <button class="tool on" id="gridBtn" data-i18n-title="grid_tip">▦</button>
+  <button class="tool" id="camTopBtn" data-i18n-title="cam_top">⬆️</button>
+  <button class="tool" id="camAgentBtn" data-i18n-title="cam_agent">👤</button>
+  <button class="tool" id="saveBtn" data-i18n-title="save_tip">💾</button>
+  <button class="tool" id="loadBtn" data-i18n-title="load_tip">📂</button>
+  <button class="tool" id="clearBtn" data-i18n-title="clear_tip">🧹</button>
 </div>
 
 <input type="file" id="fileInput" style="display:none" accept=".json">
@@ -277,42 +277,42 @@ header.hide{transform:translateY(-110%)}
 <div class="info" id="info">
   <h4>📦 <span id="infName">—</span></h4>
   <div class="tag" id="infBrand">—</div>
-  <div class="row"><span>Category</span><span id="infType">—</span></div>
-  <div class="row"><span>Power</span><span id="infPower">—</span></div>
-  <div class="row"><span>Height</span><span id="infH">—</span></div>
-  <div class="row"><span>Position</span><span id="infPos">—</span></div>
+  <div class="row"><span data-i18n="inf_category">الفئة</span><span id="infType">—</span></div>
+  <div class="row"><span data-i18n="inf_power">القوة</span><span id="infPower">—</span></div>
+  <div class="row"><span data-i18n="inf_height">الارتفاع</span><span id="infH">—</span></div>
+  <div class="row"><span data-i18n="inf_position">الموقع</span><span id="infPos">—</span></div>
   <div class="slider" id="powerWrap">
-    <label>Power</label>
+    <label data-i18n="sl_power">القوة</label>
     <input type="range" id="powerSlider" min="5" max="500" step="5" value="20">
     <b id="powerVal">20W</b>
   </div>
   <div class="slider" id="rotWrap">
-    <label>Rotation</label>
+    <label data-i18n="sl_rotation">الاتجاه</label>
     <input type="range" id="rotSlider" min="-180" max="180" step="5" value="0">
     <b id="rotVal">0°</b>
   </div>
 
   <div class="dimRow">
-    <h5>📐 Room Dimensions</h5>
+    <h5>📐 <span data-i18n="dim_title">أبعاد القاعة</span></h5>
     <div class="slider">
-      <label>Width</label>
+      <label data-i18n="inf_room_w">العرض</label>
       <input type="range" id="roomWSlider" min="12" max="70" step="1" value="26">
-      <b id="roomWVal">26m</b>
+      <b id="roomWVal">26م</b>
     </div>
     <div class="slider">
-      <label>Depth</label>
+      <label data-i18n="inf_room_d">الطول</label>
       <input type="range" id="roomDSlider" min="10" max="50" step="1" value="18">
-      <b id="roomDVal">18m</b>
+      <b id="roomDVal">18م</b>
     </div>
     <div class="presetBtns">
-      <button type="button" data-preset="small">Small</button>
-      <button type="button" data-preset="medium" class="on">Medium</button>
-      <button type="button" data-preset="large">Large</button>
+      <button type="button" data-preset="small" data-i18n="dim_small">صغير</button>
+      <button type="button" data-preset="medium" class="on" data-i18n="dim_medium">متوسط</button>
+      <button type="button" data-preset="large" data-i18n="dim_large">كبير</button>
     </div>
   </div>
 
   <div class="actions">
-    <button class="del" id="delBtn">🗑️ Delete</button>
+    <button class="del" id="delBtn" data-i18n="act_delete">🗑️ حذف</button>
   </div>
 </div>
 
@@ -325,18 +325,18 @@ header.hide{transform:translateY(-110%)}
 <div class="modal" id="reportModal">
   <div class="modal-content">
     <div class="modal-header">
-      <h3>📋 <span>Acoustic Design Report</span></h3>
+      <h3>📋 <span data-i18n="rep_title">التقرير الهندسي الصوتي</span></h3>
       <button class="btn" id="closeModalBtn" style="height:32px;min-width:32px;padding:0 8px">✕</button>
     </div>
     <div class="modal-body" id="reportModalBody"></div>
     <div class="modal-footer">
-      <button class="btn on" id="printReportBtn">🖨️ Print / Save PDF</button>
-      <button class="btn" id="closeModalBtn2">Close</button>
+      <button class="btn on" id="printReportBtn" data-i18n="rep_print">🖨️ طباعة / حفظ PDF</button>
+      <button class="btn" id="closeModalBtn2" data-i18n="rep_close">إغلاق</button>
     </div>
   </div>
 </div>
 
-<button class="presBtn" id="presToggle">🎥 Start Presentation</button>
+<button class="presBtn" id="presToggle" data-i18n="pres_start">🎥 بدء العرض</button>
 <button class="exitP" id="exitPres">✕</button>
 <div class="toast" id="toast"></div>
 
@@ -344,11 +344,159 @@ header.hide{transform:translateY(-110%)}
 <script>
 'use strict';
 
+/* ============ I18N ============ */
+const I18N = {
+  ar: {
+    loader:'جارٍ تحميل مركز الاتصال…',
+    room_label:'مركز اتصال · وكلاء · مشرفون · تسجيل',
+    hud_devices:'الأجهزة', hud_spl:'أقصى SPL', hud_coverage:'التغطية',
+    report_tip:'تقرير', shot_tip:'لقطة', pres_tip:'عرض',
+    heat_tip:'خريطة حرارية', fit_tip:'ملاءمة', grid_tip:'الشبكة',
+    cam_top:'عرض علوي', cam_agent:'منظور وكيل',
+    save_tip:'حفظ', load_tip:'فتح', clear_tip:'حذف الكل',
+    inf_category:'الفئة', inf_power:'القوة', inf_height:'الارتفاع',
+    inf_position:'الموقع', inf_room_w:'العرض', inf_room_d:'الطول',
+    sl_power:'القوة', sl_rotation:'الاتجاه', act_delete:'🗑️ حذف',
+    dim_title:'أبعاد القاعة', dim_small:'صغير', dim_medium:'متوسط', dim_large:'كبير',
+    rep_title:'التقرير الهندسي الصوتي',
+    rep_print:'🖨️ طباعة / حفظ PDF', rep_close:'إغلاق',
+    pres_start:'🎥 بدء العرض',
+    cat_agentHeadset:'Headset الوكلاء', cat_agentDesk:'مكبرات المكتب',
+    cat_supervisor:'مشرفون', cat_recording:'التسجيل',
+    cat_ceilingSpk:'سماعات سقفية', cat_masking:'ضوضاء الإخفاء',
+    cat_paging:'نداء', cat_emergency:'طوارئ',
+    cat_mics:'ميكروفونات', cat_dsp:'معالجة DSP', cat_control:'تحكم',
+    dev_headset_mono:'Headset أحادي', dev_headset_stereo:'Headset ستيريو',
+    dev_headset_wireless:'Headset لاسلكي', dev_headset_noise:'Headset عازل ضوضاء',
+    dev_desk_amp:'مكبر مكتب', dev_desk_amp_lg:'مكبر مكتب كبير',
+    dev_desk_phone:'هاتف مكتب', dev_usb_speaker:'مكبر USB',
+    dev_super_monitor:'Monitor مشرف', dev_super_amp:'مكبر مشرف',
+    dev_super_headset:'Headset مشرف',
+    dev_recorder:'مسجل', dev_call_recorder:'مسجل مكالمات',
+    dev_logger:'Logger مركزي', dev_qm:'Quality Monitor',
+    dev_ceiling_spk:'سماعة سقفية', dev_ceiling_net:'سقفية شبكية',
+    dev_ceiling_pendant:'سقفية معلقة', dev_ceiling_tile:'بلاطة سقفية',
+    dev_mask_ceiling:'سماعة إخفاء سقفية', dev_mask_panel:'لوح إخفاء',
+    dev_mask_white:'ضوضاء بيضاء', dev_mask_pink:'ضوضاء وردية',
+    dev_paging_ceiling:'نداء سقفي', dev_paging_horn:'بوق نداء',
+    dev_paging_zone:'نداء مناطق',
+    dev_emg_horn:'بوق طوارئ', dev_emg_strobe:'فلاش طوارئ',
+    dev_emg_tower:'برج طوارئ', dev_evac:'صفارة إخلاء',
+    dev_agent_mic:'ميك وكيل', dev_super_mic:'ميك مشرف',
+    dev_boundary:'ميك لوحي', dev_wireless:'ميك لاسلكي',
+    dev_dsp_aec:'DSP + AEC', dev_dsp_matrix:'DSP Matrix',
+    dev_dsp_zones:'DSP مناطق', dev_voice_proc:'معالج صوتي',
+    dev_touch:'شاشة لمس', dev_master:'وحدة رئيسية',
+    dev_kpi_dash:'لوحة KPI', dev_wall_display:'شاشة جدارية',
+    to_undo:'↩️ تراجع', to_redo:'🔁 تقدم', to_deleted:'🗑️ حُذف',
+    to_saved:'💾 تم الحفظ', to_loaded:'📂 تم التحميل',
+    to_cleared:'🧹 تم التنظيف', to_shot:'📸 تم حفظ الصورة',
+    to_heat_on:'🌡️ التغطية مفعّلة', to_heat_off:'🌡️ التغطية مغلقة',
+    to_pres_on:'🎥 وضع العرض', to_pres_off:'✏️ وضع التحرير',
+    to_invalid:'ملف غير صالح', to_confirm_clear:'حذف كل الأجهزة؟',
+    to_resized:'📐 تم تحديث الأبعاد',
+    rep_env_info:'معلومات البيئة', rep_equip:'جدول المعدات',
+    rep_analysis:'التحليل الصوتي',
+    rep_env_type:'نوع البيئة', rep_dim:'الأبعاد', rep_total_dev:'عدد الأجهزة',
+    rep_total_power:'القدرة الإجمالية', rep_date:'التاريخ',
+    rep_max_spl:'أقصى SPL', rep_coverage:'نسبة التغطية',
+    rep_status:'الحالة', rep_status_good:'ممتاز',
+    rep_device:'الجهاز', rep_qty:'العدد', rep_empty:'لا توجد أجهزة',
+    rep_target:'الهدف المعياري', rep_rt:'زمن الرنين RT60',
+    rep_capacity:'عدد الوكلاء', rep_area:'المساحة',
+    rep_mics:'عدد الميكروفونات', rep_headsets:'عدد الـ Headsets',
+    rep_paging:'نظام النداء', rep_emergency:'طوارئ EN 60849',
+    rep_nc:'مستوى الضجيج NC'
+  },
+  en: {
+    loader:'LOADING CENTER…',
+    room_label:'CALL CENTER · AGENTS · SUPERVISORS · RECORDING',
+    hud_devices:'Devices', hud_spl:'Max SPL', hud_coverage:'Coverage',
+    report_tip:'Report', shot_tip:'Screenshot', pres_tip:'Presentation',
+    heat_tip:'Heatmap', fit_tip:'Fit', grid_tip:'Grid',
+    cam_top:'Top View', cam_agent:'Agent View',
+    save_tip:'Save', load_tip:'Load', clear_tip:'Clear',
+    inf_category:'Category', inf_power:'Power', inf_height:'Height',
+    inf_position:'Position', inf_room_w:'Width', inf_room_d:'Depth',
+    sl_power:'Power', sl_rotation:'Rotation', act_delete:'🗑️ Delete',
+    dim_title:'Room Dimensions', dim_small:'Small', dim_medium:'Medium', dim_large:'Large',
+    rep_title:'Acoustic Design Report',
+    rep_print:'🖨️ Print / Save PDF', rep_close:'Close',
+    pres_start:'🎥 Start Presentation',
+    cat_agentHeadset:'Agent Headsets', cat_agentDesk:'Desk Amps',
+    cat_supervisor:'Supervisors', cat_recording:'Recording',
+    cat_ceilingSpk:'Ceiling Speakers', cat_masking:'Noise Masking',
+    cat_paging:'Paging', cat_emergency:'Emergency',
+    cat_mics:'Microphones', cat_dsp:'DSP Processing', cat_control:'Control',
+    dev_headset_mono:'Mono Headset', dev_headset_stereo:'Stereo Headset',
+    dev_headset_wireless:'Wireless Headset', dev_headset_noise:'Noise-Cancel Headset',
+    dev_desk_amp:'Desk Amp', dev_desk_amp_lg:'Large Desk Amp',
+    dev_desk_phone:'Desk Phone', dev_usb_speaker:'USB Speaker',
+    dev_super_monitor:'Supervisor Monitor', dev_super_amp:'Supervisor Amp',
+    dev_super_headset:'Supervisor Headset',
+    dev_recorder:'Recorder', dev_call_recorder:'Call Recorder',
+    dev_logger:'Central Logger', dev_qm:'Quality Monitor',
+    dev_ceiling_spk:'Ceiling Speaker', dev_ceiling_net:'Networked Ceiling',
+    dev_ceiling_pendant:'Pendant Ceiling', dev_ceiling_tile:'Ceiling Tile',
+    dev_mask_ceiling:'Masking Ceiling', dev_mask_panel:'Masking Panel',
+    dev_mask_white:'White Noise', dev_mask_pink:'Pink Noise',
+    dev_paging_ceiling:'Ceiling Paging', dev_paging_horn:'Paging Horn',
+    dev_paging_zone:'Zone Paging',
+    dev_emg_horn:'Emergency Horn', dev_emg_strobe:'Emergency Strobe',
+    dev_emg_tower:'Emergency Tower', dev_evac:'Evacuation Siren',
+    dev_agent_mic:'Agent Mic', dev_super_mic:'Supervisor Mic',
+    dev_boundary:'Boundary Mic', dev_wireless:'Wireless Mic',
+    dev_dsp_aec:'DSP + AEC', dev_dsp_matrix:'DSP Matrix',
+    dev_dsp_zones:'Zone DSP', dev_voice_proc:'Voice Processor',
+    dev_touch:'Touch Panel', dev_master:'Master Unit',
+    dev_kpi_dash:'KPI Dashboard', dev_wall_display:'Wall Display',
+    to_undo:'↩️ Undo', to_redo:'🔁 Redo', to_deleted:'🗑️ Deleted',
+    to_saved:'💾 Saved', to_loaded:'📂 Loaded',
+    to_cleared:'🧹 Cleared', to_shot:'📸 Screenshot saved',
+    to_heat_on:'🌡️ Heatmap ON', to_heat_off:'🌡️ Heatmap OFF',
+    to_pres_on:'🎥 Presentation mode', to_pres_off:'✏️ Edit mode',
+    to_invalid:'Invalid file', to_confirm_clear:'Delete all devices?',
+    to_resized:'📐 Dimensions updated',
+    rep_env_info:'Environment Info', rep_equip:'Equipment List',
+    rep_analysis:'Acoustic Analysis',
+    rep_env_type:'Environment', rep_dim:'Dimensions', rep_total_dev:'Total devices',
+    rep_total_power:'Total power', rep_date:'Date',
+    rep_max_spl:'Max SPL', rep_coverage:'Coverage',
+    rep_status:'Status', rep_status_good:'Excellent',
+    rep_device:'Device', rep_qty:'Qty', rep_empty:'No devices',
+    rep_target:'Target', rep_rt:'RT60',
+    rep_capacity:'Agent Count', rep_area:'Area',
+    rep_mics:'Mic Count', rep_headsets:'Headset Count',
+    rep_paging:'Paging System', rep_emergency:'EN 60849 Emergency',
+    rep_nc:'Noise Level NC'
+  }
+};
+let LANG = localStorage.getItem('auralis_lang') || 'ar';
+function T(k) { return (I18N[LANG] && I18N[LANG][k]) || k; }
+
+function applyLang() {
+  document.documentElement.lang = LANG;
+  document.documentElement.dir = LANG === 'ar' ? 'rtl' : 'ltr';
+  document.body.style.fontFamily = LANG === 'ar'
+    ? "'Cairo','Inter',sans-serif" : "'Inter','Cairo',sans-serif";
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    const k = el.dataset.i18n;
+    if (I18N[LANG][k]) el.textContent = I18N[LANG][k];
+  });
+  document.querySelectorAll('[data-i18n-title]').forEach(function(el) {
+    const k = el.dataset.i18nTitle;
+    if (I18N[LANG][k]) el.title = I18N[LANG][k];
+  });
+  document.getElementById('langLabel').textContent = LANG === 'ar' ? 'EN' : 'ع';
+  document.getElementById('loaderTxt').textContent = T('loader');
+  document.getElementById('roomLabel').textContent = T('room_label');
+  document.getElementById('presToggle').textContent = T('pres_start');
+  document.title = LANG === 'ar' ? '📞 AURALIS · مركز اتصال' : '📞 AURALIS · Call Center';
+}
+
 /* ============ GLOBAL ERROR HANDLER ============ */
 window.addEventListener('error', function(e) {
-  console.error('❌ GLOBAL ERROR:', e.message);
-  console.error('At:', e.filename, 'line', e.lineno);
-  console.error('Stack:', e.error && e.error.stack);
+  console.error('❌ GLOBAL ERROR:', e.message, 'at', e.filename, 'line', e.lineno);
   const loader = document.getElementById('loader');
   if (loader) {
     loader.classList.add('off');
@@ -404,47 +552,40 @@ scene.add(grid);
 /* ============ MATERIALS (memoized) ============ */
 const _matCache = {};
 const M = {};
-
 function getMat(name, factory) {
   if (!_matCache[name]) _matCache[name] = factory();
   return _matCache[name];
 }
-
-// Define all materials as lazy getters on M
 const matDefs = {
-  body:        () => new THREE.MeshStandardMaterial({color:0x1a2830,roughness:0.5,metalness:0.5}),
-  dark:        () => new THREE.MeshStandardMaterial({color:0x051015,roughness:0.85,metalness:0.25}),
-  gray:        () => new THREE.MeshStandardMaterial({color:0x3a4850,roughness:0.6,metalness:0.4}),
-  metal:       () => new THREE.MeshStandardMaterial({color:0xb0c0c8,roughness:0.3,metalness:0.85}),
-  steel:       () => new THREE.MeshStandardMaterial({color:0x90a0a8,roughness:0.5,metalness:0.6,side:THREE.DoubleSide}),
-  deskTop:     () => new THREE.MeshStandardMaterial({color:0x2a3028,roughness:0.55,metalness:0.15}),
-  deskEdge:    () => new THREE.MeshStandardMaterial({color:0x1a2018,roughness:0.7,metalness:0.15}),
-  carpet:      () => new THREE.MeshStandardMaterial({color:0x0a1820,roughness:0.95,metalness:0.02}),
-  wall:        () => new THREE.MeshStandardMaterial({color:0x1a3038,roughness:0.85,metalness:0.08}),
-  absorber:    () => new THREE.MeshStandardMaterial({color:0x2a3a44,roughness:0.98,metalness:0.02}),
-  absorberFrame:() => new THREE.MeshStandardMaterial({color:0x0a1a20,roughness:0.9,metalness:0.1}),
-  ceiling:     () => new THREE.MeshStandardMaterial({color:0x0a1a20,roughness:0.9,metalness:0.05}),
-  ceilingPanel:() => new THREE.MeshStandardMaterial({color:0xd0e8e8,emissive:0xe0f8f8,emissiveIntensity:0.4,roughness:0.7,metalness:0.1}),
-  ceilingCloud:() => new THREE.MeshStandardMaterial({color:0x2a4a55,roughness:0.95,metalness:0.05}),
-  chair:       () => new THREE.MeshStandardMaterial({color:0x1a2828,roughness:0.7,metalness:0.15}),
-  chairBack:   () => new THREE.MeshStandardMaterial({color:0x0a1818,roughness:0.75,metalness:0.1}),
-  partition:   () => new THREE.MeshStandardMaterial({color:0x2a4050,roughness:0.8,metalness:0.15}),
-  partitionAc: () => new THREE.MeshStandardMaterial({color:0x1a5060,roughness:0.95,metalness:0.02}),
-  monitorFrame:() => new THREE.MeshStandardMaterial({color:0x0a0a0a,roughness:0.6,metalness:0.3}),
-  monitorScreen:()=> new THREE.MeshBasicMaterial({color:0x0a3a5a}),
-  boothGlass:  () => new THREE.MeshBasicMaterial({color:0x60e5ff,transparent:true,opacity:0.35}),
-  door:        () => new THREE.MeshStandardMaterial({color:0x1a2030,roughness:0.7,metalness:0.2}),
-  doorFrame:   () => new THREE.MeshStandardMaterial({color:0x4a5260,roughness:0.6,metalness:0.4}),
-  screen:      () => new THREE.MeshBasicMaterial({color:0x1a3a5a,transparent:true,opacity:0.9}),
-  ledRed:      () => new THREE.MeshStandardMaterial({color:0xff2222,emissive:0xff2222,emissiveIntensity:2.5}),
-  ledGreen:    () => new THREE.MeshStandardMaterial({color:0x10b981,emissive:0x10b981,emissiveIntensity:2.5}),
-  ledAmber:    () => new THREE.MeshStandardMaterial({color:0xfbbf24,emissive:0xfbbf24,emissiveIntensity:2.5}),
-  ledTeal:     () => new THREE.MeshStandardMaterial({color:0x14b8a6,emissive:0x14b8a6,emissiveIntensity:2.5}),
-  ledCyan:     () => new THREE.MeshStandardMaterial({color:0x22d3ee,emissive:0x22d3ee,emissiveIntensity:2.5}),
-  ledLime:     () => new THREE.MeshStandardMaterial({color:0x84cc16,emissive:0x84cc16,emissiveIntensity:2.5}),
-  ledBlue:     () => new THREE.MeshStandardMaterial({color:0x3b82f6,emissive:0x3b82f6,emissiveIntensity:2.5}),
-  white:       () => new THREE.MeshStandardMaterial({color:0xffffff,emissive:0xffffff,emissiveIntensity:2.5}),
-  emgRed:      () => new THREE.MeshStandardMaterial({color:0xcc0000,roughness:0.5,metalness:0.4})
+  body:        function(){return new THREE.MeshStandardMaterial({color:0x1a2830,roughness:0.5,metalness:0.5});},
+  dark:        function(){return new THREE.MeshStandardMaterial({color:0x051015,roughness:0.85,metalness:0.25});},
+  gray:        function(){return new THREE.MeshStandardMaterial({color:0x3a4850,roughness:0.6,metalness:0.4});},
+  metal:       function(){return new THREE.MeshStandardMaterial({color:0xb0c0c8,roughness:0.3,metalness:0.85});},
+  steel:       function(){return new THREE.MeshStandardMaterial({color:0x90a0a8,roughness:0.5,metalness:0.6,side:THREE.DoubleSide});},
+  deskTop:     function(){return new THREE.MeshStandardMaterial({color:0x2a3028,roughness:0.55,metalness:0.15});},
+  deskEdge:    function(){return new THREE.MeshStandardMaterial({color:0x1a2018,roughness:0.7,metalness:0.15});},
+  carpet:      function(){return new THREE.MeshStandardMaterial({color:0x0a1820,roughness:0.95,metalness:0.02});},
+  wall:        function(){return new THREE.MeshStandardMaterial({color:0x1a3038,roughness:0.85,metalness:0.08});},
+  absorber:    function(){return new THREE.MeshStandardMaterial({color:0x2a3a44,roughness:0.98,metalness:0.02});},
+  absorberFrame:function(){return new THREE.MeshStandardMaterial({color:0x0a1a20,roughness:0.9,metalness:0.1});},
+  ceiling:     function(){return new THREE.MeshStandardMaterial({color:0x0a1a20,roughness:0.9,metalness:0.05});},
+  ceilingPanel:function(){return new THREE.MeshStandardMaterial({color:0xd0e8e8,emissive:0xe0f8f8,emissiveIntensity:0.4,roughness:0.7,metalness:0.1});},
+  ceilingCloud:function(){return new THREE.MeshStandardMaterial({color:0x2a4a55,roughness:0.95,metalness:0.05});},
+  chair:       function(){return new THREE.MeshStandardMaterial({color:0x1a2828,roughness:0.7,metalness:0.15});},
+  chairBack:   function(){return new THREE.MeshStandardMaterial({color:0x0a1818,roughness:0.75,metalness:0.1});},
+  partitionAc: function(){return new THREE.MeshStandardMaterial({color:0x1a5060,roughness:0.95,metalness:0.02});},
+  monitorFrame:function(){return new THREE.MeshStandardMaterial({color:0x0a0a0a,roughness:0.6,metalness:0.3});},
+  monitorScreen:function(){return new THREE.MeshBasicMaterial({color:0x0a3a5a});},
+  boothGlass:  function(){return new THREE.MeshBasicMaterial({color:0x60e5ff,transparent:true,opacity:0.35});},
+  screen:      function(){return new THREE.MeshBasicMaterial({color:0x1a3a5a,transparent:true,opacity:0.9});},
+  ledRed:      function(){return new THREE.MeshStandardMaterial({color:0xff2222,emissive:0xff2222,emissiveIntensity:2.5});},
+  ledGreen:    function(){return new THREE.MeshStandardMaterial({color:0x10b981,emissive:0x10b981,emissiveIntensity:2.5});},
+  ledAmber:    function(){return new THREE.MeshStandardMaterial({color:0xfbbf24,emissive:0xfbbf24,emissiveIntensity:2.5});},
+  ledTeal:     function(){return new THREE.MeshStandardMaterial({color:0x14b8a6,emissive:0x14b8a6,emissiveIntensity:2.5});},
+  ledCyan:     function(){return new THREE.MeshStandardMaterial({color:0x22d3ee,emissive:0x22d3ee,emissiveIntensity:2.5});},
+  ledLime:     function(){return new THREE.MeshStandardMaterial({color:0x84cc16,emissive:0x84cc16,emissiveIntensity:2.5});},
+  white:       function(){return new THREE.MeshStandardMaterial({color:0xffffff,emissive:0xffffff,emissiveIntensity:2.5});},
+  emgRed:      function(){return new THREE.MeshStandardMaterial({color:0xcc0000,roughness:0.5,metalness:0.4});}
 };
 Object.keys(matDefs).forEach(function(name) {
   M[name] = function() { return getMat(name, matDefs[name]); };
@@ -474,78 +615,77 @@ const BRANDS = {
 
 const CATS = {
   agentHeadset:{emoji:'🎧',devices:[
-    ['headset_mono','Mono Headset','🎧',1.5,0,true,'headsetMono'],
-    ['headset_stereo','Stereo Headset','🎧',1.5,0,true,'headsetStereo'],
-    ['headset_wireless','Wireless Headset','📡',1.5,0,true,'headsetWireless'],
-    ['headset_noise','Noise-Cancel Headset','🔇',1.5,0,true,'headsetNoise']
+    ['headset_mono','dev_headset_mono','🎧',1.5,0,true,'headsetMono'],
+    ['headset_stereo','dev_headset_stereo','🎧',1.5,0,true,'headsetStereo'],
+    ['headset_wireless','dev_headset_wireless','📡',1.5,0,true,'headsetWireless'],
+    ['headset_noise','dev_headset_noise','🔇',1.5,0,true,'headsetNoise']
   ]},
   agentDesk:{emoji:'🔊',devices:[
-    ['desk_amp','Desk Amp','🔊',1.3,30,true,'deskAmp'],
-    ['desk_amp_lg','Large Desk Amp','🔊',1.3,50,true,'deskAmpLg'],
-    ['desk_phone','Desk Phone','📞',1.2,15,true,'deskPhone'],
-    ['usb_speaker','USB Speaker','🔉',1.3,20,true,'usbSpeaker']
+    ['desk_amp','dev_desk_amp','🔊',1.3,30,true,'deskAmp'],
+    ['desk_amp_lg','dev_desk_amp_lg','🔊',1.3,50,true,'deskAmpLg'],
+    ['desk_phone','dev_desk_phone','📞',1.2,15,true,'deskPhone'],
+    ['usb_speaker','dev_usb_speaker','🔉',1.3,20,true,'usbSpeaker']
   ]},
   supervisor:{emoji:'👨‍💼',devices:[
-    ['super_monitor','Supervisor Monitor','🖥️',1.4,40,true,'superMonitor'],
-    ['super_amp','Supervisor Amp','🔊',1.4,50,true,'superAmp'],
-    ['super_headset','Supervisor Headset','🎧',1.5,0,true,'superHeadset']
+    ['super_monitor','dev_super_monitor','🖥️',1.4,40,true,'superMonitor'],
+    ['super_amp','dev_super_amp','🔊',1.4,50,true,'superAmp'],
+    ['super_headset','dev_super_headset','🎧',1.5,0,true,'superHeadset']
   ]},
   recording:{emoji:'📼',devices:[
-    ['recorder','Recorder','📼',0.5,0,false,'recorderCC'],
-    ['call_recorder','Call Recorder','📞',0.5,0,false,'callRecorder'],
-    ['logger','Central Logger','💾',0.5,0,false,'loggerCC'],
-    ['qm','Quality Monitor','🎯',0.5,0,false,'qualityMon']
+    ['recorder','dev_recorder','📼',0.5,0,false,'recorderCC'],
+    ['call_recorder','dev_call_recorder','📞',0.5,0,false,'callRecorder'],
+    ['logger','dev_logger','💾',0.5,0,false,'loggerCC'],
+    ['qm','dev_qm','🎯',0.5,0,false,'qualityMon']
   ]},
   ceilingSpk:{emoji:'🔈',devices:[
-    ['ceiling_spk','Ceiling Speaker','🔈',3.5,20,false,'ceilingSpkCC'],
-    ['ceiling_net','Networked Ceiling','🌐',3.5,20,false,'ceilingNetCC'],
-    ['ceiling_pendant','Pendant Ceiling','🎈',3.2,30,false,'ceilingPendantCC'],
-    ['ceiling_tile','Ceiling Tile','⬜',3.5,15,false,'ceilingTileCC']
+    ['ceiling_spk','dev_ceiling_spk','🔈',3.5,20,false,'ceilingSpkCC'],
+    ['ceiling_net','dev_ceiling_net','🌐',3.5,20,false,'ceilingNetCC'],
+    ['ceiling_pendant','dev_ceiling_pendant','🎈',3.2,30,false,'ceilingPendantCC'],
+    ['ceiling_tile','dev_ceiling_tile','⬜',3.5,15,false,'ceilingTileCC']
   ]},
   masking:{emoji:'🔇',devices:[
-    ['mask_ceiling','Masking Ceiling','🔇',3.5,25,false,'maskCeiling'],
-    ['mask_panel','Masking Panel','⬜',1.4,20,false,'maskPanel'],
-    ['mask_white','White Noise','⚪',3.5,30,false,'maskWhite'],
-    ['mask_pink','Pink Noise','💗',3.5,30,false,'maskPink']
+    ['mask_ceiling','dev_mask_ceiling','🔇',3.5,25,false,'maskCeiling'],
+    ['mask_panel','dev_mask_panel','⬜',1.4,20,false,'maskPanel'],
+    ['mask_white','dev_mask_white','⚪',3.5,30,false,'maskWhite'],
+    ['mask_pink','dev_mask_pink','💗',3.5,30,false,'maskPink']
   ]},
   paging:{emoji:'📢',devices:[
-    ['paging_ceiling','Ceiling Paging','📢',3.5,20,false,'pagingCeilingCC'],
-    ['paging_horn','Paging Horn','📯',5.0,60,true,'pagingHornCC'],
-    ['paging_zone','Zone Paging','📻',4.0,40,false,'pagingZoneCC']
+    ['paging_ceiling','dev_paging_ceiling','📢',3.5,20,false,'pagingCeilingCC'],
+    ['paging_horn','dev_paging_horn','📯',5.0,60,true,'pagingHornCC'],
+    ['paging_zone','dev_paging_zone','📻',4.0,40,false,'pagingZoneCC']
   ]},
   emergency:{emoji:'🚨',devices:[
-    ['emg_horn','Emergency Horn','📯',5.5,80,true,'emgHornCC'],
-    ['emg_strobe','Emergency Strobe','💡',4.5,50,false,'emgStrobeCC'],
-    ['emg_tower','Emergency Tower','🗼',7.0,120,true,'emgTowerCC'],
-    ['evac','Evacuation Siren','🚨',5.0,100,true,'evacCC']
+    ['emg_horn','dev_emg_horn','📯',5.5,80,true,'emgHornCC'],
+    ['emg_strobe','dev_emg_strobe','💡',4.5,50,false,'emgStrobeCC'],
+    ['emg_tower','dev_emg_tower','🗼',7.0,120,true,'emgTowerCC'],
+    ['evac','dev_evac','🚨',5.0,100,true,'evacCC']
   ]},
   mics:{emoji:'🎤',devices:[
-    ['agent_mic','Agent Mic','🎤',1.4,0,false,'agentMic'],
-    ['super_mic','Supervisor Mic','🎙️',1.5,0,false,'superMic'],
-    ['boundary','Boundary Mic','🎙️',0.9,0,false,'boundaryMic'],
-    ['wireless','Wireless Mic','📡',1.5,0,false,'wirelessMicCC']
+    ['agent_mic','dev_agent_mic','🎤',1.4,0,false,'agentMic'],
+    ['super_mic','dev_super_mic','🎙️',1.5,0,false,'superMic'],
+    ['boundary','dev_boundary','🎙️',0.9,0,false,'boundaryMic'],
+    ['wireless','dev_wireless','📡',1.5,0,false,'wirelessMicCC']
   ]},
   dsp:{emoji:'🧠',devices:[
-    ['dsp_aec','DSP + AEC','🧠',0.5,0,false,'dspAecCC'],
-    ['dsp_matrix','DSP Matrix','🔀',0.5,0,false,'dspMatrixCC'],
-    ['dsp_zones','Zone DSP','📍',0.5,0,false,'dspZonesCC'],
-    ['voice_proc','Voice Processor','🎚️',0.5,0,false,'voiceProc']
+    ['dsp_aec','dev_dsp_aec','🧠',0.5,0,false,'dspAecCC'],
+    ['dsp_matrix','dev_dsp_matrix','🔀',0.5,0,false,'dspMatrixCC'],
+    ['dsp_zones','dev_dsp_zones','📍',0.5,0,false,'dspZonesCC'],
+    ['voice_proc','dev_voice_proc','🎚️',0.5,0,false,'voiceProc']
   ]},
   control:{emoji:'🎛️',devices:[
-    ['touch','Touch Panel','📱',1.5,0,true,'touchCC'],
-    ['master','Master Unit','🎛️',1.5,0,true,'masterCC'],
-    ['kpi_dash','KPI Dashboard','📊',2.0,0,false,'kpiDash'],
-    ['wall_display','Wall Display','🖥️',2.5,0,false,'wallDisplay']
+    ['touch','dev_touch','📱',1.5,0,true,'touchCC'],
+    ['master','dev_master','🎛️',1.5,0,true,'masterCC'],
+    ['kpi_dash','dev_kpi_dash','📊',2.0,0,false,'kpiDash'],
+    ['wall_display','dev_wall_display','🖥️',2.5,0,false,'wallDisplay']
   ]}
 };
 
-/* Room definition - DYNAMIC based on ROOM.size */
+/* Room - dynamic */
 const ROOM = {
   name:{ ar:'مركز اتصال احترافي', en:'Professional Call Center' },
   size:[26, 18],
   height: 3.5,
   devices:[
-    /* 20 agent headsets */
     ['jabra','agentHeadset','headset_noise',-8,-4,0],
     ['jabra','agentHeadset','headset_noise',-4,-4,0],
     ['jabra','agentHeadset','headset_stereo',0,-4,0],
@@ -566,7 +706,6 @@ const ROOM = {
     ['sennheiser','agentHeadset','headset_mono',0,3.5,0],
     ['sennheiser','agentHeadset','headset_wireless',4,3.5,0],
     ['sennheiser','agentHeadset','headset_noise',8,3.5,0],
-    /* Desk amps */
     ['bose','agentDesk','desk_amp',-10,-4,Math.PI/2],
     ['bose','agentDesk','desk_amp',-10,-1.5,Math.PI/2],
     ['bose','agentDesk','desk_amp',-10,1,Math.PI/2],
@@ -575,7 +714,6 @@ const ROOM = {
     ['bose','agentDesk','desk_amp',10,-1.5,-Math.PI/2],
     ['bose','agentDesk','desk_amp',10,1,-Math.PI/2],
     ['bose','agentDesk','desk_amp',10,3.5,-Math.PI/2],
-    /* Desk phones */
     ['cisco','agentDesk','desk_phone',-8,-3.5,0],
     ['cisco','agentDesk','desk_phone',0,-3.5,0],
     ['cisco','agentDesk','desk_phone',8,-3.5,0],
@@ -586,12 +724,10 @@ const ROOM = {
     ['avaya','agentDesk','desk_phone',8,1.5,0],
     ['avaya','agentDesk','desk_phone',-4,4,0],
     ['avaya','agentDesk','desk_phone',4,4,0],
-    /* USB speakers */
     ['logitech','agentDesk','usb_speaker',-6,-4,0],
     ['logitech','agentDesk','usb_speaker',6,-4,0],
     ['logitech','agentDesk','usb_speaker',-6,1,0],
     ['logitech','agentDesk','usb_speaker',6,1,0],
-    /* Supervisors */
     ['bose','supervisor','super_monitor',-6,6,Math.PI],
     ['bose','supervisor','super_monitor',0,6,Math.PI],
     ['bose','supervisor','super_monitor',6,6,Math.PI],
@@ -601,12 +737,10 @@ const ROOM = {
     ['jabra','supervisor','super_headset',-6,6.3,Math.PI],
     ['jabra','supervisor','super_headset',0,6.3,Math.PI],
     ['jabra','supervisor','super_headset',6,6.3,Math.PI],
-    /* Recording */
     ['genesys','recording','call_recorder',-3,-7,0],
     ['genesys','recording','logger',0,-7,0],
     ['genesys','recording','recorder',3,-7,0],
     ['genesys','recording','qm',0,-6.5,0],
-    /* Ceiling speakers */
     ['bose','ceilingSpk','ceiling_spk',-10,-6,0],
     ['bose','ceilingSpk','ceiling_spk',-6,-6,0],
     ['bose','ceilingSpk','ceiling_spk',-2,-6,0],
@@ -632,7 +766,6 @@ const ROOM = {
     ['bose','ceilingSpk','ceiling_tile',6,-4,0],
     ['bose','ceilingSpk','ceiling_tile',-6,4,0],
     ['bose','ceilingSpk','ceiling_tile',6,4,0],
-    /* Noise masking */
     ['atlas','masking','mask_white',-8,-6,0],
     ['atlas','masking','mask_white',8,-6,0],
     ['atlas','masking','mask_white',-8,6,0],
@@ -645,14 +778,12 @@ const ROOM = {
     ['atlas','masking','mask_pink',10,0,0],
     ['atlas','masking','mask_white',0,-6,0],
     ['atlas','masking','mask_white',0,6,0],
-    /* Paging */
     ['bose','paging','paging_ceiling',-8,0,0],
     ['bose','paging','paging_ceiling',8,0,0],
     ['toa','paging','paging_horn',-12.5,8.5,3*Math.PI/4],
     ['toa','paging','paging_horn',12.5,8.5,-3*Math.PI/4],
     ['toa','paging','paging_zone',-12.5,-8.5,Math.PI/4],
     ['toa','paging','paging_zone',12.5,-8.5,-Math.PI/4],
-    /* Emergency */
     ['bosch','emergency','emg_horn',-12.5,-8.5,Math.PI/4],
     ['bosch','emergency','emg_horn',12.5,-8.5,-Math.PI/4],
     ['bosch','emergency','emg_horn',-12.5,8.5,3*Math.PI/4],
@@ -661,7 +792,6 @@ const ROOM = {
     ['bosch','emergency','emg_tower',0,8.5,Math.PI],
     ['bosch','emergency','emg_strobe',-6,8.7,Math.PI],
     ['bosch','emergency','emg_strobe',6,8.7,Math.PI],
-    /* Mics */
     ['shure','mics','super_mic',-6,7,Math.PI],
     ['shure','mics','super_mic',0,7,Math.PI],
     ['shure','mics','super_mic',6,7,Math.PI],
@@ -670,12 +800,10 @@ const ROOM = {
     ['shure','mics','boundary',-6,6,0],
     ['shure','mics','boundary',6,6,0],
     ['shure','mics','wireless',0,7.5,Math.PI],
-    /* DSP */
     ['biamp','dsp','dsp_aec',11.5,-7,0],
     ['biamp','dsp','dsp_matrix',11.5,-6.5,0],
     ['biamp','dsp','dsp_zones',11.5,-6,0],
     ['biamp','dsp','voice_proc',11.5,-5.5,0],
-    /* Control */
     ['crestron','control','touch',-6,8,-Math.PI/4],
     ['crestron','control','touch',6,8,-3*Math.PI/4],
     ['crestron','control','master',12,-8,-Math.PI/4],
@@ -687,19 +815,11 @@ const ROOM = {
 
 /* ============ STATE ============ */
 const state = {
-  devices: [],
-  nextId: 1,
-  curBrand: 'jabra',
-  curCat: 'agentHeadset',
-  curType: 'headset_mono',
-  selected: null,
-  view3D: true,
-  showHeat: true,
-  showGrid: true,
-  presentation: false,
+  devices: [], nextId: 1,
+  curBrand: 'jabra', curCat: 'agentHeadset', curType: 'headset_mono',
+  selected: null, view3D: true, showHeat: true, showGrid: true, presentation: false,
   cam: { theta:-0.5, phi:0.85, radius:45, target:new THREE.Vector3(0,1.5,0), tween:null },
-  history: [],
-  historyIdx: -1
+  history: [], historyIdx: -1
 };
 
 /* ============ HELPERS ============ */
@@ -715,14 +835,9 @@ function getSpec(cat, typeId) {
   if (!arr) return null;
   return {id:arr[0], nameKey:arr[1], emoji:arr[2], h:arr[3], power:arr[4], dir:arr[5], shape:arr[6]};
 }
-function devName(spec){ return spec.nameKey; }
-function catName(key){
-  const names = {agentHeadset:'Agent Headsets', agentDesk:'Desk Amps', supervisor:'Supervisors',
-    recording:'Recording', ceilingSpk:'Ceiling Speakers', masking:'Noise Masking',
-    paging:'Paging', emergency:'Emergency', mics:'Microphones', dsp:'DSP', control:'Control'};
-  return names[key] || key;
-}
-function brandName(key){ return BRANDS[key] ? BRANDS[key].tag : '—'; }
+function devName(spec) { return T(spec.nameKey); }
+function catName(key) { return T('cat_' + key); }
+function brandName(key) { return BRANDS[key] ? BRANDS[key].tag : '—'; }
 
 /* ============ MESH FACTORY ============ */
 function makeMesh(cat, typeId, brandColor) {
@@ -776,9 +891,6 @@ function makeMesh(cat, typeId, brandColor) {
       const earL = new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.07,0.045,16), M.body());
       earL.rotation.z = Math.PI/2; earL.position.set(-0.15, 0.15, 0); g.add(earL);
       const earR = earL.clone(); earR.position.x = 0.15; g.add(earR);
-      const cushion1 = new THREE.Mesh(new THREE.TorusGeometry(0.065,0.02,8,16), M.dark());
-      cushion1.rotation.y = Math.PI/2; cushion1.position.set(-0.15, 0.15, 0); g.add(cushion1);
-      const cushion2 = cushion1.clone(); cushion2.position.x = 0.15; g.add(cushion2);
       const mic = new THREE.Mesh(new THREE.CylinderGeometry(0.012,0.012,0.15,6), M.metal());
       mic.position.set(-0.15, 0.03, 0.08); mic.rotation.x = 0.4; g.add(mic);
       const cap = new THREE.Mesh(new THREE.SphereGeometry(0.02,10,8), M.ledTeal());
@@ -790,8 +902,6 @@ function makeMesh(cat, typeId, brandColor) {
       b.castShadow = true; g.add(b);
       const gr = new THREE.Mesh(new THREE.BoxGeometry(0.2,0.1,0.01), M.steel());
       gr.position.set(0, 0, 0.105); g.add(gr);
-      const led = new THREE.Mesh(new THREE.BoxGeometry(0.18,0.015,0.005), M.ledTeal());
-      led.position.set(0, 0.055, 0.105); g.add(led);
       break;
     }
     case 'deskAmpLg': {
@@ -799,8 +909,6 @@ function makeMesh(cat, typeId, brandColor) {
       b.castShadow = true; g.add(b);
       const gr = new THREE.Mesh(new THREE.BoxGeometry(0.28,0.13,0.01), M.steel());
       gr.position.set(0, 0, 0.13); g.add(gr);
-      const led = new THREE.Mesh(new THREE.BoxGeometry(0.25,0.02,0.005), M.ledTeal());
-      led.position.set(0, 0.065, 0.13); g.add(led);
       break;
     }
     case 'deskPhone': {
@@ -817,17 +925,13 @@ function makeMesh(cat, typeId, brandColor) {
       b.castShadow = true; g.add(b);
       const gr = new THREE.Mesh(new THREE.CircleGeometry(0.05,16), M.steel());
       gr.position.set(0, 0, 0.076); g.add(gr);
-      const led = new THREE.Mesh(new THREE.SphereGeometry(0.012,8,6), M.ledGreen());
-      led.position.set(0.05, -0.04, 0.076); g.add(led);
       break;
     }
     case 'superMonitor': {
       const b = new THREE.Mesh(new THREE.BoxGeometry(0.35,0.28,0.25), M.body());
       b.castShadow = true; g.add(b);
-      const gr = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.2,0.01), M.steel());
-      gr.position.set(0, 0, 0.13); g.add(gr);
-      const led = new THREE.Mesh(new THREE.BoxGeometry(0.28,0.02,0.005), M.ledTeal());
-      led.position.set(0, 0.09, 0.13); g.add(led);
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.012,8,6), M.ledGreen());
+      led.position.set(-0.14, -0.1, 0.13); g.add(led);
       break;
     }
     case 'superAmp': {
@@ -837,8 +941,6 @@ function makeMesh(cat, typeId, brandColor) {
         const fin = new THREE.Mesh(new THREE.BoxGeometry(0.005,0.3,0.02), M.metal());
         fin.position.set(-0.22 + i*0.09, 0, 0.21); g.add(fin);
       }
-      const led = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.02,0.005), M.ledTeal());
-      led.position.set(0, 0.15, 0.21); g.add(led);
       break;
     }
     case 'superHeadset': {
@@ -856,8 +958,6 @@ function makeMesh(cat, typeId, brandColor) {
       g.add(b);
       const rec = new THREE.Mesh(new THREE.SphereGeometry(0.03,10,8), M.ledRed());
       rec.position.set(-0.1, 0.1, 0.16); g.add(rec);
-      const led = new THREE.Mesh(new THREE.SphereGeometry(0.018,8,6), M.ledGreen());
-      led.position.set(0.1, 0.1, 0.16); g.add(led);
       break;
     }
     case 'callRecorder': {
@@ -867,8 +967,6 @@ function makeMesh(cat, typeId, brandColor) {
         const led = new THREE.Mesh(new THREE.SphereGeometry(0.01,6,6), i%3 === 0 ? M.ledRed() : (i%3 === 1 ? M.ledGreen() : M.ledAmber()));
         led.position.set(-0.05 + i*0.03, 0.05, 0.18); g.add(led);
       }
-      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.18,0.08), M.screen());
-      screen.position.set(0.15, 0, 0.18); g.add(screen);
       break;
     }
     case 'loggerCC': {
@@ -878,8 +976,6 @@ function makeMesh(cat, typeId, brandColor) {
         const slot = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.02,0.01), M.ledTeal());
         slot.position.set(0, -0.1 + i*0.1, 0.21); g.add(slot);
       }
-      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.2,0.1), M.screen());
-      screen.position.set(0, 0.12, 0.21); g.add(screen);
       break;
     }
     case 'qualityMon': {
@@ -887,8 +983,6 @@ function makeMesh(cat, typeId, brandColor) {
       g.add(b);
       const hIcon = new THREE.Mesh(new THREE.TorusGeometry(0.05,0.008,6,16,Math.PI), M.ledTeal());
       hIcon.position.set(-0.12, 0.05, 0.16); g.add(hIcon);
-      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.18,0.12), M.screen());
-      screen.position.set(0.05, 0, 0.16); g.add(screen);
       break;
     }
     case 'ceilingSpkCC': {
@@ -916,8 +1010,6 @@ function makeMesh(cat, typeId, brandColor) {
       g.add(body);
       const grille = new THREE.Mesh(new THREE.CircleGeometry(0.12,20), M.steel());
       grille.rotation.x = Math.PI/2; grille.position.y = -0.14; g.add(grille);
-      const ring = new THREE.Mesh(new THREE.TorusGeometry(0.15,0.006,6,20), M.ledTeal());
-      ring.rotation.x = Math.PI/2; ring.position.y = -0.148; g.add(ring);
       break;
     }
     case 'ceilingTileCC': {
@@ -930,8 +1022,6 @@ function makeMesh(cat, typeId, brandColor) {
     case 'maskCeiling': {
       const d = new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.15,0.045,24), M.body());
       g.add(d);
-      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.13,24), M.steel());
-      grille.rotation.x = -Math.PI/2; grille.position.y = -0.024; g.add(grille);
       const r = new THREE.Mesh(new THREE.TorusGeometry(0.13,0.005,6,24), M.ledLime());
       r.rotation.x = Math.PI/2; r.position.y = -0.025; g.add(r);
       break;
@@ -948,8 +1038,6 @@ function makeMesh(cat, typeId, brandColor) {
     case 'maskWhite': {
       const d = new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.14,0.045,24), M.body());
       g.add(d);
-      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.12,24), M.steel());
-      grille.rotation.x = -Math.PI/2; grille.position.y = -0.024; g.add(grille);
       const r = new THREE.Mesh(new THREE.TorusGeometry(0.13,0.005,6,24), M.ledLime());
       r.rotation.x = Math.PI/2; r.position.y = -0.025; g.add(r);
       break;
@@ -957,8 +1045,6 @@ function makeMesh(cat, typeId, brandColor) {
     case 'maskPink': {
       const d = new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.14,0.045,24), M.body());
       g.add(d);
-      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.12,24), M.steel());
-      grille.rotation.x = -Math.PI/2; grille.position.y = -0.024; g.add(grille);
       const r = new THREE.Mesh(new THREE.TorusGeometry(0.13,0.005,6,24), M.ledAmber());
       r.rotation.x = Math.PI/2; r.position.y = -0.025; g.add(r);
       break;
@@ -966,8 +1052,6 @@ function makeMesh(cat, typeId, brandColor) {
     case 'pagingCeilingCC': {
       const d = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.12,0.04,20), M.body());
       g.add(d);
-      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.1,20), M.steel());
-      grille.rotation.x = -Math.PI/2; grille.position.y = -0.021; g.add(grille);
       const r = new THREE.Mesh(new THREE.TorusGeometry(0.11,0.005,6,20), M.ledAmber());
       r.rotation.x = Math.PI/2; r.position.y = -0.022; g.add(r);
       break;
@@ -975,8 +1059,6 @@ function makeMesh(cat, typeId, brandColor) {
     case 'pagingHornCC': {
       const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.1,3,10), M.metal());
       pole.position.y = -1.5; g.add(pole);
-      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.25,0.15,12), M.gray());
-      base.position.y = -2.9; g.add(base);
       const bk = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.3,0.25), M.body());
       bk.castShadow = true; g.add(bk);
       const horn = new THREE.Mesh(new THREE.CylinderGeometry(0.28,0.1,0.45,16,1,true), M.steel());
@@ -993,8 +1075,6 @@ function makeMesh(cat, typeId, brandColor) {
     case 'emgHornCC': {
       const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.1,3,10), M.metal());
       pole.position.y = -1.5; g.add(pole);
-      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.25,0.15,12), M.gray());
-      base.position.y = -2.9; g.add(base);
       const bk = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.3,0.25), M.emgRed());
       bk.castShadow = true; g.add(bk);
       const horn = new THREE.Mesh(new THREE.CylinderGeometry(0.26,0.1,0.42,16,1,true), M.steel());
@@ -1015,8 +1095,6 @@ function makeMesh(cat, typeId, brandColor) {
     case 'emgTowerCC': {
       const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.25,0.3,6.5,12), M.metal());
       pole.position.y = -3.25; g.add(pole);
-      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.7,0.25,16), M.gray());
-      base.position.y = -6.4; g.add(base);
       const beacon = new THREE.Mesh(new THREE.CylinderGeometry(0.22,0.22,0.4,16), M.ledRed());
       beacon.position.y = 0.7; g.add(beacon);
       break;
@@ -1024,8 +1102,6 @@ function makeMesh(cat, typeId, brandColor) {
     case 'evacCC': {
       const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.22,4.5,12), M.metal());
       pole.position.y = -2.25; g.add(pole);
-      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.4,0.5,0.25,14), M.gray());
-      base.position.y = -4.35; g.add(base);
       const box = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.7,0.45), M.emgRed());
       box.castShadow = true; g.add(box);
       const horn = new THREE.Mesh(new THREE.CylinderGeometry(0.35,0.15,0.6,18,1,true), M.steel());
@@ -1066,8 +1142,6 @@ function makeMesh(cat, typeId, brandColor) {
       body.rotation.z = Math.PI/2; body.position.y = 0.5; g.add(body);
       const h = new THREE.Mesh(new THREE.SphereGeometry(0.06,16,12,0,Math.PI*2,0,Math.PI/2), accentMat(color));
       h.rotation.z = -Math.PI/2; h.position.set(0.15,0.5,0); g.add(h);
-      const st = new THREE.Mesh(new THREE.CylinderGeometry(0.04,0.06,0.5,8), M.gray());
-      st.position.y = 0.25; g.add(st);
       break;
     }
     case 'dspAecCC': {
@@ -1175,18 +1249,15 @@ function buildRoom() {
   const T = 0.2;
   const hw = W/2, hd = D/2;
 
-  /* FLOOR */
   const floor = new THREE.Mesh(new THREE.BoxGeometry(W, 0.05, D), M.carpet());
   floor.position.set(0, 0.025, 0);
   floor.receiveShadow = true;
   roomGrp.add(floor);
 
-  /* CEILING */
   const ceil = new THREE.Mesh(new THREE.BoxGeometry(W, 0.1, D), M.ceiling());
   ceil.position.set(0, H, 0);
   roomGrp.add(ceil);
 
-  /* Ceiling panels */
   const panelSpacing = 1.7;
   const nPx = Math.floor(W / panelSpacing);
   const nPz = Math.floor(D / panelSpacing);
@@ -1198,7 +1269,6 @@ function buildRoom() {
     }
   }
 
-  /* Ceiling lights */
   const nLights = Math.min(8, Math.max(2, Math.floor(W/3)));
   for (let i=0;i<nLights;i++) {
     const light = new THREE.PointLight(0xe0ffff, 0.5, Math.max(W,D), 2);
@@ -1206,7 +1276,6 @@ function buildRoom() {
     roomGrp.add(light);
   }
 
-  /* WALLS */
   const wallPos = [
     { x:0, z:-hd, w:W, d:T },
     { x:0, z: hd, w:W, d:T },
@@ -1220,7 +1289,6 @@ function buildRoom() {
     w.receiveShadow = true;
     roomGrp.add(w);
 
-    /* Acoustic absorber panels on walls */
     const isSide = wp.w < wp.d;
     const length = isSide ? wp.d : wp.w;
     const panelW = isSide ? 0.03 : 2.5;
@@ -1241,7 +1309,6 @@ function buildRoom() {
     }
   }
 
-  /* CEILING CLOUDS */
   const cloudCount = Math.max(4, Math.floor(W / 5));
   for (let i=0;i<cloudCount;i++) {
     const cx = -W/2 + (i + 0.5) * (W / cloudCount);
@@ -1250,7 +1317,6 @@ function buildRoom() {
     roomGrp.add(cloud);
   }
 
-  /* AGENT WORKSTATIONS */
   const area = W * D;
   const targetAgents = Math.max(6, Math.min(40, Math.floor(area / 20)));
   const cols = Math.max(3, Math.min(6, Math.round(Math.sqrt(targetAgents))));
@@ -1320,7 +1386,6 @@ function buildRoom() {
     }
   }
 
-  /* SUPERVISOR DESKS */
   const superCount = Math.max(2, Math.min(5, Math.floor(W / 6)));
   const superSpacingX = (W * 0.5) / Math.max(1, superCount - 1);
   for (let i=0;i<superCount;i++) {
@@ -1355,7 +1420,6 @@ function buildRoom() {
     }
   }
 
-  /* RECORDING BOOTH */
   const recW = Math.min(6, W * 0.25);
   const recD = Math.min(3, D * 0.18);
   const recX = -hw + recW/2 + 1;
@@ -1364,14 +1428,10 @@ function buildRoom() {
   recBody.position.set(recX, 1.3, recZ);
   recBody.castShadow = true;
   roomGrp.add(recBody);
-  const recRoof = new THREE.Mesh(new THREE.BoxGeometry(recW + 0.3, 0.2, recD + 0.3), M.ceiling());
-  recRoof.position.set(recX, 2.7, recZ);
-  roomGrp.add(recRoof);
   const recGlass = new THREE.Mesh(new THREE.PlaneGeometry(recW - 1.5, 1.4), M.boothGlass());
   recGlass.position.set(recX, 1.5, recZ + recD/2 + 0.01);
   roomGrp.add(recGlass);
 
-  /* KPI WALL */
   const kpiW = Math.min(6, W * 0.25);
   const kpiFrame = new THREE.Mesh(new THREE.BoxGeometry(kpiW, 1.5, 0.1), M.monitorFrame());
   kpiFrame.position.set(0, H - 1, -hd + 0.06);
@@ -1541,14 +1601,14 @@ function undo() {
   if (state.historyIdx > 0) {
     state.historyIdx--;
     applyHistory(state.history[state.historyIdx]);
-    toast('↩️ Undo');
+    toast(T('to_undo'));
   }
 }
 function redo() {
   if (state.historyIdx < state.history.length - 1) {
     state.historyIdx++;
     applyHistory(state.history[state.historyIdx]);
-    toast('🔁 Redo');
+    toast(T('to_redo'));
   }
 }
 
@@ -1763,7 +1823,7 @@ function deleteSelected() {
   state.selected = null;
   document.getElementById('info').classList.remove('on');
   buildDevices(); buildHeatmap(); updateHUD(); pushHistory();
-  toast('🗑️ Deleted');
+  toast(T('to_deleted'));
 }
 function updateInfo() {
   if (state.selected === null) return;
@@ -1775,7 +1835,7 @@ function updateInfo() {
   document.getElementById('infBrand').textContent = brandName(d.brand);
   document.getElementById('infType').textContent = catName(d.cat);
   document.getElementById('infPower').textContent = spec.power > 0 ? (d.power||spec.power) + ' W' : '—';
-  document.getElementById('infH').textContent = spec.h.toFixed(1) + ' m';
+  document.getElementById('infH').textContent = spec.h.toFixed(1) + (LANG==='ar'?' م':' m');
   document.getElementById('infPos').textContent = d.x.toFixed(1) + ', ' + d.z.toFixed(1);
   const pw = document.getElementById('powerSlider');
   pw.value = d.power || spec.power;
@@ -1805,13 +1865,13 @@ function resizeRoom(newW, newD) {
   fitView();
   document.getElementById('roomWSlider').value = newW;
   document.getElementById('roomDSlider').value = newD;
-  document.getElementById('roomWVal').textContent = newW + 'm';
-  document.getElementById('roomDVal').textContent = newD + 'm';
+  document.getElementById('roomWVal').textContent = newW + (LANG==='ar'?'م':'m');
+  document.getElementById('roomDVal').textContent = newD + (LANG==='ar'?'م':'m');
   document.querySelectorAll('.presetBtns button').forEach(function(b) { b.classList.remove('on'); });
   if (newW === 16 && newD === 12) document.querySelector('[data-preset="small"]').classList.add('on');
   else if (newW === 26 && newD === 18) document.querySelector('[data-preset="medium"]').classList.add('on');
   else if (newW === 40 && newD === 26) document.querySelector('[data-preset="large"]').classList.add('on');
-  toast('📐 Dimensions updated');
+  toast(T('to_resized'));
   pushHistory();
 }
 
@@ -1852,7 +1912,7 @@ function buildTypes() {
     b.type = 'button';
     b.className = 'type' + (d[0] === state.curType ? ' on' : '');
     b.dataset.typeId = d[0];
-    b.innerHTML = '<span class="em">' + d[2] + '</span><span class="nm">' + d[1] + '</span>';
+    b.innerHTML = '<span class="em">' + d[2] + '</span><span class="nm">' + T(d[1]) + '</span>';
     b.onclick = (function(id) { return function() { selectType(id); }; })(d[0]);
     el.appendChild(b);
   }
@@ -1903,8 +1963,8 @@ function loadInitialDevices() {
   deselect();
   document.getElementById('roomWSlider').value = ROOM.size[0];
   document.getElementById('roomDSlider').value = ROOM.size[1];
-  document.getElementById('roomWVal').textContent = ROOM.size[0] + 'm';
-  document.getElementById('roomDVal').textContent = ROOM.size[1] + 'm';
+  document.getElementById('roomWVal').textContent = ROOM.size[0] + (LANG==='ar'?'م':'m');
+  document.getElementById('roomDVal').textContent = ROOM.size[1] + (LANG==='ar'?'م':'m');
   state.history = [serialize()];
   state.historyIdx = 0;
 }
@@ -1929,7 +1989,7 @@ function generateReport() {
       rows += '<tr><td>' + entries[i][0] + '</td><td>' + entries[i][1] + '</td></tr>';
     }
   } else {
-    rows = '<tr><td colspan="2" style="text-align:center;color:#888">No devices</td></tr>';
+    rows = '<tr><td colspan="2" style="text-align:center;color:#888">' + T('rep_empty') + '</td></tr>';
   }
   const splVal = document.getElementById('hudSpl').textContent;
   const covVal = document.getElementById('hudCoverage').textContent;
@@ -1940,33 +2000,35 @@ function generateReport() {
   const rt60 = (0.161 * V) / (S * alpha);
   const headsetCount = state.devices.filter(function(d) { return d.cat === 'agentHeadset'; }).length;
   const micCount = state.devices.filter(function(d) { return d.cat === 'mics'; }).length;
+  const unit = LANG === 'ar' ? 'م' : 'm';
 
   document.getElementById('reportModalBody').innerHTML =
     '<div class="report-section">' +
-      '<h4>📍 Environment Info</h4>' +
-      '<div class="row"><span>Type</span><span>' + ROOM.name.en + '</span></div>' +
-      '<div class="row"><span>Dimensions</span><span>' + ROOM.size[0] + 'm × ' + ROOM.size[1] + 'm × ' + ROOM.height + 'm</span></div>' +
-      '<div class="row"><span>Area</span><span>' + area.toLocaleString() + ' m²</span></div>' +
-      '<div class="row"><span>Agents</span><span>' + headsetCount + '</span></div>' +
-      '<div class="row"><span>Mics</span><span>' + micCount + '</span></div>' +
-      '<div class="row"><span>Total devices</span><span>' + state.devices.length + '</span></div>' +
-      '<div class="row"><span>Total power</span><span>' + (totalPower/1000).toFixed(2) + ' kW</span></div>' +
-      '<div class="row"><span>Date</span><span>' + new Date().toLocaleString('en-US') + '</span></div>' +
+      '<h4>📍 ' + T('rep_env_info') + '</h4>' +
+      '<div class="row"><span>' + T('rep_env_type') + '</span><span>' + ROOM.name[LANG] + '</span></div>' +
+      '<div class="row"><span>' + T('rep_dim') + '</span><span>' + ROOM.size[0] + unit + ' × ' + ROOM.size[1] + unit + ' × ' + ROOM.height + unit + '</span></div>' +
+      '<div class="row"><span>' + T('rep_area') + '</span><span>' + area.toLocaleString() + ' m²</span></div>' +
+      '<div class="row"><span>' + T('rep_capacity') + '</span><span>' + headsetCount + '</span></div>' +
+      '<div class="row"><span>' + T('rep_mics') + '</span><span>' + micCount + '</span></div>' +
+      '<div class="row"><span>' + T('rep_total_dev') + '</span><span>' + state.devices.length + '</span></div>' +
+      '<div class="row"><span>' + T('rep_total_power') + '</span><span>' + (totalPower/1000).toFixed(2) + ' kW</span></div>' +
+      '<div class="row"><span>' + T('rep_date') + '</span><span>' + new Date().toLocaleString(LANG==='ar'?'ar-EG':'en-US') + '</span></div>' +
     '</div>' +
     '<div class="report-section">' +
-      '<h4>🔊 Equipment List</h4>' +
+      '<h4>🔊 ' + T('rep_equip') + '</h4>' +
       '<table class="report-table">' +
-        '<thead><tr><th>Device</th><th style="width:80px;text-align:center">Qty</th></tr></thead>' +
+        '<thead><tr><th>' + T('rep_device') + '</th><th style="width:80px;text-align:center">' + T('rep_qty') + '</th></tr></thead>' +
         '<tbody>' + rows + '</tbody>' +
       '</table>' +
     '</div>' +
     '<div class="report-section">' +
-      '<h4>📊 Acoustic Analysis</h4>' +
-      '<div class="row"><span>Max SPL</span><span>' + splVal + '</span></div>' +
-      '<div class="row"><span>Coverage</span><span>' + covVal + '</span></div>' +
-      '<div class="row"><span>RT60</span><span>' + rt60.toFixed(2) + ' s</span></div>' +
-      '<div class="row"><span>Target</span><span>45–70 dB (NC-30)</span></div>' +
-      '<div class="row"><span>Status</span><span style="color:#14b8a6">Excellent</span></div>' +
+      '<h4>📊 ' + T('rep_analysis') + '</h4>' +
+      '<div class="row"><span>' + T('rep_max_spl') + '</span><span>' + splVal + '</span></div>' +
+      '<div class="row"><span>' + T('rep_coverage') + '</span><span>' + covVal + '</span></div>' +
+      '<div class="row"><span>' + T('rep_rt') + '</span><span>' + rt60.toFixed(2) + ' s</span></div>' +
+      '<div class="row"><span>' + T('rep_target') + '</span><span>45–70 dB (NC-30)</span></div>' +
+      '<div class="row"><span>' + T('rep_nc') + '</span><span>NC-30</span></div>' +
+      '<div class="row"><span>' + T('rep_status') + '</span><span style="color:#14b8a6">' + T('rep_status_good') + '</span></div>' +
     '</div>';
   document.getElementById('reportModal').classList.add('on');
 }
@@ -1975,7 +2037,12 @@ function generateReport() {
 document.getElementById('langBtn').onclick = function() {
   LANG = LANG === 'ar' ? 'en' : 'ar';
   localStorage.setItem('auralis_lang', LANG);
-  document.getElementById('langLabel').textContent = LANG === 'ar' ? 'EN' : 'ع';
+  applyLang();
+  buildCats(); buildBrands(); buildTypes();
+  if (state.selected !== null) updateInfo();
+  /* update dimension labels */
+  document.getElementById('roomWVal').textContent = ROOM.size[0] + (LANG==='ar'?'م':'m');
+  document.getElementById('roomDVal').textContent = ROOM.size[1] + (LANG==='ar'?'م':'m');
   toast(LANG === 'ar' ? '🌐 العربية' : '🌐 English');
 };
 document.getElementById('reportBtn').onclick = generateReport;
@@ -1996,7 +2063,7 @@ document.getElementById('saveBtn').onclick = function() {
   a.download = 'auralis-call-center-' + Date.now() + '.json';
   document.body.appendChild(a); a.click();
   setTimeout(function() { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
-  toast('💾 Saved');
+  toast(T('to_saved'));
 };
 document.getElementById('loadBtn').onclick = function() { document.getElementById('fileInput').click(); };
 document.getElementById('fileInput').onchange = function(e) {
@@ -2023,8 +2090,8 @@ document.getElementById('fileInput').onchange = function(e) {
       buildRoom(); buildDevices(); buildHeatmap(); updateHUD(); fitView();
       state.history = [serialize()];
       state.historyIdx = 0;
-      toast('📂 Loaded');
-    } catch(err) { alert('Invalid file'); }
+      toast(T('to_loaded'));
+    } catch(err) { alert(T('to_invalid')); }
   };
   reader.readAsText(file);
   e.target.value = '';
@@ -2037,7 +2104,7 @@ document.getElementById('shotBtn').onclick = function() {
   a.href = canvas.toDataURL('image/png');
   a.download = 'auralis-call-center-' + Date.now() + '.png';
   document.body.appendChild(a); a.click(); a.remove();
-  toast('📸 Screenshot saved');
+  toast(T('to_shot'));
 };
 document.getElementById('presBtn').onclick = togglePres;
 document.getElementById('presToggle').onclick = togglePres;
@@ -2050,13 +2117,13 @@ function togglePres() {
   document.getElementById('hud').style.opacity = state.presentation ? '0' : '1';
   document.getElementById('info').classList.remove('on');
   document.getElementById('exitPres').classList.toggle('on', state.presentation);
-  toast(state.presentation ? '🎥 Presentation mode' : '✏️ Edit mode');
+  toast(state.presentation ? T('to_pres_on') : T('to_pres_off'));
 }
 document.getElementById('heatBtn').onclick = function() {
   state.showHeat = !state.showHeat;
   this.classList.toggle('on', state.showHeat);
   buildHeatmap();
-  toast(state.showHeat ? '🌡️ Heatmap ON' : '🌡️ Heatmap OFF');
+  toast(state.showHeat ? T('to_heat_on') : T('to_heat_off'));
 };
 document.getElementById('fitBtn').onclick = fitView;
 document.getElementById('gridBtn').onclick = function() {
@@ -2067,12 +2134,12 @@ document.getElementById('gridBtn').onclick = function() {
 document.getElementById('camTopBtn').onclick = camTopView;
 document.getElementById('camAgentBtn').onclick = camAgentView;
 document.getElementById('clearBtn').onclick = function() {
-  if (!confirm('Delete all devices?')) return;
+  if (!confirm(T('to_confirm_clear'))) return;
   state.devices = [];
   state.selected = null;
   document.getElementById('info').classList.remove('on');
   buildDevices(); buildHeatmap(); updateHUD(); pushHistory();
-  toast('🧹 Cleared');
+  toast(T('to_cleared'));
 };
 document.getElementById('delBtn').onclick = deleteSelected;
 document.getElementById('powerSlider').oninput = function(e) {
@@ -2097,12 +2164,11 @@ document.getElementById('rotSlider').oninput = function(e) {
 };
 document.getElementById('rotSlider').onchange = function() { pushHistory(); };
 
-/* Dimension controls */
 document.getElementById('roomWSlider').oninput = function(e) {
-  document.getElementById('roomWVal').textContent = e.target.value + 'm';
+  document.getElementById('roomWVal').textContent = e.target.value + (LANG==='ar'?'م':'m');
 };
 document.getElementById('roomDSlider').oninput = function(e) {
-  document.getElementById('roomDVal').textContent = e.target.value + 'm';
+  document.getElementById('roomDVal').textContent = e.target.value + (LANG==='ar'?'م':'m');
 };
 document.getElementById('roomWSlider').onchange = function(e) {
   resizeRoom(parseInt(e.target.value,10), ROOM.size[1]);
@@ -2129,7 +2195,6 @@ document.addEventListener('keydown', function(e) {
   else if (e.key === 'Tab') { e.preventDefault(); setView3D(!state.view3D); }
 });
 
-/* ============ RESIZE ============ */
 function onResize() {
   const w = window.innerWidth, h = window.innerHeight;
   camera.aspect = w / h;
@@ -2140,7 +2205,6 @@ function onResize() {
 window.addEventListener('resize', onResize);
 window.addEventListener('orientationchange', function() { setTimeout(onResize, 250); });
 
-/* ============ ANIMATE ============ */
 function animate() {
   requestAnimationFrame(animate);
   updateTween();
@@ -2152,12 +2216,9 @@ function animate() {
   renderer.render(scene, camera);
 }
 
-/* ============ INIT ============ */
-let LANG = localStorage.getItem('auralis_lang') || 'ar';
-
 function init() {
   try {
-    document.getElementById('langLabel').textContent = LANG === 'ar' ? 'EN' : 'ع';
+    applyLang();
     buildCats();
     buildBrands();
     buildTypes();
@@ -2166,8 +2227,7 @@ function init() {
     updateCamera();
     animate();
     setTimeout(function() { document.getElementById('loader').classList.add('off'); }, 600);
-    console.log('%c✅ AURALIS · Call Center ready · Agents · Supervisors · Recording',
-      'color:#14b8a6;font-weight:bold;font-size:14px');
+    console.log('%c✅ AURALIS · Call Center ready', 'color:#14b8a6;font-weight:bold;font-size:14px');
   } catch (err) {
     console.error('❌ INIT ERROR:', err);
     console.error(err.stack);
