@@ -373,6 +373,7 @@ const I18N = {
     brand_qsc:'QSC', brand_crestron:'Crestron', brand_extron:'Extron',
     brand_logitech:'Logitech', brand_ptzoptics:'PTZOptics',
     brand_avg:'AVer', brand_sony:'Sony', brand_panasonic:'Panasonic',
+    brand_jbl:'JBL', brand_rcf:'RCF', brand_toa:'TOA',
     to_undo:'↩️ تراجع', to_redo:'🔁 تقدم', to_deleted:'🗑️ حُذف',
     to_saved:'💾 تم الحفظ', to_loaded:'📂 تم التحميل',
     to_cleared:'🧹 تم التنظيف', to_shot:'📸 تم حفظ الصورة',
@@ -450,6 +451,7 @@ const I18N = {
     brand_qsc:'QSC', brand_crestron:'Crestron', brand_extron:'Extron',
     brand_logitech:'Logitech', brand_ptzoptics:'PTZOptics',
     brand_avg:'AVer', brand_sony:'Sony', brand_panasonic:'Panasonic',
+    brand_jbl:'JBL', brand_rcf:'RCF', brand_toa:'TOA',
     to_undo:'↩️ Undo', to_redo:'🔁 Redo', to_deleted:'🗑️ Deleted',
     to_saved:'💾 Saved', to_loaded:'📂 Loaded',
     to_cleared:'🧹 Cleared', to_shot:'📸 Screenshot saved',
@@ -482,7 +484,7 @@ const I18N = {
   }
 };
 let LANG = localStorage.getItem('auralis_lang') || 'ar';
-const T = k => I18N[LANG][k] || k;
+const T = k => (I18N[LANG] && I18N[LANG][k]) || k;
 
 function applyLang() {
   document.documentElement.lang = LANG;
@@ -516,7 +518,10 @@ const BRANDS = {
   ptzoptics:{color:0xfb7185,tag:'PTZOptics'},
   avg:{color:0xf97316,tag:'AVer'},
   sony:{color:0x3b82f6,tag:'SONY'},
-  panasonic:{color:0xf472b6,tag:'PANASONIC'}
+  panasonic:{color:0xf472b6,tag:'PANASONIC'},
+  jbl:{color:0xff6b35,tag:'JBL'},
+  rcf:{color:0xffd166,tag:'RCF'},
+  toa:{color:0xef4444,tag:'TOA'}
 };
 
 const CATS = {
@@ -592,6 +597,9 @@ const ROOM = {
   name:{ ar:'قاعة محاضرات جامعية', en:'University Lecture Hall' },
   size:[24, 20],
   walls:[[-12,-10,12,-10],[12,-10,12,10],[12,10,-12,10],[-12,10,-12,-10]],
+  stageZMin:-9.5,
+  stageZMax:-5,
+  stageH:1,
   features:[
     { type:'floor',  x:0, z:0, w:23.6, d:19.6 },
     { type:'ceiling', x:0, z:0, w:23.6, d:19.6, h:6 },
@@ -765,41 +773,50 @@ const grid = new THREE.GridHelper(240, 120, 0x8b5cf6, 0x1a1f30);
 grid.material.opacity = 0.12; grid.material.transparent = true;
 grid.position.y = 0.004; scene.add(grid);
 
-/* ============ MATERIALS ============ */
-const M = {
-  body:()=>new THREE.MeshStandardMaterial({color:0x1a2035,roughness:0.5,metalness:0.5}),
-  dark:()=>new THREE.MeshStandardMaterial({color:0x050810,roughness:0.85,metalness:0.25}),
-  gray:()=>new THREE.MeshStandardMaterial({color:0x3a4250,roughness:0.6,metalness:0.4}),
-  metal:()=>new THREE.MeshStandardMaterial({color:0xb0b8c8,roughness:0.3,metalness:0.85}),
-  steel:()=>new THREE.MeshStandardMaterial({color:0x9098a8,roughness:0.5,metalness:0.6,side:THREE.DoubleSide}),
-  wood:()=>new THREE.MeshStandardMaterial({color:0x5a3a20,roughness:0.85,metalness:0.05}),
-  woodDark:()=>new THREE.MeshStandardMaterial({color:0x4a2a10,roughness:0.85,metalness:0.05}),
-  stageFloor:()=>new THREE.MeshStandardMaterial({color:0x2a1a10,roughness:0.6,metalness:0.15}),
-  carpet:()=>new THREE.MeshStandardMaterial({color:0x1a1a2e,roughness:0.95,metalness:0.02}),
-  wall:()=>new THREE.MeshStandardMaterial({color:0x2a3050,roughness:0.85,metalness:0.08}),
-  wallAccent:()=>new THREE.MeshStandardMaterial({color:0x3a2a50,roughness:0.8,metalness:0.1}),
-  ceiling:()=>new THREE.MeshStandardMaterial({color:0x151a30,roughness:0.9,metalness:0.05}),
-  ceilingPanel:()=>new THREE.MeshStandardMaterial({color:0xe8ecf5,emissive:0xf0f4ff,emissiveIntensity:0.35,roughness:0.7,metalness:0.1}),
-  screen:()=>new THREE.MeshBasicMaterial({color:0x1e3a8a}),
-  screenFrame:()=>new THREE.MeshStandardMaterial({color:0x101010,roughness:0.6,metalness:0.3}),
-  seat:()=>new THREE.MeshStandardMaterial({color:0x3a1520,roughness:0.7,metalness:0.15}),
-  seatCushion:()=>new THREE.MeshStandardMaterial({color:0x5a1f2a,roughness:0.85,metalness:0.1}),
-  seatRow:()=>new THREE.MeshStandardMaterial({color:0x2a2a3a,roughness:0.75,metalness:0.1}),
-  seatTier:()=>new THREE.MeshStandardMaterial({color:0x1a2035,roughness:0.8,metalness:0.15}),
-  aislePath:()=>new THREE.MeshStandardMaterial({color:0x8a5a30,roughness:0.7,metalness:0.08}),
-  glass:()=>new THREE.MeshStandardMaterial({color:0x60a5fa,roughness:0.1,metalness:0.5,transparent:true,opacity:0.35}),
-  door:()=>new THREE.MeshStandardMaterial({color:0x1a1f30,roughness:0.7,metalness:0.2}),
-  doorFrame:()=>new THREE.MeshStandardMaterial({color:0x4a5260,roughness:0.6,metalness:0.4}),
-  booth:()=>new THREE.MeshStandardMaterial({color:0x2a2a3a,roughness:0.7,metalness:0.2}),
-  boothGlass:()=>new THREE.MeshBasicMaterial({color:0x60a5fa,transparent:true,opacity:0.35}),
-  ledRed:()=>new THREE.MeshStandardMaterial({color:0xff2222,emissive:0xff2222,emissiveIntensity:2.5}),
-  ledGreen:()=>new THREE.MeshStandardMaterial({color:0x4fe4b8,emissive:0x4fe4b8,emissiveIntensity:2.5}),
-  ledAmber:()=>new THREE.MeshStandardMaterial({color:0xfbbf24,emissive:0xfbbf24,emissiveIntensity:2.5}),
-  ledBlue:()=>new THREE.MeshStandardMaterial({color:0x3b82f6,emissive:0x3b82f6,emissiveIntensity:2.5}),
-  ledCyan:()=>new THREE.MeshStandardMaterial({color:0x06b6d4,emissive:0x06b6d4,emissiveIntensity:2.5}),
-  ledViolet:()=>new THREE.MeshStandardMaterial({color:0x8b5cf6,emissive:0x8b5cf6,emissiveIntensity:2.5})
-};
-function accentMat(c,i){return new THREE.MeshStandardMaterial({color:c,emissive:c,emissiveIntensity:i||0.7,roughness:0.3,metalness:0.5});}
+/* ============ MATERIALS (memoized factories) ============ */
+const _matCache = {};
+const M = {};
+function defMat(name, factory) {
+  M[name] = function () {
+    if (!_matCache[name]) _matCache[name] = factory();
+    return _matCache[name];
+  };
+}
+defMat('body',        () => new THREE.MeshStandardMaterial({color:0x1a2035,roughness:0.5,metalness:0.5}));
+defMat('dark',        () => new THREE.MeshStandardMaterial({color:0x050810,roughness:0.85,metalness:0.25}));
+defMat('gray',        () => new THREE.MeshStandardMaterial({color:0x3a4250,roughness:0.6,metalness:0.4}));
+defMat('metal',       () => new THREE.MeshStandardMaterial({color:0xb0b8c8,roughness:0.3,metalness:0.85}));
+defMat('steel',       () => new THREE.MeshStandardMaterial({color:0x9098a8,roughness:0.5,metalness:0.6,side:THREE.DoubleSide}));
+defMat('wood',        () => new THREE.MeshStandardMaterial({color:0x5a3a20,roughness:0.85,metalness:0.05}));
+defMat('woodDark',    () => new THREE.MeshStandardMaterial({color:0x4a2a10,roughness:0.85,metalness:0.05}));
+defMat('stageFloor',  () => new THREE.MeshStandardMaterial({color:0x2a1a10,roughness:0.6,metalness:0.15}));
+defMat('carpet',      () => new THREE.MeshStandardMaterial({color:0x1a1a2e,roughness:0.95,metalness:0.02}));
+defMat('wall',        () => new THREE.MeshStandardMaterial({color:0x2a3050,roughness:0.85,metalness:0.08}));
+defMat('wallAccent',  () => new THREE.MeshStandardMaterial({color:0x3a2a50,roughness:0.8,metalness:0.1}));
+defMat('ceiling',     () => new THREE.MeshStandardMaterial({color:0x151a30,roughness:0.9,metalness:0.05}));
+defMat('ceilingPanel',() => new THREE.MeshStandardMaterial({color:0xe8ecf5,emissive:0xf0f4ff,emissiveIntensity:0.35,roughness:0.7,metalness:0.1}));
+defMat('screen',      () => new THREE.MeshBasicMaterial({color:0x1e3a8a}));
+defMat('screenFrame', () => new THREE.MeshStandardMaterial({color:0x101010,roughness:0.6,metalness:0.3}));
+defMat('seat',        () => new THREE.MeshStandardMaterial({color:0x3a1520,roughness:0.7,metalness:0.15}));
+defMat('seatCushion', () => new THREE.MeshStandardMaterial({color:0x5a1f2a,roughness:0.85,metalness:0.1}));
+defMat('seatRow',     () => new THREE.MeshStandardMaterial({color:0x2a2a3a,roughness:0.75,metalness:0.1}));
+defMat('seatTier',    () => new THREE.MeshStandardMaterial({color:0x1a2035,roughness:0.8,metalness:0.15}));
+defMat('aislePath',   () => new THREE.MeshStandardMaterial({color:0x8a5a30,roughness:0.7,metalness:0.08}));
+defMat('glass',       () => new THREE.MeshStandardMaterial({color:0x60a5fa,roughness:0.1,metalness:0.5,transparent:true,opacity:0.35}));
+defMat('door',        () => new THREE.MeshStandardMaterial({color:0x1a1f30,roughness:0.7,metalness:0.2}));
+defMat('doorFrame',   () => new THREE.MeshStandardMaterial({color:0x4a5260,roughness:0.6,metalness:0.4}));
+defMat('booth',       () => new THREE.MeshStandardMaterial({color:0x2a2a3a,roughness:0.7,metalness:0.2}));
+defMat('boothGlass',  () => new THREE.MeshBasicMaterial({color:0x60a5fa,transparent:true,opacity:0.35}));
+defMat('ledRed',      () => new THREE.MeshStandardMaterial({color:0xff2222,emissive:0xff2222,emissiveIntensity:2.5}));
+defMat('ledGreen',    () => new THREE.MeshStandardMaterial({color:0x4fe4b8,emissive:0x4fe4b8,emissiveIntensity:2.5}));
+defMat('ledAmber',    () => new THREE.MeshStandardMaterial({color:0xfbbf24,emissive:0xfbbf24,emissiveIntensity:2.5}));
+defMat('ledBlue',     () => new THREE.MeshStandardMaterial({color:0x3b82f6,emissive:0x3b82f6,emissiveIntensity:2.5}));
+defMat('ledCyan',     () => new THREE.MeshStandardMaterial({color:0x06b6d4,emissive:0x06b6d4,emissiveIntensity:2.5}));
+defMat('ledViolet',   () => new THREE.MeshStandardMaterial({color:0x8b5cf6,emissive:0x8b5cf6,emissiveIntensity:2.5}));
+
+function accentMat(c, i) {
+  return new THREE.MeshStandardMaterial({color:c, emissive:c, emissiveIntensity:i || 0.7, roughness:0.3, metalness:0.5});
+}
 
 function getSpec(cat, typeId) {
   const c = CATS[cat]; if (!c) return null;
@@ -809,6 +826,20 @@ function getSpec(cat, typeId) {
 function devName(spec){return T(spec.nameKey);}
 function catName(key){return T('cat_' + key);}
 function brandName(key){return BRANDS[key] ? T('brand_' + key) : '—';}
+
+/* Device base Y — adds stage height if the device sits on the stage */
+function deviceY(d, spec) {
+  const onStage = (d.z <= ROOM.stageZMax && d.z >= ROOM.stageZMin);
+  return spec.h + (onStage ? ROOM.stageH : 0);
+}
+
+/* Safe capsule geometry (r128 has no CapsuleGeometry) */
+function makeCapsule(r, len, cap, rad) {
+  if (typeof THREE.CapsuleGeometry === 'function') {
+    return new THREE.CapsuleGeometry(r, len, cap, rad);
+  }
+  return new THREE.CylinderGeometry(r, r, len, rad);
+}
 
 /* ============ MESH FACTORY ============ */
 function makeMesh(cat, typeId, brandColor) {
@@ -821,119 +852,118 @@ function makeMesh(cat, typeId, brandColor) {
     case 'podiumMic': {
       const base = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.07,0.02,14), M.dark());
       g.add(base);
-      const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.4,8), M.metal);
+      const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.4,8), M.metal());
       neck.position.y = 0.2; g.add(neck);
-      const head = new THREE.Mesh(new THREE.CapsuleGeometry ? new THREE.CapsuleGeometry(0.015,0.06,6,10) : new THREE.SphereGeometry(0.02,10,8), M.dark());
+      const head = new THREE.Mesh(makeCapsule(0.015,0.06,6,10), M.dark());
       head.position.y = 0.43; g.add(head);
-      const led = new THREE.Mesh(new THREE.TorusGeometry(0.05,0.006,6,16), M.ledGreen);
+      const led = new THREE.Mesh(new THREE.TorusGeometry(0.05,0.006,6,16), M.ledGreen());
       led.rotation.x = Math.PI/2; led.position.y = 0.015; g.add(led);
       break;
     }
     case 'gooseneckMic': {
       const base = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.06,0.02,14), M.dark());
       g.add(base);
-      const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.007,0.007,0.35,8), M.metal);
+      const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.007,0.007,0.35,8), M.metal());
       neck.position.y = 0.175; g.add(neck);
       const head = new THREE.Mesh(new THREE.SphereGeometry(0.018,10,8), M.dark());
       head.position.y = 0.37; g.add(head);
-      const led = new THREE.Mesh(new THREE.TorusGeometry(0.04,0.005,6,14), M.ledGreen);
+      const led = new THREE.Mesh(new THREE.TorusGeometry(0.04,0.005,6,14), M.ledGreen());
       led.rotation.x = Math.PI/2; led.position.y = 0.014; g.add(led);
       break;
     }
     case 'lavMic': {
       const b = new THREE.Mesh(new THREE.SphereGeometry(0.05,14,12), accentMat(color, 1.2));
       b.position.y = 0.5; g.add(b);
-      const clip = new THREE.Mesh(new THREE.TorusGeometry(0.06,0.008,6,14), M.gray);
+      const clip = new THREE.Mesh(new THREE.TorusGeometry(0.06,0.008,6,14), M.gray());
       clip.rotation.x = Math.PI/2; clip.position.y = 0.42; g.add(clip);
       break;
     }
     case 'handheldMic': {
-      const body = new THREE.Mesh(new THREE.CylinderGeometry(0.04,0.04,0.22,16), M.body);
+      const body = new THREE.Mesh(new THREE.CylinderGeometry(0.04,0.04,0.22,16), M.body());
       body.rotation.z = Math.PI/2; body.position.y = 0.5; g.add(body);
       const h = new THREE.Mesh(new THREE.SphereGeometry(0.055,14,10,0,Math.PI*2,0,Math.PI/2), accentMat(color));
       h.rotation.z = -Math.PI/2; h.position.set(0.14,0.5,0); g.add(h);
-      const st = new THREE.Mesh(new THREE.CylinderGeometry(0.035,0.055,0.45,8), M.gray);
+      const st = new THREE.Mesh(new THREE.CylinderGeometry(0.035,0.055,0.45,8), M.gray());
       st.position.y = 0.25; g.add(st);
       break;
     }
     case 'lecternDual': {
       const base = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.02,0.3), M.dark());
       g.add(base);
-      const n1 = new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.4,8), M.metal);
+      const n1 = new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.4,8), M.metal());
       n1.position.set(-0.15,0.2,0); g.add(n1);
-      const n2 = new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.4,8), M.metal);
+      const n2 = new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.4,8), M.metal());
       n2.position.set(0.15,0.2,0); g.add(n2);
       const h1 = new THREE.Mesh(new THREE.SphereGeometry(0.02,10,8), M.dark());
       h1.position.set(-0.15,0.42,0); g.add(h1);
       const h2 = new THREE.Mesh(new THREE.SphereGeometry(0.02,10,8), M.dark());
       h2.position.set(0.15,0.42,0); g.add(h2);
-      const led = new THREE.Mesh(new THREE.TorusGeometry(0.05,0.006,6,16), M.ledAmber);
+      const led = new THREE.Mesh(new THREE.TorusGeometry(0.05,0.006,6,16), M.ledAmber());
       led.rotation.x = Math.PI/2; led.position.y = 0.015; g.add(led);
       break;
     }
     case 'aisleMic': {
       const base = new THREE.Mesh(new THREE.BoxGeometry(0.15,0.02,0.1), M.dark());
       g.add(base);
-      const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.007,0.007,0.3,8), M.metal);
+      const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.007,0.007,0.3,8), M.metal());
       neck.position.y = 0.15; g.add(neck);
       const head = new THREE.Mesh(new THREE.SphereGeometry(0.018,10,8), M.dark());
       head.position.y = 0.32; g.add(head);
-      const led = new THREE.Mesh(new THREE.TorusGeometry(0.035,0.005,6,12), M.ledGreen);
+      const led = new THREE.Mesh(new THREE.TorusGeometry(0.035,0.005,6,12), M.ledGreen());
       led.rotation.x = Math.PI/2; led.position.y = 0.013; g.add(led);
       break;
     }
     case 'rowMic': {
       const base = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.06,0.02,14), M.dark());
       g.add(base);
-      const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.007,0.007,0.25,8), M.metal);
+      const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.007,0.007,0.25,8), M.metal());
       neck.position.y = 0.125; g.add(neck);
       const head = new THREE.Mesh(new THREE.SphereGeometry(0.016,10,8), M.dark());
       head.position.y = 0.27; g.add(head);
-      const led = new THREE.Mesh(new THREE.TorusGeometry(0.04,0.005,6,14), M.ledGreen);
+      const led = new THREE.Mesh(new THREE.TorusGeometry(0.04,0.005,6,14), M.ledGreen());
       led.rotation.x = Math.PI/2; led.position.y = 0.013; g.add(led);
       break;
     }
     case 'qaMic': {
       const base = new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.08,0.02,16), M.dark());
       g.add(base);
-      const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.009,0.009,0.5,8), M.metal);
+      const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.009,0.009,0.5,8), M.metal());
       neck.position.y = 0.25; g.add(neck);
-      const head = new THREE.Mesh(new THREE.CapsuleGeometry ? new THREE.CapsuleGeometry(0.018,0.07,6,10) : new THREE.SphereGeometry(0.025,10,8), M.dark());
+      const head = new THREE.Mesh(makeCapsule(0.018,0.07,6,10), M.dark());
       head.position.y = 0.55; g.add(head);
-      const led = new THREE.Mesh(new THREE.TorusGeometry(0.055,0.007,6,16), M.ledAmber);
+      const led = new THREE.Mesh(new THREE.TorusGeometry(0.055,0.007,6,16), M.ledAmber());
       led.rotation.x = Math.PI/2; led.position.y = 0.016; g.add(led);
       break;
     }
     case 'ceilingArrayLH': {
-      const body = new THREE.Mesh(new THREE.CylinderGeometry(0.35,0.37,0.06,32), M.body);
+      const body = new THREE.Mesh(new THREE.CylinderGeometry(0.35,0.37,0.06,32), M.body());
       g.add(body);
-      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.3,32), M.steel);
+      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.3,32), M.steel());
       grille.rotation.x = -Math.PI/2; grille.position.y = -0.031; g.add(grille);
-      const ring = new THREE.Mesh(new THREE.TorusGeometry(0.32,0.008,6,32), M.ledViolet);
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(0.32,0.008,6,32), M.ledViolet());
       ring.rotation.x = Math.PI/2; ring.position.y = -0.032; g.add(ring);
       break;
     }
     case 'beamformingLH': {
-      const body = new THREE.Mesh(new THREE.CylinderGeometry(0.28,0.3,0.05,24), M.body);
+      const body = new THREE.Mesh(new THREE.CylinderGeometry(0.28,0.3,0.05,24), M.body());
       g.add(body);
-      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.24,24), M.steel);
+      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.24,24), M.steel());
       grille.rotation.x = -Math.PI/2; grille.position.y = -0.026; g.add(grille);
       for (let i=0;i<8;i++) {
         const a = (i/8)*Math.PI*2;
-        const led = new THREE.Mesh(new THREE.CircleGeometry(0.02,10), M.ledViolet);
+        const led = new THREE.Mesh(new THREE.CircleGeometry(0.02,10), M.ledViolet());
         led.rotation.x = -Math.PI/2;
         led.position.set(Math.cos(a)*0.19, -0.027, Math.sin(a)*0.19); g.add(led);
       }
       break;
     }
     case 'ceilingZone': {
-      const body = new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.32,0.06,24), M.body);
+      const body = new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.32,0.06,24), M.body());
       g.add(body);
-      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.26,24), M.steel);
+      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.26,24), M.steel());
       grille.rotation.x = -Math.PI/2; grille.position.y = -0.031; g.add(grille);
-      /* Multiple zone indicators */
       for (let i=0;i<3;i++) {
-        const led = new THREE.Mesh(new THREE.CircleGeometry(0.035,14), M.ledViolet);
+        const led = new THREE.Mesh(new THREE.CircleGeometry(0.035,14), M.ledViolet());
         led.rotation.x = -Math.PI/2;
         led.position.set(-0.14 + i*0.14, -0.032, 0); g.add(led);
       }
@@ -941,96 +971,96 @@ function makeMesh(cat, typeId, brandColor) {
     }
     case 'lineSmall': {
       for (let k=0;k<5;k++) {
-        const b = new THREE.Mesh(new THREE.BoxGeometry(1.2,0.36,0.75), M.body);
+        const b = new THREE.Mesh(new THREE.BoxGeometry(1.2,0.36,0.75), M.body());
         b.castShadow = true; b.position.y = -0.7 + k*0.4; g.add(b);
         for (let i=0;i<5;i++) {
           const d = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.1,0.016,16), M.dark());
           d.rotation.z = Math.PI/2; d.position.set(-0.44+i*0.22, -0.7+k*0.4, 0.39); g.add(d);
         }
-        const t = new THREE.Mesh(new THREE.BoxGeometry(1.2,0.02,0.75), M.ledViolet);
+        const t = new THREE.Mesh(new THREE.BoxGeometry(1.2,0.02,0.75), M.ledViolet());
         t.position.y = -0.7 + k*0.4 + 0.19; g.add(t);
       }
-      const rig = new THREE.Mesh(new THREE.BoxGeometry(1.3,0.1,0.85), M.metal);
+      const rig = new THREE.Mesh(new THREE.BoxGeometry(1.3,0.1,0.85), M.metal());
       rig.position.y = 1.3; g.add(rig);
       break;
     }
     case 'lineLg': {
       for (let k=0;k<8;k++) {
-        const b = new THREE.Mesh(new THREE.BoxGeometry(1.5,0.4,0.95), M.body);
+        const b = new THREE.Mesh(new THREE.BoxGeometry(1.5,0.4,0.95), M.body());
         b.castShadow = true; b.position.y = -1.5 + k*0.44; g.add(b);
         for (let i=0;i<6;i++) {
           const d = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.12,0.018,16), M.dark());
           d.rotation.z = Math.PI/2; d.position.set(-0.56+i*0.23, -1.5+k*0.44, 0.49); g.add(d);
         }
-        const t = new THREE.Mesh(new THREE.BoxGeometry(1.5,0.022,0.95), M.ledViolet);
+        const t = new THREE.Mesh(new THREE.BoxGeometry(1.5,0.022,0.95), M.ledViolet());
         t.position.y = -1.5 + k*0.44 + 0.22; g.add(t);
       }
-      const rig = new THREE.Mesh(new THREE.BoxGeometry(1.6,0.12,1.1), M.metal);
+      const rig = new THREE.Mesh(new THREE.BoxGeometry(1.6,0.12,1.1), M.metal());
       rig.position.y = 2.2; g.add(rig);
       break;
     }
     case 'centerCluster': {
-      const box = new THREE.Mesh(new THREE.BoxGeometry(1.6,1,0.9), M.body);
+      const box = new THREE.Mesh(new THREE.BoxGeometry(1.6,1,0.9), M.body());
       box.castShadow = true; g.add(box);
       for (let i=0;i<2;i++) {
         const gr = new THREE.Mesh(new THREE.CircleGeometry(0.38,24), M.dark());
         gr.position.set(-0.4+i*0.8, 0, 0.46); g.add(gr);
-        const ring = new THREE.Mesh(new THREE.RingGeometry(0.38,0.46,24), M.ledViolet);
+        const ring = new THREE.Mesh(new THREE.RingGeometry(0.38,0.46,24), M.ledViolet());
         ring.position.set(-0.4+i*0.8, 0, 0.462); g.add(ring);
       }
       break;
     }
     case 'ceilingSpkLH': {
-      const d = new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.14,0.045,24), M.body);
+      const d = new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.14,0.045,24), M.body());
       g.add(d);
-      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.12,24), M.steel);
+      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.12,24), M.steel());
       grille.rotation.x = -Math.PI/2; grille.position.y = -0.024; g.add(grille);
-      const r = new THREE.Mesh(new THREE.TorusGeometry(0.13,0.005,6,24), M.ledViolet);
+      const r = new THREE.Mesh(new THREE.TorusGeometry(0.13,0.005,6,24), M.ledViolet());
       r.rotation.x = Math.PI/2; r.position.y = -0.025; g.add(r);
       break;
     }
     case 'ceilingNetLH': {
-      const d = new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.14,0.045,24), M.body);
+      const d = new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.14,0.045,24), M.body());
       g.add(d);
-      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.12,24), M.steel);
+      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.12,24), M.steel());
       grille.rotation.x = -Math.PI/2; grille.position.y = -0.024; g.add(grille);
-      const r = new THREE.Mesh(new THREE.TorusGeometry(0.13,0.005,6,24), M.ledGreen);
+      const r = new THREE.Mesh(new THREE.TorusGeometry(0.13,0.005,6,24), M.ledGreen());
       r.rotation.x = Math.PI/2; r.position.y = -0.025; g.add(r);
       break;
     }
     case 'ceilingPendantLH': {
       const cable = new THREE.Mesh(new THREE.CylinderGeometry(0.006,0.006,1.5,6), M.dark());
       cable.position.y = 0.75; g.add(cable);
-      const body = new THREE.Mesh(new THREE.SphereGeometry(0.18,20,14), M.body);
+      const body = new THREE.Mesh(new THREE.SphereGeometry(0.18,20,14), M.body());
       g.add(body);
-      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.13,20), M.steel);
+      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.13,20), M.steel());
       grille.rotation.x = Math.PI/2; grille.position.y = -0.16; g.add(grille);
-      const ring = new THREE.Mesh(new THREE.TorusGeometry(0.17,0.006,6,20), M.ledViolet);
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(0.17,0.006,6,20), M.ledViolet());
       ring.rotation.x = Math.PI/2; ring.position.y = -0.168; g.add(ring);
       break;
     }
     case 'delaySmall': {
-      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.15,3,12), M.metal);
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.15,3,12), M.metal());
       pole.position.y = -1.5; g.add(pole);
-      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.4,0.2,16), M.gray);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.4,0.2,16), M.gray());
       base.position.y = -2.9; g.add(base);
       for (let k=0;k<2;k++) {
-        const b = new THREE.Mesh(new THREE.BoxGeometry(0.6,0.3,0.5), M.body);
+        const b = new THREE.Mesh(new THREE.BoxGeometry(0.6,0.3,0.5), M.body());
         b.castShadow = true; b.position.y = -0.2 + k*0.35; g.add(b);
-        const t = new THREE.Mesh(new THREE.BoxGeometry(0.6,0.018,0.5), M.ledViolet);
+        const t = new THREE.Mesh(new THREE.BoxGeometry(0.6,0.018,0.5), M.ledViolet());
         t.position.y = -0.2 + k*0.35 + 0.16; g.add(t);
       }
       break;
     }
     case 'delayLg': {
-      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.2,5,12), M.metal);
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.2,5,12), M.metal());
       pole.position.y = -2.5; g.add(pole);
-      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.4,0.5,0.25,16), M.gray);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.4,0.5,0.25,16), M.gray());
       base.position.y = -4.85; g.add(base);
       for (let k=0;k<3;k++) {
-        const b = new THREE.Mesh(new THREE.BoxGeometry(0.8,0.32,0.6), M.body);
+        const b = new THREE.Mesh(new THREE.BoxGeometry(0.8,0.32,0.6), M.body());
         b.castShadow = true; b.position.y = -0.4 + k*0.38; g.add(b);
-        const t = new THREE.Mesh(new THREE.BoxGeometry(0.8,0.02,0.6), M.ledViolet);
+        const t = new THREE.Mesh(new THREE.BoxGeometry(0.8,0.02,0.6), M.ledViolet());
         t.position.y = -0.4 + k*0.38 + 0.17; g.add(t);
       }
       break;
@@ -1038,67 +1068,67 @@ function makeMesh(cat, typeId, brandColor) {
     case 'ptz4kLH': {
       const base = new THREE.Mesh(new THREE.CylinderGeometry(0.11,0.13,0.05,16), M.dark());
       g.add(base);
-      const panBase = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.11,0.07,16), M.body);
+      const panBase = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.11,0.07,16), M.body());
       panBase.position.y = 0.06; g.add(panBase);
-      const tilt = new THREE.Mesh(new THREE.SphereGeometry(0.09,16,12), M.body);
+      const tilt = new THREE.Mesh(new THREE.SphereGeometry(0.09,16,12), M.body());
       tilt.position.y = 0.17; g.add(tilt);
       const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.06,0.1,16), M.dark());
       lens.rotation.x = Math.PI/2; lens.position.set(0, 0.17, 0.1); g.add(lens);
-      const glass = new THREE.Mesh(new THREE.CircleGeometry(0.045,16), M.ledBlue);
+      const glass = new THREE.Mesh(new THREE.CircleGeometry(0.045,16), M.ledBlue());
       glass.position.set(0, 0.17, 0.155); g.add(glass);
-      const tally = new THREE.Mesh(new THREE.SphereGeometry(0.015,8,6), M.ledRed);
+      const tally = new THREE.Mesh(new THREE.SphereGeometry(0.015,8,6), M.ledRed());
       tally.position.set(0.07, 0.19, 0.06); g.add(tally);
       break;
     }
     case 'ptzSpeakerLH': {
       const base = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.14,0.05,16), M.dark());
       g.add(base);
-      const panBase = new THREE.Mesh(new THREE.CylinderGeometry(0.11,0.12,0.08,16), M.body);
+      const panBase = new THREE.Mesh(new THREE.CylinderGeometry(0.11,0.12,0.08,16), M.body());
       panBase.position.y = 0.065; g.add(panBase);
-      const tilt = new THREE.Mesh(new THREE.SphereGeometry(0.1,16,12), M.body);
+      const tilt = new THREE.Mesh(new THREE.SphereGeometry(0.1,16,12), M.body());
       tilt.position.y = 0.19; g.add(tilt);
       const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.055,0.065,0.11,16), M.dark());
       lens.rotation.x = Math.PI/2; lens.position.set(0, 0.19, 0.11); g.add(lens);
-      const glass = new THREE.Mesh(new THREE.CircleGeometry(0.05,16), M.ledViolet);
+      const glass = new THREE.Mesh(new THREE.CircleGeometry(0.05,16), M.ledViolet());
       glass.position.set(0, 0.19, 0.17); g.add(glass);
-      const trackRing = new THREE.Mesh(new THREE.TorusGeometry(0.065,0.008,6,20), M.ledViolet);
+      const trackRing = new THREE.Mesh(new THREE.TorusGeometry(0.065,0.008,6,20), M.ledViolet());
       trackRing.position.set(0, 0.19, 0.165); g.add(trackRing);
       break;
     }
     case 'ptzLecturer': {
       const base = new THREE.Mesh(new THREE.CylinderGeometry(0.13,0.15,0.05,16), M.dark());
       g.add(base);
-      const panBase = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.13,0.08,16), M.body);
+      const panBase = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.13,0.08,16), M.body());
       panBase.position.y = 0.065; g.add(panBase);
-      const tilt = new THREE.Mesh(new THREE.SphereGeometry(0.11,16,12), M.body);
+      const tilt = new THREE.Mesh(new THREE.SphereGeometry(0.11,16,12), M.body());
       tilt.position.y = 0.2; g.add(tilt);
       const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.07,0.12,16), M.dark());
       lens.rotation.x = Math.PI/2; lens.position.set(0, 0.2, 0.12); g.add(lens);
-      const glass = new THREE.Mesh(new THREE.CircleGeometry(0.055,16), M.ledAmber);
+      const glass = new THREE.Mesh(new THREE.CircleGeometry(0.055,16), M.ledAmber());
       glass.position.set(0, 0.2, 0.185); g.add(glass);
-      /* Lecturer tracking amber ring */
-      const trackRing = new THREE.Mesh(new THREE.TorusGeometry(0.07,0.009,6,20), M.ledAmber);
+      const trackRing = new THREE.Mesh(new THREE.TorusGeometry(0.07,0.009,6,20), M.ledAmber());
       trackRing.position.set(0, 0.2, 0.18); g.add(trackRing);
       break;
     }
     case 'trackingProcLH': {
-      const b = new THREE.Mesh(new THREE.BoxGeometry(0.45,0.4,0.35), M.body);
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.45,0.4,0.35), M.body());
       g.add(b);
+      const leds = [M.ledGreen(), M.ledAmber(), M.ledBlue()];
       for (let i=0;i<3;i++) {
-        const led = new THREE.Mesh(new THREE.SphereGeometry(0.018,8,6), [M.ledGreen, M.ledAmber, M.ledBlue][i]);
+        const led = new THREE.Mesh(new THREE.SphereGeometry(0.018,8,6), leds[i]);
         led.position.set(-0.15 + i*0.07, 0.15, 0.18); g.add(led);
       }
-      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.22,0.14), M.screen ? M.screen() : new THREE.MeshBasicMaterial({color:0x1a3a5a}));
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.22,0.14), M.screen());
       screen.position.set(0.08, -0.05, 0.176); g.add(screen);
       break;
     }
     case 'trackingAILH': {
-      const b = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.35,0.3), M.body);
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.35,0.3), M.body());
       g.add(b);
-      const chip = new THREE.Mesh(new THREE.BoxGeometry(0.14,0.14,0.02), M.ledViolet);
+      const chip = new THREE.Mesh(new THREE.BoxGeometry(0.14,0.14,0.02), M.ledViolet());
       chip.position.set(0, 0, 0.16); g.add(chip);
       for (let i=0;i<4;i++) {
-        const pin = new THREE.Mesh(new THREE.BoxGeometry(0.018,0.035,0.01), M.metal);
+        const pin = new THREE.Mesh(new THREE.BoxGeometry(0.018,0.035,0.01), M.metal());
         pin.position.set(-0.07 + i*0.045, -0.09, 0.16); g.add(pin);
       }
       break;
@@ -1108,168 +1138,164 @@ function makeMesh(cat, typeId, brandColor) {
       g.add(base);
       const dome = new THREE.Mesh(new THREE.SphereGeometry(0.055,16,10,0,Math.PI*2,0,Math.PI/2), M.glass());
       dome.position.y = 0.017; g.add(dome);
-      const led = new THREE.Mesh(new THREE.SphereGeometry(0.016,8,6), M.ledRed);
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.016,8,6), M.ledRed());
       led.position.set(0, 0.045, 0.045); g.add(led);
       break;
     }
     case 'recorder': {
-      const b = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.3,0.3), M.body);
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.3,0.3), M.body());
       g.add(b);
-      /* Record button */
-      const rec = new THREE.Mesh(new THREE.SphereGeometry(0.03,10,8), M.ledRed);
+      const rec = new THREE.Mesh(new THREE.SphereGeometry(0.03,10,8), M.ledRed());
       rec.position.set(-0.1, 0.1, 0.16); g.add(rec);
-      const led = new THREE.Mesh(new THREE.SphereGeometry(0.018,8,6), M.ledGreen);
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.018,8,6), M.ledGreen());
       led.position.set(0.1, 0.1, 0.16); g.add(led);
       break;
     }
     case 'encoder': {
-      const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.2,0.35), M.body);
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.2,0.35), M.body());
       g.add(b);
+      const leds = [M.ledGreen(), M.ledAmber(), M.ledBlue()];
       for (let i=0;i<5;i++) {
-        const led = new THREE.Mesh(new THREE.SphereGeometry(0.012,6,6), [M.ledGreen, M.ledAmber, M.ledBlue][i%3]);
+        const led = new THREE.Mesh(new THREE.SphereGeometry(0.012,6,6), leds[i%3]);
         led.position.set(-0.1 + i*0.05, 0.05, 0.18); g.add(led);
       }
-      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.15,0.08), M.screen ? M.screen() : new THREE.MeshBasicMaterial({color:0x1a3a5a}));
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.15,0.08), M.screen());
       screen.position.set(0.12, 0, 0.18); g.add(screen);
       break;
     }
     case 'streamer': {
-      const b = new THREE.Mesh(new THREE.BoxGeometry(0.45,0.25,0.32), M.body);
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.45,0.25,0.32), M.body());
       g.add(b);
-      /* Live stream icon (red dot) */
-      const live = new THREE.Mesh(new THREE.SphereGeometry(0.03,10,8), M.ledRed);
+      const live = new THREE.Mesh(new THREE.SphereGeometry(0.03,10,8), M.ledRed());
       live.position.set(-0.13, 0.05, 0.17); g.add(live);
-      const led = new THREE.Mesh(new THREE.SphereGeometry(0.018,8,6), M.ledCyan);
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.018,8,6), M.ledCyan());
       led.position.set(0.05, 0.05, 0.17); g.add(led);
-      const led2 = new THREE.Mesh(new THREE.SphereGeometry(0.018,8,6), M.ledGreen);
+      const led2 = new THREE.Mesh(new THREE.SphereGeometry(0.018,8,6), M.ledGreen());
       led2.position.set(0.14, 0.05, 0.17); g.add(led2);
       break;
     }
     case 'captureCard': {
-      const b = new THREE.Mesh(new THREE.BoxGeometry(0.35,0.15,0.25), M.body);
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.35,0.15,0.25), M.body());
       g.add(b);
-      const hdmi = new THREE.Mesh(new THREE.BoxGeometry(0.06,0.04,0.02), M.metal);
+      const hdmi = new THREE.Mesh(new THREE.BoxGeometry(0.06,0.04,0.02), M.metal());
       hdmi.position.set(-0.1, 0, 0.135); g.add(hdmi);
-      const usb = new THREE.Mesh(new THREE.BoxGeometry(0.04,0.03,0.02), M.metal);
+      const usb = new THREE.Mesh(new THREE.BoxGeometry(0.04,0.03,0.02), M.metal());
       usb.position.set(0.1, 0, 0.135); g.add(usb);
       break;
     }
     case 'hearingLoop': {
-      const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.4,0.35), M.body);
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.4,0.35), M.body());
       g.add(b);
-      /* Hearing loop icon */
-      const icon = new THREE.Mesh(new THREE.TorusGeometry(0.05,0.01,6,20), M.ledAmber);
+      const icon = new THREE.Mesh(new THREE.TorusGeometry(0.05,0.01,6,20), M.ledAmber());
       icon.position.set(-0.1, 0.05, 0.18); g.add(icon);
       for (let i=0;i<3;i++) {
-        const dot = new THREE.Mesh(new THREE.SphereGeometry(0.012,6,6), M.ledAmber);
+        const dot = new THREE.Mesh(new THREE.SphereGeometry(0.012,6,6), M.ledAmber());
         dot.position.set(-0.1, 0.05 + i*0.04, 0.19); g.add(dot);
       }
-      const led = new THREE.Mesh(new THREE.SphereGeometry(0.018,8,6), M.ledGreen);
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.018,8,6), M.ledGreen());
       led.position.set(0.15, 0.15, 0.18); g.add(led);
       break;
     }
     case 'inductionLoop': {
-      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.12,4,10), M.metal);
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.12,4,10), M.metal());
       pole.position.y = -2; g.add(pole);
-      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.25,0.35,0.2,14), M.gray);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.25,0.35,0.2,14), M.gray());
       base.position.y = -3.9; g.add(base);
-      const head = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.5,0.4), M.body);
+      const head = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.5,0.4), M.body());
       head.castShadow = true; g.add(head);
-      /* Induction symbol */
-      const ring1 = new THREE.Mesh(new THREE.TorusGeometry(0.1,0.01,6,20), M.ledAmber);
+      const ring1 = new THREE.Mesh(new THREE.TorusGeometry(0.1,0.01,6,20), M.ledAmber());
       ring1.position.set(0, 0, 0.21); g.add(ring1);
-      const ring2 = new THREE.Mesh(new THREE.TorusGeometry(0.14,0.01,6,20), M.ledAmber);
+      const ring2 = new THREE.Mesh(new THREE.TorusGeometry(0.14,0.01,6,20), M.ledAmber());
       ring2.position.set(0, 0, 0.21); g.add(ring2);
       break;
     }
     case 'infraredSys': {
-      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.12,4,10), M.metal);
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.12,4,10), M.metal());
       pole.position.y = -2; g.add(pole);
-      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.25,0.35,0.2,14), M.gray);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.25,0.35,0.2,14), M.gray());
       base.position.y = -3.9; g.add(base);
-      const head = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.3,0.3), M.body);
+      const head = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.3,0.3), M.body());
       head.castShadow = true; g.add(head);
-      /* Multiple IR LEDs */
       for (let i=0;i<6;i++) {
-        const ir = new THREE.Mesh(new THREE.SphereGeometry(0.018,8,6), M.ledRed);
+        const ir = new THREE.Mesh(new THREE.SphereGeometry(0.018,8,6), M.ledRed());
         ir.position.set(-0.12 + i*0.05, 0.05, 0.16); g.add(ir);
       }
       break;
     }
     case 'touchPanelLH': {
-      const body = new THREE.Mesh(new THREE.BoxGeometry(0.22,0.15,0.02), M.body);
+      const body = new THREE.Mesh(new THREE.BoxGeometry(0.22,0.15,0.02), M.body());
       g.add(body);
       const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.19,0.12),
         new THREE.MeshBasicMaterial({color:0x0a3a5a,transparent:true,opacity:0.9}));
       screen.position.set(0, 0, 0.011); g.add(screen);
-      const icon1 = new THREE.Mesh(new THREE.CircleGeometry(0.014,8), M.ledViolet);
+      const icon1 = new THREE.Mesh(new THREE.CircleGeometry(0.014,8), M.ledViolet());
       icon1.position.set(-0.055, 0, 0.012); g.add(icon1);
-      const icon2 = new THREE.Mesh(new THREE.CircleGeometry(0.014,8), M.ledGreen);
+      const icon2 = new THREE.Mesh(new THREE.CircleGeometry(0.014,8), M.ledGreen());
       icon2.position.set(0, 0, 0.012); g.add(icon2);
-      const icon3 = new THREE.Mesh(new THREE.CircleGeometry(0.014,8), M.ledAmber);
+      const icon3 = new THREE.Mesh(new THREE.CircleGeometry(0.014,8), M.ledAmber());
       icon3.position.set(0.055, 0, 0.012); g.add(icon3);
       break;
     }
     case 'schedulerLH': {
-      const body = new THREE.Mesh(new THREE.BoxGeometry(0.2,0.14,0.02), M.body);
+      const body = new THREE.Mesh(new THREE.BoxGeometry(0.2,0.14,0.02), M.body());
       g.add(body);
-      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.17,0.11), M.screen ? M.screen() : new THREE.MeshBasicMaterial({color:0x1a3a5a}));
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.17,0.11), M.screen());
       screen.position.set(0, 0, 0.011); g.add(screen);
       break;
     }
     case 'avCtrl': {
-      const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.4,0.35), M.body);
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.4,0.35), M.body());
       g.add(b);
       for (let i=0;i<4;i++) {
-        const port = new THREE.Mesh(new THREE.BoxGeometry(0.05,0.05,0.02), M.ledGreen);
+        const port = new THREE.Mesh(new THREE.BoxGeometry(0.05,0.05,0.02), M.ledGreen());
         port.position.set(-0.15 + i*0.1, -0.1, 0.18); g.add(port);
       }
-      const led = new THREE.Mesh(new THREE.SphereGeometry(0.018,8,6), M.ledCyan);
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.018,8,6), M.ledCyan());
       led.position.set(0.15, 0.12, 0.18); g.add(led);
       break;
     }
     case 'pagingCeilingLH': {
-      const d = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.12,0.04,20), M.body);
+      const d = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.12,0.04,20), M.body());
       g.add(d);
-      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.1,20), M.steel);
+      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.1,20), M.steel());
       grille.rotation.x = -Math.PI/2; grille.position.y = -0.021; g.add(grille);
-      const r = new THREE.Mesh(new THREE.TorusGeometry(0.11,0.005,6,20), M.ledAmber);
+      const r = new THREE.Mesh(new THREE.TorusGeometry(0.11,0.005,6,20), M.ledAmber());
       r.rotation.x = Math.PI/2; r.position.y = -0.022; g.add(r);
       break;
     }
     case 'pagingHornLH': {
-      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.1,3,10), M.metal);
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.1,3,10), M.metal());
       pole.position.y = -1.5; g.add(pole);
-      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.25,0.15,12), M.gray);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.25,0.15,12), M.gray());
       base.position.y = -2.9; g.add(base);
-      const bk = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.3,0.25), M.body);
+      const bk = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.3,0.25), M.body());
       bk.castShadow = true; g.add(bk);
-      const horn = new THREE.Mesh(new THREE.CylinderGeometry(0.28,0.1,0.45,16,1,true), M.steel);
+      const horn = new THREE.Mesh(new THREE.CylinderGeometry(0.28,0.1,0.45,16,1,true), M.steel());
       horn.rotation.x = Math.PI/2; horn.position.z = 0.33; g.add(horn);
-      const led = new THREE.Mesh(new THREE.SphereGeometry(0.03,8,6), M.ledAmber);
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.03,8,6), M.ledAmber());
       led.position.set(0.15, 0.15, -0.15); g.add(led);
       break;
     }
     case 'emgHornLH': {
-      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.1,3,10), M.metal);
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.1,3,10), M.metal());
       pole.position.y = -1.5; g.add(pole);
-      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.25,0.15,12), M.gray);
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.25,0.15,12), M.gray());
       base.position.y = -2.9; g.add(base);
       const bk = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.3,0.25),
         new THREE.MeshStandardMaterial({color:0xcc0000,roughness:0.5,metalness:0.4}));
       bk.castShadow = true; g.add(bk);
-      const horn = new THREE.Mesh(new THREE.CylinderGeometry(0.26,0.1,0.42,16,1,true), M.steel);
+      const horn = new THREE.Mesh(new THREE.CylinderGeometry(0.26,0.1,0.42,16,1,true), M.steel());
       horn.rotation.x = Math.PI/2; horn.position.z = 0.31; g.add(horn);
-      const beacon = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,0.15,12), M.ledRed);
+      const beacon = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,0.15,12), M.ledRed());
       beacon.position.y = 0.22; g.add(beacon);
       break;
     }
     case 'emgStrobeLH': {
-      const d = new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.09,0.02,20), M.body);
+      const d = new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.09,0.02,20), M.body());
       g.add(d);
       const gr = new THREE.Mesh(new THREE.CircleGeometry(0.07,20), M.dark());
       gr.rotation.x = Math.PI/2; gr.position.y = -0.012; g.add(gr);
-      const r = new THREE.Mesh(new THREE.RingGeometry(0.07,0.09,20), M.ledRed);
+      const r = new THREE.Mesh(new THREE.RingGeometry(0.07,0.09,20), M.ledRed());
       r.rotation.x = -Math.PI/2; r.position.y = -0.013; g.add(r);
       const strobe = new THREE.Mesh(new THREE.SphereGeometry(0.035,10,8),
         new THREE.MeshStandardMaterial({color:0xffffff,emissive:0xffffff,emissiveIntensity:2.5}));
@@ -1277,7 +1303,7 @@ function makeMesh(cat, typeId, brandColor) {
       break;
     }
     default: {
-      const b = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.3,0.3), M.body);
+      const b = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.3,0.3), M.body());
       b.castShadow = true; g.add(b);
     }
   }
@@ -1296,13 +1322,15 @@ function makeMesh(cat, typeId, brandColor) {
 function clearGroup(g) {
   while (g.children.length) {
     const c = g.children[0]; g.remove(c);
-    c.traverse?.(o => {
-      if (o.geometry) o.geometry.dispose();
-      if (o.material) {
-        if (Array.isArray(o.material)) o.material.forEach(m => m.dispose());
-        else o.material.dispose();
-      }
-    });
+    if (c.traverse) {
+      c.traverse(o => {
+        if (o.geometry) o.geometry.dispose();
+        if (o.material) {
+          if (Array.isArray(o.material)) o.material.forEach(m => m.dispose());
+          else o.material.dispose();
+        }
+      });
+    }
   }
 }
 
@@ -1318,7 +1346,6 @@ function buildRoom() {
     if (f.type === 'ceiling') {
       const ceil = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.1, f.d), M.ceiling());
       ceil.position.set(f.x, f.h, f.z); roomGrp.add(ceil);
-      /* Ceiling panels */
       for (let i=0;i<12;i++) {
         for (let j=0;j<10;j++) {
           const panel = new THREE.Mesh(new THREE.BoxGeometry(1.6,0.06,1.6), M.ceilingPanel());
@@ -1326,7 +1353,6 @@ function buildRoom() {
           roomGrp.add(panel);
         }
       }
-      /* Ceiling lights */
       for (let i=0;i<6;i++) {
         const light = new THREE.PointLight(0xf0f4ff, 0.6, 16, 2);
         light.position.set(-8 + i*3.2, f.h - 0.4, 0); roomGrp.add(light);
@@ -1336,7 +1362,6 @@ function buildRoom() {
     if (f.type === 'wall') {
       const wall = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.h, f.d), M.wall());
       wall.position.set(f.x, f.h/2, f.z); wall.receiveShadow = true; roomGrp.add(wall);
-      /* Wall panel accents */
       const isSide = f.w < f.d;
       const length = isSide ? f.d : f.w;
       const rows = 3;
@@ -1358,10 +1383,8 @@ function buildRoom() {
       const stage = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.H, f.d), M.stageFloor());
       stage.position.set(f.x, f.H/2, f.z); stage.castShadow = true; stage.receiveShadow = true;
       roomGrp.add(stage);
-      /* Stage edge trim */
       const trim = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.3, 0.1, f.d + 0.3), M.woodDark());
       trim.position.set(f.x, f.H + 0.05, f.z); roomGrp.add(trim);
-      /* Stage steps */
       for (const [sx, sz] of [[-8, -5], [8, -5]]) {
         for (let i=0;i<3;i++) {
           const step = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.33, 0.5), M.stageFloor());
@@ -1372,36 +1395,28 @@ function buildRoom() {
     }
 
     if (f.type === 'podium') {
-      /* Podium body */
       const body = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.H, f.d), M.wood());
-      body.position.set(f.x, f.H/2 + 1, f.z); body.castShadow = true; roomGrp.add(body);
-      /* Top surface */
+      body.position.set   (f.x, f.H/2 + 1, f.z); body.castShadow = true; roomGrp.add(body);
       const top = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.1, 0.05, f.d + 0.1), M.woodDark());
       top.position.set(f.x, f.H + 1.02, f.z); roomGrp.add(top);
-      /* Reading light */
-      const light = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.1, 0.15, 12), M.ledAmber);
+      const light = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.1, 0.15, 12), M.ledAmber());
       light.position.set(f.x + f.w/2 - 0.15, f.H + 1.15, f.z + f.d/4);
       roomGrp.add(light);
     }
 
     if (f.type === 'screen') {
-      /* Screen frame */
       const frame = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.3, f.h + 0.3, 0.15), M.screenFrame());
       frame.position.set(f.x, 3.5, f.z + 0.08); roomGrp.add(frame);
-      /* Screen surface */
       const screen = new THREE.Mesh(new THREE.PlaneGeometry(f.w, f.h), M.screen());
       screen.position.set(f.x, 3.5, f.z + 0.16); roomGrp.add(screen);
-      /* Screen glow */
       const light = new THREE.PointLight(0x4a80e0, 0.9, 12, 2);
       light.position.set(f.x, 3.5, f.z + 2); roomGrp.add(light);
     }
 
     if (f.type === 'tieredRows') {
-      /* Build amphitheater tiered rows */
       for (let r=0;r<f.rows;r++) {
         const rowZ = f.startZ + r * f.rowSpacing;
         const yBase = r * f.tierHeight;
-        /* Tier platform */
         const tier = new THREE.Mesh(
           new THREE.BoxGeometry(20, yBase + 0.15, f.rowSpacing - 0.1),
           M.seatTier()
@@ -1409,12 +1424,9 @@ function buildRoom() {
         tier.position.set(f.x, (yBase + 0.15)/2, rowZ);
         tier.receiveShadow = true;
         roomGrp.add(tier);
-        /* Seats on tier */
         for (let c=0;c<f.cols;c++) {
-          /* Skip center aisle */
           const colX = -8 + c * (f.seatWidth + f.seatGap) + 0.5;
           if (Math.abs(colX) < 0.6) continue;
-          /* Seat */
           const seatY = yBase + 0.55;
           const seat = new THREE.Mesh(
             new THREE.BoxGeometry(f.seatWidth, 0.1, f.seatWidth),
@@ -1422,14 +1434,12 @@ function buildRoom() {
           );
           seat.position.set(colX, seatY, rowZ);
           roomGrp.add(seat);
-          /* Seat cushion */
           const cushion = new THREE.Mesh(
             new THREE.BoxGeometry(f.seatWidth - 0.05, 0.04, f.seatWidth - 0.1),
             M.seatCushion()
           );
           cushion.position.set(colX, seatY + 0.06, rowZ);
           roomGrp.add(cushion);
-          /* Backrest */
           const back = new THREE.Mesh(
             new THREE.BoxGeometry(f.seatWidth, 0.35, 0.06),
             M.seat()
@@ -1443,7 +1453,6 @@ function buildRoom() {
     if (f.type === 'aisleLeft' || f.type === 'aisleRight') {
       const aisle = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.05, f.d), M.aislePath());
       aisle.position.set(f.x, 0.1, f.z); roomGrp.add(aisle);
-      /* Aisle markings */
       for (let i=0;i<8;i++) {
         const mark = new THREE.Mesh(new THREE.BoxGeometry(f.w - 0.2, 0.02, 0.1), M.ledAmber());
         mark.position.set(f.x, 0.15, -8 + i*2.2);
@@ -1457,19 +1466,14 @@ function buildRoom() {
     }
 
     if (f.type === 'recordingBooth') {
-      /* Booth structure */
       const body = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.H, f.d), M.booth());
       body.position.set(f.x, f.H/2, f.z); body.castShadow = true; roomGrp.add(body);
-      /* Roof */
       const roof = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.3, 0.2, f.d + 0.3), M.wall());
       roof.position.set(f.x, f.H + 0.1, f.z); roomGrp.add(roof);
-      /* Glass window (front) */
       const glass = new THREE.Mesh(new THREE.PlaneGeometry(f.w - 1.5, f.H - 1.2), M.boothGlass());
       glass.position.set(f.x, f.H/2, f.z - f.d/2 - 0.01); roomGrp.add(glass);
-      /* Door */
       const door = new THREE.Mesh(new THREE.BoxGeometry(0.9, 2.2, 0.06), M.door());
       door.position.set(f.x + f.w/2 - 0.6, 1.1, f.z - f.d/2 - 0.04); roomGrp.add(door);
-      /* "RECORDING" sign */
       const sign = new THREE.Mesh(new THREE.PlaneGeometry(2.5, 0.6), M.ledRed());
       sign.position.set(f.x, f.H - 0.3, f.z - f.d/2 - 0.02); roomGrp.add(sign);
     }
@@ -1479,13 +1483,12 @@ function buildRoom() {
       frame.position.set(f.x, f.h/2 + 0.05, f.z); roomGrp.add(frame);
       const door = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.h, 0.06), M.door());
       door.position.set(f.x, f.h/2, f.z + 0.06); roomGrp.add(door);
-      const handle = new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.2,10), M.metal);
+      const handle = new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.2,10), M.metal());
       handle.rotation.z = Math.PI/2;
       handle.position.set(f.x + f.w/2 - 0.15, f.h/2, f.z + 0.11); roomGrp.add(handle);
-      /* Exit sign */
       const exitSign = new THREE.Mesh(new THREE.PlaneGeometry(0.6, 0.3), M.ledGreen());
       exitSign.position.set(f.x, f.h + 0.3, f.z); roomGrp.add(exitSign);
-    }
+ }
   }
 }
 
@@ -1497,7 +1500,7 @@ function buildDevices() {
     const spec = getSpec(d.cat, d.typeId); if (!spec) continue;
     const color = BRANDS[d.brand] ? BRANDS[d.brand].color : 0x8b5cf6;
     const mesh = makeMesh(d.cat, d.typeId, color); if (!mesh) continue;
-    mesh.position.set(d.x, spec.h, d.z);
+    mesh.position.set(d.x, deviceY(d, spec), d.z);
     mesh.rotation.y = d.rot || 0;
     mesh.userData.devId = d.id;
     mesh.userData.dev = d;
@@ -1752,7 +1755,7 @@ canvas.addEventListener('pointermove', e => {
       const d = dragDev.userData.dev;
       d.x = Math.round((fp.x + dragOff.x)*10)/10;
       d.z = Math.round((fp.z + dragOff.z)*10)/10;
-      dragDev.position.set(d.x, dragDev.userData.spec.h, d.z);
+      dragDev.position.set(d.x, deviceY(d, dragDev.userData.spec), d.z);
       if (state.showHeat) updateHeatColors();
       updateInfo();
     }
@@ -1836,7 +1839,7 @@ function updateInfo() {
   document.getElementById('infBrand').textContent = brandName(d.brand);
   document.getElementById('infType').textContent = catName(d.cat);
   document.getElementById('infPower').textContent = spec.power > 0 ? (d.power||spec.power) + ' W' : '—';
-  document.getElementById('infH').textContent = spec.h.toFixed(1) + (LANG==='ar'?' م':' m');
+  document.getElementById('infH').textContent = deviceY(d, spec).toFixed(1) + (LANG==='ar'?' م':' m');
   document.getElementById('infPos').textContent = d.x.toFixed(1) + ', ' + d.z.toFixed(1);
   const pw = document.getElementById('powerSlider');
   pw.value = d.power || spec.power;
@@ -1945,7 +1948,7 @@ function generateReport() {
 
   const rt60 = 0.7;
   const capacity = 140;
-  const micCount = state.devices.filter(d => d.cat.includes('Mic')).length;
+  const micCount = state.devices.filter(d => d.cat.indexOf('Mic') !== -1).length;
   const cameraCount = state.devices.filter(d => d.cat === 'ptzCamera').length;
   const hasLecturer = state.devices.filter(d => d.cat === 'lecturerMic').length >= 3;
   const hasStudent = state.devices.filter(d => d.cat === 'studentMic').length >= 3;
@@ -1959,6 +1962,9 @@ function generateReport() {
   const hasAssistive = state.devices.filter(d => d.cat === 'assistive').length >= 2;
   const hasPaging = state.devices.some(d => d.cat === 'paging');
   const hasEmergency = state.devices.some(d => d.cat === 'emergency');
+
+  const okTxt = LANG==='ar'?'نشط':'Active';
+  const noTxt = LANG==='ar'?'غير مُهيَّأ':'Not configured';
 
   document.getElementById('reportModalBody').innerHTML = `
     <div class="report-section">
@@ -1987,20 +1993,20 @@ function generateReport() {
       <div class="row"><span>${T('rep_sti')}</span><span>${T('rep_sti_target')}</span></div>
       <div class="row"><span>${T('rep_rt')}</span><span>${rt60.toFixed(2)}s</span></div>
       <div class="row"><span>${T('rep_nc')}</span><span>${T('rep_nc_target')}</span></div>
-      <div class="row"><span>🎙️ ${T('cat_lecturerMic')}</span><span style="color:${hasLecturer?'#8b5cf6':'#fbbf24'}">${hasLecturer ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
-      <div class="row"><span>👥 ${T('cat_studentMic')}</span><span style="color:${hasStudent?'#8b5cf6':'#fbbf24'}">${hasStudent ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
-      <div class="row"><span>🔊 ${T('cat_ceilingMic')}</span><span style="color:${hasCeilingMic?'#8b5cf6':'#fbbf24'}">${hasCeilingMic ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
-      <div class="row"><span>🎛️ ${T('cat_mainPA')}</span><span style="color:${hasMainPA?'#8b5cf6':'#fbbf24'}">${hasMainPA ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
-      <div class="row"><span>🔈 ${T('cat_ceilingSpk')}</span><span style="color:${hasCeilingSpk?'#8b5cf6':'#fbbf24'}">${hasCeilingSpk ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
-      <div class="row"><span>📡 ${T('cat_delay')}</span><span style="color:${hasDelay?'#8b5cf6':'#fbbf24'}">${hasDelay ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
-      <div class="row"><span>📹 ${T('cat_ptzCamera')}</span><span style="color:${hasPTZ?'#8b5cf6':'#fbbf24'}">${hasPTZ ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
-      <div class="row"><span>🎯 ${T('cat_cameraTracking')}</span><span style="color:${hasTracking?'#8b5cf6':'#fbbf24'}">${hasTracking ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
-      <div class="row"><span>📼 ${T('cat_recording')}</span><span style="color:${hasRecording?'#8b5cf6':'#fbbf24'}">${hasRecording ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
-      <div class="row"><span>🦻 ${T('cat_assistive')}</span><span style="color:${hasAssistive?'#8b5cf6':'#fbbf24'}">${hasAssistive ? (LANG==='ar'?'مطابق ADA':'ADA Compliant') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
-      <div class="row"><span>${T('rep_paging')}</span><span style="color:${hasPaging?'#8b5cf6':'#fbbf24'}">${hasPaging ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
-      <div class="row"><span>${T('rep_emergency')}</span><span style="color:${hasEmergency?'#8b5cf6':'#fbbf24'}">${hasEmergency ? (LANG==='ar'?'مطابق (نشط)':'Compliant (Active)') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
+      <div class="row"><span>🎙️ ${T('cat_lecturerMic')}</span><span style="color:${hasLecturer?'#8b5cf6':'#fbbf24'}">${hasLecturer ? okTxt : noTxt}</span></div>
+      <div class="row"><span>👥 ${T('cat_studentMic')}</span><span style="color:${hasStudent?'#8b5cf6':'#fbbf24'}">${hasStudent ? okTxt : noTxt}</span></div>
+      <div class="row"><span>🔊 ${T('cat_ceilingMic')}</span><span style="color:${hasCeilingMic?'#8b5cf6':'#fbbf24'}">${hasCeilingMic ? okTxt : noTxt}</span></div>
+      <div class="row"><span>🎛️ ${T('cat_mainPA')}</span><span style="color:${hasMainPA?'#8b5cf6':'#fbbf24'}">${hasMainPA ? okTxt : noTxt}</span></div>
+      <div class="row"><span>🔈 ${T('cat_ceilingSpk')}</span><span style="color:${hasCeilingSpk?'#8b5cf6':'#fbbf24'}">${hasCeilingSpk ? okTxt : noTxt}</span></div>
+      <div class="row"><span>📡 ${T('cat_delay')}</span><span style="color:${hasDelay?'#8b5cf6':'#fbbf24'}">${hasDelay ? okTxt : noTxt}</span></div>
+      <div class="row"><span>📹 ${T('cat_ptzCamera')}</span><span style="color:${hasPTZ?'#8b5cf6':'#fbbf24'}">${hasPTZ ? okTxt : noTxt}</span></div>
+      <div class="row"><span>🎯 ${T('cat_cameraTracking')}</span><span style="color:${hasTracking?'#8b5cf6':'#fbbf24'}">${hasTracking ? okTxt : noTxt}</span></div>
+      <div class="row"><span>📼 ${T('cat_recording')}</span><span style="color:${hasRecording?'#8b5cf6':'#fbbf24'}">${hasRecording ? okTxt : noTxt}</span></div>
+      <div class="row"><span>🦻 ${T('cat_assistive')}</span><span style="color:${hasAssistive?'#8b5cf6':'#fbbf24'}">${hasAssistive ? (LANG==='ar'?'مطابق ADA':'ADA Compliant') : noTxt}</span></div>
+      <div class="row"><span>${T('rep_paging')}</span><span style="color:${hasPaging?'#8b5cf6':'#fbbf24'}">${hasPaging ? okTxt : noTxt}</span></div>
+      <div class="row"><span>${T('rep_emergency')}</span><span style="color:${hasEmergency?'#8b5cf6':'#fbbf24'}">${hasEmergency ? (LANG==='ar'?'مطابق (نشط)':'Compliant (Active)') : noTxt}</span></div>
       <div class="row"><span>${T('rep_hearing')}</span><span style="color:#8b5cf6">${LANG==='ar'?'مطابق':'Compliant'}</span></div>
-      <div class="row"><span>${T('rep_recording')}</span><span style="color:#8b5cf6">${LANG==='ar'?'4K UHD':'4K UHD'}</span></div>
+      <div class="row"><span>${T('rep_recording')}</span><span style="color:#8b5cf6">4K UHD</span></div>
       <div class="row"><span>${T('rep_iso')}</span><span style="color:#8b5cf6">${LANG==='ar'?'مطابق':'Compliant'}</span></div>
       <div class="row"><span>${T('rep_iec')}</span><span style="color:#8b5cf6">${LANG==='ar'?'مطابق':'Compliant'}</span></div>
       <div class="row"><span>${T('rep_status')}</span><span style="color:#8b5cf6">${T('rep_status_good')}</span></div>
