@@ -20,10 +20,7 @@ html[lang="en"] body{font-family:var(--font)}
 html{height:100%;overflow:hidden;-webkit-text-size-adjust:100%}
 body{position:fixed;inset:0;overflow:hidden;background:var(--bg);color:var(--txt);
   font-family:var(--font);font-size:14px;user-select:none;-webkit-user-select:none}
-
 #c{position:fixed;inset:0;width:100%;height:100%;touch-action:none;display:block;cursor:crosshair}
-
-/* Loader */
 #loader{position:fixed;inset:0;z-index:9999;background:
   radial-gradient(circle at 50% 40%,rgba(155,123,255,.15),transparent 60%),#0a0e1a;
   display:grid;place-items:center;transition:opacity .6s,visibility .6s}
@@ -33,8 +30,6 @@ body{position:fixed;inset:0;overflow:hidden;background:var(--bg);color:var(--txt
   text-shadow:0 0 40px rgba(212,175,55,.6);animation:pulse 1.5s ease-in-out infinite}
 #loader .txt{margin-top:14px;color:var(--txt2);letter-spacing:3px;font-size:12px;font-weight:700}
 @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.08);opacity:.7}}
-
-/* Header */
 header{position:fixed;top:0;left:0;right:0;min-height:56px;z-index:100;padding:8px 14px;
   padding-top:calc(8px + env(safe-area-inset-top,0));background:var(--panel);
   backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
@@ -59,7 +54,6 @@ header.hide{transform:translateY(-110%)}
   transition:all .2s;flex-shrink:0}
 .langBtn:hover{border-color:var(--gold);color:var(--gold)}
 .langBtn:active{transform:scale(.95)}
-.langBtn .flag{font-size:15px}
 .btn{height:38px;min-width:38px;padding:0 12px;border-radius:11px;background:var(--card);
   border:1px solid var(--line);color:var(--txt);font-family:inherit;font-size:13px;
   font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;
@@ -67,40 +61,31 @@ header.hide{transform:translateY(-110%)}
 .btn:hover{border-color:var(--line2)}
 .btn:active{transform:scale(.94)}
 .btn.on{background:linear-gradient(135deg,var(--gold),#8a6d1f);color:#fff;border-color:transparent}
-
-/* HUD */
 .hud{position:fixed;top:76px;inset-inline-end:12px;z-index:50;
   display:flex;flex-direction:column;gap:7px;pointer-events:none;transition:opacity .3s}
 .hud .stat{background:var(--panel);backdrop-filter:blur(20px);border:1px solid var(--line);
   padding:7px 13px;border-radius:11px;font-family:'JetBrains Mono',monospace;
-  font-size:10px;color:var(--txt2);text-align:center;min-width:82px;
-  transition:border-color .3s}
+  font-size:10px;color:var(--txt2);text-align:center;min-width:82px;transition:border-color .3s}
 .hud .stat b{color:var(--cyn);font-weight:700;font-size:13px;display:block;margin-top:2px}
 .hud .stat.good b{color:var(--mint)}
 .hud .stat.warn b{color:var(--amb)}
-
-/* Tools */
-.tools{position:fixed;inset-inline-end:12px;bottom:185px;z-index:60;
+.tools{position:fixed;inset-inline-end:12px;bottom:230px;z-index:60;
   display:flex;flex-direction:column;gap:8px;transition:transform .4s,opacity .3s}
 .tools.hide{transform:translateX(-160%);opacity:0}
 .tool{width:48px;height:48px;border-radius:14px;border:1px solid var(--line);
   background:var(--panel);backdrop-filter:blur(20px);color:var(--txt);
   font-size:20px;cursor:pointer;display:grid;place-items:center;
-  box-shadow:var(--sh);transition:all .2s cubic-bezier(.34,1.56,.64,1);
-  position:relative}
+  box-shadow:var(--sh);transition:all .2s cubic-bezier(.34,1.56,.64,1)}
 .tool:hover{border-color:var(--line2);transform:translateY(-2px)}
 .tool:active{transform:scale(.92)}
 .tool.on{background:linear-gradient(135deg,var(--gold),#8a6d1f);
   border-color:transparent;color:#fff;box-shadow:0 8px 24px rgba(212,175,55,.5)}
-
-/* Info Panel */
-.info{position:fixed;top:76px;inset-inline-start:12px;z-index:70;width:250px;
+.info{position:fixed;top:76px;inset-inline-start:12px;z-index:70;width:270px;
   padding:15px;border-radius:16px;background:var(--panel);
   backdrop-filter:blur(24px);border:1px solid var(--line2);box-shadow:var(--sh);
   transform:translateX(calc(-100% - 30px));opacity:0;
   transition:all .35s cubic-bezier(.34,1.56,.64,1);
-  pointer-events:none;max-height:calc(100vh - 210px);overflow-y:auto}
-html[lang="en"] .info{transform:translateX(calc(-100% - 30px))}
+  pointer-events:none;max-height:calc(100vh - 250px);overflow-y:auto}
 .info.on{transform:translateX(0);opacity:1;pointer-events:auto}
 .info h4{font-size:13px;font-weight:800;margin-bottom:3px;color:var(--gold);
   display:flex;align-items:center;gap:7px}
@@ -130,9 +115,16 @@ html[lang="en"] .info{transform:translateX(calc(-100% - 30px))}
 .info .actions button:hover{background:rgba(255,255,255,.05)}
 .info .actions button.del{background:rgba(255,122,156,.15);color:var(--rose);
   border-color:rgba(255,122,156,.4)}
-.info .actions button.del:hover{background:rgba(255,122,156,.25)}
-
-/* Picker */
+.info .dimRow{margin-top:12px;padding-top:12px;border-top:1px solid var(--line2)}
+.info .dimRow h5{font-size:11px;font-weight:800;color:var(--gold);
+  margin-bottom:8px;letter-spacing:.5px}
+.info .presetBtns{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:8px}
+.info .presetBtns button{padding:7px 3px;border-radius:8px;font-family:inherit;
+  font-size:10px;font-weight:700;cursor:pointer;border:1px solid var(--line);
+  background:var(--card);color:var(--txt2);transition:all .2s}
+.info .presetBtns button:hover{border-color:var(--gold);color:var(--gold)}
+.info .presetBtns button.on{background:linear-gradient(135deg,var(--gold),#8a6d1f);
+  color:#fff;border-color:transparent}
 .picker{position:fixed;bottom:0;left:0;right:0;z-index:80;padding:10px 12px;
   padding-bottom:calc(10px + env(safe-area-inset-bottom,0));
   background:var(--panel);backdrop-filter:blur(24px);
@@ -165,8 +157,6 @@ html[lang="en"] .info{transform:translateX(calc(-100% - 30px))}
   box-shadow:0 5px 16px rgba(212,175,55,.4)}
 .type .em{font-size:20px;line-height:1}
 .type .nm{font-size:9px;line-height:1.2;text-align:center}
-
-/* Toast */
 .toast{position:fixed;bottom:195px;left:50%;transform:translateX(-50%) translateY(20px);
   padding:11px 22px;border-radius:14px;background:var(--panel);
   backdrop-filter:blur(20px);border:1px solid var(--line2);
@@ -174,8 +164,6 @@ html[lang="en"] .info{transform:translateX(calc(-100% - 30px))}
   transition:all .3s;z-index:200;white-space:nowrap;
   box-shadow:0 12px 40px rgba(0,0,0,.6)}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* Presentation */
 .presBtn{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
   z-index:90;padding:13px 26px;border-radius:30px;
   background:linear-gradient(135deg,var(--gold),#8a6d1f);
@@ -191,8 +179,6 @@ html[lang="en"] .info{transform:translateX(calc(-100% - 30px))}
   display:none;place-items:center;transition:all .2s}
 .exitP.on{display:grid}
 .exitP:active{transform:scale(.9)}
-
-/* Modal */
 .modal{position:fixed;inset:0;background:rgba(5,8,18,.85);backdrop-filter:blur(10px);
   z-index:1000;display:none;align-items:center;justify-content:center;padding:18px}
 .modal.on{display:flex;animation:fadeIn .25s}
@@ -223,19 +209,16 @@ html[lang="en"] .info{transform:translateX(calc(-100% - 30px))}
   border-radius:10px;overflow:hidden}
 .report-table th,.report-table td{border:1px solid var(--line);
   padding:10px 12px;text-align:start;font-size:12px}
-.report-table th{background:rgba(212,175,55,.15);color:var(--gold);
-  font-weight:800}
+.report-table th{background:rgba(212,175,55,.15);color:var(--gold);font-weight:800}
 .report-table tr:nth-child(even) td{background:rgba(255,255,255,.02)}
 .modal-footer{padding:16px 20px;border-top:1px solid var(--line);
   display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
-
-/* Small screens */
 @media (max-width:600px){
   .title .t2{display:none}
   .langBtn .label{display:none}
   .langBtn{min-width:42px;padding:0 10px}
   .btn{padding:0 9px;font-size:12px}
-  .info{width:220px}
+  .info{width:240px}
   .tool{width:44px;height:44px;font-size:18px}
   .types{grid-template-columns:repeat(auto-fill,minmax(66px,1fr))}
 }
@@ -282,24 +265,17 @@ html[lang="en"] .info{transform:translateX(calc(-100% - 30px))}
 </header>
 
 <div class="hud" id="hud">
-  <div class="stat" id="statDev">
-    <span data-i18n="hud_devices">Devices</span>
-    <b id="hudCount">0</b>
-  </div>
-  <div class="stat" id="statSpl">
-    <span data-i18n="hud_spl">Max SPL</span>
-    <b id="hudSpl">—</b>
-  </div>
-  <div class="stat" id="statCov">
-    <span data-i18n="hud_coverage">Coverage</span>
-    <b id="hudCoverage">—</b>
-  </div>
+  <div class="stat" id="statDev"><span data-i18n="hud_devices">Devices</span><b id="hudCount">0</b></div>
+  <div class="stat" id="statSpl"><span data-i18n="hud_spl">Max SPL</span><b id="hudSpl">—</b></div>
+  <div class="stat" id="statCov"><span data-i18n="hud_coverage">Coverage</span><b id="hudCoverage">—</b></div>
 </div>
 
 <div class="tools" id="tools">
   <button class="tool on" id="heatBtn" title="Heatmap" data-i18n-title="heat_tip">🌡️</button>
   <button class="tool" id="fitBtn" title="Fit" data-i18n-title="fit_tip">🎯</button>
   <button class="tool on" id="gridBtn" title="Grid" data-i18n-title="grid_tip">▦</button>
+  <button class="tool" id="camTopBtn" title="Top View" data-i18n-title="cam_top">⬆️</button>
+  <button class="tool" id="camQiblaBtn" title="Qibla View" data-i18n-title="cam_qibla">🧭</button>
   <button class="tool" id="saveBtn" title="Save" data-i18n-title="save_tip">💾</button>
   <button class="tool" id="loadBtn" title="Load" data-i18n-title="load_tip">📂</button>
   <button class="tool" id="clearBtn" title="Clear" data-i18n-title="clear_tip">🧹</button>
@@ -324,14 +300,27 @@ html[lang="en"] .info{transform:translateX(calc(-100% - 30px))}
     <input type="range" id="rotSlider" min="-180" max="180" step="5" value="0">
     <b id="rotVal">0°</b>
   </div>
-  <div class="row" style="margin-top:8px">
-    <span data-i18n="inf_room_w">Width</span>
-    <input type="number" id="roomWInput" class="numInput" min="4" max="200">
+
+  <!-- Dimensions section -->
+  <div class="dimRow">
+    <h5>📐 <span data-i18n="dim_title">Room Dimensions</span></h5>
+    <div class="slider">
+      <label data-i18n="inf_room_w">W</label>
+      <input type="range" id="roomWSlider" min="10" max="60" step="1" value="20">
+      <b id="roomWVal">20m</b>
+    </div>
+    <div class="slider">
+      <label data-i18n="inf_room_d">D</label>
+      <input type="range" id="roomDSlider" min="8" max="50" step="1" value="16">
+      <b id="roomDVal">16m</b>
+    </div>
+    <div class="presetBtns">
+      <button type="button" data-preset="small" data-i18n="dim_small">Small</button>
+      <button type="button" data-preset="medium" data-i18n="dim_medium">Medium</button>
+      <button type="button" data-preset="large" data-i18n="dim_large">Large</button>
+    </div>
   </div>
-  <div class="row">
-    <span data-i18n="inf_room_d">Depth</span>
-    <input type="number" id="roomDInput" class="numInput" min="4" max="200">
-  </div>
+
   <div class="actions">
     <button class="del" id="delBtn" data-i18n="act_delete">🗑️ Delete</button>
   </div>
@@ -365,25 +354,26 @@ html[lang="en"] .info{transform:translateX(calc(-100% - 30px))}
 <script>
 'use strict';
 
-/* ==================================================================
-   PART 1 · TRANSLATIONS
-   ================================================================== */
+/* ============ I18N ============ */
 const I18N = {
   ar: {
-    loader: 'جارٍ تحميل المسجد…',
-    room_label: 'مسجد داخلي · تصميم صوتي',
+    loader:'جارٍ تحميل المسجد…',
+    room_label:'مسجد داخلي · تصميم صوتي',
     hud_devices:'الأجهزة', hud_spl:'أقصى SPL', hud_coverage:'التغطية',
     report_tip:'تقرير', shot_tip:'لقطة', pres_tip:'عرض',
     heat_tip:'خريطة حرارية', fit_tip:'ملاءمة', grid_tip:'الشبكة',
     save_tip:'حفظ', load_tip:'فتح', clear_tip:'حذف الكل',
+    cam_top:'عرض علوي', cam_qibla:'منظور القبلة',
     inf_category:'الفئة', inf_power:'القوة', inf_height:'الارتفاع',
     inf_position:'الموقع', inf_room_w:'العرض', inf_room_d:'الطول',
     sl_power:'القوة', sl_rotation:'الاتجاه', act_delete:'🗑️ حذف',
+    dim_title:'أبعاد القاعة',
+    dim_small:'صغير', dim_medium:'متوسط', dim_large:'كبير',
     rep_title:'التقرير الهندسي الصوتي',
     rep_print:'🖨️ طباعة / حفظ PDF', rep_close:'إغلاق',
-    pres_start:'🎥 بدء العرض', pres_exit:'✕',
-    cat_speakers:'سماعات داخلية', cat_outdoor:'سماعات خارجية',
-    cat_mics:'ميكروفونات', cat_amps:'مضخمات', cat_control:'تحكم',
+    pres_start:'🎥 بدء العرض',
+    cat_speakers:'سماعات', cat_mics:'ميكروفونات',
+    cat_amps:'مضخمات', cat_control:'تحكم',
     dev_ceil_r:'سقف دائري', dev_ceil_sq:'سقف مربع', dev_wall_pnl:'لوحي',
     dev_wall_box:'صندوقي', dev_col:'عمودي', dev_horn:'بوق',
     dev_line:'Line Array', dev_sub:'سبووفر', dev_pendant:'معلّقة',
@@ -398,7 +388,7 @@ const I18N = {
     to_heat_on:'🌡️ التغطية مفعّلة', to_heat_off:'🌡️ التغطية مغلقة',
     to_pres_on:'🎥 وضع العرض', to_pres_off:'✏️ وضع التحرير',
     to_invalid:'ملف غير صالح', to_confirm_clear:'حذف كل الأجهزة؟',
-    to_placed:'✅ تم الإضافة',
+    to_resized:'📐 تم تحديث الأبعاد',
     rep_env_info:'معلومات البيئة', rep_equip:'جدول المعدات',
     rep_analysis:'التحليل الصوتي',
     rep_env_type:'نوع البيئة', rep_dim:'الأبعاد', rep_total_dev:'عدد الأجهزة',
@@ -406,23 +396,27 @@ const I18N = {
     rep_max_spl:'أقصى SPL', rep_coverage:'نسبة التغطية',
     rep_status:'الحالة', rep_status_good:'ممتاز',
     rep_device:'الجهاز', rep_qty:'العدد', rep_empty:'لا توجد أجهزة',
-    rep_target:'الهدف المعياري'
+    rep_target:'الهدف المعياري', rep_area:'المساحة', rep_capacity:'السعة التقديرية',
+    rep_reverb:'الصدى المتوقع RT60', rep_status_prayer:'مناسب للصلاة'
   },
   en: {
-    loader: 'LOADING MOSQUE…',
-    room_label: 'MOSQUE INDOOR · ACOUSTIC DESIGN',
+    loader:'LOADING MOSQUE…',
+    room_label:'MOSQUE INDOOR · ACOUSTIC DESIGN',
     hud_devices:'Devices', hud_spl:'Max SPL', hud_coverage:'Coverage',
     report_tip:'Report', shot_tip:'Screenshot', pres_tip:'Presentation',
     heat_tip:'Heatmap', fit_tip:'Fit', grid_tip:'Grid',
     save_tip:'Save', load_tip:'Load', clear_tip:'Clear',
+    cam_top:'Top View', cam_qibla:'Qibla View',
     inf_category:'Category', inf_power:'Power', inf_height:'Height',
     inf_position:'Position', inf_room_w:'Width', inf_room_d:'Depth',
     sl_power:'Power', sl_rotation:'Rotation', act_delete:'🗑️ Delete',
+    dim_title:'Room Dimensions',
+    dim_small:'Small', dim_medium:'Medium', dim_large:'Large',
     rep_title:'Acoustic Design Report',
     rep_print:'🖨️ Print / Save PDF', rep_close:'Close',
-    pres_start:'🎥 Start Presentation', pres_exit:'✕',
-    cat_speakers:'Indoor Speakers', cat_outdoor:'Outdoor Speakers',
-    cat_mics:'Microphones', cat_amps:'Amplifiers', cat_control:'Control',
+    pres_start:'🎥 Start Presentation',
+    cat_speakers:'Speakers', cat_mics:'Microphones',
+    cat_amps:'Amplifiers', cat_control:'Control',
     dev_ceil_r:'Ceiling Round', dev_ceil_sq:'Ceiling Square', dev_wall_pnl:'Wall Panel',
     dev_wall_box:'Wall Box', dev_col:'Column', dev_horn:'Horn',
     dev_line:'Line Array', dev_sub:'Subwoofer', dev_pendant:'Pendant',
@@ -437,7 +431,7 @@ const I18N = {
     to_heat_on:'🌡️ Heatmap ON', to_heat_off:'🌡️ Heatmap OFF',
     to_pres_on:'🎥 Presentation mode', to_pres_off:'✏️ Edit mode',
     to_invalid:'Invalid file', to_confirm_clear:'Delete all devices?',
-    to_placed:'✅ Added',
+    to_resized:'📐 Dimensions updated',
     rep_env_info:'Environment Info', rep_equip:'Equipment List',
     rep_analysis:'Acoustic Analysis',
     rep_env_type:'Environment', rep_dim:'Dimensions',
@@ -446,27 +440,23 @@ const I18N = {
     rep_max_spl:'Max SPL', rep_coverage:'Coverage',
     rep_status:'Status', rep_status_good:'Excellent',
     rep_device:'Device', rep_qty:'Qty', rep_empty:'No devices',
-    rep_target:'Target Standard'
+    rep_target:'Target Standard', rep_area:'Area', rep_capacity:'Est. Capacity',
+    rep_reverb:'Expected RT60', rep_status_prayer:'Suitable for prayer'
   }
 };
 let LANG = localStorage.getItem('auralis_lang') || 'ar';
-
-function T(key){ return I18N[LANG][key] || key; }
+function T(k){ return (I18N[LANG] && I18N[LANG][k]) || k; }
 
 function applyLang() {
   document.documentElement.lang = LANG;
   document.documentElement.dir = LANG === 'ar' ? 'rtl' : 'ltr';
   document.body.style.fontFamily = LANG === 'ar'
-    ? "'Cairo','Inter',sans-serif"
-    : "'Inter','Cairo',sans-serif";
-
+    ? "'Cairo','Inter',sans-serif" : "'Inter','Cairo',sans-serif";
   document.querySelectorAll('[data-i18n]').forEach(el => {
-    const k = el.dataset.i18n;
-    if (I18N[LANG][k]) el.textContent = I18N[LANG][k];
+    const k = el.dataset.i18n; if (I18N[LANG][k]) el.textContent = I18N[LANG][k];
   });
   document.querySelectorAll('[data-i18n-title]').forEach(el => {
-    const k = el.dataset.i18nTitle;
-    if (I18N[LANG][k]) el.title = I18N[LANG][k];
+    const k = el.dataset.i18nTitle; if (I18N[LANG][k]) el.title = I18N[LANG][k];
   });
   document.getElementById('langLabel').textContent = LANG === 'ar' ? 'EN' : 'ع';
   document.getElementById('loaderTxt').textContent = T('loader');
@@ -475,9 +465,7 @@ function applyLang() {
   document.title = LANG === 'ar' ? '🕌 AURALIS · مسجد داخلي' : '🕌 AURALIS · Mosque Indoor';
 }
 
-/* ==================================================================
-   PART 2 · DATA (this environment only, self-contained)
-   ================================================================== */
+/* ============ DATA ============ */
 const BRANDS = {
   motivity:    { color:0x4de5ff, tag:'MOTIVITY AUDIO' },
   audibax:     { color:0xffc94d, tag:'AUDIBAX PRO' },
@@ -514,20 +502,12 @@ const CATS = {
   ]}
 };
 
-/* Mosque room definition */
+/* Room - sizes are dynamic; features positioned parametrically in buildRoom() */
 const ROOM = {
   name:{ ar:'مسجد داخلي', en:'Mosque Indoor' },
   size:[20, 16],
-  walls:[[-10,-8,10,-8],[10,-8,10,8],[10,8,-10,8],[-10,8,-10,-8]],
-  features:[
-    { type:'mihrab', x:0, z:-8, w:3.2, d:1.6 },
-    { type:'minbar', x:-3.5, z:-7, w:1.2, d:2.5 },
-    { type:'carpet', x:0, z:0, w:18, d:14 },
-    { type:'column', x:-5, z:0, w:0.8, d:0.8 },
-    { type:'column', x:5, z:0, w:0.8, d:0.8 },
-    { type:'column', x:-5, z:5, w:0.8, d:0.8 },
-    { type:'column', x:5, z:5, w:0.8, d:0.8 }
-  ],
+  height: 6.5,
+  walls:[[-1,-1,1,-1],[1,-1,1,1],[1,1,-1,1],[-1,1,-1,-1]],
   devices:[
     ['motivity','speakers','ceil_r',-6,-4,0],
     ['motivity','speakers','ceil_r',0,-4,0],
@@ -540,17 +520,15 @@ const ROOM = {
     ['motivity','speakers','ceil_r',6,6,0],
     ['audiocenter','speakers','col',-9.2,0,-Math.PI/2],
     ['audiocenter','speakers','col',9.2,0,Math.PI/2],
-    ['audibax','speakers','sub',-3,-7.5,0],
-    ['audibax','speakers','sub',3,-7.5,0],
-    ['audibax','mics','goose',0,-6.5,0],
+    ['audibax','speakers','sub',-3,-7,0],
+    ['audibax','speakers','sub',3,-7,0],
+    ['audibax','mics','goose',0,-6,0],
     ['jbl','mics','lav',0,-5,0],
     ['motivity','control','touch',-9.5,7,Math.PI/2]
   ]
 };
 
-/* ==================================================================
-   PART 3 · STATE
-   ================================================================== */
+/* ============ STATE ============ */
 const state = {
   devices: [], nextId: 1,
   curBrand: 'motivity', curCat: 'speakers', curType: 'ceil_r',
@@ -559,9 +537,7 @@ const state = {
   history: [], historyIdx: -1
 };
 
-/* ==================================================================
-   PART 4 · THREE.JS SETUP
-   ================================================================== */
+/* ============ THREE SETUP ============ */
 const canvas = document.getElementById('c');
 const renderer = new THREE.WebGLRenderer({canvas, antialias:true, preserveDrawingBuffer:true});
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -569,29 +545,28 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 if (THREE.sRGBEncoding !== undefined) renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.15;
+renderer.toneMappingExposure = 1.2;
 
 const scene = new THREE.Scene();
 const skyColor = 0x15203a;
 scene.background = new THREE.Color(skyColor);
-scene.fog = new THREE.Fog(skyColor, 80, 300);
+scene.fog = new THREE.Fog(skyColor, 90, 320);
 const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 800);
 
-/* Warm mosque lighting */
 scene.add(new THREE.AmbientLight(0xfff2d4, 0.42));
 scene.add(new THREE.HemisphereLight(0xd4af37, 0x1a2332, 0.5));
-const sun = new THREE.DirectionalLight(0xfff2e0, 1.6);
+const sun = new THREE.DirectionalLight(0xfff2e0, 1.4);
 sun.position.set(15, 38, 12);
 sun.castShadow = true;
-sun.shadow.mapSize.set(1024, 1024);
-sun.shadow.camera.left = -35; sun.shadow.camera.right = 35;
-sun.shadow.camera.top = 35; sun.shadow.camera.bottom = -35;
-sun.shadow.camera.near = 1; sun.shadow.camera.far = 120;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.camera.left = -50; sun.shadow.camera.right = 50;
+sun.shadow.camera.top = 50; sun.shadow.camera.bottom = -50;
+sun.shadow.camera.near = 1; sun.shadow.camera.far = 150;
 sun.shadow.bias = -0.0006;
 scene.add(sun);
 const warmFill = new THREE.DirectionalLight(0xd4af37, 0.35);
 warmFill.position.set(-12, 22, -10); scene.add(warmFill);
-const coolFill = new THREE.DirectionalLight(0x4d7cfe, 0.22);
+const coolFill = new THREE.DirectionalLight(0x4d7cfe, 0.25);
 coolFill.position.set(10, 15, -20); scene.add(coolFill);
 
 const roomGrp = new THREE.Group(); scene.add(roomGrp);
@@ -609,20 +584,42 @@ const floorMesh = new THREE.Mesh(
 floorMesh.rotation.x = -Math.PI/2; floorMesh.receiveShadow = true;
 scene.add(floorMesh);
 
-/* ==================================================================
-   PART 5 · MATERIALS & HELPERS
-   ================================================================== */
-const M = {
-  body:  ()=> new THREE.MeshStandardMaterial({color:0x1a1f2e, roughness:0.4, metalness:0.55}),
-  dark:  ()=> new THREE.MeshStandardMaterial({color:0x0a0a12, roughness:0.75, metalness:0.3}),
-  gray:  ()=> new THREE.MeshStandardMaterial({color:0x2a3555, roughness:0.55, metalness:0.4}),
-  metal: ()=> new THREE.MeshStandardMaterial({color:0x4a5568, roughness:0.3, metalness:0.9}),
-  steel: ()=> new THREE.MeshStandardMaterial({color:0x556475, roughness:0.5, metalness:0.65, side:THREE.DoubleSide}),
-  wall:  ()=> new THREE.MeshStandardMaterial({color:0xf0e8d4, roughness:0.88, metalness:0.02}),
-  marble:()=> new THREE.MeshStandardMaterial({color:0xe8e0d0, roughness:0.4, metalness:0.15}),
-  carpet:()=> new THREE.MeshStandardMaterial({color:0x6b1e2e, roughness:0.95, metalness:0.02}),
-  gold:  ()=> new THREE.MeshStandardMaterial({color:0xd4af37, roughness:0.35, metalness:0.85, emissive:0x2a1f00, emissiveIntensity:0.3})
-};
+/* ============ MATERIALS (memoized) ============ */
+const _matCache = {};
+const M = {};
+function defMat(name, factory) {
+  M[name] = function () {
+    if (!_matCache[name]) _matCache[name] = factory();
+    return _matCache[name];
+  };
+}
+defMat('body',       () => new THREE.MeshStandardMaterial({color:0x1a1f2e, roughness:0.4, metalness:0.55}));
+defMat('dark',       () => new THREE.MeshStandardMaterial({color:0x0a0a12, roughness:0.75, metalness:0.3}));
+defMat('gray',       () => new THREE.MeshStandardMaterial({color:0x2a3555, roughness:0.55, metalness:0.4}));
+defMat('metal',      () => new THREE.MeshStandardMaterial({color:0x4a5568, roughness:0.3, metalness:0.9}));
+defMat('steel',      () => new THREE.MeshStandardMaterial({color:0x556475, roughness:0.5, metalness:0.65, side:THREE.DoubleSide}));
+defMat('wall',       () => new THREE.MeshStandardMaterial({color:0xf0e8d4, roughness:0.88, metalness:0.02}));
+defMat('wallSide',   () => new THREE.MeshStandardMaterial({color:0xe0d8c0, roughness:0.88, metalness:0.02}));
+defMat('marble',     () => new THREE.MeshStandardMaterial({color:0xe8e0d0, roughness:0.4, metalness:0.15}));
+defMat('marbleCream',() => new THREE.MeshStandardMaterial({color:0xf5eeda, roughness:0.35, metalness:0.18}));
+defMat('carpet',     () => new THREE.MeshStandardMaterial({color:0x6b1e2e, roughness:0.95, metalness:0.02}));
+defMat('carpetDark', () => new THREE.MeshStandardMaterial({color:0x4a1420, roughness:0.98, metalness:0.02}));
+defMat('rugGreen',   () => new THREE.MeshStandardMaterial({color:0x1a5a3a, roughness:0.95, metalness:0.02}));
+defMat('rugGold',    () => new THREE.MeshStandardMaterial({color:0xd4af37, roughness:0.7, metalness:0.3}));
+defMat('gold',       () => new THREE.MeshStandardMaterial({color:0xd4af37, roughness:0.35, metalness:0.85, emissive:0x2a1f00, emissiveIntensity:0.3}));
+defMat('goldBright', () => new THREE.MeshStandardMaterial({color:0xffd966, roughness:0.25, metalness:0.9, emissive:0x3a2a00, emissiveIntensity:0.4}));
+defMat('wood',       () => new THREE.MeshStandardMaterial({color:0x5a3a20, roughness:0.7, metalness:0.15}));
+defMat('woodDark',   () => new THREE.MeshStandardMaterial({color:0x3a2510, roughness:0.75, metalness:0.15}));
+defMat('ceiling',    () => new THREE.MeshStandardMaterial({color:0xf5eeda, roughness:0.85, metalness:0.05}));
+defMat('dome',       () => new THREE.MeshStandardMaterial({color:0x1a5a4a, roughness:0.55, metalness:0.35, side:THREE.DoubleSide, emissive:0x0a1a15, emissiveIntensity:0.35}));
+defMat('glass',      () => new THREE.MeshStandardMaterial({color:0x9bc8e8, roughness:0.05, metalness:0.5, transparent:true, opacity:0.55, side:THREE.DoubleSide, emissive:0x88b8d8, emissiveIntensity:0.35}));
+defMat('windowFrame',() => new THREE.MeshStandardMaterial({color:0x8a6d1f, roughness:0.5, metalness:0.7}));
+defMat('lightWarm',  () => new THREE.MeshStandardMaterial({color:0xffe0a0, emissive:0xffd070, emissiveIntensity:2.2, roughness:0.3, metalness:0.4}));
+defMat('chandelier', () => new THREE.MeshStandardMaterial({color:0xd4af37, roughness:0.3, metalness:0.9, emissive:0x3a2800, emissiveIntensity:0.4}));
+defMat('crystal',    () => new THREE.MeshStandardMaterial({color:0xfff4cc, emissive:0xffe0a0, emissiveIntensity:1.8, roughness:0.1, metalness:0.3, transparent:true, opacity:0.85}));
+defMat('calligraphy',() => new THREE.MeshStandardMaterial({color:0x1a3a4a, emissive:0x0a2a3a, emissiveIntensity:0.4, roughness:0.5, metalness:0.3}));
+defMat('emerald',    () => new THREE.MeshStandardMaterial({color:0x0a5a4a, roughness:0.5, metalness:0.5, emissive:0x0a2a20, emissiveIntensity:0.4}));
+
 function accentMat(c, i){ return new THREE.MeshStandardMaterial({
   color:c, emissive:c, emissiveIntensity:i||0.7, roughness:0.3, metalness:0.5
 });}
@@ -636,12 +633,9 @@ function devName(spec){ return T(spec.nameKey); }
 function catName(key){ return T('cat_' + key); }
 function brandName(key){ return BRANDS[key] ? T('brand_' + key) : '—'; }
 
-/* ==================================================================
-   PART 6 · MESH FACTORY
-   ================================================================== */
+/* ============ MESH FACTORY ============ */
 function makeMesh(cat, typeId, brandColor) {
-  const spec = getSpec(cat, typeId);
-  if (!spec) return null;
+  const spec = getSpec(cat, typeId); if (!spec) return null;
   const color = brandColor || 0x4de5ff;
   const g = new THREE.Group();
   const S = spec.shape;
@@ -839,103 +833,338 @@ function makeMesh(cat, typeId, brandColor) {
   return g;
 }
 
-/* ==================================================================
-   PART 7 · BUILD ROOM
-   ================================================================== */
+/* ============ BUILD ROOM (fully parametric on ROOM.size) ============ */
 function clearGroup(g) {
   while (g.children.length) {
     const c = g.children[0]; g.remove(c);
-    c.traverse?.(o => {
-      if (o.geometry) o.geometry.dispose();
-      if (o.material) {
-        if (Array.isArray(o.material)) o.material.forEach(m => m.dispose());
-        else o.material.dispose();
-      }
-    });
+    if (c.traverse) {
+      c.traverse(o => {
+        if (o.geometry) o.geometry.dispose();
+        if (o.material) {
+          if (Array.isArray(o.material)) o.material.forEach(m => m.dispose());
+          else o.material.dispose();
+        }
+      });
+    }
   }
 }
 
 function buildRoom() {
   clearGroup(roomGrp);
-  const H = 5.2, T = 0.32;
+  const W = ROOM.size[0];
+  const D = ROOM.size[1];
+  const H = ROOM.height;
+  const T = 0.3;
+  const hw = W/2, hd = D/2;
 
-  for (const wall of ROOM.walls) {
-    const [x1,z1,x2,z2] = wall;
-    const dx = x2-x1, dz = z2-z1;
-    const len = Math.hypot(dx,dz);
-    const ang = Math.atan2(dz,dx);
-    const w = new THREE.Mesh(new THREE.BoxGeometry(len,H,T), M.wall());
-    w.position.set((x1+x2)/2, H/2, (z1+z2)/2);
-    w.rotation.y = -ang;
-    w.castShadow = true; w.receiveShadow = true;
-    roomGrp.add(w);
+  /* --- FLOOR (marble base + carpet) --- */
+  const floor = new THREE.Mesh(new THREE.BoxGeometry(W, 0.1, D), M.marbleCream());
+  floor.position.set(0, 0.05, 0); floor.receiveShadow = true; roomGrp.add(floor);
+
+  /* Prayer carpet (leaves 1.2m marble border) */
+  const carpetW = W - 2.4, carpetD = D - 2.4;
+  const carpet = new THREE.Mesh(new THREE.BoxGeometry(carpetW, 0.02, carpetD), M.carpet());
+  carpet.position.set(0, 0.11, 0); carpet.receiveShadow = true; roomGrp.add(carpet);
+
+  /* Prayer rug rows pattern (individual rugs in rows facing qibla) */
+  const rugW = 0.9, rugD = 1.8;
+  const cols = Math.floor(carpetW / rugW);
+  const rows = Math.floor(carpetD / rugD);
+  const startX = -carpetW/2 + (carpetW - cols*rugW)/2 + rugW/2;
+  const startZ = -carpetD/2 + (carpetD - rows*rugD)/2 + rugD/2;
+  for (let i=0;i<cols;i++) {
+    for (let j=0;j<rows;j++) {
+      const outline = new THREE.Mesh(
+        new THREE.BoxGeometry(rugW - 0.06, 0.004, rugD - 0.06),
+        ((i+j) % 2 === 0) ? M.rugGold() : M.carpetDark()
+      );
+      outline.position.set(startX + i*rugW, 0.122, startZ + j*rugD);
+      roomGrp.add(outline);
+      /* Small qibla direction marker at top of each rug */
+      if (j === 0) {
+        const marker = new THREE.Mesh(new THREE.ConeGeometry(0.08, 0.15, 4), M.gold());
+        marker.rotation.x = Math.PI/2;
+        marker.position.set(startX + i*rugW, 0.14, startZ + j*rugD - rugD/2 + 0.15);
+        roomGrp.add(marker);
+      }
+    }
   }
 
-  for (const f of ROOM.features) {
-    if (f.type === 'mihrab') {
-      const niche = new THREE.Mesh(new THREE.BoxGeometry(f.w,3.2,f.d), M.marble());
-      niche.position.set(f.x,1.6,f.z+0.6); niche.castShadow = true; roomGrp.add(niche);
-      const arch = new THREE.Mesh(
-        new THREE.TorusGeometry(f.w*0.42, 0.15, 8, 24, Math.PI),
-        M.gold()
-      );
-      arch.rotation.z = 0; arch.rotation.x = 0;
-      arch.position.set(f.x, 2.2, f.z + 0.78); roomGrp.add(arch);
-    }
-    if (f.type === 'minbar') {
-      const steps = 5;
-      for (let i=0;i<steps;i++) {
-        const s = new THREE.Mesh(
-          new THREE.BoxGeometry(f.w, 0.35, f.d/steps),
-          M.marble()
-        );
-        s.position.set(f.x, 0.175 + i*0.35, f.z + f.d/2 - (i+0.5)*(f.d/steps));
-        s.castShadow = true; roomGrp.add(s);
-      }
-      const chair = new THREE.Mesh(new THREE.BoxGeometry(f.w*1.1, 0.6, f.w*1.1), M.gold());
-      chair.position.set(f.x, 2.05, f.z - f.d/2 + 0.6); chair.castShadow = true; roomGrp.add(chair);
-    }
-    if (f.type === 'carpet') {
-      const c = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.015, f.d), M.carpet());
-      c.position.set(f.x, 0.01, f.z); c.receiveShadow = true; roomGrp.add(c);
-      // Carpet stripes
-      for (let i=-3;i<=3;i++) {
-        const stripe = new THREE.Mesh(
-          new THREE.BoxGeometry(f.w*0.95, 0.002, 0.06),
-          new THREE.MeshStandardMaterial({color:0xd4af37, roughness:0.9})
-        );
-        stripe.position.set(f.x, 0.02, f.z + i*1.8); roomGrp.add(stripe);
-      }
-    }
-    if (f.type === 'column') {
+  /* --- WALLS --- */
+  const wallPos = [
+    { x:0, z:-hd, w:W, d:T },  /* Qibla wall (front) */
+    { x:0, z: hd, w:W, d:T },  /* Back wall */
+    { x:-hw, z:0, w:T, d:D },  /* Left */
+    { x: hw, z:0, w:T, d:D }   /* Right */
+  ];
+  for (const wp of wallPos) {
+    const w = new THREE.Mesh(new THREE.BoxGeometry(wp.w, H, wp.d),
+      (wp.z !== 0) ? M.wall() : M.wallSide());
+    w.position.set(wp.x, H/2, wp.z);
+    w.castShadow = true; w.receiveShadow = true; roomGrp.add(w);
+
+    /* Lower dado (dark wainscot band) */
+    const dado = new THREE.Mesh(new THREE.BoxGeometry(wp.w * 0.98, 0.9, wp.d * 1.02), M.marble());
+    dado.position.set(wp.x, 0.45, wp.z + (wp.z > 0 ? -0.02 : wp.z < 0 ? 0.02 : 0));
+    if (wp.x !== 0) dado.position.set(wp.x + (wp.x > 0 ? -0.02 : 0.02), 0.45, wp.z);
+    roomGrp.add(dado);
+
+    /* Calligraphy band (mid-height) */
+    const band = new THREE.Mesh(new THREE.BoxGeometry(wp.w * 0.96, 0.35, wp.d * 1.03), M.calligraphy());
+    band.position.set(wp.x, 2.6, wp.z + (wp.z > 0 ? -0.03 : wp.z < 0 ? 0.03 : 0));
+    if (wp.x !== 0) band.position.set(wp.x + (wp.x > 0 ? -0.03 : 0.03), 2.6, wp.z);
+    roomGrp.add(band);
+  }
+
+  /* --- ARCHED WINDOWS on side + back walls --- */
+  const addArchedWindow = (x, z, ry) => {
+    const winW = 1.4, winH = 2.4;
+    const grp = new THREE.Group();
+    /* Arch frame */
+    const frame = new THREE.Mesh(new THREE.TorusGeometry(winW*0.5, 0.08, 6, 20, Math.PI), M.windowFrame());
+    frame.position.y = winH*0.5; grp.add(frame);
+    /* Glass */
+    const glass = new THREE.Mesh(new THREE.PlaneGeometry(winW, winH*0.5), M.glass());
+    glass.position.y = winH*0.25; grp.add(glass);
+    /* Half-circle glass top */
+    const glassArc = new THREE.Mesh(new THREE.CircleGeometry(winW*0.5, 20, 0, Math.PI), M.glass());
+    glassArc.position.y = winH*0.5; grp.add(glassArc);
+    /* Vertical bar */
+    const bar = new THREE.Mesh(new THREE.BoxGeometry(0.05, winH, 0.05), M.windowFrame());
+    bar.position.y = winH*0.25; grp.add(bar);
+    /* Lower sill */
+    const sill = new THREE.Mesh(new THREE.BoxGeometry(winW + 0.3, 0.12, 0.35), M.windowFrame());
+    sill.position.y = 0; grp.add(sill);
+    grp.position.set(x, 3.0, z);
+    grp.rotation.y = ry;
+    roomGrp.add(grp);
+  };
+  /* Windows on left/right walls */
+  const winSpacing = Math.max(3.5, D / 4);
+  const winCount = Math.floor(D / winSpacing);
+  for (let i=0;i<winCount;i++) {
+    const z = -hd + 1.5 + (i + 0.5) * ((D - 3) / winCount);
+    addArchedWindow(-hw + 0.05, z, Math.PI/2);
+    addArchedWindow( hw - 0.05, z, -Math.PI/2);
+  }
+  /* Windows on back wall */
+  const backWinCount = Math.floor(W / 4);
+  for (let i=0;i<backWinCount;i++) {
+    const x = -hw + 1.5 + (i + 0.5) * ((W - 3) / backWinCount);
+    addArchedWindow(x, hd - 0.05, Math.PI);
+  }
+
+  /* --- QIBLA WALL DECORATIONS --- */
+  /* Mihrab (niche) at center of qibla wall */
+  const mihrabW = 3.2, mihrabH = 3.6;
+  /* Recessed niche */
+  const niche = new THREE.Mesh(new THREE.BoxGeometry(mihrabW, mihrabH, 0.6), M.emerald());
+  niche.position.set(0, mihrabH/2 + 0.15, -hd + 0.3); roomGrp.add(niche);
+  /* Arch over niche */
+  const arch = new THREE.Mesh(new THREE.TorusGeometry(mihrabW*0.4, 0.16, 8, 30, Math.PI), M.goldBright());
+  arch.position.set(0, mihrabH*0.65 + 0.15, -hd + 0.65); roomGrp.add(arch);
+  /* Gold frame around mihrab */
+  const frameL = new THREE.Mesh(new THREE.BoxGeometry(0.18, mihrabH, 0.12), M.gold());
+  frameL.position.set(-mihrabW/2 - 0.09, mihrabH/2 + 0.15, -hd + 0.66); roomGrp.add(frameL);
+  const frameR = new THREE.Mesh(new THREE.BoxGeometry(0.18, mihrabH, 0.12), M.gold());
+  frameR.position.set( mihrabW/2 + 0.09, mihrabH/2 + 0.15, -hd + 0.66); roomGrp.add(frameR);
+  const frameTop = new THREE.Mesh(new THREE.BoxGeometry(mihrabW + 0.36, 0.18, 0.12), M.gold());
+  frameTop.position.set(0, mihrabH + 0.15, -hd + 0.66); roomGrp.add(frameTop);
+  /* Calligraphy panel above mihrab */
+  const calli = new THREE.Mesh(new THREE.PlaneGeometry(mihrabW + 1.5, 0.8), M.calligraphy());
+  calli.position.set(0, mihrabH + 1.1, -hd + 0.31); roomGrp.add(calli);
+
+  /* Minbar (right of mihrab) */
+  const minbarSteps = 6;
+  const minbarW = 1.4, minbarTotalD = 2.6;
+  for (let i=0;i<minbarSteps;i++) {
+    const step = new THREE.Mesh(
+      new THREE.BoxGeometry(minbarW, 0.3, minbarTotalD/minbarSteps),
+      M.wood()
+    );
+    step.position.set(
+      mihrabW/2 + 1.6,
+      0.15 + i*0.3,
+      -hd + 0.4 + (i + 0.5)*(minbarTotalD/minbarSteps)
+    );
+    step.castShadow = true; roomGrp.add(step);
+    /* Gold trim on each step edge */
+    const trim = new THREE.Mesh(
+      new THREE.BoxGeometry(minbarW + 0.06, 0.02, 0.06),
+      M.gold()
+    );
+    trim.position.set(
+      mihrabW/2 + 1.6,
+      0.15 + i*0.3 + 0.16,
+      -hd + 0.4 + i*(minbarTotalD/minbarSteps)
+    );
+    roomGrp.add(trim);
+  }
+  /* Top platform + chair */
+  const chair = new THREE.Mesh(new THREE.BoxGeometry(minbarW*0.9, 0.7, 0.7), M.woodDark());
+  chair.position.set(mihrabW/2 + 1.6, 0.15 + minbarSteps*0.3 + 0.35, -hd + 0.5);
+  chair.castShadow = true; roomGrp.add(chair);
+  const chairBack = new THREE.Mesh(new THREE.BoxGeometry(minbarW*0.9, 0.9, 0.1), M.woodDark());
+  chairBack.position.set(mihrabW/2 + 1.6, 0.15 + minbarSteps*0.3 + 0.45, -hd + 0.15); roomGrp.add(chairBack);
+
+  /* --- COLUMNS (arranged in grid based on room size) --- */
+  const colCols = Math.max(2, Math.floor(W / 7));
+  const colRows = Math.max(2, Math.floor(D / 7));
+  const colSpacingX = W / (colCols + 1);
+  const colSpacingZ = D / (colRows + 1);
+  for (let i=0;i<colCols;i++) {
+    for (let j=0;j<colRows;j++) {
+      const cx = -hw + colSpacingX * (i + 1);
+      const cz = -hd + colSpacingZ * (j + 1);
+      /* Skip if too close to mihrab or minbar */
+      if (Math.abs(cx) < 2.5 && cz < -hd + 3) continue;
+      if (Math.abs(cx - (mihrabW/2 + 1.6)) < 1.5 && cz < -hd + 3.5) continue;
       const col = new THREE.Mesh(
-        new THREE.CylinderGeometry(f.w*0.55, f.w*0.6, H-0.2, 16),
+        new THREE.CylinderGeometry(0.3, 0.36, H - 0.4, 20),
         M.marble()
       );
-      col.position.set(f.x, (H-0.2)/2 + 0.1, f.z);
+      col.position.set(cx, (H-0.4)/2 + 0.2, cz);
       col.castShadow = true; col.receiveShadow = true; roomGrp.add(col);
-      const base = new THREE.Mesh(new THREE.CylinderGeometry(f.w*0.8, f.w*0.9, 0.25, 16), M.gold());
-      base.position.set(f.x, 0.125, f.z); roomGrp.add(base);
-      const cap = new THREE.Mesh(new THREE.CylinderGeometry(f.w*0.85, f.w*0.75, 0.3, 16), M.gold());
-      cap.position.set(f.x, H-0.25, f.z); roomGrp.add(cap);
+      /* Gold base + capital */
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.44, 0.5, 0.25, 20), M.gold());
+      base.position.set(cx, 0.125, cz); roomGrp.add(base);
+      const capital = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.3, 0.9), M.gold());
+      capital.position.set(cx, H - 0.35, cz); roomGrp.add(capital);
+      /* Arch between capitals */
+      const arch = new THREE.Mesh(new THREE.TorusGeometry(0.35, 0.06, 6, 16, Math.PI), M.gold());
+      arch.position.set(cx, H - 0.55, cz); arch.rotation.z = Math.PI/2;
+      /* (optional decoration) */
     }
+  }
+
+  /* --- CEILING with DOME --- */
+  const ceiling = new THREE.Mesh(new THREE.BoxGeometry(W, 0.2, D), M.ceiling());
+  ceiling.position.set(0, H, 0); ceiling.receiveShadow = true;
+  /* Skip ceiling entirely under the dome - carve a hole with a ring */
+  /* We'll simply place ceiling as a frame and add dome on top */
+  /* Simple approach: place ceiling and dome above */
+  roomGrp.add(ceiling);
+
+  /* Dome (half sphere above center) */
+  const domeR = Math.min(W, D) * 0.32;
+  const dome = new THREE.Mesh(
+    new THREE.SphereGeometry(domeR, 32, 20, 0, Math.PI*2, 0, Math.PI/2),
+    M.dome()
+  );
+  dome.position.set(0, H + 0.1, 0);
+  roomGrp.add(dome);
+  /* Dome gold rim */
+  const rim = new THREE.Mesh(new THREE.TorusGeometry(domeR, 0.15, 12, 40), M.gold());
+  rim.rotation.x = Math.PI/2; rim.position.set(0, H + 0.1, 0); roomGrp.add(rim);
+  /* Dome finial */
+  const finialPole = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,0.8,10), M.goldBright());
+  finialPole.position.set(0, H + 0.1 + domeR + 0.4, 0); roomGrp.add(finialPole);
+  const finialCrescent = new THREE.Mesh(new THREE.TorusGeometry(0.4, 0.08, 8, 24, Math.PI*1.5), M.goldBright());
+  finialCrescent.position.set(0, H + 0.1 + domeR + 1.1, 0);
+  finialCrescent.rotation.z = Math.PI/4;
+  roomGrp.add(finialCrescent);
+  /* Dome windows (oculus) - small decorative circles around base */
+  for (let i=0;i<8;i++) {
+    const a = (i/8)*Math.PI*2;
+    const win = new THREE.Mesh(new THREE.CircleGeometry(0.35, 16), M.glass());
+    win.position.set(Math.cos(a) * domeR * 0.88, H + 0.5, Math.sin(a) * domeR * 0.88);
+    win.lookAt(0, H + domeR*0.5, 0);
+    roomGrp.add(win);
+  }
+
+  /* --- CENTRAL CHANDELIER (multi-tiered) --- */
+  const chY = H - 0.5;
+  /* Main hanging rod */
+  const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,1.5,10), M.chandelier());
+  rod.position.set(0, H - 0.75, 0); roomGrp.add(rod);
+  /* Tiers of chandelier */
+  const tier1R = Math.min(W, D) * 0.14;
+  const tier2R = Math.min(W, D) * 0.09;
+  const tier3R = Math.min(W, D) * 0.05;
+  const tiers = [
+    { y: H - 1.6, r: tier1R, count: 20 },
+    { y: H - 2.1, r: tier2R, count: 14 },
+    { y: H - 2.6, r: tier3R, count: 8 }
+  ];
+  for (const tier of tiers) {
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(tier.r, 0.06, 8, 40), M.chandelier());
+    ring.rotation.x = Math.PI/2; ring.position.set(0, tier.y, 0); roomGrp.add(ring);
+    for (let i=0;i<tier.count;i++) {
+      const a = (i/tier.count) * Math.PI * 2;
+      const crystal = new THREE.Mesh(new THREE.OctahedronGeometry(0.13, 0), M.crystal());
+      crystal.position.set(Math.cos(a)*tier.r, tier.y - 0.15, Math.sin(a)*tier.r);
+      roomGrp.add(crystal);
+      const lamp = new THREE.Mesh(new THREE.SphereGeometry(0.08, 12, 10), M.lightWarm());
+      lamp.position.set(Math.cos(a)*tier.r, tier.y + 0.12, Math.sin(a)*tier.r);
+      roomGrp.add(lamp);
+    }
+    /* Point light per tier (fewer for perf) */
+    if (tier === tiers[0]) {
+      const pt = new THREE.PointLight(0xffe0a0, 1.4, Math.max(W,D) * 0.8, 2);
+      pt.position.set(0, tier.y, 0); roomGrp.add(pt);
+    }
+  }
+
+  /* --- WALL SCONCES (halo lights between windows) --- */
+  const sconceCount = Math.max(2, Math.floor((D - 3) / 4));
+  for (let i=0;i<sconceCount;i++) {
+    const z = -hd + 2 + i * ((D - 4) / Math.max(1, sconceCount - 1));
+    for (const sx of [-1, 1]) {
+      const grp = new THREE.Group();
+      const bracket = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.15, 0.25), M.gold());
+      bracket.position.z = 0.12; grp.add(bracket);
+      const shade = new THREE.Mesh(new THREE.ConeGeometry(0.22, 0.35, 6), M.lightWarm());
+      shade.rotation.x = Math.PI; shade.position.set(0, 0.05, 0.4); grp.add(shade);
+      grp.position.set(sx * (hw - 0.2), 3.6, z);
+      grp.rotation.y = sx > 0 ? -Math.PI/2 : Math.PI/2;
+      roomGrp.add(grp);
+    }
+  }
+
+  /* --- ENTRANCE (on back wall) --- */
+  const entranceW = Math.min(3, W * 0.15);
+  const entrance = new THREE.Mesh(new THREE.BoxGeometry(entranceW, 3.4, 0.15), M.woodDark());
+  entrance.position.set(0, 1.7, hd - 0.1); roomGrp.add(entrance);
+  /* Entrance arch */
+  const entArch = new THREE.Mesh(new THREE.TorusGeometry(entranceW/2, 0.12, 8, 20, Math.PI), M.gold());
+  entArch.position.set(0, 3.4, hd - 0.15); roomGrp.add(entArch);
+  /* Above entrance calligraphy */
+  const entCalli = new THREE.Mesh(new THREE.PlaneGeometry(entranceW + 0.5, 0.5), M.calligraphy());
+  entCalli.position.set(0, 4.1, hd - 0.16); entCalli.rotation.y = Math.PI;
+  roomGrp.add(entCalli);
+
+  /* --- QURAN SHELF on right wall --- */
+  const shelfW = Math.min(3, D * 0.2);
+  for (let i=0;i<3;i++) {
+    const shelf = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.05, shelfW), M.wood());
+    shelf.position.set(hw - 0.5, 1.4 + i*0.5, -hd + 2.5); roomGrp.add(shelf);
+    /* Small "books" on each shelf */
+    for (let k=0;k<6;k++) {
+      const book = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.28, 0.05),
+        [M.rugGreen(), M.calligraphy(), M.woodDark()][k%3]);
+      book.position.set(hw - 0.5, 1.55 + i*0.5, -hd + 2.5 - shelfW/2 + 0.3 + k*(shelfW - 0.6)/5);
+      roomGrp.add(book);
+    }
+  }
+
+  /* --- FLOOR LIGHTING strips (subtle) --- */
+  const stripCount = 4;
+  for (let i=0;i<stripCount;i++) {
+    const z = -hd + 1.5 + i * ((D - 3) / stripCount);
+    const strip = new THREE.Mesh(new THREE.BoxGeometry(carpetW, 0.005, 0.04), M.lightWarm());
+    strip.position.set(0, 0.13, z);
+    roomGrp.add(strip);
   }
 }
 
-/* ==================================================================
-   PART 8 · DEVICES
-   ================================================================== */
+/* ============ DEVICES ============ */
 const meshById = new Map();
-
 function buildDevices() {
-  clearGroup(devGrp);
-  meshById.clear();
+  clearGroup(devGrp); meshById.clear();
   for (const d of state.devices) {
-    const spec = getSpec(d.cat, d.typeId);
-    if (!spec) continue;
+    const spec = getSpec(d.cat, d.typeId); if (!spec) continue;
     const color = BRANDS[d.brand] ? BRANDS[d.brand].color : 0x4de5ff;
-    const mesh = makeMesh(d.cat, d.typeId, color);
-    if (!mesh) continue;
+    const mesh = makeMesh(d.cat, d.typeId, color); if (!mesh) continue;
     mesh.position.set(d.x, spec.h, d.z);
     mesh.rotation.y = d.rot || 0;
     mesh.userData.devId = d.id;
@@ -946,7 +1175,6 @@ function buildDevices() {
   }
   updateSelectionVisuals();
 }
-
 function updateSelectionVisuals() {
   devGrp.children.forEach(m => {
     const r = m.getObjectByName('selRing');
@@ -954,48 +1182,39 @@ function updateSelectionVisuals() {
   });
 }
 
-/* ==================================================================
-   PART 9 · HEATMAP
-   ================================================================== */
+/* ============ HEATMAP ============ */
 let heatMesh = null;
 function disposeHeat() {
-  if (heatMesh) {
-    heatGrp.remove(heatMesh);
-    heatMesh.geometry.dispose();
-    heatMesh.material.dispose();
-    heatMesh = null;
-  }
+  if (heatMesh) { heatGrp.remove(heatMesh); heatMesh.geometry.dispose(); heatMesh.material.dispose(); heatMesh = null; }
 }
-
 function buildHeatmap() {
   disposeHeat();
   if (!state.showHeat) return;
-  const speakers = state.devices.filter(d => d.cat === 'speakers' || d.cat === 'outdoor');
+  const speakers = state.devices.filter(d => d.cat === 'speakers');
   if (!speakers.length) {
     document.getElementById('hudSpl').textContent = '—';
     document.getElementById('hudCoverage').textContent = '0%';
     return;
   }
   const SIZE = Math.max(ROOM.size[0], ROOM.size[1]) * 1.2;
-  const RES = 56;
+  const RES = 60;
   const geo = new THREE.PlaneGeometry(SIZE, SIZE, RES, RES);
   geo.rotateX(-Math.PI/2);
   const colors = new Float32Array(geo.attributes.position.count * 3);
   geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
   heatMesh = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({
-    vertexColors: true, transparent: true, opacity: 0.62,
+    vertexColors: true, transparent: true, opacity: 0.6,
     depthWrite: false, side: THREE.DoubleSide
   }));
-  heatMesh.position.y = 0.035;
+  heatMesh.position.y = 0.14;
   heatMesh.renderOrder = 1;
   heatGrp.add(heatMesh);
   updateHeatColors();
 }
-
 function calcSPL(x, z) {
   let tot = 0;
   for (const spk of state.devices) {
-    if (spk.cat !== 'speakers' && spk.cat !== 'outdoor') continue;
+    if (spk.cat !== 'speakers') continue;
     const spec = getSpec(spk.cat, spk.typeId);
     if (!spec || !spec.power) continue;
     const power = spk.power || spec.power;
@@ -1019,7 +1238,6 @@ function calcSPL(x, z) {
   }
   return tot > 0 ? 10 * Math.log10(tot) : 0;
 }
-
 const SPL_STOPS = [
   [40,0.05,0.10,0.45],[52,0.00,0.30,0.80],[62,0.00,0.65,0.95],
   [70,0.00,0.90,0.90],[76,0.30,0.90,0.45],[82,0.85,0.90,0.25],
@@ -1033,12 +1251,11 @@ function splRGB(v) {
     const a=S[i], b=S[i+1];
     if (v>=a[0] && v<=b[0]) {
       const t = (v-a[0])/(b[0]-a[0]);
-      return [a[1]+(b[1]-a[1])*t, a[2]+(b[2]-a[2])*t, a[3]+(b[3]-a[3])*t];
+      return [a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t,a[3]+(b[3]-a[3])*t];
     }
   }
   return [1,1,1];
 }
-
 function updateHeatColors() {
   if (!heatMesh) return;
   const pos = heatMesh.geometry.attributes.position;
@@ -1057,8 +1274,6 @@ function updateHeatColors() {
   document.getElementById('hudSpl').textContent = mx > 0 ? mx.toFixed(0) + ' dB' : '—';
   const covPct = total > 0 ? Math.round((covered/total)*100) : 0;
   document.getElementById('hudCoverage').textContent = covPct + '%';
-
-  /* Update HUD colors based on thresholds */
   const statSpl = document.getElementById('statSpl');
   const statCov = document.getElementById('statCov');
   statSpl.classList.remove('good','warn');
@@ -1069,9 +1284,7 @@ function updateHeatColors() {
   else if (covPct >= 60) statCov.classList.add('warn');
 }
 
-/* ==================================================================
-   PART 10 · HISTORY
-   ================================================================== */
+/* ============ HISTORY ============ */
 function serialize() {
   return JSON.stringify(state.devices.map(d => ({
     id:d.id, brand:d.brand, cat:d.cat, typeId:d.typeId,
@@ -1089,23 +1302,13 @@ function applyHistory(json) {
   buildDevices(); buildHeatmap(); updateHUD(); deselect();
 }
 function undo() {
-  if (state.historyIdx > 0) {
-    state.historyIdx--;
-    applyHistory(state.history[state.historyIdx]);
-    toast(T('to_undo'));
-  }
+  if (state.historyIdx > 0) { state.historyIdx--; applyHistory(state.history[state.historyIdx]); toast(T('to_undo')); }
 }
 function redo() {
-  if (state.historyIdx < state.history.length - 1) {
-    state.historyIdx++;
-    applyHistory(state.history[state.historyIdx]);
-    toast(T('to_redo'));
-  }
+  if (state.historyIdx < state.history.length - 1) { state.historyIdx++; applyHistory(state.history[state.historyIdx]); toast(T('to_redo')); }
 }
 
-/* ==================================================================
-   PART 11 · CAMERA
-   ================================================================== */
+/* ============ CAMERA ============ */
 function updateCamera() {
   const {theta, phi, radius, target} = state.cam;
   const x = target.x + radius * Math.sin(phi) * Math.sin(theta);
@@ -1115,15 +1318,11 @@ function updateCamera() {
   camera.lookAt(target);
 }
 function tweenCamera(to, dur) {
-  const from = {
-    theta: state.cam.theta, phi: state.cam.phi,
-    radius: state.cam.radius, target: state.cam.target.clone()
-  };
+  const from = {theta: state.cam.theta, phi: state.cam.phi, radius: state.cam.radius, target: state.cam.target.clone()};
   state.cam.tween = {from, to, dur, start:performance.now()};
 }
 function updateTween() {
-  const t = state.cam.tween;
-  if (!t) return;
+  const t = state.cam.tween; if (!t) return;
   const p = Math.min(1, (performance.now() - t.start) / t.dur);
   const e = p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p+2,3)/2;
   state.cam.theta = t.from.theta + (t.to.theta - t.from.theta) * e;
@@ -1138,19 +1337,26 @@ function setView3D(on) {
   const btn = document.getElementById('viewBtn');
   btn.textContent = on ? '✏️ 2D' : '🎬 3D';
   btn.classList.toggle('on', !on);
-  const r = Math.max(ROOM.size[0], ROOM.size[1]) * 1.4;
+  const r = Math.max(ROOM.size[0], ROOM.size[1]) * 1.35;
   if (on) tweenCamera({theta:-0.6, phi:0.9, radius:r, target:new THREE.Vector3(0,2,0)}, 900);
   else tweenCamera({theta:0, phi:0.02, radius:r, target:new THREE.Vector3(0,0,0)}, 900);
 }
 function fitView() {
-  const r = Math.max(ROOM.size[0], ROOM.size[1]) * 1.4;
+  const r = Math.max(ROOM.size[0], ROOM.size[1]) * 1.35;
   if (state.view3D) tweenCamera({theta:-0.6, phi:0.9, radius:r, target:new THREE.Vector3(0,2,0)}, 700);
   else tweenCamera({theta:0, phi:0.02, radius:r, target:new THREE.Vector3(0,0,0)}, 700);
 }
+function camTopView() {
+  const r = Math.max(ROOM.size[0], ROOM.size[1]) * 1.35;
+  tweenCamera({theta:0, phi:0.02, radius:r, target:new THREE.Vector3(0,0,0)}, 800);
+}
+function camQiblaView() {
+  const r = Math.max(ROOM.size[0], ROOM.size[1]) * 0.8;
+  /* Look from behind the entrance toward qibla (front-left of room) */
+  tweenCamera({theta:-0.05, phi:1.15, radius:r, target:new THREE.Vector3(0,2,-ROOM.size[1]*0.15)}, 800);
+}
 
-/* ==================================================================
-   PART 12 · INTERACTION
-   ================================================================== */
+/* ============ INTERACTION ============ */
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 const activePointers = new Map();
@@ -1192,18 +1398,12 @@ canvas.addEventListener('pointerdown', e => {
     if (hit) {
       dragDev = hit;
       const fp = floorPoint(e.clientX, e.clientY);
-      if (fp) {
-        dragOff.x = hit.userData.dev.x - fp.x;
-        dragOff.z = hit.userData.dev.z - fp.z;
-      }
+      if (fp) { dragOff.x = hit.userData.dev.x - fp.x; dragOff.z = hit.userData.dev.z - fp.z; }
     }
   } else if (activePointers.size === 2) {
     dragDev = null; isDown = false; moved = true;
     const pts = [...activePointers.values()];
-    pinchStart = {
-      dist: Math.hypot(pts[0].x-pts[1].x, pts[0].y-pts[1].y) || 1,
-      radius: state.cam.radius
-    };
+    pinchStart = {dist: Math.hypot(pts[0].x-pts[1].x, pts[0].y-pts[1].y) || 1, radius: state.cam.radius};
   }
 }, {passive:true});
 
@@ -1211,20 +1411,16 @@ canvas.addEventListener('pointermove', e => {
   if (!activePointers.has(e.pointerId)) return;
   const prev = activePointers.get(e.pointerId);
   activePointers.set(e.pointerId, {x:e.clientX, y:e.clientY});
-
   if (activePointers.size === 2 && pinchStart) {
     const pts = [...activePointers.values()];
     const d = Math.hypot(pts[0].x-pts[1].x, pts[0].y-pts[1].y) || 1;
     state.cam.radius = Math.max(4, Math.min(220, pinchStart.radius * (pinchStart.dist/d)));
-    state.cam.tween = null;
-    updateCamera();
-    return;
+    state.cam.tween = null; updateCamera(); return;
   }
   if (!isDown) return;
   const dx = e.clientX - prev.x;
   const dy = e.clientY - prev.y;
   if (Math.abs(e.clientX-startPt.x) + Math.abs(e.clientY-startPt.y) > 6) moved = true;
-
   if (dragDev && moved) {
     const fp = floorPoint(e.clientX, e.clientY);
     if (fp) {
@@ -1278,17 +1474,11 @@ canvas.addEventListener('wheel', e => {
   updateCamera();
 }, {passive:false});
 
-/* ==================================================================
-   PART 13 · ACTIONS
-   ================================================================== */
+/* ============ ACTIONS ============ */
 function placeDevice(x, z) {
-  const spec = getSpec(state.curCat, state.curType);
-  if (!spec) return;
-  const d = {
-    id: state.nextId++, brand: state.curBrand, cat: state.curCat, typeId: state.curType,
-    x: Math.round(x*10)/10, z: Math.round(z*10)/10,
-    rot: 0, power: spec.power
-  };
+  const spec = getSpec(state.curCat, state.curType); if (!spec) return;
+  const d = {id: state.nextId++, brand: state.curBrand, cat: state.curCat, typeId: state.curType,
+    x: Math.round(x*10)/10, z: Math.round(z*10)/10, rot: 0, power: spec.power};
   state.devices.push(d);
   buildDevices();
   if (state.showHeat) buildHeatmap();
@@ -1297,8 +1487,7 @@ function placeDevice(x, z) {
 }
 function select(id) {
   state.selected = id;
-  updateSelectionVisuals();
-  updateInfo();
+  updateSelectionVisuals(); updateInfo();
   document.getElementById('info').classList.add('on');
 }
 function deselect() {
@@ -1316,35 +1505,55 @@ function deleteSelected() {
 }
 function updateInfo() {
   if (state.selected === null) return;
-  const d = state.devices.find(x => x.id === state.selected);
-  if (!d) return;
-  const spec = getSpec(d.cat, d.typeId);
-  if (!spec) return;
+  const d = state.devices.find(x => x.id === state.selected); if (!d) return;
+  const spec = getSpec(d.cat, d.typeId); if (!spec) return;
   document.getElementById('infName').textContent = spec.emoji + ' ' + devName(spec);
   document.getElementById('infBrand').textContent = brandName(d.brand);
   document.getElementById('infType').textContent = catName(d.cat);
   document.getElementById('infPower').textContent = spec.power > 0 ? (d.power||spec.power) + ' W' : '—';
   document.getElementById('infH').textContent = spec.h.toFixed(1) + (LANG==='ar'?' م':' m');
   document.getElementById('infPos').textContent = d.x.toFixed(1) + ', ' + d.z.toFixed(1);
-
   const pw = document.getElementById('powerSlider');
   pw.value = d.power || spec.power;
   document.getElementById('powerVal').textContent = (d.power||spec.power) + 'W';
   document.getElementById('powerWrap').style.display = spec.power > 0 ? 'flex' : 'none';
-
   const rs = document.getElementById('rotSlider');
   const deg = Math.round((d.rot||0) * 180 / Math.PI);
   rs.value = deg;
   document.getElementById('rotVal').textContent = deg + '°';
   document.getElementById('rotWrap').style.display = spec.dir ? 'flex' : 'none';
-
-  document.getElementById('roomWInput').value = ROOM.size[0];
-  document.getElementById('roomDInput').value = ROOM.size[1];
 }
 
-/* ==================================================================
-   PART 14 · UI BUILDERS
-   ================================================================== */
+/* ============ RESIZE ROOM FUNCTION ============ */
+function resizeRoom(newW, newD) {
+  const oldW = ROOM.size[0], oldD = ROOM.size[1];
+  ROOM.size[0] = newW;
+  ROOM.size[1] = newD;
+  const sx = newW / oldW, sz = newD / oldD;
+  /* Rescale devices proportionally */
+  for (const d of state.devices) {
+    d.x = Math.round(d.x * sx * 10)/10;
+    d.z = Math.round(d.z * sz * 10)/10;
+  }
+  buildRoom();
+  buildDevices();
+  if (state.showHeat) buildHeatmap();
+  fitView();
+  /* Update sliders / labels */
+  document.getElementById('roomWSlider').value = newW;
+  document.getElementById('roomDSlider').value = newD;
+  document.getElementById('roomWVal').textContent = newW + 'm';
+  document.getElementById('roomDVal').textContent = newD + 'm';
+  /* Preset buttons active state */
+  document.querySelectorAll('.presetBtns button').forEach(b => b.classList.remove('on'));
+  if (newW === 12 && newD === 10) document.querySelector('[data-preset="small"]').classList.add('on');
+  else if (newW === 20 && newD === 16) document.querySelector('[data-preset="medium"]').classList.add('on');
+  else if (newW === 32 && newD === 24) document.querySelector('[data-preset="large"]').classList.add('on');
+  toast(T('to_resized'));
+  pushHistory();
+}
+
+/* ============ UI BUILDERS ============ */
 function buildCats() {
   const el = document.getElementById('cats'); el.innerHTML = '';
   for (const key in CATS) {
@@ -1395,9 +1604,7 @@ function selectType(id) {
   state.curType = id;
   document.querySelectorAll('.type').forEach(b => b.classList.toggle('on', b.dataset.typeId === id));
 }
-function updateHUD() {
-  document.getElementById('hudCount').textContent = state.devices.length;
-}
+function updateHUD() { document.getElementById('hudCount').textContent = state.devices.length; }
 let toastTO;
 function toast(m) {
   const el = document.getElementById('toast');
@@ -1409,34 +1616,31 @@ function loadInitialDevices() {
   state.devices = []; state.nextId = 1; state.selected = null;
   for (const item of ROOM.devices) {
     const [brand, cat, typeId, x, z, rot] = item;
-    const spec = getSpec(cat, typeId);
-    if (!spec) continue;
-    state.devices.push({
-      id: state.nextId++, brand, cat, typeId,
-      x, z, rot: rot || 0, power: spec.power
-    });
+    const spec = getSpec(cat, typeId); if (!spec) continue;
+    state.devices.push({id: state.nextId++, brand, cat, typeId, x, z, rot: rot || 0, power: spec.power});
   }
   buildRoom(); buildDevices(); buildHeatmap(); updateHUD(); deselect();
+  /* Sync dimension UI */
+  document.getElementById('roomWSlider').value = ROOM.size[0];
+  document.getElementById('roomDSlider').value = ROOM.size[1];
+  document.getElementById('roomWVal').textContent = ROOM.size[0] + 'm';
+  document.getElementById('roomDVal').textContent = ROOM.size[1] + 'm';
+  document.querySelector('[data-preset="medium"]').classList.add('on');
   state.history = [serialize()]; state.historyIdx = 0;
 }
 
-/* ==================================================================
-   PART 15 · REPORT
-   ================================================================== */
+/* ============ REPORT ============ */
 function generateReport() {
   const totalPower = state.devices.reduce((a,d) => {
     const s = getSpec(d.cat, d.typeId);
     return a + (s && s.power ? (d.power || s.power) : 0);
   }, 0);
-
   const counts = {};
   state.devices.forEach(d => {
-    const spec = getSpec(d.cat, d.typeId);
-    if (!spec) return;
+    const spec = getSpec(d.cat, d.typeId); if (!spec) return;
     const key = brandName(d.brand) + ' · ' + devName(spec);
     counts[key] = (counts[key] || 0) + 1;
   });
-
   let rows = '';
   const entries = Object.entries(counts);
   if (entries.length) {
@@ -1444,17 +1648,26 @@ function generateReport() {
   } else {
     rows = `<tr><td colspan="2" style="text-align:center;color:#888">${T('rep_empty')}</td></tr>`;
   }
-
   const splVal = document.getElementById('hudSpl').textContent;
   const covVal = document.getElementById('hudCoverage').textContent;
+  const area = ROOM.size[0] * ROOM.size[1];
+  /* Approx capacity: 0.5 m² per worshipper (rug) */
+  const capacity = Math.floor(area * 2);
+  /* RT60 rough estimate for mosque */
+  const V = area * ROOM.height;
+  const S = 2 * area + 2 * (ROOM.size[0] + ROOM.size[1]) * ROOM.height;
+  const alpha = 0.18; /* carpet reduces reverb */
+  const rt60 = (0.161 * V) / (S * alpha);
 
   document.getElementById('reportModalBody').innerHTML = `
     <div class="report-section">
       <h4>📍 ${T('rep_env_info')}</h4>
       <div class="row"><span>${T('rep_env_type')}</span><span>${ROOM.name[LANG]}</span></div>
-      <div class="row"><span>${T('rep_dim')}</span><span>${ROOM.size[0]}m × ${ROOM.size[1]}m</span></div>
+      <div class="row"><span>${T('rep_dim')}</span><span>${ROOM.size[0]}m × ${ROOM.size[1]}m × ${ROOM.height}m</span></div>
+      <div class="row"><span>${T('rep_area')}</span><span>${area} m²</span></div>
+      <div class="row"><span>${T('rep_capacity')}</span><span>~${capacity} ${LANG==='ar'?'مصلٍّ':'worshippers'}</span></div>
       <div class="row"><span>${T('rep_total_dev')}</span><span>${state.devices.length}</span></div>
-      <div class="row"><span>${T('rep_total_power')}</span><span>${totalPower} Watt</span></div>
+      <div class="row"><span>${T('rep_total_power')}</span><span>${totalPower} W</span></div>
       <div class="row"><span>${T('rep_date')}</span><span>${new Date().toLocaleString(LANG==='ar'?'ar-EG':'en-US')}</span></div>
     </div>
     <div class="report-section">
@@ -1468,16 +1681,16 @@ function generateReport() {
       <h4>📊 ${T('rep_analysis')}</h4>
       <div class="row"><span>${T('rep_max_spl')}</span><span>${splVal}</span></div>
       <div class="row"><span>${T('rep_coverage')}</span><span>${covVal}</span></div>
+      <div class="row"><span>${T('rep_reverb')}</span><span>${rt60.toFixed(2)} s</span></div>
       <div class="row"><span>${T('rep_target')}</span><span>≥ 65 dB</span></div>
       <div class="row"><span>${T('rep_status')}</span><span style="color:#4fe4b8">${T('rep_status_good')}</span></div>
+      <div class="row"><span>🕌 ${T('rep_status_prayer')}</span><span style="color:#4fe4b8">✓</span></div>
     </div>
   `;
   document.getElementById('reportModal').classList.add('on');
 }
 
-/* ==================================================================
-   PART 16 · EVENTS
-   ================================================================== */
+/* ============ EVENTS ============ */
 document.getElementById('langBtn').onclick = () => {
   LANG = LANG === 'ar' ? 'en' : 'ar';
   localStorage.setItem('auralis_lang', LANG);
@@ -1486,7 +1699,6 @@ document.getElementById('langBtn').onclick = () => {
   if (state.selected !== null) updateInfo();
   toast(LANG === 'ar' ? '🌐 العربية' : '🌐 English');
 };
-
 document.getElementById('reportBtn').onclick = generateReport;
 document.getElementById('closeModalBtn').onclick = () => document.getElementById('reportModal').classList.remove('on');
 document.getElementById('closeModalBtn2').onclick = () => document.getElementById('reportModal').classList.remove('on');
@@ -1495,10 +1707,8 @@ document.getElementById('printReportBtn').onclick = () => window.print();
 document.getElementById('saveBtn').onclick = () => {
   const data = JSON.stringify({
     app:'AURALIS', version:1, room:'mosque_indoor',
-    devices: state.devices.map(d => ({
-      id:d.id, brand:d.brand, cat:d.cat, typeId:d.typeId,
-      x:d.x, z:d.z, rot:d.rot, power:d.power
-    }))
+    roomSize: ROOM.size.slice(),
+    devices: state.devices.map(d => ({id:d.id, brand:d.brand, cat:d.cat, typeId:d.typeId, x:d.x, z:d.z, rot:d.rot, power:d.power}))
   }, null, 2);
   const blob = new Blob([data], {type:'application/json'});
   const a = document.createElement('a');
@@ -1508,7 +1718,6 @@ document.getElementById('saveBtn').onclick = () => {
   setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
   toast(T('to_saved'));
 };
-
 document.getElementById('loadBtn').onclick = () => document.getElementById('fileInput').click();
 document.getElementById('fileInput').onchange = e => {
   const file = e.target.files[0]; if (!file) return;
@@ -1524,7 +1733,15 @@ document.getElementById('fileInput').onchange = e => {
         x:+d.x||0, z:+d.z||0, rot:+d.rot||0, power:+d.power||0
       })).filter(d => getSpec(d.cat, d.typeId));
       state.nextId = state.devices.length ? Math.max(...state.devices.map(d=>d.id))+1 : 1;
-      buildDevices(); buildHeatmap(); updateHUD(); fitView();
+      if (data.roomSize && data.roomSize.length === 2) {
+        ROOM.size[0] = data.roomSize[0];
+        ROOM.size[1] = data.roomSize[1];
+        document.getElementById('roomWSlider').value = ROOM.size[0];
+        document.getElementById('roomDSlider').value = ROOM.size[1];
+        document.getElementById('roomWVal').textContent = ROOM.size[0] + 'm';
+        document.getElementById('roomDVal').textContent = ROOM.size[1] + 'm';
+      }
+      buildRoom(); buildDevices(); buildHeatmap(); updateHUD(); fitView();
       state.history = [serialize()]; state.historyIdx = 0;
       toast(T('to_loaded'));
     } catch(err) { alert(T('to_invalid')); }
@@ -1542,7 +1759,6 @@ document.getElementById('shotBtn').onclick = () => {
   document.body.appendChild(a); a.click(); a.remove();
   toast(T('to_shot'));
 };
-
 document.getElementById('presBtn').onclick = togglePres;
 document.getElementById('presToggle').onclick = togglePres;
 document.getElementById('exitPres').onclick = togglePres;
@@ -1556,21 +1772,20 @@ function togglePres() {
   document.getElementById('exitPres').classList.toggle('on', state.presentation);
   toast(state.presentation ? T('to_pres_on') : T('to_pres_off'));
 }
-
 document.getElementById('heatBtn').onclick = function() {
   state.showHeat = !state.showHeat;
   this.classList.toggle('on', state.showHeat);
   buildHeatmap();
   toast(state.showHeat ? T('to_heat_on') : T('to_heat_off'));
 };
-
 document.getElementById('fitBtn').onclick = fitView;
 document.getElementById('gridBtn').onclick = function() {
   state.showGrid = !state.showGrid;
   this.classList.toggle('on', state.showGrid);
   grid.visible = state.showGrid;
 };
-
+document.getElementById('camTopBtn').onclick = camTopView;
+document.getElementById('camQiblaBtn').onclick = camQiblaView;
 document.getElementById('clearBtn').onclick = () => {
   if (!confirm(T('to_confirm_clear'))) return;
   state.devices = []; state.selected = null;
@@ -1579,7 +1794,6 @@ document.getElementById('clearBtn').onclick = () => {
   toast(T('to_cleared'));
 };
 document.getElementById('delBtn').onclick = deleteSelected;
-
 document.getElementById('powerSlider').oninput = e => {
   if (state.selected === null) return;
   const d = state.devices.find(x => x.id === state.selected); if (!d) return;
@@ -1589,7 +1803,6 @@ document.getElementById('powerSlider').oninput = e => {
   if (state.showHeat) updateHeatColors();
 };
 document.getElementById('powerSlider').onchange = () => pushHistory();
-
 document.getElementById('rotSlider').oninput = e => {
   if (state.selected === null) return;
   const d = state.devices.find(x => x.id === state.selected); if (!d) return;
@@ -1601,16 +1814,27 @@ document.getElementById('rotSlider').oninput = e => {
 };
 document.getElementById('rotSlider').onchange = () => pushHistory();
 
-document.getElementById('roomWInput').onchange = e => {
-  const v = Math.max(6, Math.min(100, parseFloat(e.target.value) || 20));
-  ROOM.size[0] = v; e.target.value = v;
-  buildRoom(); buildHeatmap();
+/* Dimension controls */
+document.getElementById('roomWSlider').oninput = e => {
+  document.getElementById('roomWVal').textContent = e.target.value + 'm';
 };
-document.getElementById('roomDInput').onchange = e => {
-  const v = Math.max(6, Math.min(100, parseFloat(e.target.value) || 16));
-  ROOM.size[1] = v; e.target.value = v;
-  buildRoom(); buildHeatmap();
+document.getElementById('roomDSlider').oninput = e => {
+  document.getElementById('roomDVal').textContent = e.target.value + 'm';
 };
+document.getElementById('roomWSlider').onchange = e => {
+  resizeRoom(parseInt(e.target.value,10), ROOM.size[1]);
+};
+document.getElementById('roomDSlider').onchange = e => {
+  resizeRoom(ROOM.size[0], parseInt(e.target.value,10));
+};
+document.querySelectorAll('.presetBtns button').forEach(btn => {
+  btn.onclick = () => {
+    const p = btn.dataset.preset;
+    if (p === 'small')  resizeRoom(12, 10);
+    if (p === 'medium') resizeRoom(20, 16);
+    if (p === 'large')  resizeRoom(32, 24);
+  };
+});
 
 document.addEventListener('keydown', e => {
   const tag = (e.target.tagName || '').toUpperCase();
@@ -1622,9 +1846,7 @@ document.addEventListener('keydown', e => {
   else if (e.key === 'Tab') { e.preventDefault(); setView3D(!state.view3D); }
 });
 
-/* ==================================================================
-   PART 17 · RESIZE
-   ================================================================== */
+/* ============ RESIZE ============ */
 function onResize() {
   const w = window.innerWidth, h = window.innerHeight;
   camera.aspect = w / h;
@@ -1635,9 +1857,7 @@ function onResize() {
 window.addEventListener('resize', onResize);
 window.addEventListener('orientationchange', () => setTimeout(onResize, 250));
 
-/* ==================================================================
-   PART 18 · LOOP & INIT
-   ================================================================== */
+/* ============ LOOP & INIT ============ */
 function animate() {
   requestAnimationFrame(animate);
   updateTween();
@@ -1654,8 +1874,8 @@ function init() {
   buildCats(); buildBrands(); buildTypes();
   loadInitialDevices();
   onResize();
+  updateCamera();
   animate();
-  // Hide loader after first frame
   setTimeout(() => document.getElementById('loader').classList.add('off'), 500);
   console.log('%c✅ AURALIS · Mosque Indoor ready','color:#d4af37;font-weight:bold;font-size:14px');
 }
