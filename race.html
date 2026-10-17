@@ -629,7 +629,6 @@ const CATS = {
   ]}
 };
 
-/* Circuit: 240×140m — Long oval track + grandstands + pit lane */
 const ROOM = {
   name:{ ar:'حلبة سباق دولية', en:'International Racetrack' },
   size:[240, 140],
@@ -672,7 +671,6 @@ const ROOM = {
     { type:'lightTower', x:110, z:65 }
   ],
   devices:[
-    /* === TRACK SPEAKERS (along the oval) === */
     ['community','track','track_spk',-90,-55,Math.PI/4],
     ['community','track','track_spk',-60,-55,Math.PI/4],
     ['community','track','track_spk',-30,-55,Math.PI/4],
@@ -699,8 +697,6 @@ const ROOM = {
     ['toa','track','track_horn',70,65,-3*Math.PI/4],
     ['community','track','track_dir',-50,-55,Math.PI/4],
     ['community','track','track_dir',50,-55,-Math.PI/4],
-
-    /* === MAIN GRANDSTAND (north) === */
     ['jbl','grandstand','grandstand_line',-70,62,Math.PI],
     ['jbl','grandstand','grandstand_line',-40,62,Math.PI],
     ['jbl','grandstand','grandstand_line',-10,62,Math.PI],
@@ -720,8 +716,6 @@ const ROOM = {
     ['yamaha','grandstand','grandstand_delay',-50,68,Math.PI],
     ['yamaha','grandstand','grandstand_delay',0,68,Math.PI],
     ['yamaha','grandstand','grandstand_delay',50,68,Math.PI],
-
-    /* === SECOND GRANDSTAND (south) === */
     ['community','grandstand','grandstand',-70,-58,0],
     ['community','grandstand','grandstand',-35,-58,0],
     ['community','grandstand','grandstand',0,-58,0],
@@ -732,8 +726,6 @@ const ROOM = {
     ['jbl','grandstand','grandstand_line',50,-62,0],
     ['jbl','grandstand','grandstand_sub',-30,-62,0],
     ['jbl','grandstand','grandstand_sub',30,-62,0],
-
-    /* === SIDE GRANDSTANDS === */
     ['community','grandstand','grandstand',-105,-40,Math.PI/2],
     ['community','grandstand','grandstand',-105,-15,Math.PI/2],
     ['community','grandstand','grandstand',-105,15,Math.PI/2],
@@ -742,8 +734,6 @@ const ROOM = {
     ['community','grandstand','grandstand',105,-15,-Math.PI/2],
     ['community','grandstand','grandstand',105,15,-Math.PI/2],
     ['community','grandstand','grandstand',105,40,-Math.PI/2],
-
-    /* === PIT LANE === */
     ['rcf','pitlane','pit_spk',-80,38,Math.PI],
     ['rcf','pitlane','pit_spk',-55,38,Math.PI],
     ['rcf','pitlane','pit_spk',-30,38,Math.PI],
@@ -758,8 +748,6 @@ const ROOM = {
     ['rcf','pitlane','pit_wall',90,42,Math.PI],
     ['rcf','pitlane','pit_announce',-40,44,Math.PI],
     ['rcf','pitlane','pit_announce',40,44,Math.PI],
-
-    /* === START / FINISH === */
     ['community','startFinish','start_light',-8,46,Math.PI],
     ['community','startFinish','start_light',0,46,Math.PI],
     ['community','startFinish','start_light',8,46,Math.PI],
@@ -767,8 +755,6 @@ const ROOM = {
     ['community','startFinish','start_horn',5,50,Math.PI],
     ['community','startFinish','finish_line',-40,46,Math.PI],
     ['community','startFinish','finish_line',40,46,Math.PI],
-
-    /* === CHICANES & BARRIERS === */
     ['bose','chicane','chicane',-60,-40,Math.PI/4],
     ['bose','chicane','chicane',60,40,-Math.PI/4],
     ['bose','chicane','armco',-90,-60,Math.PI/4],
@@ -781,23 +767,17 @@ const ROOM = {
     ['bose','chicane','kerb',100,50,-Math.PI/2],
     ['bose','chicane','gravel',-95,-55,Math.PI/2],
     ['bose','chicane','gravel',95,-55,-Math.PI/2],
-
-    /* === RACE CONTROL === */
     ['jbl','control','control_spk',-40,58,Math.PI],
     ['jbl','control','control_spk',-42,58,Math.PI],
     ['jbl','control','control_spk',-38,58,Math.PI],
     ['community','control','control_announce',-40,60,Math.PI],
     ['community','control','race_control',-40,62,Math.PI],
-
-    /* === PODIUM === */
     ['community','podium','podium',-6,58,Math.PI],
     ['community','podium','podium',0,58,Math.PI],
     ['community','podium','podium',6,58,Math.PI],
     ['community','podium','anthem',-3,60,Math.PI],
     ['community','podium','anthem',3,60,Math.PI],
     ['community','podium','trophy',0,62,Math.PI],
-
-    /* === PADDOCK === */
     ['bose','paddock','paddock',-90,30,0],
     ['bose','paddock','paddock',-75,30,0],
     ['bose','paddock','paddock',-60,30,0],
@@ -807,20 +787,14 @@ const ROOM = {
     ['bose','paddock','team',-80,25,0],
     ['bose','paddock','team',-70,25,0],
     ['bose','paddock','hospitality',-70,35,0],
-
-    /* === MEDICAL === */
     ['bosch','medical','medical',75,55,Math.PI],
     ['bosch','medical','medical',85,55,Math.PI],
     ['bosch','medical','ambulance',70,52,Math.PI],
     ['bosch','medical','ambulance',90,52,Math.PI],
     ['bosch','medical','medical_announce',80,58,Math.PI],
-
-    /* === HELIPAD === */
     ['bosch','helipad','helipad',-80,-55,0],
     ['bosch','helipad','helipad_horn',-75,-55,0],
     ['bosch','helipad','helipad_horn',-85,-55,0],
-
-    /* === PAGING === */
     ['toa','paging','paging_horn',-118,-68,Math.PI/4],
     ['toa','paging','paging_horn',118,-68,-Math.PI/4],
     ['toa','paging','paging_horn',-118,68,3*Math.PI/4],
@@ -833,8 +807,6 @@ const ROOM = {
     ['toa','paging','paging_zone',60,40,Math.PI],
     ['toa','paging','paging_zone',-60,-40,0],
     ['toa','paging','paging_zone',60,-40,0],
-
-    /* === EMERGENCY === */
     ['community','emergency','emg_horn',-118,-68,Math.PI/4],
     ['community','emergency','emg_horn',118,-68,-Math.PI/4],
     ['community','emergency','emg_horn',-118,68,3*Math.PI/4],
@@ -867,8 +839,6 @@ const ROOM = {
     ['community','emergency','emg_strobe',100,-60,-Math.PI/4],
     ['community','emergency','emg_strobe',-100,60,3*Math.PI/4],
     ['community','emergency','emg_strobe',100,60,-3*Math.PI/4],
-
-    /* === MICS === */
     ['shure','mics','ambience',-40,62,Math.PI],
     ['shure','mics','ambience',40,62,Math.PI],
     ['shure','mics','track_mic',-80,-50,Math.PI/4],
@@ -887,8 +857,6 @@ const ROOM = {
     ['shure','mics','pit_mic',50,40,Math.PI],
     ['shure','mics','grid_mic',-20,45,Math.PI],
     ['shure','mics','grid_mic',20,45,Math.PI],
-
-    /* === AMPS + CONTROL === */
     ['community','amps','rack',-118,-68,Math.PI/4],
     ['community','amps','dsp',-118,-68,Math.PI/4],
     ['community','amps','zone_amp',-118,-68,Math.PI/4],
@@ -905,7 +873,6 @@ const ROOM = {
   ]
 };
 
-/* ============ STATE ============ */
 const state = {
   devices: [], nextId: 1,
   curBrand: 'community', curCat: 'track', curType: 'track_spk',
@@ -914,7 +881,6 @@ const state = {
   history: [], historyIdx: -1
 };
 
-/* ============ THREE SETUP ============ */
 const canvas = document.getElementById('c');
 const renderer = new THREE.WebGLRenderer({canvas, antialias:true, preserveDrawingBuffer:true});
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -959,7 +925,6 @@ const floorMesh = new THREE.Mesh(
 floorMesh.rotation.x = -Math.PI/2; floorMesh.receiveShadow = true;
 scene.add(floorMesh);
 
-/* ============ MATERIALS (memoized) ============ */
 const _matCache = {};
 const M = {};
 function defMat(name, factory) {
@@ -1041,7 +1006,6 @@ function devName(spec){return T(spec.nameKey);}
 function catName(key){return T('cat_' + key);}
 function brandName(key){return BRANDS[key] ? T('brand_' + key) : '—';}
 
-/* ============ MESH FACTORY ============ */
 function makeMesh(cat, typeId, brandColor) {
   const spec = getSpec(cat, typeId); if (!spec) return null;
   const color = brandColor || 0xef4444;
@@ -1719,7 +1683,6 @@ function makeMesh(cat, typeId, brandColor) {
   return g;
 }
 
-/* ============ BUILD ROOM ============ */
 function clearGroup(g) {
   while (g.children.length) {
     const c = g.children[0]; g.remove(c);
@@ -2044,7 +2007,6 @@ function buildRoom() {
   }
 }
 
-/* ============ DEVICES ============ */
 const meshById = new Map();
 function buildDevices() {
   clearGroup(devGrp); meshById.clear();
@@ -2069,27 +2031,23 @@ function updateSelectionVisuals() {
   });
 }
 
-/* ============ HEATMAP ============ */
 let heatMesh = null;
 function disposeHeat() {
   if (heatMesh) { heatGrp.remove(heatMesh); heatMesh.geometry.dispose(); heatMesh.material.dispose(); heatMesh = null; }
 }
+const SPEAKER_CATS = ['track','grandstand','pitlane','startFinish','chicane','control','podium','paddock','medical','helipad','paging','emergency'];
+function isSpeaker(d) { return SPEAKER_CATS.includes(d.cat); }
 function buildHeatmap() {
   disposeHeat();
   if (!state.showHeat) return;
-  const speakers = state.devices.filter(d =>
-    d.cat === 'track' || d.cat === 'grandstand' || d.cat === 'pitlane' ||
-    d.cat === 'startFinish' || d.cat === 'chicane' || d.cat === 'control' ||
-    d.cat === 'podium' || d.cat === 'paddock' || d.cat === 'medical' ||
-    d.cat === 'helipad' || d.cat === 'paging' || d.cat === 'emergency'
-  );
+  const speakers = state.devices.filter(isSpeaker);
   if (!speakers.length) {
     document.getElementById('hudSpl').textContent = '—';
     document.getElementById('hudCoverage').textContent = '0%';
     return;
   }
   const SIZE = Math.max(ROOM.size[0], ROOM.size[1]) * 1.15;
-  const RES = 150;
+  const RES = 100;
   const geo = new THREE.PlaneGeometry(SIZE, SIZE, RES, RES);
   geo.rotateX(-Math.PI/2);
   const colors = new Float32Array(geo.attributes.position.count * 3);
@@ -2106,10 +2064,7 @@ function buildHeatmap() {
 function calcSPL(x, z) {
   let tot = 0;
   for (const spk of state.devices) {
-    if (spk.cat !== 'track' && spk.cat !== 'grandstand' && spk.cat !== 'pitlane' &&
-        spk.cat !== 'startFinish' && spk.cat !== 'chicane' && spk.cat !== 'control' &&
-        spk.cat !== 'podium' && spk.cat !== 'paddock' && spk.cat !== 'medical' &&
-        spk.cat !== 'helipad' && spk.cat !== 'paging' && spk.cat !== 'emergency') continue;
+    if (!isSpeaker(spk)) continue;
     const spec = getSpec(spk.cat, spk.typeId);
     if (!spec || !spec.power) continue;
     const power = spk.power || spec.power;
@@ -2179,7 +2134,6 @@ function updateHeatColors() {
   else if (covPct >= 35) statCov.classList.add('warn');
 }
 
-/* ============ HISTORY ============ */
 function serialize() {
   return JSON.stringify(state.devices.map(d => ({
     id:d.id, brand:d.brand, cat:d.cat, typeId:d.typeId,
@@ -2203,7 +2157,6 @@ function redo() {
   if (state.historyIdx < state.history.length - 1) { state.historyIdx++; applyHistory(state.history[state.historyIdx]); toast(T('to_redo')); }
 }
 
-/* ============ CAMERA ============ */
 function updateCamera() {
   const {theta, phi, radius, target} = state.cam;
   const x = target.x + radius * Math.sin(phi) * Math.sin(theta);
@@ -2242,7 +2195,6 @@ function fitView() {
   else tweenCamera({theta:0, phi:0.02, radius:r, target:new THREE.Vector3(0,0,0)}, 700);
 }
 
-/* ============ INTERACTION ============ */
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 const activePointers = new Map();
@@ -2360,7 +2312,6 @@ canvas.addEventListener('wheel', e => {
   updateCamera();
 }, {passive:false});
 
-/* ============ ACTIONS ============ */
 function placeDevice(x, z) {
   const spec = getSpec(state.curCat, state.curType); if (!spec) return;
   const d = {id: state.nextId++, brand: state.curBrand, cat: state.curCat, typeId: state.curType,
@@ -2412,7 +2363,6 @@ function updateInfo() {
   document.getElementById('roomDInput').value = ROOM.size[1];
 }
 
-/* ============ UI ============ */
 function buildCats() {
   const el = document.getElementById('cats'); el.innerHTML = '';
   for (const key in CATS) {
@@ -2482,14 +2432,22 @@ function loadInitialDevices() {
   state.history = [serialize()]; state.historyIdx = 0;
 }
 
-/* ============ REPORT ============ */
+/* ============ REPORT (FIXED) ============ */
 function generateReport() {
-  const totalPower = state.devices.reduce((a,d) => {
+  // Bug Fix #1: إعادة بناء reduce بالشكل الصحيح
+  const totalPower = state.devices.reduce((a, d) => {
     const s = getSpec(d.cat, d.typeId);
     return a + (s && s.power ? (d.power || s.power) : 0);
-(a  }, 0);
+  }, 0);
+
   const counts = {};
-  const zone.hCounts = {track:0, grandstand:ref0, pitlane:0, startFinish:0,); chicane:0, control:0, podium:0, paddock a:0, medical:0, helipad:0,.remove paging:0, emergency:0};
+  // Bug Fix #2: إعادة بناء zoneCounts بالشكل الصحيح
+  const zoneCounts = {
+    track:0, grandstand:0, pitlane:0, startFinish:0,
+    chicane:0, control:0, podium:0, paddock:0,
+    medical:0, helipad:0, paging:0, emergency:0
+  };
+
   state.devices.forEach(d => {
     const spec = getSpec(d.cat, d.typeId); if (!spec) return;
     const key = brandName(d.brand) + ' · ' + devName(spec);
@@ -2499,7 +2457,7 @@ function generateReport() {
   let rows = '';
   const entries = Object.entries(counts);
   if (entries.length) {
-    for (const [name, qty] of entries) rows += `<tr><td>${name}</td><td>${qty}</td></tr>`;
+    for (const [name, qty] of entries) rows += `<tr><td>${name}</td><td style="text-align:center">${qty}</td></tr>`;
   } else {
     rows = `<tr><td colspan="2" style="text-align:center;color:#888">${T('rep_empty')}</td></tr>`;
   }
@@ -2573,7 +2531,6 @@ function generateReport() {
   document.getElementById('reportModal').classList.add('on');
 }
 
-/* ============ EVENTS ============ */
 document.getElementById('langBtn').onclick = () => {
   LANG = LANG === 'ar' ? 'en' : 'ar';
   localStorage.setItem('auralis_lang', LANG);
@@ -2587,6 +2544,7 @@ document.getElementById('closeModalBtn').onclick = () => document.getElementById
 document.getElementById('closeModalBtn2').onclick = () => document.getElementById('reportModal').classList.remove('on');
 document.getElementById('printReportBtn').onclick = () => window.print();
 
+// Bug Fix #3: revokeObjectURL مع href
 document.getElementById('saveBtn').onclick = () => {
   const data = JSON.stringify({app:'AURALIS', version:1, room:'race',
     devices: state.devices.map(d => ({id:d.id, brand:d.brand, cat:d.cat, typeId:d.typeId, x:d.x, z:d.z, rot:d.rot, power:d.power}))
@@ -2596,7 +2554,7 @@ document.getElementById('saveBtn').onclick = () => {
   a.href = URL.createObjectURL(blob);
   a.download = 'auralis-race-' + Date.now() + '.json';
   document.body.appendChild(a); a.click();
-  setTimeout(() => { URL.revokeObjectURL(); }, 1000);
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
   toast(T('to_saved'));
 };
 document.getElementById('loadBtn').onclick = () => document.getElementById('fileInput').click();
@@ -2704,7 +2662,6 @@ document.addEventListener('keydown', e => {
   else if (e.key === 'Tab') { e.preventDefault(); setView3D(!state.view3D); }
 });
 
-/* ============ RESIZE ============ */
 function onResize() {
   const w = window.innerWidth, h = window.innerHeight;
   camera.aspect = w / h;
@@ -2715,7 +2672,6 @@ function onResize() {
 window.addEventListener('resize', onResize);
 window.addEventListener('orientationchange', () => setTimeout(onResize, 250));
 
-/* ============ LOOP & INIT ============ */
 function animate() {
   requestAnimationFrame(animate);
   updateTween();
