@@ -323,6 +323,17 @@ header.hide{transform:translateY(-110%)}
 <script>
 'use strict';
 
+/* ============ GLOBAL ERROR HANDLER ============ */
+window.addEventListener('error', function(e) {
+  console.error('❌ GLOBAL ERROR:', e.message, 'at line', e.lineno);
+  const loader = document.getElementById('loader');
+  if (loader) {
+    loader.classList.add('off');
+    const txt = document.getElementById('loaderTxt');
+    if (txt) txt.textContent = 'ERROR: ' + e.message;
+  }
+});
+
 /* ============ I18N ============ */
 const I18N = {
   ar: {
@@ -677,7 +688,7 @@ const CATS = {
   ]}
 };
 
-/* Studio: 16×12m with dual studio setup */
+/* Studio: 16×12m */
 const ROOM = {
   name:{ ar:'استوديو بث احترافي', en:'Professional Broadcast Studio' },
   size:[16, 12],
@@ -689,32 +700,22 @@ const ROOM = {
     { type:'wall', x:8, z:0, w:0.2, h:4.5, d:12 },
     { type:'wall', x:-8, z:0, w:0.2, h:4.5, d:12 },
     { type:'wall', x:0, z:5.9, w:16, h:4.5, d:0.2 },
-    /* Green screen backdrop */
     { type:'greenscreen', x:0, z:-5.5, w:12, h:3.5 },
-    /* Main anchor desk (center) */
     { type:'anchorDesk', x:0, z:2, w:5, d:1.2, H:1 },
-    /* Guest table (side) */
     { type:'guestTable', x:-5, z:0, w:3, d:1.5, H:0.9 },
-    /* Co-host desk */
     { type:'cohostDesk', x:5, z:0, w:3, d:1.5, H:0.9 },
-    /* Control room (back) */
     { type:'controlRoom', x:0, z:5, w:8, d:2.5, H:3 },
-    /* Teleprompter position */
     { type:'prompter', x:0, z:-3, h:1.5 },
-    /* Entry doors */
     { type:'door', x:-7.9, z:5, w:1.2, h:2.4 },
     { type:'door', x:7.9, z:5, w:1.2, h:2.4 }
   ],
   devices:[
-    /* === HOST MICROPHONES (anchor desk) === */
     ['shure','hostMic','host_mic',-1.5,2.3,Math.PI],
     ['shure','hostMic','host_mic',0,2.3,Math.PI],
     ['shure','hostMic','host_mic',1.5,2.3,Math.PI],
     ['shure','hostMic','host_gooseneck',-2,2,Math.PI],
     ['shure','hostMic','host_gooseneck',2,2,Math.PI],
     ['sennheiser','hostMic','host_handheld',0,3.5,Math.PI],
-
-    /* === GUEST MICROPHONES === */
     ['shure','guestMic','guest_mic',-6,0,Math.PI/2],
     ['shure','guestMic','guest_mic',-4,0,Math.PI/2],
     ['shure','guestMic','guest_boundary',-5,-0.5,0],
@@ -724,41 +725,29 @@ const ROOM = {
     ['shure','guestMic','guest_mic',6,0,-Math.PI/2],
     ['sennheiser','guestMic','guest_wireless',5,1,-Math.PI/2],
     ['sennheiser','guestMic','panel_mic',5.5,-0.5,-Math.PI/2],
-
-    /* === LAVALIER MICROPHONES === */
     ['dpa','lavMic','lav',-1,1.6,0],
     ['dpa','lavMic','lav_pro',0,1.6,0],
     ['dpa','lavMic','lav_pro',1,1.6,0],
     ['rode','lavMic','lav_wireless',3,1.2,0],
     ['rode','lavMic','lav_wireless',-3,1.2,0],
-
-    /* === HEADSET MICROPHONES === */
     ['sennheiser','headsetMic','headset',-6,3.5,Math.PI/3],
     ['sennheiser','headsetMic','headset',6,3.5,-Math.PI/3],
     ['sennheiser','headsetMic','earset',0,3.8,Math.PI],
     ['sennheiser','headsetMic','ifb',-5,2.5,0],
     ['sennheiser','headsetMic','ifb',5,2.5,0],
-
-    /* === STUDIO MONITORS === */
     ['yamaha','studioMon','studio_mon_sm',-5,-4,Math.PI/4],
     ['yamaha','studioMon','studio_mon_sm',5,-4,-Math.PI/4],
     ['yamaha','studioMon','studio_mon_lg',-7,-4,Math.PI/4],
     ['yamaha','studioMon','studio_mon_lg',7,-4,-Math.PI/4],
     ['qsc','studioMon','reference_mon',0,-4,Math.PI],
-
-    /* === CEILING MICROPHONES === */
     ['shure','ceilingMic','ceiling_array',-3,3,0],
     ['shure','ceilingMic','ceiling_array',3,3,0],
     ['shure','ceilingMic','beamforming',0,3,0],
-
-    /* === MAIN PA === */
     ['jbl','mainPA','line_small',-6,5,Math.PI],
     ['jbl','mainPA','line_small',6,5,Math.PI],
     ['jbl','mainPA','line_lg',-3,5,Math.PI],
     ['jbl','mainPA','line_lg',3,5,Math.PI],
     ['jbl','mainPA','center_cluster',0,5,Math.PI],
-
-    /* === CEILING SPEAKERS === */
     ['bose','ceilingSpk','ceiling_spk',-6,-3,0],
     ['bose','ceilingSpk','ceiling_spk',6,-3,0],
     ['bose','ceilingSpk','ceiling_spk',-6,3,0],
@@ -766,49 +755,33 @@ const ROOM = {
     ['bose','ceilingSpk','ceiling_net',-3,1,0],
     ['bose','ceilingSpk','ceiling_net',3,1,0],
     ['bose','ceilingSpk','ceiling_pendant',0,0,0],
-
-    /* === DESK MONITORS === */
     ['yamaha','deskMon','desk_mon',-1.5,1.3,0],
     ['yamaha','deskMon','desk_mon',1.5,1.3,0],
     ['yamaha','deskMon','desk_mon_lg',0,1.3,0],
-
-    /* === DELAY TOWERS === */
     ['rcf','delay','delay_small',-4,4,Math.PI],
     ['rcf','delay','delay_small',4,4,Math.PI],
     ['rcf','delay','delay_lg',0,4.5,Math.PI],
-
-    /* === PTZ CAMERAS === */
     ['ptzoptics','ptzCamera','ptz_4k',0,-5,0],
     ['avg','ptzCamera','ptz_speaker',-6,-5,Math.PI/6],
     ['avg','ptzCamera','ptz_wide',6,-5,-Math.PI/6],
     ['logitech','ptzCamera','ptz_ceiling',-3,0,0],
     ['logitech','ptzCamera','ptz_ceiling',3,0,0],
-
-    /* === FIXED CAMERAS === */
     ['sony','fixedCam','fixed_wide',-7,-4,Math.PI/4],
     ['sony','fixedCam','fixed_wide',7,-4,-Math.PI/4],
     ['sony','fixedCam','fixed_close',0,-4.5,0],
     ['panasonic','fixedCam','fixed_shoulder',-7,0,Math.PI/2],
     ['panasonic','fixedCam','fixed_shoulder',7,0,-Math.PI/2],
-
-    /* === CAMERA TRACKING === */
     ['logitech','cameraTracking','tracking_proc',7.5,5.3,Math.PI],
     ['logitech','cameraTracking','tracking_ai',7.3,5.2,Math.PI],
     ['logitech','cameraTracking','tracking_sensor',0,-4.5,0],
-
-    /* === STREAMING === */
     ['blackmagic','streaming','stream_encoder',7.4,-5.3,-Math.PI/4],
     ['blackmagic','streaming','stream_cloud',7.3,-5.2,-Math.PI/4],
     ['atem','streaming','switcher',7.2,-5.1,-Math.PI/4],
     ['elgato','streaming','capture',7.4,-4.9,-Math.PI/4],
-
-    /* === RECORDING (in control room) === */
     ['blackmagic','recording','recorder',-2,5,0],
     ['blackmagic','recording','ssd_recorder',0,5,0],
     ['blackmagic','recording','redundant',2,5,0],
     ['sony','recording','backup_deck',-2,5.3,0],
-
-    /* === LIGHTING === */
     ['aputure','lighting','key_light',-5,-3,Math.PI/4],
     ['aputure','lighting','fill_light',5,-3,-Math.PI/4],
     ['aputure','lighting','back_light',-3,-4.5,0],
@@ -818,28 +791,18 @@ const ROOM = {
     ['neewer','lighting','rgb_light',-7,3,Math.PI/2],
     ['neewer','lighting','rgb_light',7,3,-Math.PI/2],
     ['neewer','lighting','ring_light',0,2.8,Math.PI],
-
-    /* === GREEN SCREEN === */
     ['neewer','greenscreen','green_screen',0,-5.5,0],
     ['neewer','greenscreen','green_frame',0,-5.5,0],
-
-    /* === TELEPROMPTER === */
     ['neewer','teleprompter','teleprompter',0,-3,0],
     ['neewer','teleprompter','prompt_monitor',0,1.5,Math.PI],
-
-    /* === CONTROL === */
     ['crestron','control','touch',6,-5,0],
     ['crestron','control','touch',-6,-5,0],
     ['extron','control','av_ctrl',7.5,-4.8,-Math.PI/4],
     ['atem','control','video_switcher',6,5,0],
-
-    /* === PAGING === */
     ['bose','paging','paging_ceiling',-6,-4,0],
     ['bose','paging','paging_ceiling',6,-4,0],
     ['toa','paging','paging_horn',-7.5,5.5,3*Math.PI/4],
     ['toa','paging','paging_horn',7.5,5.5,-3*Math.PI/4],
-
-    /* === EMERGENCY === */
     ['toa','emergency','emg_horn',-7.5,-5.5,Math.PI/4],
     ['toa','emergency','emg_horn',7.5,-5.5,-Math.PI/4],
     ['toa','emergency','emg_strobe',-4,5.7,Math.PI],
@@ -896,42 +859,82 @@ const grid = new THREE.GridHelper(200, 100, 0xec4899, 0x2a1030);
 grid.material.opacity = 0.12; grid.material.transparent = true;
 grid.position.y = 0.004; scene.add(grid);
 
-/* ============ MATERIALS ============ */
-const M = {
-  body:()=>new THREE.MeshStandardMaterial({color:0x1a2035,roughness:0.5,metalness:0.5}),
-  dark:()=>new THREE.MeshStandardMaterial({color:0x050810,roughness:0.85,metalness:0.25}),
-  gray:()=>new THREE.MeshStandardMaterial({color:0x3a4250,roughness:0.6,metalness:0.4}),
-  metal:()=>new THREE.MeshStandardMaterial({color:0xb0b8c8,roughness:0.3,metalness:0.85}),
-  steel:()=>new THREE.MeshStandardMaterial({color:0x9098a8,roughness:0.5,metalness:0.6,side:THREE.DoubleSide}),
-  wood:()=>new THREE.MeshStandardMaterial({color:0x5a3a20,roughness:0.85,metalness:0.05}),
-  woodDark:()=>new THREE.MeshStandardMaterial({color:0x4a2a10,roughness:0.85,metalness:0.05}),
-  deskTop:()=>new THREE.MeshStandardMaterial({color:0x2a1a10,roughness:0.35,metalness:0.1}),
-  deskEdge:()=>new THREE.MeshStandardMaterial({color:0x8a5a30,roughness:0.65,metalness:0.15}),
-  carpet:()=>new THREE.MeshStandardMaterial({color:0x1a1a2e,roughness:0.95,metalness:0.02}),
-  wall:()=>new THREE.MeshStandardMaterial({color:0x2a2040,roughness:0.85,metalness:0.08}),
-  wallAccent:()=>new THREE.MeshStandardMaterial({color:0x3a2050,roughness:0.8,metalness:0.1}),
-  ceiling:()=>new THREE.MeshStandardMaterial({color:0x150a20,roughness:0.9,metalness:0.05}),
-  ceilingPanel:()=>new THREE.MeshStandardMaterial({color:0xe8d0f0,emissive:0xf0c0ff,emissiveIntensity:0.4,roughness:0.7,metalness:0.1}),
-  greenScreen:()=>new THREE.MeshStandardMaterial({color:0x1a8a3a,roughness:0.85,metalness:0.05}),
-  greenFrame:()=>new THREE.MeshStandardMaterial({color:0x2a2a3a,roughness:0.6,metalness:0.4}),
-  glass:()=>new THREE.MeshStandardMaterial({color:0x60a5fa,roughness:0.1,metalness:0.5,transparent:true,opacity:0.35}),
-  door:()=>new THREE.MeshStandardMaterial({color:0x1a1f30,roughness:0.7,metalness:0.2}),
-  doorFrame:()=>new THREE.MeshStandardMaterial({color:0x4a5260,roughness:0.6,metalness:0.4}),
-  controlBooth:()=>new THREE.MeshStandardMaterial({color:0x2a2a3a,roughness:0.7,metalness:0.2}),
-  controlGlass:()=>new THREE.MeshBasicMaterial({color:0x60a5fa,transparent:true,opacity:0.4}),
-  monitorScreen:()=>new THREE.MeshBasicMaterial({color:0x1a3a7a}),
-  monitorFrame:()=>new THREE.MeshStandardMaterial({color:0x0a0a0a,roughness:0.6,metalness:0.3}),
-  softbox:()=>new THREE.MeshStandardMaterial({color:0xf0f0f0,emissive:0xfff8e0,emissiveIntensity:0.8,roughness:0.7,metalness:0.05}),
-  ledRed:()=>new THREE.MeshStandardMaterial({color:0xff2222,emissive:0xff2222,emissiveIntensity:2.5}),
-  ledGreen:()=>new THREE.MeshStandardMaterial({color:0x22ff44,emissive:0x22ff44,emissiveIntensity:2.5}),
-  ledAmber:()=>new THREE.MeshStandardMaterial({color:0xfbbf24,emissive:0xfbbf24,emissiveIntensity:2.5}),
-  ledPink:()=>new THREE.MeshStandardMaterial({color:0xec4899,emissive:0xec4899,emissiveIntensity:2.5}),
-  ledCyan:()=>new THREE.MeshStandardMaterial({color:0x06b6d4,emissive:0x06b6d4,emissiveIntensity:2.5}),
-  ledViolet:()=>new THREE.MeshStandardMaterial({color:0xa855f7,emissive:0xa855f7,emissiveIntensity:2.5}),
-  ledMagenta:()=>new THREE.MeshStandardMaterial({color:0xd946ef,emissive:0xd946ef,emissiveIntensity:2.5}),
-  ledRGB:()=>new THREE.MeshStandardMaterial({color:0xff0080,emissive:0xff0080,emissiveIntensity:2.5}),
-  screen:()=>new THREE.MeshBasicMaterial({color:0x1a3a5a,transparent:true,opacity:0.9})
+/* ============ MATERIALS (Proxy hybrid - works as M.xyz and M.xyz()) ============ */
+const _matDefs = {
+  body: () => new THREE.MeshStandardMaterial({color:0x1a2035,roughness:0.5,metalness:0.5}),
+  dark: () => new THREE.MeshStandardMaterial({color:0x050810,roughness:0.85,metalness:0.25}),
+  gray: () => new THREE.MeshStandardMaterial({color:0x3a4250,roughness:0.6,metalness:0.4}),
+  metal: () => new THREE.MeshStandardMaterial({color:0xb0b8c8,roughness:0.3,metalness:0.85}),
+  steel: () => new THREE.MeshStandardMaterial({color:0x9098a8,roughness:0.5,metalness:0.6,side:THREE.DoubleSide}),
+  wood: () => new THREE.MeshStandardMaterial({color:0x5a3a20,roughness:0.85,metalness:0.05}),
+  woodDark: () => new THREE.MeshStandardMaterial({color:0x4a2a10,roughness:0.85,metalness:0.05}),
+  deskTop: () => new THREE.MeshStandardMaterial({color:0x2a1a10,roughness:0.35,metalness:0.1}),
+  deskEdge: () => new THREE.MeshStandardMaterial({color:0x8a5a30,roughness:0.65,metalness:0.15}),
+  carpet: () => new THREE.MeshStandardMaterial({color:0x1a1a2e,roughness:0.95,metalness:0.02}),
+  wall: () => new THREE.MeshStandardMaterial({color:0x2a2040,roughness:0.85,metalness:0.08}),
+  wallAccent: () => new THREE.MeshStandardMaterial({color:0x3a2050,roughness:0.8,metalness:0.1}),
+  ceiling: () => new THREE.MeshStandardMaterial({color:0x150a20,roughness:0.9,metalness:0.05}),
+  ceilingPanel: () => new THREE.MeshStandardMaterial({color:0xe8d0f0,emissive:0xf0c0ff,emissiveIntensity:0.4,roughness:0.7,metalness:0.1}),
+  greenScreen: () => new THREE.MeshStandardMaterial({color:0x1a8a3a,roughness:0.85,metalness:0.05}),
+  greenFrame: () => new THREE.MeshStandardMaterial({color:0x2a2a3a,roughness:0.6,metalness:0.4}),
+  glass: () => new THREE.MeshStandardMaterial({color:0x60a5fa,roughness:0.1,metalness:0.5,transparent:true,opacity:0.35}),
+  door: () => new THREE.MeshStandardMaterial({color:0x1a1f30,roughness:0.7,metalness:0.2}),
+  doorFrame: () => new THREE.MeshStandardMaterial({color:0x4a5260,roughness:0.6,metalness:0.4}),
+  controlBooth: () => new THREE.MeshStandardMaterial({color:0x2a2a3a,roughness:0.7,metalness:0.2}),
+  controlGlass: () => new THREE.MeshBasicMaterial({color:0x60a5fa,transparent:true,opacity:0.4}),
+  monitorScreen: () => new THREE.MeshBasicMaterial({color:0x1a3a7a}),
+  monitorFrame: () => new THREE.MeshStandardMaterial({color:0x0a0a0a,roughness:0.6,metalness:0.3}),
+  softbox: () => new THREE.MeshStandardMaterial({color:0xf0f0f0,emissive:0xfff8e0,emissiveIntensity:0.8,roughness:0.7,metalness:0.05}),
+  ledRed: () => new THREE.MeshStandardMaterial({color:0xff2222,emissive:0xff2222,emissiveIntensity:2.5}),
+  ledGreen: () => new THREE.MeshStandardMaterial({color:0x22ff44,emissive:0x22ff44,emissiveIntensity:2.5}),
+  ledAmber: () => new THREE.MeshStandardMaterial({color:0xfbbf24,emissive:0xfbbf24,emissiveIntensity:2.5}),
+  ledPink: () => new THREE.MeshStandardMaterial({color:0xec4899,emissive:0xec4899,emissiveIntensity:2.5}),
+  ledCyan: () => new THREE.MeshStandardMaterial({color:0x06b6d4,emissive:0x06b6d4,emissiveIntensity:2.5}),
+  ledViolet: () => new THREE.MeshStandardMaterial({color:0xa855f7,emissive:0xa855f7,emissiveIntensity:2.5}),
+  ledMagenta: () => new THREE.MeshStandardMaterial({color:0xd946ef,emissive:0xd946ef,emissiveIntensity:2.5}),
+  ledRGB: () => new THREE.MeshStandardMaterial({color:0xff0080,emissive:0xff0080,emissiveIntensity:2.5}),
+  screen: () => new THREE.MeshBasicMaterial({color:0x1a3a5a,transparent:true,opacity:0.9})
 };
+
+const _matCache = {};
+const M = {};
+
+Object.keys(_matDefs).forEach(function(name) {
+  Object.defineProperty(M, name, {
+    configurable: true,
+    get: function() {
+      if (!_matCache[name]) {
+        const mat = _matDefs[name]();
+        // Create a callable proxy that forwards everything to mat
+        let proxyRef;
+        const target = function() { return proxyRef; };
+        proxyRef = new Proxy(target, {
+          get: function(t, prop) {
+            if (prop === '__material') return mat;
+            if (prop === 'then' || prop === 'toString' || prop === 'valueOf') return undefined;
+            if (prop === Symbol.toPrimitive) return function() { return ''; };
+            if (prop === 'constructor') return Object;
+            // Forward to actual material
+            const val = mat[prop];
+            if (typeof val === 'function' && prop !== 'color' && prop !== 'emissive') {
+              return val.bind(mat);
+            }
+            return val;
+          },
+          set: function(t, prop, value) {
+            mat[prop] = value;
+            return true;
+          },
+          apply: function() { return proxyRef; },
+          has: function(t, prop) { return prop in mat; }
+        });
+        _matCache[name] = proxyRef;
+      }
+      return _matCache[name];
+    }
+  });
+});
+
 function accentMat(c,i){return new THREE.MeshStandardMaterial({color:c,emissive:c,emissiveIntensity:i||0.7,roughness:0.3,metalness:0.5});}
 
 function getSpec(cat, typeId) {
@@ -943,6 +946,14 @@ function devName(spec){return T(spec.nameKey);}
 function catName(key){return T('cat_' + key);}
 function brandName(key){return BRANDS[key] ? T('brand_' + key) : '—';}
 
+/* Capsule helper */
+function makeCapsule(r, len, cap, rad) {
+  if (typeof THREE.CapsuleGeometry === 'function') {
+    return new THREE.CapsuleGeometry(r, len, cap, rad);
+  }
+  return new THREE.SphereGeometry(r * 1.5, 12, 10);
+}
+
 /* ============ MESH FACTORY ============ */
 function makeMesh(cat, typeId, brandColor) {
   const spec = getSpec(cat, typeId); if (!spec) return null;
@@ -952,22 +963,22 @@ function makeMesh(cat, typeId, brandColor) {
 
   switch (S) {
     case 'hostMic': {
-      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.07,0.02,14), M.dark());
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.07,0.02,14), M.dark);
       g.add(base);
       const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.4,8), M.metal);
       neck.position.y = 0.2; g.add(neck);
-      const head = new THREE.Mesh(new THREE.CapsuleGeometry ? new THREE.CapsuleGeometry(0.015,0.06,6,10) : new THREE.SphereGeometry(0.02,10,8), M.dark());
+      const head = new THREE.Mesh(makeCapsule(0.015,0.06,6,10), M.dark);
       head.position.y = 0.43; g.add(head);
       const led = new THREE.Mesh(new THREE.TorusGeometry(0.05,0.006,6,16), M.ledPink);
       led.rotation.x = Math.PI/2; led.position.y = 0.015; g.add(led);
       break;
     }
     case 'hostGooseneck': {
-      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.06,0.02,14), M.dark());
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.06,0.02,14), M.dark);
       g.add(base);
       const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.007,0.007,0.4,8), M.metal);
       neck.position.y = 0.2; g.add(neck);
-      const head = new THREE.Mesh(new THREE.CapsuleGeometry ? new THREE.CapsuleGeometry(0.016,0.07,6,10) : new THREE.SphereGeometry(0.022,10,8), M.dark());
+      const head = new THREE.Mesh(makeCapsule(0.016,0.07,6,10), M.dark);
       head.position.y = 0.45; g.add(head);
       const led = new THREE.Mesh(new THREE.TorusGeometry(0.04,0.005,6,14), M.ledPink);
       led.rotation.x = Math.PI/2; led.position.y = 0.014; g.add(led);
@@ -983,18 +994,18 @@ function makeMesh(cat, typeId, brandColor) {
       break;
     }
     case 'guestMic': {
-      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.07,0.02,14), M.dark());
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.07,0.02,14), M.dark);
       g.add(base);
       const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.35,8), M.metal);
       neck.position.y = 0.175; g.add(neck);
-      const head = new THREE.Mesh(new THREE.SphereGeometry(0.018,10,8), M.dark());
+      const head = new THREE.Mesh(new THREE.SphereGeometry(0.018,10,8), M.dark);
       head.position.y = 0.37; g.add(head);
       const led = new THREE.Mesh(new THREE.TorusGeometry(0.04,0.005,6,14), M.ledPink);
       led.rotation.x = Math.PI/2; led.position.y = 0.014; g.add(led);
       break;
     }
     case 'guestBoundary': {
-      const b = new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.1,0.02,16), M.dark());
+      const b = new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.1,0.02,16), M.dark);
       g.add(b);
       const grille = new THREE.Mesh(new THREE.CircleGeometry(0.07,20), M.steel);
       grille.rotation.x = -Math.PI/2; grille.position.y = 0.012; g.add(grille);
@@ -1003,22 +1014,22 @@ function makeMesh(cat, typeId, brandColor) {
       break;
     }
     case 'guestWireless': {
-      const base = new THREE.Mesh(new THREE.BoxGeometry(0.1,0.02,0.07), M.dark());
+      const base = new THREE.Mesh(new THREE.BoxGeometry(0.1,0.02,0.07), M.dark);
       g.add(base);
       const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.007,0.007,0.3,8), M.metal);
       neck.position.y = 0.15; g.add(neck);
-      const head = new THREE.Mesh(new THREE.SphereGeometry(0.018,10,8), M.dark());
+      const head = new THREE.Mesh(new THREE.SphereGeometry(0.018,10,8), M.dark);
       head.position.y = 0.32; g.add(head);
       const led = new THREE.Mesh(new THREE.TorusGeometry(0.04,0.005,6,14), M.ledAmber);
       led.rotation.x = Math.PI/2; led.position.y = 0.015; g.add(led);
       break;
     }
     case 'panelMic': {
-      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.08,0.02,16), M.dark());
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.08,0.02,16), M.dark);
       g.add(base);
       const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.009,0.009,0.5,8), M.metal);
       neck.position.y = 0.25; g.add(neck);
-      const head = new THREE.Mesh(new THREE.CapsuleGeometry ? new THREE.CapsuleGeometry(0.018,0.08,6,10) : new THREE.SphereGeometry(0.025,10,8), M.dark());
+      const head = new THREE.Mesh(makeCapsule(0.018,0.08,6,10), M.dark);
       head.position.y = 0.55; g.add(head);
       const led = new THREE.Mesh(new THREE.TorusGeometry(0.05,0.006,6,16), M.ledPink);
       led.rotation.x = Math.PI/2; led.position.y = 0.016; g.add(led);
@@ -1034,7 +1045,7 @@ function makeMesh(cat, typeId, brandColor) {
     case 'lavPro': {
       const b = new THREE.Mesh(new THREE.SphereGeometry(0.04,14,12), accentMat(color, 1.4));
       b.position.y = 0.5; g.add(b);
-      const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,0.05,12), M.dark());
+      const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,0.05,12), M.dark);
       cap.position.y = 0.45; g.add(cap);
       const clip = new THREE.Mesh(new THREE.TorusGeometry(0.05,0.007,6,14), M.gray);
       clip.rotation.x = Math.PI/2; clip.position.y = 0.4; g.add(clip);
@@ -1057,7 +1068,7 @@ function makeMesh(cat, typeId, brandColor) {
       const earR = earL.clone(); earR.position.x = 0.15; g.add(earR);
       const mic = new THREE.Mesh(new THREE.CylinderGeometry(0.01,0.01,0.18,6), M.metal);
       mic.position.set(0.15, 0.38, 0.08); mic.rotation.z = 0.6; g.add(mic);
-      const cap = new THREE.Mesh(new THREE.SphereGeometry(0.02,10,8), M.dark());
+      const cap = new THREE.Mesh(new THREE.SphereGeometry(0.02,10,8), M.dark);
       cap.position.set(0.22, 0.28, 0.14); g.add(cap);
       const led = new THREE.Mesh(new THREE.SphereGeometry(0.012,8,6), M.ledPink);
       led.position.set(-0.15, 0.52, 0.04); g.add(led);
@@ -1068,7 +1079,7 @@ function makeMesh(cat, typeId, brandColor) {
       hook.rotation.x = Math.PI/2; hook.position.y = 0.5; g.add(hook);
       const mic = new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,0.22,6), M.metal);
       mic.position.set(0.08, 0.4, 0.05); mic.rotation.z = -0.3; g.add(mic);
-      const cap = new THREE.Mesh(new THREE.SphereGeometry(0.018,10,8), M.dark());
+      const cap = new THREE.Mesh(new THREE.SphereGeometry(0.018,10,8), M.dark);
       cap.position.set(0.14, 0.3, 0.1); g.add(cap);
       break;
     }
@@ -1086,7 +1097,7 @@ function makeMesh(cat, typeId, brandColor) {
     case 'studioMonSm': {
       const b = new THREE.Mesh(new THREE.BoxGeometry(0.28,0.4,0.28), M.body);
       b.castShadow = true; g.add(b);
-      const w = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,0.02,16), M.dark());
+      const w = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,0.02,16), M.dark);
       w.rotation.x = Math.PI/2; w.position.set(0,-0.08,0.15); g.add(w);
       const wr = new THREE.Mesh(new THREE.RingGeometry(0.08,0.1,16), M.ledViolet);
       wr.position.set(0,-0.08,0.152); g.add(wr);
@@ -1097,7 +1108,7 @@ function makeMesh(cat, typeId, brandColor) {
     case 'studioMonLg': {
       const b = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.55,0.38), M.body);
       b.castShadow = true; g.add(b);
-      const w = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.12,0.025,20), M.dark());
+      const w = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.12,0.025,20), M.dark);
       w.rotation.x = Math.PI/2; w.position.set(0,-0.1,0.2); g.add(w);
       const wr = new THREE.Mesh(new THREE.RingGeometry(0.12,0.15,20), M.ledViolet);
       wr.position.set(0,-0.1,0.203); g.add(wr);
@@ -1111,12 +1122,12 @@ function makeMesh(cat, typeId, brandColor) {
       const b = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.35,0.4), M.body);
       b.castShadow = true; g.add(b);
       for (let i=0;i<2;i++) {
-        const w = new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.09,0.02,16), M.dark());
+        const w = new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.09,0.02,16), M.dark);
         w.rotation.x = Math.PI/2; w.position.set(-0.15+i*0.3, 0, 0.21); g.add(w);
         const wr = new THREE.Mesh(new THREE.RingGeometry(0.09,0.12,16), M.ledViolet);
         wr.position.set(-0.15+i*0.3, 0, 0.212); g.add(wr);
       }
-      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.15,0.08), M.screen());
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.15,0.08), M.screen);
       screen.position.set(0, 0.1, 0.21); g.add(screen);
       break;
     }
@@ -1147,7 +1158,7 @@ function makeMesh(cat, typeId, brandColor) {
         const b = new THREE.Mesh(new THREE.BoxGeometry(1.2,0.36,0.75), M.body);
         b.castShadow = true; b.position.y = -0.7 + k*0.4; g.add(b);
         for (let i=0;i<5;i++) {
-          const d = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.1,0.016,16), M.dark());
+          const d = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.1,0.016,16), M.dark);
           d.rotation.z = Math.PI/2; d.position.set(-0.44+i*0.22, -0.7+k*0.4, 0.39); g.add(d);
         }
         const t = new THREE.Mesh(new THREE.BoxGeometry(1.2,0.02,0.75), M.ledPink);
@@ -1162,7 +1173,7 @@ function makeMesh(cat, typeId, brandColor) {
         const b = new THREE.Mesh(new THREE.BoxGeometry(1.5,0.4,0.95), M.body);
         b.castShadow = true; b.position.y = -1.5 + k*0.44; g.add(b);
         for (let i=0;i<6;i++) {
-          const d = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.12,0.018,16), M.dark());
+          const d = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.12,0.018,16), M.dark);
           d.rotation.z = Math.PI/2; d.position.set(-0.56+i*0.23, -1.5+k*0.44, 0.49); g.add(d);
         }
         const t = new THREE.Mesh(new THREE.BoxGeometry(1.5,0.022,0.95), M.ledPink);
@@ -1176,7 +1187,7 @@ function makeMesh(cat, typeId, brandColor) {
       const box = new THREE.Mesh(new THREE.BoxGeometry(1.6,1,0.9), M.body);
       box.castShadow = true; g.add(box);
       for (let i=0;i<2;i++) {
-        const gr = new THREE.Mesh(new THREE.CircleGeometry(0.38,24), M.dark());
+        const gr = new THREE.Mesh(new THREE.CircleGeometry(0.38,24), M.dark);
         gr.position.set(-0.4+i*0.8, 0, 0.46); g.add(gr);
         const ring = new THREE.Mesh(new THREE.RingGeometry(0.38,0.46,24), M.ledPink);
         ring.position.set(-0.4+i*0.8, 0, 0.462); g.add(ring);
@@ -1202,7 +1213,7 @@ function makeMesh(cat, typeId, brandColor) {
       break;
     }
     case 'ceilingPendant': {
-      const cable = new THREE.Mesh(new THREE.CylinderGeometry(0.006,0.006,1.5,6), M.dark());
+      const cable = new THREE.Mesh(new THREE.CylinderGeometry(0.006,0.006,1.5,6), M.dark);
       cable.position.y = 0.75; g.add(cable);
       const body = new THREE.Mesh(new THREE.SphereGeometry(0.18,20,14), M.body);
       g.add(body);
@@ -1215,7 +1226,7 @@ function makeMesh(cat, typeId, brandColor) {
     case 'deskMon': {
       const b = new THREE.Mesh(new THREE.BoxGeometry(0.22,0.3,0.22), M.body);
       b.castShadow = true; g.add(b);
-      const w = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,0.02,14), M.dark());
+      const w = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,0.02,14), M.dark);
       w.rotation.x = Math.PI/2; w.position.set(0,-0.06,0.12); g.add(w);
       const wr = new THREE.Mesh(new THREE.RingGeometry(0.06,0.08,14), M.ledPink);
       wr.position.set(0,-0.06,0.122); g.add(wr);
@@ -1224,7 +1235,7 @@ function makeMesh(cat, typeId, brandColor) {
     case 'deskMonLg': {
       const b = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.4,0.3), M.body);
       b.castShadow = true; g.add(b);
-      const w = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,0.025,16), M.dark());
+      const w = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,0.025,16), M.dark);
       w.rotation.x = Math.PI/2; w.position.set(0,-0.08,0.16); g.add(w);
       const wr = new THREE.Mesh(new THREE.RingGeometry(0.08,0.1,16), M.ledPink);
       wr.position.set(0,-0.08,0.162); g.add(wr);
@@ -1259,13 +1270,13 @@ function makeMesh(cat, typeId, brandColor) {
       break;
     }
     case 'ptz4k': {
-      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.11,0.13,0.05,16), M.dark());
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.11,0.13,0.05,16), M.dark);
       g.add(base);
       const panBase = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.11,0.07,16), M.body);
       panBase.position.y = 0.06; g.add(panBase);
       const tilt = new THREE.Mesh(new THREE.SphereGeometry(0.09,16,12), M.body);
       tilt.position.y = 0.17; g.add(tilt);
-      const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.06,0.1,16), M.dark());
+      const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.06,0.1,16), M.dark);
       lens.rotation.x = Math.PI/2; lens.position.set(0, 0.17, 0.1); g.add(lens);
       const glass = new THREE.Mesh(new THREE.CircleGeometry(0.045,16), M.ledCyan);
       glass.position.set(0, 0.17, 0.155); g.add(glass);
@@ -1274,13 +1285,13 @@ function makeMesh(cat, typeId, brandColor) {
       break;
     }
     case 'ptzSpeaker': {
-      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.14,0.05,16), M.dark());
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.14,0.05,16), M.dark);
       g.add(base);
       const panBase = new THREE.Mesh(new THREE.CylinderGeometry(0.11,0.12,0.08,16), M.body);
       panBase.position.y = 0.065; g.add(panBase);
       const tilt = new THREE.Mesh(new THREE.SphereGeometry(0.1,16,12), M.body);
       tilt.position.y = 0.19; g.add(tilt);
-      const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.055,0.065,0.11,16), M.dark());
+      const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.055,0.065,0.11,16), M.dark);
       lens.rotation.x = Math.PI/2; lens.position.set(0, 0.19, 0.11); g.add(lens);
       const glass = new THREE.Mesh(new THREE.CircleGeometry(0.05,16), M.ledMagenta);
       glass.position.set(0, 0.19, 0.17); g.add(glass);
@@ -1289,31 +1300,31 @@ function makeMesh(cat, typeId, brandColor) {
       break;
     }
     case 'ptzWide': {
-      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.13,0.15,0.05,16), M.dark());
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.13,0.15,0.05,16), M.dark);
       g.add(base);
       const panBase = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.13,0.08,16), M.body);
       panBase.position.y = 0.065; g.add(panBase);
       const tilt = new THREE.Mesh(new THREE.SphereGeometry(0.11,16,12), M.body);
       tilt.position.y = 0.2; g.add(tilt);
-      const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.065,0.075,0.13,16), M.dark());
+      const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.065,0.075,0.13,16), M.dark);
       lens.rotation.x = Math.PI/2; lens.position.set(0, 0.2, 0.13); g.add(lens);
       const glass = new THREE.Mesh(new THREE.CircleGeometry(0.06,16), M.ledCyan);
       glass.position.set(0, 0.2, 0.195); g.add(glass);
       break;
     }
     case 'ptzCeiling': {
-      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.15,0.05,16), M.dark());
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.14,0.15,0.05,16), M.dark);
       g.add(base);
       const dome = new THREE.Mesh(new THREE.SphereGeometry(0.13,20,12,0,Math.PI*2,Math.PI/2,Math.PI/2), M.body);
       dome.position.y = -0.02; g.add(dome);
-      const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.06,0.08,16), M.dark());
+      const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.06,0.08,16), M.dark);
       lens.rotation.x = Math.PI/2; lens.position.set(0, -0.15, 0.06); g.add(lens);
       const glass = new THREE.Mesh(new THREE.CircleGeometry(0.045,16), M.ledCyan);
       glass.position.set(0, -0.15, 0.11); g.add(glass);
       break;
     }
     case 'fixedWide': {
-      const body = new THREE.Mesh(new THREE.BoxGeometry(0.22,0.15,0.28), M.dark());
+      const body = new THREE.Mesh(new THREE.BoxGeometry(0.22,0.15,0.28), M.dark);
       body.castShadow = true; g.add(body);
       const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.07,0.14,16), M.body);
       lens.rotation.x = Math.PI/2; lens.position.set(0, 0, 0.19); g.add(lens);
@@ -1324,7 +1335,7 @@ function makeMesh(cat, typeId, brandColor) {
       break;
     }
     case 'fixedClose': {
-      const body = new THREE.Mesh(new THREE.BoxGeometry(0.2,0.14,0.32), M.dark());
+      const body = new THREE.Mesh(new THREE.BoxGeometry(0.2,0.14,0.32), M.dark);
       body.castShadow = true; g.add(body);
       const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.08,0.2,16), M.body);
       lens.rotation.x = Math.PI/2; lens.position.set(0, 0, 0.22); g.add(lens);
@@ -1335,7 +1346,7 @@ function makeMesh(cat, typeId, brandColor) {
       break;
     }
     case 'fixedShoulder': {
-      const body = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.22,0.4), M.dark());
+      const body = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.22,0.4), M.dark);
       body.castShadow = true; g.add(body);
       const grip = new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,0.2,10), M.body);
       grip.rotation.z = Math.PI/2; grip.position.set(0.18, 0.05, 0); g.add(grip);
@@ -1354,7 +1365,7 @@ function makeMesh(cat, typeId, brandColor) {
         const led = new THREE.Mesh(new THREE.SphereGeometry(0.018,8,6), [M.ledGreen, M.ledAmber, M.ledCyan][i]);
         led.position.set(-0.15 + i*0.07, 0.15, 0.18); g.add(led);
       }
-      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.22,0.14), M.screen());
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.22,0.14), M.screen);
       screen.position.set(0.08, -0.05, 0.176); g.add(screen);
       break;
     }
@@ -1370,9 +1381,9 @@ function makeMesh(cat, typeId, brandColor) {
       break;
     }
     case 'trackingSensor': {
-      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.08,0.035,16), M.dark());
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.08,0.035,16), M.dark);
       g.add(base);
-      const dome = new THREE.Mesh(new THREE.SphereGeometry(0.055,16,10,0,Math.PI*2,0,Math.PI/2), M.glass());
+      const dome = new THREE.Mesh(new THREE.SphereGeometry(0.055,16,10,0,Math.PI*2,0,Math.PI/2), M.glass);
       dome.position.y = 0.017; g.add(dome);
       const led = new THREE.Mesh(new THREE.SphereGeometry(0.016,8,6), M.ledRed);
       led.position.set(0, 0.045, 0.045); g.add(led);
@@ -1387,7 +1398,7 @@ function makeMesh(cat, typeId, brandColor) {
         const led = new THREE.Mesh(new THREE.SphereGeometry(0.012,6,6), M.ledCyan);
         led.position.set(-0.05 + i*0.05, 0.05, 0.18); g.add(led);
       }
-      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.15,0.08), M.screen());
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(0.15,0.08), M.screen);
       screen.position.set(0.15, -0.02, 0.18); g.add(screen);
       break;
     }
@@ -1407,7 +1418,6 @@ function makeMesh(cat, typeId, brandColor) {
         const btn = new THREE.Mesh(new THREE.BoxGeometry(0.04,0.03,0.02), [M.ledRed, M.ledGreen, M.ledAmber, M.ledCyan][i%4]);
         btn.position.set(-0.19 + i*0.05, 0.02, 0.18); g.add(btn);
       }
-      /* T-bar */
       const tbar = new THREE.Mesh(new THREE.BoxGeometry(0.03,0.15,0.03), M.metal);
       tbar.position.set(0, 0, 0.2); g.add(tbar);
       break;
@@ -1453,7 +1463,7 @@ function makeMesh(cat, typeId, brandColor) {
     case 'backupDeck': {
       const b = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.15,0.3), M.body);
       g.add(b);
-      const slot = new THREE.Mesh(new THREE.BoxGeometry(0.15,0.06,0.02), M.dark());
+      const slot = new THREE.Mesh(new THREE.BoxGeometry(0.15,0.06,0.02), M.dark);
       slot.position.set(0, 0, 0.16); g.add(slot);
       break;
     }
@@ -1464,12 +1474,10 @@ function makeMesh(cat, typeId, brandColor) {
       base.position.y = -2.9; g.add(base);
       const head = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.35,0.15), M.body);
       head.castShadow = true; g.add(head);
-      const panel = new THREE.Mesh(new THREE.PlaneGeometry(0.36,0.3), M.softbox());
+      const panel = new THREE.Mesh(new THREE.PlaneGeometry(0.36,0.3), M.softbox);
       panel.position.set(0, 0, 0.08); g.add(panel);
-      /* LED indicator */
       const led = new THREE.Mesh(new THREE.SphereGeometry(0.02,8,6), M.ledAmber);
       led.position.set(-0.15, 0.12, 0.09); g.add(led);
-      /* Light emission */
       const light = new THREE.PointLight(0xfff0d0, 0.6, 8, 2);
       light.position.set(0, 0, 0.3); g.add(light);
       break;
@@ -1481,7 +1489,7 @@ function makeMesh(cat, typeId, brandColor) {
       base.position.y = -2.7; g.add(base);
       const head = new THREE.Mesh(new THREE.BoxGeometry(0.35,0.3,0.13), M.body);
       head.castShadow = true; g.add(head);
-      const panel = new THREE.Mesh(new THREE.PlaneGeometry(0.32,0.26), M.softbox());
+      const panel = new THREE.Mesh(new THREE.PlaneGeometry(0.32,0.26), M.softbox);
       panel.position.set(0, 0, 0.07); g.add(panel);
       const light = new THREE.PointLight(0xd0e0ff, 0.4, 7, 2);
       light.position.set(0, 0, 0.25); g.add(light);
@@ -1494,7 +1502,7 @@ function makeMesh(cat, typeId, brandColor) {
       base.position.y = -2.5; g.add(base);
       const head = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.28,0.12), M.body);
       head.castShadow = true; g.add(head);
-      const panel = new THREE.Mesh(new THREE.PlaneGeometry(0.26,0.24), M.softbox());
+      const panel = new THREE.Mesh(new THREE.PlaneGeometry(0.26,0.24), M.softbox);
       panel.position.set(0, 0, 0.06); g.add(panel);
       const light = new THREE.PointLight(0xffa0c0, 0.5, 6, 2);
       light.position.set(0, 0, 0.2); g.add(light);
@@ -1505,7 +1513,7 @@ function makeMesh(cat, typeId, brandColor) {
       pole.position.y = -1.4; g.add(pole);
       const base = new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.28,0.15,14), M.gray);
       base.position.y = -2.7; g.add(base);
-      const panel = new THREE.Mesh(new THREE.BoxGeometry(0.7,0.7,0.05), M.softbox());
+      const panel = new THREE.Mesh(new THREE.BoxGeometry(0.7,0.7,0.05), M.softbox);
       panel.position.y = 0.15; g.add(panel);
       const frame = new THREE.Mesh(new THREE.BoxGeometry(0.75,0.75,0.08), M.body);
       frame.position.y = 0.15; g.add(frame);
@@ -1520,7 +1528,6 @@ function makeMesh(cat, typeId, brandColor) {
       base.position.y = -2.5; g.add(base);
       const bar = new THREE.Mesh(new THREE.BoxGeometry(0.08,0.7,0.08), M.body);
       bar.position.y = 0.3; g.add(bar);
-      /* RGB LEDs */
       for (let i=0;i<4;i++) {
         const led = new THREE.Mesh(new THREE.BoxGeometry(0.06,0.1,0.06), M.ledRGB);
         led.position.set(0, 0.1 + i*0.15, 0); g.add(led);
@@ -1532,24 +1539,23 @@ function makeMesh(cat, typeId, brandColor) {
       pole.position.y = -1.15; g.add(pole);
       const base = new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.28,0.15,14), M.gray);
       base.position.y = -2.2; g.add(base);
-      const ring = new THREE.Mesh(new THREE.TorusGeometry(0.28,0.06,10,24), M.softbox());
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(0.28,0.06,10,24), M.softbox);
       ring.rotation.x = Math.PI/2; ring.position.y = 0.15; g.add(ring);
-      const center = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,0.06,16), M.dark());
+      const center = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,0.06,16), M.dark);
       center.rotation.x = Math.PI/2; center.position.set(0, 0.15, 0); g.add(center);
       const light = new THREE.PointLight(0xfff0e0, 0.5, 5, 2);
       light.position.set(0, 0.15, 0.2); g.add(light);
       break;
     }
     case 'greenScreen': {
-      const screen = new THREE.Mesh(new THREE.PlaneGeometry(12, 3.5), M.greenScreen());
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(12, 3.5), M.greenScreen);
       screen.position.set(0, 1.75, 0); g.add(screen);
-      /* Frame top */
-      const topFrame = new THREE.Mesh(new THREE.BoxGeometry(12.2, 0.1, 0.1), M.greenFrame());
+      const topFrame = new THREE.Mesh(new THREE.BoxGeometry(12.2, 0.1, 0.1), M.greenFrame);
       topFrame.position.set(0, 3.5, 0); g.add(topFrame);
       break;
     }
     case 'greenFrame': {
-      const frame = new THREE.Mesh(new THREE.BoxGeometry(12, 0.08, 0.08), M.greenFrame());
+      const frame = new THREE.Mesh(new THREE.BoxGeometry(12, 0.08, 0.08), M.greenFrame);
       frame.position.set(0, 0, 0); g.add(frame);
       break;
     }
@@ -1560,11 +1566,9 @@ function makeMesh(cat, typeId, brandColor) {
       base.position.y = -1.9; g.add(base);
       const body = new THREE.Mesh(new THREE.BoxGeometry(0.6,0.4,0.25), M.body);
       body.castShadow = true; g.add(body);
-      /* Prompt screen (semi-transparent) */
       const glass = new THREE.Mesh(new THREE.PlaneGeometry(0.5,0.3),
         new THREE.MeshBasicMaterial({color:0x0a3a5a,transparent:true,opacity:0.6}));
       glass.position.set(0, 0.1, 0.13); g.add(glass);
-      /* LED */
       const led = new THREE.Mesh(new THREE.SphereGeometry(0.015,8,6), M.ledGreen);
       led.position.set(-0.2, -0.15, 0.13); g.add(led);
       break;
@@ -1651,7 +1655,7 @@ function makeMesh(cat, typeId, brandColor) {
     case 'emgStrobe': {
       const d = new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.09,0.02,20), M.body);
       g.add(d);
-      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.07,20), M.dark());
+      const gr = new THREE.Mesh(new THREE.CircleGeometry(0.07,20), M.dark);
       gr.rotation.x = Math.PI/2; gr.position.y = -0.012; g.add(gr);
       const r = new THREE.Mesh(new THREE.RingGeometry(0.07,0.09,20), M.ledRed);
       r.rotation.x = -Math.PI/2; r.position.y = -0.013; g.add(r);
@@ -1680,13 +1684,12 @@ function makeMesh(cat, typeId, brandColor) {
 function clearGroup(g) {
   while (g.children.length) {
     const c = g.children[0]; g.remove(c);
-    c.traverse?.(o => {
-      if (o.geometry) o.geometry.dispose();
-      if (o.material) {
-        if (Array.isArray(o.material)) o.material.forEach(m => m.dispose());
-        else o.material.dispose();
-      }
-    });
+    if (c.traverse) {
+      c.traverse(function(o) {
+        if (o.geometry) o.geometry.dispose();
+        // Do NOT dispose materials (they are shared/cached in M)
+      });
+    }
   }
 }
 
@@ -1695,16 +1698,16 @@ function buildRoom() {
 
   for (const f of ROOM.features) {
     if (f.type === 'floor') {
-      const fl = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.05, f.d), M.carpet());
+      const fl = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.05, f.d), M.carpet);
       fl.position.set(f.x, 0.025, f.z); fl.receiveShadow = true; roomGrp.add(fl);
     }
 
     if (f.type === 'ceiling') {
-      const ceil = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.1, f.d), M.ceiling());
+      const ceil = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.1, f.d), M.ceiling);
       ceil.position.set(f.x, f.h, f.z); roomGrp.add(ceil);
       for (let i=0;i<10;i++) {
         for (let j=0;j<8;j++) {
-          const panel = new THREE.Mesh(new THREE.BoxGeometry(1.4,0.06,1.4), M.ceilingPanel());
+          const panel = new THREE.Mesh(new THREE.BoxGeometry(1.4,0.06,1.4), M.ceilingPanel);
           panel.position.set(-6.3 + i*1.4, f.h - 0.04, -4.9 + j*1.4);
           roomGrp.add(panel);
         }
@@ -1716,16 +1719,15 @@ function buildRoom() {
     }
 
     if (f.type === 'wall') {
-      const wall = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.h, f.d), M.wall());
+      const wall = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.h, f.d), M.wall);
       wall.position.set(f.x, f.h/2, f.z); wall.receiveShadow = true; roomGrp.add(wall);
-      /* Wall accent panels */
       const isSide = f.w < f.d;
       const length = isSide ? f.d : f.w;
       for (let i=0;i<Math.floor(length/3);i++) {
         for (let r=0;r<2;r++) {
           const panel = new THREE.Mesh(
             new THREE.BoxGeometry(isSide ? 0.02 : 2.8, 1.4, isSide ? 2.8 : 0.02),
-            r % 2 === 0 ? M.wallAccent() : M.wall()
+            r % 2 === 0 ? M.wallAccent : M.wall
           );
           const y = 1 + r * 1.8;
           if (isSide) panel.position.set(f.x + (f.x>0?-0.02:0.02), y, f.z - length/2 + 1.5 + i*3);
@@ -1736,78 +1738,65 @@ function buildRoom() {
     }
 
     if (f.type === 'greenscreen') {
-      /* Green screen backdrop */
-      const screen = new THREE.Mesh(new THREE.PlaneGeometry(f.w, f.h), M.greenScreen());
+      const screen = new THREE.Mesh(new THREE.PlaneGeometry(f.w, f.h), M.greenScreen);
       screen.position.set(f.x, f.h/2 + 0.05, f.z); roomGrp.add(screen);
-      /* Top frame */
-      const topFrame = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.2, 0.1, 0.1), M.greenFrame());
+      const topFrame = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.2, 0.1, 0.1), M.greenFrame);
       topFrame.position.set(f.x, f.h + 0.05, f.z); roomGrp.add(topFrame);
-      /* Side frames */
       for (const sx of [-1, 1]) {
-        const sideFrame = new THREE.Mesh(new THREE.BoxGeometry(0.1, f.h, 0.1), M.greenFrame());
+        const sideFrame = new THREE.Mesh(new THREE.BoxGeometry(0.1, f.h, 0.1), M.greenFrame);
         sideFrame.position.set(f.x + sx*f.w/2, f.h/2 + 0.05, f.z); roomGrp.add(sideFrame);
       }
-      /* Bottom frame */
-      const botFrame = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.2, 0.1, 0.1), M.greenFrame());
+      const botFrame = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.2, 0.1, 0.1), M.greenFrame);
       botFrame.position.set(f.x, 0.05, f.z); roomGrp.add(botFrame);
     }
 
     if (f.type === 'anchorDesk') {
-      /* Main anchor desk */
-      const top = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.08, f.d), M.deskTop());
+      const top = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.08, f.d), M.deskTop);
       top.position.set(f.x, f.H, f.z); top.castShadow = true; top.receiveShadow = true; roomGrp.add(top);
-      const edge = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.1, 0.05, f.d + 0.1), M.deskEdge());
+      const edge = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.1, 0.05, f.d + 0.1), M.deskEdge);
       edge.position.set(f.x, f.H - 0.04, f.z); roomGrp.add(edge);
-      /* Table front panel */
-      const front = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.H - 0.1, 0.05), M.deskEdge());
+      const front = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.H - 0.1, 0.05), M.deskEdge);
       front.position.set(f.x, f.H/2 - 0.05, f.z - f.d/2 + 0.02); roomGrp.add(front);
-      /* Legs */
       for (const sx of [-1, 1]) {
         const leg = new THREE.Mesh(new THREE.BoxGeometry(0.15, f.H - 0.1, f.d - 0.2), M.gray);
         leg.position.set(f.x + sx*(f.w/2 - 0.4), (f.H - 0.1)/2, f.z); roomGrp.add(leg);
       }
-      /* Monitor on desk */
       const monBase = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.02, 0.15), M.body);
       monBase.position.set(f.x, f.H + 0.05, f.z + 0.3); roomGrp.add(monBase);
       const monPost = new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.3,8), M.metal);
       monPost.position.set(f.x, f.H + 0.2, f.z + 0.3); roomGrp.add(monPost);
-      const monScreen = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.4, 0.03), M.monitorFrame());
+      const monScreen = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.4, 0.03), M.monitorFrame);
       monScreen.position.set(f.x, f.H + 0.55, f.z + 0.3); roomGrp.add(monScreen);
-      const monDisplay = new THREE.Mesh(new THREE.PlaneGeometry(0.66, 0.36), M.monitorScreen());
+      const monDisplay = new THREE.Mesh(new THREE.PlaneGeometry(0.66, 0.36), M.monitorScreen);
       monDisplay.position.set(f.x, f.H + 0.55, f.z + 0.32); roomGrp.add(monDisplay);
     }
 
     if (f.type === 'guestTable' || f.type === 'cohostDesk') {
-      const top = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.06, f.d), M.deskTop());
+      const top = new THREE.Mesh(new THREE.BoxGeometry(f.w, 0.06, f.d), M.deskTop);
       top.position.set(f.x, f.H, f.z); top.castShadow = true; roomGrp.add(top);
-      const edge = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.1, 0.04, f.d + 0.1), M.deskEdge());
-      edge.position.set(f.x, f.H - 0.03, f.z); roomGrp.add(edge.);
-      /* Legs */
-      for (const sx oftheta [-1, 1]) {
-        const leg) = new THREE.Mesh(new THREE.BoxGeometry(0. -1, f.H - 0.08, f.d - dy 0.2), M.gray);
-        leg.position.set(f.x + sx*(f.w/2 - 0.3), (f.H - 0.08)/2, f.z); roomGrp.add(leg);
+      const edge = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.1, 0.04, f.d + 0.1), M.deskEdge);
+      edge.position.set(f.x, f.H - 0.03, f.z); roomGrp.add(edge);
+      for (const sx of [-1, 1]) {
+        const leg = new THREE.Mesh(new THREE.BoxGeometry(0.1, f.H - 0.08, f.d - 0.2), M.gray);
+        leg.position.set(f.x + sx*(f.w/2 - 0.3), (f.H - 0.08)/2, f.z);
+        roomGrp.add(leg);
       }
     }
 
     if (f.type === 'controlRoom') {
-      /* Control room structure */
-      const body = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.H, f.d), M.controlBooth());
+      const body = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.H, f.d), M.controlBooth);
       body.position.set(f.x, f.H/2, f.z); body.castShadow = true; roomGrp.add(body);
-      const roof = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.3, 0.2, f.d + 0.3), M.wall());
+      const roof = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.3, 0.2, f.d + 0.3), M.wall);
       roof.position.set(f.x, f.H + 0.1, f.z); roomGrp.add(roof);
-      /* Glass window (front) */
-      const glass = new THREE.Mesh(new THREE.PlaneGeometry(f.w - 1, f.H - 1.2), M.controlGlass());
+      const glass = new THREE.Mesh(new THREE.PlaneGeometry(f.w - 1, f.H - 1.2), M.controlGlass);
       glass.position.set(f.x, f.H/2, f.z - f.d/2 - 0.01); roomGrp.add(glass);
-      /* "ON AIR" sign */
-      const sign = new THREE.Mesh(new THREE.PlaneGeometry(2.5, 0.6), M.ledRed());
+      const sign = new THREE.Mesh(new THREE.PlaneGeometry(2.5, 0.6), M.ledRed);
       sign.position.set(f.x, f.H - 0.4, f.z - f.d/2 - 0.02); roomGrp.add(sign);
-      /* Door */
-      const door = new THREE.Mesh(new THREE.BoxGeometry(0.9, 2.2, 0.06), M.door());
+      const door = new THREE.Mesh(new THREE.BoxGeometry(0.9, 2.2, 0.06), M.door);
       door.position.set(f.x + f.w/2 - 0.8, 1.1, f.z - f.d/2 - 0.04); roomGrp.add(door);
     }
 
     if (f.type === 'prompter') {
-      /* Teleprompter pole */
       const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.08, 1.5, 10), M.metal);
       pole.position.set(f.x, 0.75, f.z); roomGrp.add(pole);
       const base = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.3, 0.15, 14), M.gray);
@@ -1820,40 +1809,36 @@ function buildRoom() {
     }
 
     if (f.type === 'door') {
-      const frame = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.15, f.h + 0.1, 0.1), M.doorFrame());
+      const frame = new THREE.Mesh(new THREE.BoxGeometry(f.w + 0.15, f.h + 0.1, 0.1), M.doorFrame);
       frame.position.set(f.x, f.h/2 + 0.05, f.z); roomGrp.add(frame);
-      const door = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.h, 0.06), M.door());
+      const door = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.h, 0.06), M.door);
       door.position.set(f.x, f.h/2, f.z + 0.06); roomGrp.add(door);
       const handle = new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.2,10), M.metal);
       handle.rotation.z = Math.PI/2;
       handle.position.set(f.x + f.w/2 - 0.15, f.h/2, f.z + 0.11); roomGrp.add(handle);
-      /* Exit sign */
-      const exitSign = new THREE.Mesh(new THREE.PlaneGeometry(0.6, 0.3), M.ledGreen());
+      const exitSign = new THREE.Mesh(new THREE.PlaneGeometry(0.6, 0.3), M.ledGreen);
       exitSign.position.set(f.x, f.h + 0.3, f.z); roomGrp.add(exitSign);
     }
   }
 
-  /* Add chairs at desks */
   const chairPositions = [
-    /* Anchor desk chairs */
     [-1.5, 3.2, Math.PI],
     [0, 3.2, Math.PI],
     [1.5, 3.2, Math.PI],
-    /* Guest table chairs */
     [-6, 1.3, 0],
     [-5, 1.3, 0],
     [-4, 1.3, 0],
-    /* Co-host chairs */
     [4, 1.3, 0],
     [5, 1.3, 0],
     [6, 1.3, 0]
   ];
 
-  chairPositions.forEach(([cx, cz, ry]) => {
+  chairPositions.forEach(function(cp) {
+    const cx = cp[0], cz = cp[1], ry = cp[2];
     const chair = new THREE.Group();
     const seat = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.08, 0.5), M.body);
     seat.position.y = 0.45; chair.add(seat);
-    const back = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.55, 0.07), M.dark());
+    const back = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.55, 0.07), M.dark);
     back.position.set(0, 0.72, 0.25); chair.add(back);
     const post = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.06,0.35,10), M.gray);
     post.position.y = 0.22; chair.add(post);
@@ -1861,7 +1846,7 @@ function buildRoom() {
     base.position.y = 0.03; chair.add(base);
     for (let i=0;i<5;i++) {
       const a = (i/5)*Math.PI*2;
-      const wheel = new THREE.Mesh(new THREE.SphereGeometry(0.04,8,6), M.dark());
+      const wheel = new THREE.Mesh(new THREE.SphereGeometry(0.04,8,6), M.dark);
       wheel.position.set(Math.cos(a)*0.22, 0.04, Math.sin(a)*0.22);
       chair.add(wheel);
     }
@@ -1904,7 +1889,7 @@ function buildHeatmap() {
   disposeHeat();
   if (!state.showHeat) return;
   const speakers = state.devices.filter(d =>
-    ['mainPA','ceilingSpk','deskMon','studioMon','delay','paging','emergency'].includes(d.cat)
+    ['mainPA','ceilingSpk','deskMon','studioMon','delay','paging','emergency'].indexOf(d.cat) !== -1
   );
   if (!speakers.length) {
     document.getElementById('hudSpl').textContent = '—';
@@ -1929,7 +1914,7 @@ function buildHeatmap() {
 function calcSPL(x, z) {
   let tot = 0;
   for (const spk of state.devices) {
-    if (!['mainPA','ceilingSpk','deskMon','studioMon','delay','paging','emergency'].includes(spk.cat)) continue;
+    if (['mainPA','ceilingSpk','deskMon','studioMon','delay','paging','emergency'].indexOf(spk.cat) === -1) continue;
     const spec = getSpec(spk.cat, spk.typeId);
     if (!spec || !spec.power) continue;
     const power = spk.power || spec.power;
@@ -2146,7 +2131,7 @@ canvas.addEventListener('pointermove', e => {
     } else {
       state.cam.tween = null;
       const ps = state.cam.radius * 0.0018;
-      state.cam.target.x -= (dx*Math.cos(state.cam*Math.sin(state.cam.theta)) * ps;
+      state.cam.target.x -= (dx*Math.cos(state.cam.theta) - dy*Math.sin(state.cam.theta)) * ps;
       state.cam.target.z -= (dx*Math.sin(state.cam.theta) + dy*Math.cos(state.cam.theta)) * ps;
       updateCamera();
     }
@@ -2397,7 +2382,7 @@ function generateReport() {
       <div class="row"><span>${T('rep_paging')}</span><span style="color:${hasPaging?'#ec4899':'#fbbf24'}">${hasPaging ? (LANG==='ar'?'نشط':'Active') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
       <div class="row"><span>${T('rep_emergency')}</span><span style="color:${hasEmergency?'#ec4899':'#fbbf24'}">${hasEmergency ? (LANG==='ar'?'مطابق (نشط)':'Compliant (Active)') : (LANG==='ar'?'غير مُهيَّأ':'Not configured')}</span></div>
       <div class="row"><span>${T('rep_broadcast')}</span><span style="color:#ec4899">${LANG==='ar'?'مطابق EBU':'EBU Compliant'}</span></div>
-      <div class="row"><span>${T('rep_recording')}</span><span style="color:#ec4899">${LANG==='ar'?'4K HDR':'4K HDR'}</span></div>
+      <div class="row"><span>${T('rep_recording')}</span><span style="color:#ec4899">4K HDR</span></div>
       <div class="row"><span>${T('rep_streaming_std')}</span><span style="color:#ec4899">${LANG==='ar'?'مدعوم':'Supported'}</span></div>
       <div class="row"><span>${T('rep_iso')}</span><span style="color:#ec4899">${LANG==='ar'?'مطابق':'Compliant'}</span></div>
       <div class="row"><span>${T('rep_iec')}</span><span style="color:#ec4899">${LANG==='ar'?'مطابق':'Compliant'}</span></div>
@@ -2562,14 +2547,24 @@ function animate() {
 }
 
 function init() {
-  applyLang();
-  buildCats(); buildBrands(); buildTypes();
-  loadInitialDevices();
-  onResize();
-  animate();
-  setTimeout(() => document.getElementById('loader').classList.add('off'), 600);
-  console.log('%c✅ AURALIS · Webinar Studio ready · Broadcast · Streaming · Production',
-    'color:#ec4899;font-weight:bold;font-size:14px');
+  try {
+    applyLang();
+    buildCats(); buildBrands(); buildTypes();
+    loadInitialDevices();
+    onResize();
+    updateCamera();
+    animate();
+    setTimeout(() => document.getElementById('loader').classList.add('off'), 600);
+    console.log('%c✅ AURALIS · Webinar Studio ready · Broadcast · Streaming · Production',
+      'color:#ec4899;font-weight:bold;font-size:14px');
+  } catch (err) {
+    console.error('❌ INIT ERROR:', err, err.stack);
+    const loader = document.getElementById('loader');
+    if (loader) {
+      loader.classList.add('off');
+      document.getElementById('loaderTxt').textContent = 'ERROR: ' + err.message;
+    }
+  }
 }
 
 init();
