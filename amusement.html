@@ -110,13 +110,15 @@ header.hide{transform:translateY(-110%)}
   font-family:'JetBrains Mono',monospace;min-width:42px;text-align:end}
 .info .numInput{width:64px;background:var(--card);border:1px solid var(--line);
   color:var(--txt);border-radius:6px;padding:3px 6px;font-family:inherit;font-size:11px}
-.info .actions{display:flex;gap:6px;margin-top:12px}
+.info .actions{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
 .info .actions button{flex:1;padding:9px;border-radius:10px;font-family:inherit;
   font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--line);
-  background:var(--card);color:var(--txt);transition:all .2s}
+  background:var(--card);color:var(--txt);transition:all .2s;min-width:60px}
 .info .actions button:hover{background:rgba(255,255,255,.05)}
 .info .actions button.del{background:rgba(255,122,156,.15);color:var(--rose);
   border-color:rgba(255,122,156,.4)}
+.info .actions button.dup{background:rgba(77,229,255,.15);color:var(--cyn);
+  border-color:rgba(77,229,255,.4)}
 .picker{position:fixed;bottom:0;left:0;right:0;z-index:80;padding:10px 12px;
   padding-bottom:calc(10px + env(safe-area-inset-bottom,0));
   background:var(--panel);backdrop-filter:blur(24px);
@@ -243,6 +245,8 @@ header.hide{transform:translateY(-110%)}
     <span class="flag">🌐</span>
     <span class="label" id="langLabel">EN</span>
   </button>
+  <button class="btn" id="dayNightBtn" title="Day / Night">☀️</button>
+  <button class="btn" id="fwBtn" title="Fireworks">🎆</button>
   <button class="btn" id="reportBtn" data-i18n-title="report_tip">📄</button>
   <button class="btn" id="viewBtn">🎬 3D</button>
   <button class="btn" id="shotBtn" data-i18n-title="shot_tip">📸</button>
@@ -257,6 +261,8 @@ header.hide{transform:translateY(-110%)}
 
 <div class="tools" id="tools">
   <button class="tool on" id="heatBtn" data-i18n-title="heat_tip">🌡️</button>
+  <button class="tool" id="wavesBtn" title="Sound Waves">📢</button>
+  <button class="tool on" id="crowdBtn" title="Crowd">👥</button>
   <button class="tool" id="fitBtn" data-i18n-title="fit_tip">🎯</button>
   <button class="tool on" id="gridBtn" data-i18n-title="grid_tip">▦</button>
   <button class="tool" id="saveBtn" data-i18n-title="save_tip">💾</button>
@@ -292,6 +298,7 @@ header.hide{transform:translateY(-110%)}
     <input type="number" id="roomDInput" class="numInput" min="4" max="300">
   </div>
   <div class="actions">
+    <button class="dup" id="dupBtn" data-i18n="act_duplicate">📋 Copy</button>
     <button class="del" id="delBtn" data-i18n="act_delete">🗑️ Delete</button>
   </div>
 </div>
@@ -335,7 +342,7 @@ const I18N = {
     save_tip:'حفظ', load_tip:'فتح', clear_tip:'حذف الكل',
     inf_category:'الفئة', inf_power:'القوة', inf_height:'الارتفاع',
     inf_position:'الموقع', inf_room_w:'العرض', inf_room_d:'الطول',
-    sl_power:'القوة', sl_rotation:'الاتجاه', act_delete:'🗑️ حذف',
+    sl_power:'القوة', sl_rotation:'الاتجاه', act_delete:'🗑️ حذف', act_duplicate:'📋 نسخ',
     rep_title:'التقرير الهندسي الصوتي',
     rep_print:'🖨️ طباعة / حفظ PDF', rep_close:'إغلاق',
     pres_start:'🎥 بدء العرض',
@@ -374,6 +381,9 @@ const I18N = {
     to_heat_on:'🌡️ التغطية مفعّلة', to_heat_off:'🌡️ التغطية مغلقة',
     to_pres_on:'🎥 وضع العرض', to_pres_off:'✏️ وضع التحرير',
     to_invalid:'ملف غير صالح', to_confirm_clear:'حذف كل الأجهزة؟',
+    to_duplicated:'📋 تم النسخ', to_day:'☀️ نهار', to_night:'🌙 ليل',
+    to_fw:'🎆 ألعاب نارية!', to_waves_on:'📢 موجات صوتية', to_waves_off:'📢 موجات مغلقة',
+    to_crowd_on:'👥 الحشد مفعّل', to_crowd_off:'👥 الحشد مغلق',
     rep_env_info:'معلومات البيئة', rep_equip:'جدول المعدات',
     rep_analysis:'التحليل الصوتي',
     rep_env_type:'نوع البيئة', rep_dim:'الأبعاد', rep_total_dev:'عدد الأجهزة',
@@ -396,7 +406,7 @@ const I18N = {
     save_tip:'Save', load_tip:'Load', clear_tip:'Clear',
     inf_category:'Category', inf_power:'Power', inf_height:'Height',
     inf_position:'Position', inf_room_w:'Width', inf_room_d:'Depth',
-    sl_power:'Power', sl_rotation:'Rotation', act_delete:'🗑️ Delete',
+    sl_power:'Power', sl_rotation:'Rotation', act_delete:'🗑️ Delete', act_duplicate:'📋 Copy',
     rep_title:'Acoustic Design Report',
     rep_print:'🖨️ Print / Save PDF', rep_close:'Close',
     pres_start:'🎥 Start Presentation',
@@ -435,11 +445,13 @@ const I18N = {
     to_heat_on:'🌡️ Heatmap ON', to_heat_off:'🌡️ Heatmap OFF',
     to_pres_on:'🎥 Presentation mode', to_pres_off:'✏️ Edit mode',
     to_invalid:'Invalid file', to_confirm_clear:'Delete all devices?',
+    to_duplicated:'📋 Duplicated', to_day:'☀️ Daylight', to_night:'🌙 Night',
+    to_fw:'🎆 Fireworks!', to_waves_on:'📢 Waves ON', to_waves_off:'📢 Waves OFF',
+    to_crowd_on:'👥 Crowd ON', to_crowd_off:'👥 Crowd OFF',
     rep_env_info:'Environment Info', rep_equip:'Equipment List',
     rep_analysis:'Acoustic Analysis',
-    rep_env_type:'Environment', rep_dim:'Dimensions',
-    rep_total_dev:'Total devices', rep_total_power:'Total power',
-    rep_date:'Date',
+    rep_env_type:'Environment', rep_dim:'Dimensions', rep_total_dev:'Total devices',
+    rep_total_power:'Total power', rep_date:'Date',
     rep_max_spl:'Max SPL', rep_coverage:'Coverage',
     rep_status:'Status', rep_status_good:'Excellent',
     rep_device:'Device', rep_qty:'Qty', rep_empty:'No devices',
@@ -548,7 +560,7 @@ const CATS = {
   ]}
 };
 
-/* Amusement Park: 120×100m — Rides + Midway + Shows + Parade + Entrance */
+/* Amusement Park: 120×100m */
 const ROOM = {
   name:{ ar:'مدينة ألعاب', en:'Amusement Park' },
   size:[120, 100],
@@ -579,13 +591,11 @@ const ROOM = {
     { type:'restroom',   x:15, z:-35, w:8, d:6 }
   ],
   devices:[
-    /* === ENTRANCE === */
     ['audibax','entrance','entrance',-8,42,0],
     ['audibax','entrance','entrance',0,42,0],
     ['audibax','entrance','entrance',8,42,0],
     ['audibax','entrance','ticket',-15,42,0],
     ['audibax','entrance','ticket',15,42,0],
-    /* === MIDWAY === */
     ['motivity','midway','midway',-5,35,0],
     ['motivity','midway','midway',5,35,0],
     ['motivity','midway','midway',-5,25,0],
@@ -606,42 +616,34 @@ const ROOM = {
     ['audiocenter','midway','pole',12,-30,0],
     ['motivity','midway','balloon',-12,35,0],
     ['motivity','midway','balloon',12,35,0],
-    /* === FERRIS WHEEL === */
     ['yamaha','rides','ferris',-35,-20,0],
     ['yamaha','rides','ferris',-35,-15,0],
     ['yamaha','rides','ferris',-35,-25,0],
-    /* === COASTER === */
     ['community','rides','coaster',15,-30,0],
     ['community','rides','coaster',25,-30,0],
     ['community','rides','coaster',35,-30,0],
     ['community','rides','coaster',25,-20,0],
-    /* === CAROUSEL === */
     ['audiocenter','rides','carousel',30,5,0],
     ['audiocenter','rides','carousel',40,5,0],
     ['audiocenter','rides','carousel',35,0,0],
     ['audiocenter','rides','carousel',35,10,0],
-    /* === DROP TOWER === */
     ['audibax','rides','drop',-8,-35,0],
     ['audibax','rides','drop',0,-35,0],
     ['audibax','rides','drop',8,-35,0],
-    /* === THEMED RIDE (castle) === */
     ['yamaha','rides','ride_theme',-10,0,0],
     ['yamaha','rides','ride_theme',10,0,0],
     ['yamaha','rides','ride_theme',0,10,0],
     ['yamaha','rides','ride_theme',0,-10,0],
-    /* Generic ride speakers */
     ['jbl','rides','ride_spk',-20,10,0],
     ['jbl','rides','ride_spk',20,10,0],
     ['jbl','rides','ride_spk',-20,-10,0],
     ['jbl','rides','ride_spk',20,-10,0],
-    /* === SHOW THEATER === */
     ['audibax','shows','linearray',-45,18,0.2],
     ['audibax','shows','linearray',-35,18,-0.2],
     ['audibax','shows','show_spk',-40,20,0],
     ['audibax','shows','show_spk',-40,26,0],
     ['audibax','shows','show_spk',-35,24,0],
     ['audibax','shows','show_spk',-45,24,0],
-    /* === PARADE === */
     ['audiocenter','parade','parade',-5,40,0],
     ['audiocenter','parade','parade',5,40,0],
     ['audiocenter','parade','parade',-5,20,0],
@@ -654,7 +656,6 @@ const ROOM = {
     ['audiocenter','parade','float',0,10,0],
     ['audiocenter','parade','float',0,-10,0],
     ['audiocenter','parade','float',0,-30,0],
-    /* === FOOD COURT === */
     ['bose','food','food',-38,32,0],
     ['bose','food','food',-30,32,0],
     ['bose','food','food',-22,32,0],
@@ -669,7 +670,6 @@ const ROOM = {
     ['bose','food','icecream',15,20,0],
     ['bose','food','candy',-15,-20,0],
     ['bose','food','candy',15,-20,0],
-    /* === PAGING SYSTEM === */
     ['toa','paging','paging_horn',-55,-45,Math.PI/4],
     ['toa','paging','paging_horn',55,-45,-Math.PI/4],
     ['toa','paging','paging_horn',-55,45,3*Math.PI/4],
@@ -682,7 +682,6 @@ const ROOM = {
     ['toa','paging','paging_ceiling',25,-15,0],
     ['toa','paging','paging_ceiling',-25,15,0],
     ['toa','paging','paging_ceiling',25,15,0],
-    /* === EMERGENCY === */
     ['community','emergency','emg_horn',-55,-45,Math.PI/4],
     ['community','emergency','emg_horn',55,-45,-Math.PI/4],
     ['community','emergency','emg_horn',-55,45,3*Math.PI/4],
@@ -693,7 +692,6 @@ const ROOM = {
     ['community','emergency','emg_strobe',-35,45,Math.PI],
     ['community','emergency','emg_strobe',0,45,Math.PI],
     ['community','emergency','emg_strobe',35,45,Math.PI],
-    /* === MICS === */
     ['shure','mics','announcer',0,42,Math.PI],
     ['shure','mics','handheld',0,20,0],
     ['shure','mics','shotgun',-15,30,Math.PI/4],
@@ -703,7 +701,6 @@ const ROOM = {
     ['shure','mics','lav',-40,20,0],
     ['shure','mics','host',0,30,0],
     ['shure','mics','crowd',-20,0,0],
-    /* === AMPS + CONTROL === */
     ['community','amps','rack',58,-45,-Math.PI/4],
     ['community','amps','dsp',57,-45,-Math.PI/4],
     ['community','amps','zone_amp',56,-45,-Math.PI/4],
@@ -719,7 +716,10 @@ const state = {
   curBrand: 'motivity', curCat: 'rides', curType: 'ride_spk',
   selected: null, view3D: true, showHeat: true, showGrid: true, presentation: false,
   cam: { theta:-0.4, phi:0.9, radius:160, target:new THREE.Vector3(0,4,0), tween:null },
-  history: [], historyIdx: -1
+  history: [], historyIdx: -1,
+  dayNight: 'night', showWaves: false, showCrowd: true,
+  animated: [], fireworks: [], crowd: null,
+  waveTimer: 0, _fwTimer: 0
 };
 
 /* ============ THREE SETUP ============ */
@@ -1296,7 +1296,7 @@ function makeMesh(cat, typeId, brandColor) {
   return g;
 }
 
-/* ============ BUILD ROOM (Amusement Park) ============ */
+/* ============ BUILD ROOM ============ */
 function clearGroup(g) {
   while (g.children.length) {
     const c = g.children[0]; g.remove(c);
@@ -1312,6 +1312,7 @@ function clearGroup(g) {
 
 function buildRoom() {
   clearGroup(roomGrp);
+  state.animated = [];
 
   for (const f of ROOM.features) {
     if (f.type === 'ground') {
@@ -1389,96 +1390,131 @@ function buildRoom() {
     }
 
     if (f.type === 'ferris') {
-      const hub = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 1, 12), M.ferrisFrame());
-      hub.rotation.z = Math.PI/2; hub.position.set(f.x, f.r + 2, f.z); hub.castShadow = true; roomGrp.add(hub);
-      for (let ring=0;ring<2;ring++) {
-        const rr = ring === 0 ? f.r : f.r * 0.7;
-        const torus = new THREE.Mesh(new THREE.TorusGeometry(rr, 0.15, 8, 24), M.ferrisFrame());
-        torus.rotation.y = Math.PI/2; torus.position.set(f.x, f.r + 2, f.z); roomGrp.add(torus);
-      }
+      const hubY = f.r + 2;
+      const wheel = new THREE.Group();
+      wheel.position.set(f.x, hubY, f.z);
+      roomGrp.add(wheel);
+
+      const hub = new THREE.Mesh(new THREE.CylinderGeometry(1,1,1,12), M.ferrisFrame());
+      hub.rotation.x = Math.PI/2; wheel.add(hub);
+
+      [f.r, f.r*0.7].forEach(rr => {
+        const t = new THREE.Mesh(new THREE.TorusGeometry(rr, 0.15, 8, 28), M.ferrisFrame());
+        wheel.add(t);
+      });
+
       for (let i=0;i<12;i++) {
         const a = (i/12)*Math.PI*2;
-        const spoke = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, f.r*2, 6), M.ferrisFrame());
-        spoke.rotation.z = Math.PI/2;
-        spoke.rotation.y = a;
-        spoke.position.set(f.x, f.r + 2, f.z); roomGrp.add(spoke);
-        const cx = f.x + Math.cos(a) * f.r;
-        const cy = f.r + 2 + Math.sin(a) * f.r;
-        const cab = new THREE.Mesh(new THREE.BoxGeometry(1.5, 1.2, 1.5),
-          [M.ferrisCab(), M.ferrisCab2(), M.ferrisCab3()][i%3]);
-        cab.position.set(cx, cy, f.z);
-        cab.rotation.z = -a;
-        cab.castShadow = true;
-        roomGrp.add(cab);
+        const sp = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.1,f.r*2,6), M.ferrisFrame());
+        sp.rotation.z = a - Math.PI/2;
+        wheel.add(sp);
       }
-      for (const side of [-1, 1]) {
-        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.5, f.r + 4, 10), M.ferrisFrame());
-        leg.position.set(f.x + side * 3, (f.r + 4)/2, f.z);
-        leg.rotation.z = side * 0.2;
+
+      const cabins = [];
+      for (let i=0;i<12;i++) {
+        const a = (i/12)*Math.PI*2;
+        const cab = new THREE.Mesh(new THREE.BoxGeometry(1.5,1.2,1.5),
+          [M.ferrisCab(), M.ferrisCab2(), M.ferrisCab3()][i%3]);
+        cab.position.set(Math.cos(a)*f.r, Math.sin(a)*f.r, 0);
+        cab.castShadow = true;
+        wheel.add(cab);
+        cabins.push(cab);
+      }
+
+      for (const side of [-1,1]) {
+        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.5,hubY+2,10), M.ferrisFrame());
+        leg.position.set(f.x + side*3, hubY/2, f.z);
+        leg.rotation.z = side*0.15;
         leg.castShadow = true;
         roomGrp.add(leg);
       }
-      const plat = new THREE.Mesh(new THREE.BoxGeometry(8, 0.3, 6), M.concrete());
+      const plat = new THREE.Mesh(new THREE.BoxGeometry(8,0.3,6), M.concrete());
       plat.position.set(f.x, 0.15, f.z + 2); roomGrp.add(plat);
+
+      state.animated.push((t, dt) => {
+        wheel.rotation.z -= dt * 0.28;
+        cabins.forEach(c => { c.rotation.z = -wheel.rotation.z; });
+      });
     }
 
     if (f.type === 'coaster') {
-      const waypoints = [
-        {x: f.x - 20, z: f.z + 5, y: 3},
-        {x: f.x - 15, z: f.z - 5, y: 8},
-        {x: f.x - 5, z: f.z - 15, y: 12},
-        {x: f.x + 5, z: f.z - 18, y: 15},
-        {x: f.x + 15, z: f.z - 15, y: 10},
-        {x: f.x + 20, z: f.z - 5, y: 6},
-        {x: f.x + 18, z: f.z + 5, y: 9},
-        {x: f.x + 8, z: f.z + 10, y: 5},
-        {x: f.x - 5, z: f.z + 10, y: 4},
-        {x: f.x - 20, z: f.z + 5, y: 3}
+      const pts = [
+        new THREE.Vector3(f.x-20, 3, f.z+5),
+        new THREE.Vector3(f.x-15, 8, f.z-5),
+        new THREE.Vector3(f.x-5, 12, f.z-15),
+        new THREE.Vector3(f.x+5, 15, f.z-18),
+        new THREE.Vector3(f.x+15, 10, f.z-15),
+        new THREE.Vector3(f.x+20, 6, f.z-5),
+        new THREE.Vector3(f.x+18, 9, f.z+5),
+        new THREE.Vector3(f.x+8, 5, f.z+10),
+        new THREE.Vector3(f.x-5, 4, f.z+10)
       ];
-      for (let i=0;i<waypoints.length - 1;i++) {
-        const a = waypoints[i], b = waypoints[i+1];
-        const dx = b.x - a.x, dy = b.y - a.y, dz = b.z - a.z;
-        const len = Math.sqrt(dx*dx + dy*dy + dz*dz);
-        const track = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, len, 8), M.coasterTrack());
-        track.position.set((a.x+b.x)/2, (a.y+b.y)/2, (a.z+b.z)/2);
-        track.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), new THREE.Vector3(dx,dy,dz).normalize());
-        roomGrp.add(track);
-        if (i % 2 === 0) {
-          const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.25, a.y, 8), M.coasterSupport());
-          pole.position.set(a.x, a.y/2, a.z); roomGrp.add(pole);
+      const curve = new THREE.CatmullRomCurve3(pts, true, 'catmullrom', 0.5);
+
+      const tubeGeo = new THREE.TubeGeometry(curve, 200, 0.28, 8, true);
+      const trackMesh = new THREE.Mesh(tubeGeo, M.coasterTrack());
+      roomGrp.add(trackMesh);
+
+      pts.forEach(p => {
+        if (p.y > 0.5) {
+          const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.22,p.y,8), M.coasterSupport());
+          pole.position.set(p.x, p.y/2, p.z);
+          roomGrp.add(pole);
         }
+      });
+
+      const cart = new THREE.Group();
+      const cbody = new THREE.Mesh(new THREE.BoxGeometry(0.9,0.5,1.5), M.candy1());
+      cart.add(cbody);
+      for (let k=0;k<4;k++) {
+        const rider = new THREE.Mesh(new THREE.SphereGeometry(0.22,10,8), M.candy5());
+        rider.position.set(-0.3 + (k%2)*0.6, 0.4, -0.4 + Math.floor(k/2)*0.8);
+        cart.add(rider);
       }
+      roomGrp.add(cart);
+
+      let progress = 0;
+      state.animated.push((t, dt) => {
+        progress = (progress + dt * 0.09) % 1;
+        const pos = curve.getPointAt(progress);
+        const tan = curve.getTangentAt(progress);
+        cart.position.copy(pos);
+        cart.rotation.y = Math.atan2(tan.x, tan.z);
+      });
     }
 
     if (f.type === 'carousel') {
-      const base = new THREE.Mesh(new THREE.CylinderGeometry(f.r, f.r, 0.4, 24), M.carouselBody());
-      base.position.set(f.x, 0.2, f.z); base.castShadow = true; roomGrp.add(base);
-      const deck = new THREE.Mesh(new THREE.CylinderGeometry(f.r - 0.3, f.r - 0.3, 0.1, 24), M.candy2());
-      deck.position.set(f.x, 0.45, f.z); roomGrp.add(deck);
-      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 7, 16), M.castleGold());
-      pole.position.set(f.x, 3.5, f.z); roomGrp.add(pole);
-      const roof = new THREE.Mesh(new THREE.ConeGeometry(f.r + 0.5, 3, 24), M.carouselRoof());
-      roof.position.set(f.x, 7, f.z); roomGrp.add(roof);
-      const topBall = new THREE.Mesh(new THREE.SphereGeometry(0.4, 12, 10), M.ledAmber);
-      topBall.position.set(f.x, 9, f.z); roomGrp.add(topBall);
+      const staticGrp = new THREE.Group(); roomGrp.add(staticGrp);
+      const rotating = new THREE.Group();
+      rotating.position.set(f.x, 0, f.z);
+      roomGrp.add(rotating);
+
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(f.r,f.r,0.4,24), M.carouselBody());
+      base.position.set(f.x, 0.2, f.z); base.receiveShadow = true; staticGrp.add(base);
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.4,0.4,7,16), M.castleGold());
+      pole.position.set(f.x, 3.5, f.z); staticGrp.add(pole);
+
+      const deck = new THREE.Mesh(new THREE.CylinderGeometry(f.r-0.3,f.r-0.3,0.1,24), M.candy2());
+      deck.position.y = 0.45; rotating.add(deck);
+      const roof = new THREE.Mesh(new THREE.ConeGeometry(f.r+0.5, 3, 24), M.carouselRoof());
+      roof.position.y = 7; rotating.add(roof);
+      const ball = new THREE.Mesh(new THREE.SphereGeometry(0.4,12,10), M.ledAmber);
+      ball.position.y = 9; rotating.add(ball);
+
       for (let i=0;i<8;i++) {
-        const a = (i/8) * Math.PI * 2;
-        const hx = f.x + Math.cos(a) * (f.r - 1.5);
-        const hz = f.z + Math.sin(a) * (f.r - 1.5);
-        const body = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.8, 0.6),
-          [M.candy1(), M.candy2(), M.candy3(), M.candy4()][i%4]);
-        body.position.set(hx, 1.5, hz); body.rotation.y = -a; roomGrp.add(body);
-        const head = new THREE.Mesh(new THREE.SphereGeometry(0.35, 12, 10), M.candy5());
-        head.position.set(hx + Math.cos(a)*0.9, 2.0, hz + Math.sin(a)*0.9); roomGrp.add(head);
-        const supportPole = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 3, 6), M.castleGold());
-        supportPole.position.set(hx, 3, hz); roomGrp.add(supportPole);
+        const a = (i/8)*Math.PI*2;
+        const hx = Math.cos(a) * (f.r - 1.5);
+        const hz = Math.sin(a) * (f.r - 1.5);
+        const body = new THREE.Mesh(new THREE.BoxGeometry(1.5,0.8,0.6),
+          [M.candy1(),M.candy2(),M.candy3(),M.candy4()][i%4]);
+        body.position.set(hx, 1.5, hz); body.rotation.y = -a; rotating.add(body);
+        const head = new THREE.Mesh(new THREE.SphereGeometry(0.35,12,10), M.candy5());
+        head.position.set(hx + Math.cos(a)*0.9, 2.0, hz + Math.sin(a)*0.9); rotating.add(head);
+        const sp = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,3,6), M.castleGold());
+        sp.position.set(hx, 3, hz); rotating.add(sp);
       }
-      for (let i=0;i<12;i++) {
-        const a = (i/12) * Math.PI * 2;
-        const stripe = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.5, 0.5), M.candy1());
-        stripe.position.set(f.x + Math.cos(a)*f.r, 0.4, f.z + Math.sin(a)*f.r);
-        roomGrp.add(stripe);
-      }
+
+      state.animated.push((t, dt) => { rotating.rotation.y += dt * 0.35; });
     }
 
     if (f.type === 'dropTower') {
@@ -1492,14 +1528,32 @@ function buildRoom() {
       cap.position.set(f.x, f.H + 0.5, f.z); roomGrp.add(cap);
       const beacon = new THREE.Mesh(new THREE.SphereGeometry(0.6, 12, 10), M.ledRed);
       beacon.position.set(f.x, f.H + 1.5, f.z); roomGrp.add(beacon);
-      const gondola = new THREE.Mesh(new THREE.CylinderGeometry(3.5, 3.5, 1.5, 12, 1, false), M.body);
-      gondola.position.set(f.x, 6, f.z); gondola.castShadow = true; roomGrp.add(gondola);
+
+      const movingGondola = new THREE.Mesh(
+        new THREE.CylinderGeometry(3.5, 3.5, 1.5, 12, 1, false), M.body
+      );
+      movingGondola.castShadow = true;
+      roomGrp.add(movingGondola);
+      const riders = [];
       for (let i=0;i<8;i++) {
         const a = (i/8) * Math.PI * 2;
-        const rider = new THREE.Mesh(new THREE.SphereGeometry(0.3, 8, 6), M.candy5());
-        rider.position.set(f.x + Math.cos(a)*2.5, 6.8, f.z + Math.sin(a)*2.5);
-        roomGrp.add(rider);
+        const r = new THREE.Mesh(new THREE.SphereGeometry(0.3,8,6), M.candy5());
+        r.userData.off = new THREE.Vector3(Math.cos(a)*2.5, 0.8, Math.sin(a)*2.5);
+        roomGrp.add(r); riders.push(r);
       }
+      state.animated.push((t) => {
+        const cycle = (t % 12) / 12;
+        let y;
+        if (cycle < 0.35) y = 6 + (cycle/0.35) * (f.H - 7);
+        else if (cycle < 0.5) y = f.H - 1;
+        else if (cycle < 0.72) y = Math.max(6, (f.H-1) - ((cycle-0.5)/0.22) * (f.H - 7));
+        else y = 6 + Math.sin((cycle-0.72)*18) * 0.25;
+        movingGondola.position.set(f.x, y, f.z);
+        riders.forEach(r => {
+          r.position.set(f.x + r.userData.off.x, y + r.userData.off.y, f.z + r.userData.off.z);
+        });
+      });
+
       const base = new THREE.Mesh(new THREE.CylinderGeometry(5, 5, 0.3, 16), M.concrete());
       base.position.set(f.x, 0.15, f.z); roomGrp.add(base);
     }
@@ -1619,22 +1673,208 @@ function buildRoom() {
   }
 }
 
-/* ============ DEVICES ============ */
+/* ============ FIREWORKS ============ */
+const FW_COLORS = [0xff3344, 0xfbbf24, 0x4de5ff, 0x4fe4b8, 0xec4899, 0x9b7bff];
+function launchFirework(x, y, z) {
+  const count = 90;
+  const geo = new THREE.BufferGeometry();
+  const pos = new Float32Array(count * 3);
+  const vels = [];
+  for (let i=0;i<count;i++) {
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.acos(2 * Math.random() - 1);
+    const speed = 3 + Math.random() * 6;
+    vels.push({
+      x: Math.sin(phi)*Math.cos(theta)*speed,
+      y: Math.cos(phi)*speed,
+      z: Math.sin(phi)*Math.sin(theta)*speed
+    });
+    pos[i*3]=x; pos[i*3+1]=y; pos[i*3+2]=z;
+  }
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  const color = FW_COLORS[Math.floor(Math.random()*FW_COLORS.length)];
+  const mat = new THREE.PointsMaterial({
+    color, size: 0.45, transparent: true, opacity: 1,
+    blending: THREE.AdditiveBlending, depthWrite: false
+  });
+  const pts = new THREE.Points(geo, mat);
+  scene.add(pts);
+  const flash = new THREE.PointLight(color, 3, 40, 2);
+  flash.position.set(x, y, z); scene.add(flash);
+  state.fireworks.push({
+    mesh: pts, vels, flash,
+    start: performance.now(), dur: 2600,
+    update() {
+      const p = (performance.now() - this.start) / this.dur;
+      if (p >= 1) {
+        scene.remove(this.mesh); scene.remove(this.flash);
+        this.mesh.geometry.dispose(); this.mesh.material.dispose();
+        return false;
+      }
+      const arr = this.mesh.geometry.attributes.position.array;
+      const dt = 0.028;
+      for (let i=0;i<this.vels.length;i++) {
+        const v = this.vels[i];
+        arr[i*3] += v.x*dt; arr[i*3+1] += v.y*dt; arr[i*3+2] += v.z*dt;
+        v.y -= 6 * dt;
+        v.x *= 0.985; v.z *= 0.985;
+      }
+      this.mesh.geometry.attributes.position.needsUpdate = true;
+      this.mesh.material.opacity = Math.max(0, 1 - p*1.2);
+      this.flash.intensity = Math.max(0, 3 * (1 - p*3));
+      return true;
+    }
+  });
+}
+function launchRandomFirework() {
+  launchFirework(
+    (Math.random()-0.5) * 60,
+    30 + Math.random() * 15,
+    (Math.random()-0.5) * 40
+  );
+}
+
+/* ============ SOUND WAVES ============ */
+function emitSoundWave(d, spec) {
+  const geo = new THREE.RingGeometry(0.4, 0.6, 28);
+  const color = BRANDS[d.brand]?.color || 0x4de5ff;
+  const mat = new THREE.MeshBasicMaterial({
+    color, transparent: true, opacity: 0.55,
+    side: THREE.DoubleSide, depthWrite: false
+  });
+  const ring = new THREE.Mesh(geo, mat);
+  ring.position.set(d.x, spec.h * 0.9, d.z);
+  ring.rotation.x = -Math.PI/2;
+  scene.add(ring);
+  const dur = 1800;
+  const maxR = 4 + (d.power || spec.power) * 0.15;
+  const start = performance.now();
+  state.animated.push(function update(t, dt) {
+    const p = (performance.now() - start) / dur;
+    if (p >= 1) {
+      scene.remove(ring); geo.dispose(); mat.dispose();
+      return false;
+    }
+    ring.scale.setScalar(1 + p * maxR);
+    mat.opacity = 0.55 * (1 - p);
+    return true;
+  });
+}
+
+/* ============ DAY / NIGHT ============ */
+function applyDayNight() {
+  const isDay = state.dayNight === 'day';
+  scene.background = new THREE.Color(isDay ? 0x87ceeb : 0x1a0a20);
+  scene.fog.color.setHex(isDay ? 0xb8d8e8 : 0x1a0a20);
+  scene.fog.near = isDay ? 250 : 180;
+  scene.fog.far = isDay ? 600 : 500;
+  sun.color.setHex(isDay ? 0xffffff : 0xfff0ff);
+  sun.intensity = isDay ? 1.6 : 1.3;
+  fill.intensity = isDay ? 0.5 : 0.35;
+  floorMesh.material.color.setHex(isDay ? 0x3a5a3a : 0x2a1030);
+  renderer.toneMappingExposure = isDay ? 1.3 : 1.15;
+
+  roomGrp.traverse(o => {
+    if (o.isMesh) {
+      const mats = Array.isArray(o.material) ? o.material : [o.material];
+      mats.forEach(mat => {
+        if (mat && mat.emissive && (mat.emissive.r + mat.emissive.g + mat.emissive.b > 0)) {
+          mat.emissiveIntensity = isDay ? 0.25 : 2.0;
+        }
+      });
+    }
+  });
+
+  const btn = document.getElementById('dayNightBtn');
+  if (btn) btn.textContent = isDay ? '🌙' : '☀️';
+}
+
+/* ============ DUPLICATE ============ */
+function duplicateSelected() {
+  if (state.selected === null) return;
+  const src = state.devices.find(d => d.id === state.selected);
+  if (!src) return;
+  const spec = getSpec(src.cat, src.typeId); if (!spec) return;
+  const copy = { ...src, id: state.nextId++, x: src.x + 3, z: src.z + 3 };
+  state.devices.push(copy);
+  addDeviceMesh(copy);
+  if (state.showHeat) buildHeatmap();
+  updateHUD(); pushHistory();
+  select(copy.id);
+  toast(T('to_duplicated'));
+}
+
+/* ============ CROWD ============ */
+function buildCrowd() {
+  if (state.crowd) {
+    scene.remove(state.crowd.mesh);
+    state.crowd.mesh.geometry.dispose();
+    state.crowd.mesh.material.dispose();
+    state.crowd = null;
+  }
+  if (!state.showCrowd) return;
+  const N = 180;
+  const geo = new THREE.CylinderGeometry(0.18, 0.22, 1.0, 6);
+  const mat = new THREE.MeshStandardMaterial({ color: 0xdd88aa, roughness: 0.9 });
+  const inst = new THREE.InstancedMesh(geo, mat, N);
+  inst.castShadow = true;
+  const dummy = new THREE.Object3D();
+  const positions = [];
+  const colors = [0xff8899, 0xffbbaa, 0x88ccff, 0xffdd88, 0xaaffcc, 0xddaaff];
+  for (let i=0;i<N;i++) {
+    let x, z;
+    if (Math.random() < 0.55) {
+      x = (Math.random()-0.5) * 8;
+      z = (Math.random()-0.5) * 80;
+    } else {
+      x = (Math.random()-0.5) * 110;
+      z = (Math.random()-0.5) * 90;
+    }
+    positions.push({ x, z, speed: 0.4 + Math.random() * 0.7, phase: Math.random() * Math.PI * 2 });
+    dummy.position.set(x, 0.6, z);
+    dummy.scale.setScalar(0.9 + Math.random() * 0.3);
+    dummy.updateMatrix();
+    inst.setMatrixAt(i, dummy.matrix);
+    inst.setColorAt(i, new THREE.Color(colors[i % colors.length]));
+  }
+  inst.instanceMatrix.needsUpdate = true;
+  if (inst.instanceColor) inst.instanceColor.needsUpdate = true;
+  scene.add(inst);
+  state.crowd = { mesh: inst, positions, dummy };
+}
+
+/* ============ DEVICES (FIXED) ============ */
 const meshById = new Map();
+
+/* ⚡ إضافة سريعة: جهاز واحد فقط — بدون إعادة بناء الكل */
+function addDeviceMesh(d) {
+  const spec = getSpec(d.cat, d.typeId); if (!spec) return;
+  const color = BRANDS[d.brand] ? BRANDS[d.brand].color : 0x4de5ff;
+  const mesh = makeMesh(d.cat, d.typeId, color); if (!mesh) return;
+  mesh.position.set(d.x, spec.h, d.z);
+  mesh.rotation.y = d.rot || 0;
+  mesh.userData.devId = d.id;
+  mesh.userData.dev = d;
+  mesh.userData.spec = spec;
+
+  // تأثير ظهور
+  mesh.scale.setScalar(0.01);
+  const startT = performance.now();
+  state.animated.push(() => {
+    const p = Math.min(1, (performance.now() - startT) / 400);
+    const e = p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p+2, 3)/2;
+    mesh.scale.setScalar(e);
+    return p < 1;
+  });
+
+  devGrp.add(mesh);
+  meshById.set(d.id, mesh);
+}
+
+/* بناء كامل — يستخدم فقط عند التحميل/التراجع/التنظيف */
 function buildDevices() {
   clearGroup(devGrp); meshById.clear();
-  for (const d of state.devices) {
-    const spec = getSpec(d.cat, d.typeId); if (!spec) continue;
-    const color = BRANDS[d.brand] ? BRANDS[d.brand].color : 0x4de5ff;
-    const mesh = makeMesh(d.cat, d.typeId, color); if (!mesh) continue;
-    mesh.position.set(d.x, spec.h, d.z);
-    mesh.rotation.y = d.rot || 0;
-    mesh.userData.devId = d.id;
-    mesh.userData.dev = d;
-    mesh.userData.spec = spec;
-    devGrp.add(mesh);
-    meshById.set(d.id, mesh);
-  }
+  for (const d of state.devices) addDeviceMesh(d);
   updateSelectionVisuals();
 }
 function updateSelectionVisuals() {
@@ -1644,39 +1884,63 @@ function updateSelectionVisuals() {
   });
 }
 
-/* ============ HEATMAP ============ */
+/* ============ HEATMAP (OPTIMIZED) ============ */
 let heatMesh = null;
+let heatGeoKey = '';
+
 function disposeHeat() {
-  if (heatMesh) { heatGrp.remove(heatMesh); heatMesh.geometry.dispose(); heatMesh.material.dispose(); heatMesh = null; }
+  if (heatMesh) {
+    heatGrp.remove(heatMesh);
+    heatMesh.geometry.dispose();
+    heatMesh.material.dispose();
+    heatMesh = null;
+    heatGeoKey = '';
+  }
 }
+
 function buildHeatmap() {
-  disposeHeat();
-  if (!state.showHeat) return;
+  if (!state.showHeat) {
+    disposeHeat();
+    document.getElementById('hudSpl').textContent = '—';
+    document.getElementById('hudCoverage').textContent = '—';
+    return;
+  }
   const speakers = state.devices.filter(d =>
-    d.cat === 'rides' || d.cat === 'midway' || d.cat === 'shows' ||
-    d.cat === 'parade' || d.cat === 'food' || d.cat === 'entrance' ||
-    d.cat === 'paging' || d.cat === 'emergency'
-  );
+    ['rides','midway','shows','parade','food','entrance','paging','emergency'].includes(d.cat));
   if (!speakers.length) {
+    disposeHeat();
     document.getElementById('hudSpl').textContent = '—';
     document.getElementById('hudCoverage').textContent = '0%';
     return;
   }
+
   const SIZE = Math.max(ROOM.size[0], ROOM.size[1]) * 1.15;
-  const RES = 100;
-  const geo = new THREE.PlaneGeometry(SIZE, SIZE, RES, RES);
-  geo.rotateX(-Math.PI/2);
-  const colors = new Float32Array(geo.attributes.position.count * 3);
-  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-  heatMesh = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({
-    vertexColors: true, transparent: true, opacity: 0.5,
-    depthWrite: false, side: THREE.DoubleSide
-  }));
-  heatMesh.position.y = 0.15;
-  heatMesh.renderOrder = 1;
-  heatGrp.add(heatMesh);
+  const key = SIZE.toFixed(1);
+
+  // إعادة استخدام الـgeometry إذا لم يتغير حجم الغرفة
+  if (!heatMesh || heatGeoKey !== key) {
+    if (heatMesh) {
+      heatGrp.remove(heatMesh);
+      heatMesh.geometry.dispose();
+      heatMesh.material.dispose();
+    }
+    const RES = 100;
+    const geo = new THREE.PlaneGeometry(SIZE, SIZE, RES, RES);
+    geo.rotateX(-Math.PI/2);
+    const colors = new Float32Array(geo.attributes.position.count * 3);
+    geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    heatMesh = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({
+      vertexColors: true, transparent: true, opacity: 0.5,
+      depthWrite: false, side: THREE.DoubleSide
+    }));
+    heatMesh.position.y = 0.15;
+    heatMesh.renderOrder = 1;
+    heatGrp.add(heatMesh);
+    heatGeoKey = key;
+  }
   updateHeatColors();
 }
+
 function calcSPL(x, z) {
   let tot = 0;
   for (const spk of state.devices) {
@@ -1823,6 +2087,7 @@ let isDown = false, moved = false, dragDev = null;
 let dragOff = {x:0, z:0};
 let startPt = {x:0, y:0};
 let pinchStart = null;
+let ghostMesh = null;
 
 function canvasPos(cx, cy) {
   const r = canvas.getBoundingClientRect();
@@ -1848,7 +2113,54 @@ function floorPoint(cx, cy) {
   return raycaster.ray.intersectPlane(floorPlane, p) ? p : null;
 }
 
+/* 👻 معاينة الجهاز قبل الإضافة */
+function updateGhost(cx, cy) {
+  if (state.presentation || isDown || dragDev) {
+    if (ghostMesh) ghostMesh.visible = false;
+    return;
+  }
+  const hit = hitDevice(cx, cy);
+  if (hit) {
+    if (ghostMesh) ghostMesh.visible = false;
+    return;
+  }
+  const fp = floorPoint(cx, cy);
+  if (!fp) {
+    if (ghostMesh) ghostMesh.visible = false;
+    return;
+  }
+  const spec = getSpec(state.curCat, state.curType);
+  if (!spec) { if (ghostMesh) ghostMesh.visible = false; return; }
+
+  if (!ghostMesh || ghostMesh.userData.typeId !== state.curType) {
+    if (ghostMesh) {
+      scene.remove(ghostMesh);
+      ghostMesh.traverse(o => {
+        if (o.geometry) o.geometry.dispose();
+        if (o.material) o.material.dispose();
+      });
+      ghostMesh = null;
+    }
+    const m = makeMesh(state.curCat, state.curType, 0x4de5ff);
+    if (!m) return;
+    m.userData.typeId = state.curType;
+    m.traverse(o => {
+      if (o.material) {
+        o.material = o.material.clone();
+        o.material.transparent = true;
+        o.material.opacity = 0.35;
+        o.material.depthWrite = false;
+      }
+    });
+    scene.add(m);
+    ghostMesh = m;
+  }
+  ghostMesh.position.set(fp.x, spec.h, fp.z);
+  ghostMesh.visible = true;
+}
+
 canvas.addEventListener('pointerdown', e => {
+  if (ghostMesh) ghostMesh.visible = false;
   activePointers.set(e.pointerId, {x:e.clientX, y:e.clientY});
   if (activePointers.size === 1) {
     startPt = {x:e.clientX, y:e.clientY};
@@ -1867,7 +2179,11 @@ canvas.addEventListener('pointerdown', e => {
 }, {passive:true});
 
 canvas.addEventListener('pointermove', e => {
-  if (!activePointers.has(e.pointerId)) return;
+  // إذا لم يكن هناك سحب — حدّث المعاينة فقط
+  if (!activePointers.has(e.pointerId)) {
+    updateGhost(e.clientX, e.clientY);
+    return;
+  }
   const prev = activePointers.get(e.pointerId);
   activePointers.set(e.pointerId, {x:e.clientX, y:e.clientY});
   if (activePointers.size === 2 && pinchStart) {
@@ -1906,25 +2222,32 @@ canvas.addEventListener('pointermove', e => {
   }
 }, {passive:true});
 
+/* ✅ الإصلاح الرئيسي: نقرة واحدة على الفضاء الفارغ = إضافة فورية */
 function endPointer(e) {
   activePointers.delete(e.pointerId);
   if (activePointers.size === 0) {
     if (isDown && !moved && !state.presentation) {
       const hit = hitDevice(e.clientX, e.clientY);
-      if (hit) select(hit.userData.devId);
-      else if (state.selected !== null) deselect();
-      else {
+      if (hit) {
+        select(hit.userData.devId);
+      } else {
+        if (state.selected !== null) deselect();
         const fp = floorPoint(e.clientX, e.clientY);
-        if (fp) { placeDevice(fp.x, fp.z); pushHistory(); }
+        if (fp) {
+          placeDevice(fp.x, fp.z);
+          pushHistory();
+        }
       }
     }
     isDown = false; dragDev = null; moved = false; pinchStart = null;
+    updateGhost(e.clientX, e.clientY);
   } else {
     pinchStart = null; isDown = false; dragDev = null; moved = true;
   }
 }
 canvas.addEventListener('pointerup', endPointer, {passive:true});
 canvas.addEventListener('pointercancel', endPointer, {passive:true});
+canvas.addEventListener('pointerleave', () => { if (ghostMesh) ghostMesh.visible = false; });
 canvas.addEventListener('wheel', e => {
   e.preventDefault();
   state.cam.tween = null;
@@ -1934,16 +2257,19 @@ canvas.addEventListener('wheel', e => {
 }, {passive:false});
 
 /* ============ ACTIONS ============ */
+/* ⚡ إضافة سريعة: mesh واحد + heatmap ذكي */
 function placeDevice(x, z) {
   const spec = getSpec(state.curCat, state.curType); if (!spec) return;
   const d = {id: state.nextId++, brand: state.curBrand, cat: state.curCat, typeId: state.curType,
     x: Math.round(x*10)/10, z: Math.round(z*10)/10, rot: 0, power: spec.power};
   state.devices.push(d);
-  buildDevices();
+  addDeviceMesh(d);
   if (state.showHeat) buildHeatmap();
   updateHUD();
   toast(spec.emoji + ' ' + devName(spec));
+  console.log('✅ Device placed:', d);
 }
+
 function select(id) {
   state.selected = id;
   updateSelectionVisuals(); updateInfo();
@@ -2084,9 +2410,7 @@ function generateReport() {
 
   const capacity = 20000;
   const ridesCount = 6;
-  const zoneCount = [zoneCounts.rides, zoneCounts.midway, zoneCounts.shows, zoneCounts.parade,
-                     zoneCounts.food, zoneCounts.entrance, zoneCounts.paging, zoneCounts.emergency]
-                     .filter(c => c > 0).length;
+  const zoneCount = Object.values(zoneCounts).filter(c => c > 0).length;
 
   const hasPaging = state.devices.some(d => d.cat === 'paging') &&
                     state.devices.some(d => d.cat === 'control' && d.typeId === 'paging_ctrl');
@@ -2146,6 +2470,32 @@ document.getElementById('closeModalBtn').onclick = () => document.getElementById
 document.getElementById('closeModalBtn2').onclick = () => document.getElementById('reportModal').classList.remove('on');
 document.getElementById('printReportBtn').onclick = () => window.print();
 
+document.getElementById('dayNightBtn').onclick = () => {
+  state.dayNight = state.dayNight === 'night' ? 'day' : 'night';
+  applyDayNight();
+  toast(state.dayNight === 'day' ? T('to_day') : T('to_night'));
+};
+
+document.getElementById('fwBtn').onclick = () => {
+  for (let i=0;i<3;i++) setTimeout(() => launchRandomFirework(), i*250);
+  toast(T('to_fw'));
+};
+
+document.getElementById('wavesBtn').onclick = function() {
+  state.showWaves = !state.showWaves;
+  this.classList.toggle('on', state.showWaves);
+  toast(state.showWaves ? T('to_waves_on') : T('to_waves_off'));
+};
+
+document.getElementById('crowdBtn').onclick = function() {
+  state.showCrowd = !state.showCrowd;
+  this.classList.toggle('on', state.showCrowd);
+  buildCrowd();
+  toast(state.showCrowd ? T('to_crowd_on') : T('to_crowd_off'));
+};
+
+document.getElementById('dupBtn').onclick = duplicateSelected;
+
 document.getElementById('saveBtn').onclick = () => {
   const data = JSON.stringify({app:'AURALIS', version:1, room:'amusement',
     devices: state.devices.map(d => ({id:d.id, brand:d.brand, cat:d.cat, typeId:d.typeId, x:d.x, z:d.z, rot:d.rot, power:d.power}))
@@ -2202,6 +2552,7 @@ function togglePres() {
   document.getElementById('hud').style.opacity = state.presentation ? '0' : '1';
   document.getElementById('info').classList.remove('on');
   document.getElementById('exitPres').classList.toggle('on', state.presentation);
+  if (ghostMesh) ghostMesh.visible = false;
   toast(state.presentation ? T('to_pres_on') : T('to_pres_off'));
 }
 document.getElementById('heatBtn').onclick = function() {
@@ -2246,21 +2597,24 @@ document.getElementById('rotSlider').onchange = () => pushHistory();
 document.getElementById('roomWInput').onchange = e => {
   const v = Math.max(50, Math.min(250, parseFloat(e.target.value) || 120));
   ROOM.size[0] = v; e.target.value = v;
-  buildRoom(); buildHeatmap();
+  buildRoom(); buildHeatmap(); buildCrowd(); applyDayNight();
 };
 document.getElementById('roomDInput').onchange = e => {
   const v = Math.max(50, Math.min(250, parseFloat(e.target.value) || 100));
   ROOM.size[1] = v; e.target.value = v;
-  buildRoom(); buildHeatmap();
+  buildRoom(); buildHeatmap(); buildCrowd(); applyDayNight();
 };
 document.addEventListener('keydown', e => {
   const tag = (e.target.tagName || '').toUpperCase();
   if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
   if ((e.ctrlKey||e.metaKey) && e.key.toLowerCase() === 'z') { e.preventDefault(); undo(); }
   else if ((e.ctrlKey||e.metaKey) && e.key.toLowerCase() === 'y') { e.preventDefault(); redo(); }
+  else if ((e.ctrlKey||e.metaKey) && e.key.toLowerCase() === 'd') { e.preventDefault(); duplicateSelected(); }
   else if (e.key === 'Delete' || e.key === 'Backspace') { e.preventDefault(); deleteSelected(); }
   else if (e.key === 'Escape') { deselect(); document.getElementById('reportModal').classList.remove('on'); }
   else if (e.key === 'Tab') { e.preventDefault(); setView3D(!state.view3D); }
+  else if (e.key === 'n' || e.key === 'N') { document.getElementById('dayNightBtn').click(); }
+  else if (e.key === 'f' || e.key === 'F') { document.getElementById('fwBtn').click(); }
 });
 
 /* ============ RESIZE ============ */
@@ -2275,14 +2629,67 @@ window.addEventListener('resize', onResize);
 window.addEventListener('orientationchange', () => setTimeout(onResize, 250));
 
 /* ============ LOOP & INIT ============ */
+let lastFrame = performance.now();
 function animate() {
   requestAnimationFrame(animate);
+  const now = performance.now();
+  const dt = Math.min((now - lastFrame) / 1000, 0.1);
+  lastFrame = now;
+  const tSec = now * 0.001;
+
   updateTween();
-  const t = performance.now() * 0.003;
+
+  for (let i = state.animated.length - 1; i >= 0; i--) {
+    const fn = state.animated[i];
+    if (fn(tSec, dt) === false) state.animated.splice(i, 1);
+  }
+
+  for (let i = state.fireworks.length - 1; i >= 0; i--) {
+    if (state.fireworks[i].update() === false) state.fireworks.splice(i, 1);
+  }
+
   devGrp.children.forEach(m => {
     const r = m.getObjectByName('selRing');
-    if (r && r.material.opacity > 0) r.scale.setScalar(1 + Math.sin(t) * 0.08);
+    if (r && r.material.opacity > 0) r.scale.setScalar(1 + Math.sin(tSec * 3) * 0.08);
   });
+
+  if (state.crowd) {
+    const { mesh, positions, dummy } = state.crowd;
+    for (let i=0;i<positions.length;i++) {
+      const p = positions[i];
+      p.phase += dt * p.speed;
+      const nx = p.x + Math.sin(p.phase) * 0.5;
+      const nz = p.z + Math.cos(p.phase * 0.7) * 0.5;
+      dummy.position.set(nx, 0.6 + Math.abs(Math.sin(p.phase * 3)) * 0.08, nz);
+      dummy.rotation.y = p.phase;
+      dummy.updateMatrix();
+      mesh.setMatrixAt(i, dummy.matrix);
+    }
+    mesh.instanceMatrix.needsUpdate = true;
+  }
+
+  state._fwTimer += dt;
+  if (state._fwTimer > 7 + Math.random()*6 && state.devices.length > 40 && state.dayNight === 'night') {
+    launchRandomFirework();
+    state._fwTimer = 0;
+  }
+
+  if (state.showWaves) {
+    state.waveTimer += dt;
+    if (state.waveTimer > 1.2) {
+      state.waveTimer = 0;
+      const speakers = state.devices.filter(d =>
+        ['rides','midway','shows','parade','food','entrance','paging','emergency'].includes(d.cat));
+      if (speakers.length) {
+        const picks = speakers.slice(0, 3);
+        picks.forEach(d => {
+          const spec = getSpec(d.cat, d.typeId);
+          if (spec) emitSoundWave(d, spec);
+        });
+      }
+    }
+  }
+
   renderer.render(scene, camera);
 }
 
@@ -2290,6 +2697,8 @@ function init() {
   applyLang();
   buildCats(); buildBrands(); buildTypes();
   loadInitialDevices();
+  buildCrowd();
+  applyDayNight();
   onResize();
   animate();
   setTimeout(() => document.getElementById('loader').classList.add('off'), 600);
